@@ -4,6 +4,7 @@ const
     NORM=LightGray; 
     SEL=Green;  
     N=7;
+    eps=1e-6;
 var 
     menu:array[1..N] of string;
     punkt:integer;  
@@ -11,15 +12,18 @@ var
     x,y:integer;   
     a: real=0;
     b: real=0;
-    res: real;
-    abs_a: real;
-    rel_a: real;
-    step: real=0;
+    i: real;
+    steps: real=0;
     f: boolean = False;
 
-Function Equation(x: real):real;
+Function Func(x: real):real;
 begin
-    Equation:=2*x*x*x+2*x*x+(-2)*x+7;
+    Func:=2*x*x*x+2*x*x+(-2)*x+7;
+end;
+
+Function FFunc(x: real):real;
+begin
+    FFunc:=1/2*x*x*x*x+2/3*x*x*x+x*x+7*x;
 end;
 //show information
 Procedure Information;
@@ -44,16 +48,17 @@ end;
 Procedure Limit;
 begin
     ClrScr;
-    writeln('Enter the start of integration:');
+    write('Enter the start of integration: ');
     Readln(a);
     repeat
-        writeln('Enter the end of integration:');
+        write('Enter the end of integration: ');
         Readln(b);
         if b <= a then begin
-            writeln('The number must be greater than the beginning:');
+            writeln('The number must be greater than the beginning!');
         end
         else f := True;
     until f;
+    f:=False;
     Writeln('Done! Enter <Enter> for continue');
     repeat
         ch:= readkey; 
@@ -64,7 +69,7 @@ end;
 Procedure Step;
 begin
     ClrScr;
-    Writeln('Enter number of steps');
+    Write('Enter number of steps: ');
     repeat
         Readln(steps);
         if steps <= 0 then begin
@@ -80,33 +85,63 @@ end;
 
 Function Result:real;
 var 
-    r:real;
+    r:real = 0;
+    h:real;
 begin
     ClrScr;
-    if a<>0 and b<>0 then begin
+    if (a<>0) and (b<>0) then begin
         if steps <= 0 then begin
             writeln('You did not set the number of steps! Enter <Enter> for continue');
         end
         else begin
-            while  then begin
-                
+            h:=(b-a)/steps;
+            i:=a;
+            while i+eps < b do begin
+                if (Func(i)>0+eps) and (Func(i+h)>0+eps) then begin
+                    r:= r+(h*(Func(i)+Func(i+h))/2);
+                end;
+                i:=i+h;
             end;
+            Exit(r);
         end;
     end
     else
     begin
         writeln('You have not entered the limits of integration! Enter <Enter> for continue');
     end;
-    Result:=-1;
+    Exit(-1);
     // repeat
     //     ch:= readkey; 
     // until ch=#13;
 end;
 
+procedure ShowResult;
+var r:real;
+var h:real;
+begin
+    r:=Result;
+    h:=(b-a)/steps;
+    if r > 0 then begin
+        write('The area on the segment [',a:5:2,';',b:5:2,'] with a step ',h:5:2,' is equal to ');
+        writeln(r:5:2);
+        writeln('Enter <Enter> for continue.');
+    end;
+    repeat
+        ch:= readkey; 
+    until ch=#13;
+end;
+
+
 procedure AbsAcc;
+var r,l:real;
 begin
     ClrScr;
-
+    r:=Result;
+    if r>0 then begin
+        l:=(FFunc(b)-FFunc(a))-r;
+        writeln(abs(l):5:2);
+        writeln('Enter <Enter> for continue.');
+    end;
     repeat
         ch:= readkey; 
     until ch=#13;
@@ -114,8 +149,15 @@ end;
 
 
 procedure RelAcc;
+var r,l:real;
 begin
     ClrScr;
+    r:=Result;
+    if r>0 then begin
+        l:=FFunc(b)-FFunc(a);
+        writeln(abs((l-r)/l):5:2);
+        writeln('Enter <Enter> for continue.');
+    end;
 
     repeat
         ch:= readkey; 
@@ -131,10 +173,14 @@ begin
         GoToXY(x,y+i-1);
         write(menu[i]);
     end;
+    writeln();
+    writeln();
+    writeln('[',a:5:2,';',b:5:2,'], number of steps: ',steps:5:2);
     TextAttr:=SEL;
     GoToXY(x,y+punkt-1);
     write(menu[punkt]);
     TextAttr:=NORM;
+    
 end;
 begin
     menu[1]:='Information on the program';    
@@ -183,7 +229,7 @@ begin
             1:Information;
             2:Limit;
             3:Step;
-            4:Result;
+            4:ShowResult;
             5:AbsAcc;
             6:RelAcc;
             7:ch:=#27;
