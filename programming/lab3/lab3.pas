@@ -3,6 +3,7 @@ uses Crt;
 const
     NORM=LightGray; 
     SEL=Green;  
+    ERR=Red;
     N=7;
     eps=1e-6;
 var 
@@ -15,6 +16,21 @@ var
     i: real;
     steps: real=0;
     f: boolean = False;
+
+Procedure WriteError(str:string);
+begin
+    TextAttr:=ERR;
+    writeln(str);
+    TextAttr:=NORM;
+end;
+
+Procedure WriteSuccess(str:string);
+begin
+    TextAttr:=SEL;
+    writeln(str);
+    TextAttr:=NORM;
+end;
+
 
 Function Func(x: real):real;
 begin
@@ -38,6 +54,7 @@ begin
     writeln('4. Interaction with the user should be done through the case-menu.');
     writeln('5. It is required to realize the possibility of evaluating the аccuracy of the obtained result.');
     writeln('6. Procedures and functions should be used where appropriate.');
+    WriteSuccess('Enter <Enter> for continue');
     repeat
         ch:= readkey; 
     until ch=#13;
@@ -54,12 +71,12 @@ begin
         write('Enter the end of integration: ');
         Readln(b);
         if b <= a then begin
-            writeln('The number must be greater than the beginning!');
+            WriteError('The number must be greater than the beginning!');
         end
         else f := True;
     until f;
     f:=False;
-    Writeln('Done! Enter <Enter> for continue');
+    WriteSuccess('Done! Enter <Enter> for continue');
     repeat
         ch:= readkey; 
     until ch=#13;
@@ -73,10 +90,10 @@ begin
     repeat
         Readln(steps);
         if steps <= 0 then begin
-            writeln('The number steps must be greater than 0! Try again.');
+            WriteError('The number steps must be greater than 0! Try again.');
         end;
     until (steps > 0);
-    Writeln('Done! Enter <Enter> for continue');
+    WriteSuccess('Done! Enter <Enter> for continue');
     repeat
         ch:= readkey; 
     until ch=#13;
@@ -107,7 +124,7 @@ begin
     end
     else
     begin
-        writeln('You have not entered the limits of integration! Enter <Enter> for continue');
+        WriteError('You have not entered the limits of integration! Enter <Enter> for continue');
     end;
     Exit(-1);
     // repeat
@@ -124,7 +141,7 @@ begin
     if r > 0 then begin
         write('The area on the segment [',a:5:2,';',b:5:2,'] with a step ',h:5:2,' is equal to ');
         writeln(r:5:2);
-        writeln('Enter <Enter> for continue.');
+        WriteSuccess('Enter <Enter> for continue.');
     end;
     repeat
         ch:= readkey; 
@@ -140,7 +157,7 @@ begin
     if r>0 then begin
         l:=(FFunc(b)-FFunc(a))-r;
         writeln(abs(l):5:2);
-        writeln('Enter <Enter> for continue.');
+        WriteSuccess('Enter <Enter> for continue.');
     end;
     repeat
         ch:= readkey; 
@@ -156,7 +173,7 @@ begin
     if r>0 then begin
         l:=FFunc(b)-FFunc(a);
         writeln(abs((l-r)/l):5:2);
-        writeln('Enter <Enter> for continue.');
+        WriteSuccess('Enter <Enter> for continue.');
     end;
 
     repeat
