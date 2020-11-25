@@ -6,6 +6,7 @@ const
     ERR=Red;
     N=7;
     eps=1e-6;
+    x1=-2.188;
 var 
     menu:array[1..N] of string;
     punkt:integer;  
@@ -114,7 +115,7 @@ begin
             h:=(b-a)/steps;
             i:=a;
             while i+eps < b do begin
-                if (Func(i)>0+eps) and (Func(i+h)>0+eps) then begin
+                if (i>x1+eps) then begin
                     r:= r+(h*(Func(i)+Func(i+h))/2);
                 end;
                 i:=i+h;
@@ -138,7 +139,7 @@ var h:real;
 begin
     r:=Result;
     h:=(b-a)/steps;
-    if r > 0 then begin
+    if r >= 0-eps then begin
         write('The area on the segment [',a:5:2,';',b:5:2,'] with a step ',h:5:2,' is equal to ');
         writeln(r:5:2);
         WriteSuccess('Enter <Enter> for continue.');
@@ -151,11 +152,21 @@ end;
 
 procedure AbsAcc;
 var r,l:real;
+var ax:real;
 begin
     ClrScr;
     r:=Result;
-    if r>0 then begin
-        l:=(FFunc(b)-FFunc(a))-r;
+    ax :=a;
+    if r >= 0-eps then begin
+        if b-eps <=x1 then begin
+            l := 0;
+        end
+        else begin
+            if a-eps<=x1 then begin
+                ax:=x1;
+            end;
+            l:=(FFunc(b)-FFunc(ax))-r;
+        end;
         writeln(abs(l):5:2);
         WriteSuccess('Enter <Enter> for continue.');
     end;
@@ -167,12 +178,22 @@ end;
 
 procedure RelAcc;
 var r,l:real;
+var ax:real;
 begin
     ClrScr;
     r:=Result;
-    if r>0 then begin
-        l:=FFunc(b)-FFunc(a);
-        writeln(abs((l-r)/l):5:2);
+    if r >= 0-eps then begin
+        if b-eps <=x1 then begin
+            l := 0
+        end
+        else begin
+            if a-eps<=x1 then begin
+                ax:=x1;
+            end;
+            l:=FFunc(b)-FFunc(ax);
+            l:=abs((l-r)/l);
+        end;
+        writeln(l:5:2);
         WriteSuccess('Enter <Enter> for continue.');
     end;
 
