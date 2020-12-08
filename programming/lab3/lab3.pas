@@ -14,6 +14,8 @@ var
     x,y:integer;   
     a: real=0;
     b: real=0;
+    c: real=0;
+    d: real=0;
     i: real;
     steps: real=0;
     f: boolean = False;
@@ -77,6 +79,15 @@ begin
         else f := True;
     until f;
     f:=False;
+    c:=a;
+    d:=b;
+    if b<x1 then begin
+        a:=x1;
+        b:=x1;
+    end
+    else if a<x1 then begin
+        a:=x1;
+    end;
     WriteSuccess('Done! Enter <Enter> for continue');
     repeat
         ch:= readkey; 
@@ -109,7 +120,7 @@ begin
     ClrScr;
     if (a<>0) and (b<>0) then begin
         if steps <= 0 then begin
-            writeln('You did not set the number of steps! Enter <Enter> for continue');
+            WriteError('You did not set the number of steps! Enter <Enter> for continue');
         end
         else begin
             h:=(b-a)/steps;
@@ -138,8 +149,8 @@ var r:real;
 var h:real;
 begin
     r:=Result;
-    h:=(b-a)/steps;
     if r >= 0-eps then begin
+        h:=(b-a)/steps;
         write('The area on the segment [',a:5:2,';',b:5:2,'] with a step ',h:5:2,' is equal to ');
         writeln(r:5:2);
         WriteSuccess('Enter <Enter> for continue.');
@@ -152,20 +163,15 @@ end;
 
 procedure AbsAcc;
 var r,l:real;
-var ax:real;
 begin
     ClrScr;
     r:=Result;
-    ax :=a;
     if r >= 0-eps then begin
         if b-eps <=x1 then begin
             l := 0;
         end
         else begin
-            if a-eps<=x1 then begin
-                ax:=x1;
-            end;
-            l:=(FFunc(b)-FFunc(ax))-r;
+            l:=(FFunc(b)-FFunc(a))-r;
         end;
         writeln(abs(l):5:2);
         WriteSuccess('Enter <Enter> for continue.');
@@ -178,7 +184,6 @@ end;
 
 procedure RelAcc;
 var r,l:real;
-var ax:real;
 begin
     ClrScr;
     r:=Result;
@@ -187,10 +192,7 @@ begin
             l := 0
         end
         else begin
-            if a-eps<=x1 then begin
-                ax:=x1;
-            end;
-            l:=FFunc(b)-FFunc(ax);
+            l:=FFunc(b)-FFunc(a);
             l:=abs((l-r)/l);
         end;
         writeln(l:5:2);
@@ -213,13 +215,13 @@ begin
     end;
     writeln();
     writeln();
-    writeln('[',a:5:2,';',b:5:2,'], number of steps: ',steps:5:2);
+    writeln('[',c:5:2,';',d:5:2,'], number of steps: ',steps:5:2);
     TextAttr:=SEL;
     GoToXY(x,y+punkt-1);
     write(menu[punkt]);
     TextAttr:=NORM;
-    
 end;
+
 begin
     menu[1]:='Information on the program';    
     menu[2]:='Enter limit of integration';   
