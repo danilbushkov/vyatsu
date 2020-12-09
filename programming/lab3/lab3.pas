@@ -42,7 +42,7 @@ end;
 
 Function FFunc(x: real):real;
 begin
-    FFunc:=1/2*x*x*x*x+2/3*x*x*x+x*x+7*x;
+    FFunc:=1/2*x*x*x*x+2/3*x*x*x-x*x+7*x;
 end;
 //show information
 Procedure Information;
@@ -118,7 +118,11 @@ var
     h:real;
 begin
     ClrScr;
-    if (a<>0) and (b<>0) then begin
+    if (a=0) and (b=0) then begin
+        WriteError('You have not entered the limits of integration! Enter <Enter> for continue');
+    end
+    else
+    begin
         if steps <= 0 then begin
             WriteError('You did not set the number of steps! Enter <Enter> for continue');
         end
@@ -126,17 +130,11 @@ begin
             h:=(b-a)/steps;
             i:=a;
             while i+eps < b do begin
-                if (i>x1+eps) then begin
-                    r:= r+(h*(Func(i)+Func(i+h))/2);
-                end;
+                r:= r+(h*(Func(i)+Func(i+h))/2);
                 i:=i+h;
             end;
             Exit(r);
         end;
-    end
-    else
-    begin
-        WriteError('You have not entered the limits of integration! Enter <Enter> for continue');
     end;
     Exit(-1);
     // repeat
@@ -151,7 +149,7 @@ begin
     r:=Result;
     if r >= 0-eps then begin
         h:=(b-a)/steps;
-        write('The area on the segment [',a:5:2,';',b:5:2,'] with a step ',h:5:2,' is equal to ');
+        write('The area on the segment [',c:5:2,';',d:5:2,'] with a step ',h:5:2,' is equal to ');
         writeln(r:5:2);
         WriteSuccess('Enter <Enter> for continue.');
     end;
