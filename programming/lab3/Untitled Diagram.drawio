@@ -1,1 +1,25 @@
-<mxfile host="app.diagrams.net" modified="2020-12-22T14:10:04.020Z" agent="5.0 (Windows)" version="14.1.1" etag="wn1eeDDTTzOp_8QufQwT" type="github"><diagram id="mP6V1sskf1fBcVwBtuqS">UzV2zq1wL0osyPDNT0nNUTV2VTV2LsrPL4GwciucU3NyVI0MMlNUjV1UjYwMgFjVyA2HrCFY1qAgsSg1rwSLBiADYTaQg2Y1AA==</diagram></mxfile>
+<mxfile host="app.diagrams.net" modified="2020-12-22T15:23:58.925Z" agent="5.0 (Windows)" etag="2H08skp2m2YTdBNUGQlm" version="14.1.1" type="github">
+  <diagram id="mP6V1sskf1fBcVwBtuqS" name="Страница 1">
+    <mxGraphModel dx="1028" dy="547" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="zdvaW4R5I1pKYgFtx82m-13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="zdvaW4R5I1pKYgFtx82m-11" target="zdvaW4R5I1pKYgFtx82m-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zdvaW4R5I1pKYgFtx82m-11" value="Начало" style="rounded=1;whiteSpace=wrap;html=1;shadow=0;sketch=0;strokeWidth=1;gradientColor=#ffffff;arcSize=50;" vertex="1" parent="1">
+          <mxGeometry x="330" y="80" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="zdvaW4R5I1pKYgFtx82m-15" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="zdvaW4R5I1pKYgFtx82m-12" target="zdvaW4R5I1pKYgFtx82m-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="zdvaW4R5I1pKYgFtx82m-12" value="&lt;div&gt;NORM=LightGray; &lt;br&gt;&lt;/div&gt;&lt;div&gt;SEL=Green; &lt;br&gt;&lt;/div&gt;&lt;div&gt;ERR=Red;&lt;/div&gt;&lt;div&gt;N=&lt;span class=&quot;pl-c1&quot;&gt;7&lt;/span&gt;;&lt;/div&gt;&lt;div&gt;x1=-&lt;span class=&quot;pl-c1&quot;&gt;2.188&lt;/span&gt;;&lt;br&gt;&lt;span class=&quot;pl-c1&quot;&gt;&lt;/span&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;shadow=0;sketch=0;strokeWidth=1;gradientColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="330" y="180" width="150" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="zdvaW4R5I1pKYgFtx82m-14" value="" style="rounded=0;whiteSpace=wrap;html=1;shadow=0;sketch=0;strokeWidth=1;gradientColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="330" y="310" width="150" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
