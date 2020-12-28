@@ -312,7 +312,7 @@ procedure Hatching(a,b,mx,my:real;x0,y0:integer);
 var 
     x1,x2:integer;
     y1,y2:extended;
-    x,y:integer;
+    x,y:longint;
     x3,y3,yd:extended;
     t:real =0;
     //d:real =0;
@@ -320,14 +320,23 @@ begin
     SetColor(9);
     y1:=Func(a);
     x1:=x0 + round(a * mx);
-    line(x1,y0,x1,y0 - round(y1 * my));
+    y:=y0 - round(y1 * my);
+    if y < 0 then y:=0;
+    line(x1,y0,x1,y);
 
     y2:=Func(b);
+    
     x2:=x0 + round(b * mx);
-    line(x2,y0,x2,y0 - round(y2 * my));
+    y:=y0 - round(y2 * my);
+    // writeln(y0 - round(y2 * my));
+    // writeln(y);
+    //writeln(y0,' ',getmaxy, ' ', y, ' ',y0 - round(y2 * my));
+    if y < 0 then y:=0;
+    line(x2,y0,x2,y);
+    //writeln(y0 - round(y2 * my));
     x3:=a;
     y3:=0;
-    write(y2);
+    //write(y2);
     //write(Func(6));
 
     while x3 <= b do
@@ -346,7 +355,7 @@ begin
             y := y0 - round(y3*my);
             //y3:=y3+0.001;
             PutPixel(x, y, 9);
-            y3:=y3+1;
+            y3:=y3+2;
         end;
         
         t:=t+0.001;
@@ -358,7 +367,7 @@ begin
     //line(x2+10,y0-round((t-1)*my),x2,y0-round(t*my));
     x3:=b;
     //t:=0;
-    y3:=t-1;
+    y3:=t-2;
     while x3 >= a do begin
         x := x0 + round(x3 * mx);
         yd:=y3;
@@ -366,7 +375,7 @@ begin
             y := y0 - round(yd*my);
             //y3:=y3+0.001;
             PutPixel(x, y, 9);
-            yd:=yd-1;
+            yd:=yd-2;
         end;
         y3:=y3-0.001;
         x3 := x3 - 0.001;
@@ -461,24 +470,32 @@ begin
     y := Func(x);
     x1 := x0 + round(x * mx);
     y1 := y0 - round(y * my);
+    //if (y1 < 0) or (y1>GetMaxY) then y1:=0;
+    //line(0,0,)
     x:=x+step;
     while x-(1e-6) <= b do
     begin
-
         y := Func(x);
         x2 := x0 + round(x * mx);
         y2 := y0 - round(y * my);
+        if (y2 < 0) and (y1 <= 0)then y2:=0;
         line(x1,y0,x1,y1);
-        line(x1,y1,x2,y2);
+        
+        if(y1 > 0) then line(x1,y1,x2,y2);
         x1:=x2;
         y1:=y2;
         x := x + step;
+        
     end;
     line(x1,y0,x1,y1);
     SetColor(15);
 end;
 
-
+procedure CheckTaskAndHatching(t,h:boolean;a,b,n,mx,my:real;x0,y0:integer);
+begin
+    if t then Task(a,b,steps,mx,my,x0,y0);
+    if h then Hatching(a,b,mx,my,x0,y0);
+end;
 
 procedure Visualization;
 const
@@ -493,6 +510,8 @@ var
     ay,by:real;
     x0:integer=0;
     y0:integer=0;
+    iT:boolean = false;
+    iH: boolean = false;
 begin
     Gd:=detect;
     InitGraph(Gd,Gm,'');
@@ -518,42 +537,61 @@ begin
                 ClearDevice();
                 ScalePlus(ax,bx,ay,by);
                 Draw(n,ax,bx,ay,by,xr,xl,yd,yt,mx,my,x0,y0);
+                CheckTaskAndHatching(iT,iH,a,b,n,mx,my,x0,y0);
             end;
             '-': begin
                 ClearDevice();
                 ScaleMinus(ax,bx,ay,by);
                 Draw(n,ax,bx,ay,by,xr,xl,yd,yt,mx,my,x0,y0);
+                CheckTaskAndHatching(iT,iH,a,b,n,mx,my,x0,y0);
             end;
             '1': begin
                 ClearDevice();
                 ScalePlusX(ax,bx);
                 Draw(n,ax,bx,ay,by,xr,xl,yd,yt,mx,my,x0,y0);
+                CheckTaskAndHatching(iT,iH,a,b,n,mx,my,x0,y0);
             end;
             '2':begin
                 ClearDevice();
                 ScaleMinusX(ax,bx);
                 Draw(n,ax,bx,ay,by,xr,xl,yd,yt,mx,my,x0,y0);
+                CheckTaskAndHatching(iT,iH,a,b,n,mx,my,x0,y0);
+                
             end;
             '3': begin
                 ClearDevice();
                 ScalePlusY(ay,by);
                 Draw(n,ax,bx,ay,by,xr,xl,yd,yt,mx,my,x0,y0);
+                CheckTaskAndHatching(iT,iH,a,b,n,mx,my,x0,y0);
             end;
             '4': begin
                 ClearDevice();
                 ScaleMinusY(ay,by);
                 Draw(n,ax,bx,ay,by,xr,xl,yd,yt,mx,my,x0,y0);
+                CheckTaskAndHatching(iT,iH,a,b,n,mx,my,x0,y0);
             end;
             '5': begin
                 ClearDevice();
                 
                 Draw(n,ax,bx,ay,by,xr,xl,yd,yt,mx,my,x0,y0);
-                Task(a,b,steps,mx,my,x0,y0);
+                if not iT then
+                begin
+                    iT:=true;
+                    
+                end
+                else iT:=false;
+                CheckTaskAndHatching(iT,iH,a,b,n,mx,my,x0,y0);
             end;
             '6': begin
                 ClearDevice();
                 Draw(n,ax,bx,ay,by,xr,xl,yd,yt,mx,my,x0,y0);
-                Hatching(a,b,mx,my,x0,y0);
+                if not iH then
+                begin
+                    iH:=true;
+                    
+                end
+                else iH:=false;
+                CheckTaskAndHatching(iT,iH,a,b,n,mx,my,x0,y0);
             end;
         end;
     until ch=#13;
