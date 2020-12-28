@@ -61,7 +61,6 @@ begin
     repeat
         ch:= readkey; 
     until ch=#13;
-    //readln;
 end;
 
 //enter limit of integration
@@ -137,9 +136,6 @@ begin
         end;
     end;
     Exit(-1);
-    // repeat
-    //     ch:= readkey; 
-    // until ch=#13;
 end;
 
 procedure ShowResult;
@@ -220,6 +216,18 @@ begin
     TextAttr:=NORM;
 end;
 
+Procedure ChangeMenu(d:boolean);
+begin
+    GoToXY(x,y+punkt-1); 
+    write(menu[punkt]);
+    if d then punkt:=punkt+1
+    else punkt:=punkt-1;
+    TextAttr:=SEl;
+    GoToXY(x,y+punkt-1); 
+    write(menu[punkt]);
+    TextAttr:=NORM;
+end;
+
 begin
     menu[1]:='Information on the program';    
     menu[2]:='Enter limit of integration';   
@@ -241,24 +249,12 @@ begin
         #80:
             if punkt<N then 
             begin 
-                GoToXY(x,y+punkt-1); 
-                write(menu[punkt]);
-                punkt:=punkt+1;
-                TextAttr:=SEl;
-                GoToXY(x,y+punkt-1); 
-                write(menu[punkt]);
-                TextAttr:=NORM;
+                ChangeMenu(true);
             end;
         #72:
             if punkt>1 then 
             begin 
-                GoToXY(x,y+punkt-1); 
-                write(menu[punkt]);
-                punkt:=punkt-1;
-                TextAttr:=SEl;
-                GoToXY(x,y+punkt-1); 
-                write(menu[punkt]);
-                TextAttr:=NORM;
+                ChangeMenu(false);
             end;
         end;
         end
