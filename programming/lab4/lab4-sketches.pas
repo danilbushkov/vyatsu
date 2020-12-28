@@ -8,11 +8,13 @@ const
 var 
     Gd,Gm: integer;
     ch: char;
-    my,mx: real;
+    mx: real = 0;
+    my: real = 0;
     a,b:real;
-    ay,by:integer;
+    ay,by:real;
     xr,yd:integer;
-    x0,y0:integer;
+    x0:integer=0;
+    y0:integer=0;
     s:string;
     i:integer;
     dx:real=1;
@@ -30,11 +32,13 @@ var
 //+4. TODO: Масштабирование графика.
 //+5. TODO: Независимое масштабирование графика.
 //+6. TODO: Вывод расчета.
-procedure Axes();
+procedure Axes(x0,y0,n:integer;a,b,ay,by,mx,my:real);
 var 
     //n:integer;
     num:real;
-    x,y:integer;
+    x,y,i:integer;
+    s:string;
+    dx,dy:real;
 begin
     
     line(0,y0,GetMaxX,y0);//Ox
@@ -74,14 +78,14 @@ begin
         OutTextXY(x0 + 7, y - TextHeight(s) div 2, s);
     end;
     OutTextXY(x0 - 10, y0 + 10, '0'); 
-    str(dy, s);
-    OutTextXY(10,10,s);
-    str(ay, s);
-    OutTextXY(10,20,s);
-    str(by, s);
-    OutTextXY(10,30,s);
-    str(n, s);
-    OutTextXY(10,40,s);
+    // str(dy, s);
+    // OutTextXY(10,10,s);
+    // str(ay, s);
+    // OutTextXY(10,20,s);
+    // str(by, s);
+    // OutTextXY(10,30,s);
+    // str(n, s);
+    // OutTextXY(10,40,s);
 end;
 
 Function Func(x: real):real;
@@ -89,7 +93,7 @@ begin
     Func:=2*x*x*x+2*x*x+(-2)*x+7;
 end;
 
-procedure curveGraph();
+procedure curveGraph(x0,y0,yt,yd:integer;a,b:real);
 var 
     x1:real;
     x:integer;
@@ -107,14 +111,14 @@ begin
     end;
 end;
 
-procedure Hatching(a,b:real);
+procedure Hatching(a,b,mx,my:real;x0,y0:integer);
 var 
     x1,x2:integer;
     y1,y2:extended;
     x,y:integer;
     x3,y3,yd:extended;
     t:real =0;
-    d:real =0;
+    //d:real =0;
 begin
     SetColor(9);
     y1:=Func(a);
@@ -172,7 +176,7 @@ begin
 end;
 
 
-procedure ScalePlusX();
+procedure ScalePlusX(var a,b:real);
 begin
     if (a<sc+1e-6) and (b>sc+1e-6) then begin
         a:=round(a+sc);
@@ -180,7 +184,7 @@ begin
         //if ((b-a) mod (dx-c)) = 0 then dx:=dx-c;
     end;
 end;
-procedure ScalePlusY();
+procedure ScalePlusY(var ay,by:real);
 begin
     if (ay<sc+1e-6) and (by>sc+1e-6) then begin
         ay:=round(ay+sc);
@@ -190,30 +194,30 @@ begin
     
 end;
 
-procedure ScaleMinusX();
+procedure ScaleMinusX(var a,b:real);
 begin
     a:=round(a-sc);
     b:=round(b+sc);
     //if ((b-a) mod (dx+c)) = 0 then dx:=dx+c;
 end;
 
-procedure ScaleMinusY();
+procedure ScaleMinusY(var ay,by:real);
 begin
     ay:=round(ay-sc);
     by:=round(by+sc);
     //if ((by-ay) mod (dy+c)) = 0 then dy:=dy+c;
 end;
 
-procedure ScalePlus();
+procedure ScalePlus(var a,b,ay,by:real);
 begin
-    ScalePlusX();
-    ScalePlusY();
+    ScalePlusX(a,b);
+    ScalePlusY(ay,by);
 end;
 
-procedure ScaleMinus();
+procedure ScaleMinus(var a,b,ay,by:real);
 begin
-    ScaleMinusX();
-    ScaleMinusY();
+    ScaleMinusX(a,b);
+    ScaleMinusY(ay,by);
 end;
 
 // procedure ChangeScale();
@@ -225,18 +229,18 @@ end;
 // end;
 
 
-procedure Draw();
+procedure Draw(n:integer;var a,b,ay,by: real;xr,xl,yd,yt:integer; var mx,my:real;var x0,y0:integer);
 begin
     
     mx := (xr - xl) / (b - a); 
     my := (yd - yt) / (by - ay); 
     x0 := trunc(abs(a) * mx) + xl;
     y0 := yd - trunc(abs(ay) * my);
-    Axes();
-    curveGraph();
+    Axes(x0,y0,n,a,b,ay,by,mx,my);
+    curveGraph(x0,y0,yt,yd,a,b);
 end;
 
-procedure Task(a,b,n:real);
+procedure Task(a,b,n,mx,my:real;x0,y0:integer);
 var 
     x1,x2:integer;
     y1,y2:integer;
@@ -291,7 +295,7 @@ begin
     // my := (yd - yt) / (by - ay); 
     // x0 := trunc(abs(a) * mx) + xl;
     // y0 := yd - trunc(abs(ay) * my);
-    Draw();
+    Draw(n,a,b,ay,by,xr,xl,yd,yt,mx,my,x0,y0);
     //Hatching(0,9);
     repeat
         ch:= wincrt.readkey; 
@@ -299,43 +303,44 @@ begin
         case ch of
             '+': begin
                 ClearDevice();
-                ScalePlus();
-                Draw();
+                ScalePlus(a,b,ay,by);
+                Draw(n,a,b,ay,by,xr,xl,yd,yt,mx,my,x0,y0);
             end;
             '-': begin
                 ClearDevice();
-                ScaleMinus();
-                Draw();
+                ScaleMinus(a,b,ay,by);
+                Draw(n,a,b,ay,by,xr,xl,yd,yt,mx,my,x0,y0);
             end;
             '1': begin
                 ClearDevice();
-                ScalePlusX();
-                Draw();
+                ScalePlusX(a,b);
+                Draw(n,a,b,ay,by,xr,xl,yd,yt,mx,my,x0,y0);
             end;
             '2':begin
                 ClearDevice();
-                ScaleMinusX();
-                Draw();
+                ScaleMinusX(a,b);
+                Draw(n,a,b,ay,by,xr,xl,yd,yt,mx,my,x0,y0);
             end;
             '3': begin
                 ClearDevice();
-                ScalePlusY();
-                Draw();
+                ScalePlusY(ay,by);
+                Draw(n,a,b,ay,by,xr,xl,yd,yt,mx,my,x0,y0);
             end;
             '4': begin
                 ClearDevice();
-                ScaleMinusY();
-                Draw();
+                ScaleMinusY(ay,by);
+                Draw(n,a,b,ay,by,xr,xl,yd,yt,mx,my,x0,y0);
             end;
             '5': begin
                 ClearDevice();
-                Task(-2,2,10);
-                Draw();
+                
+                Draw(n,a,b,ay,by,xr,xl,yd,yt,mx,my,x0,y0);
+                Task(-10,10,10,mx,my,x0,y0);
             end;
             '6': begin
                 ClearDevice();
-                Draw();
-                Hatching(-2,2);
+                Draw(n,a,b,ay,by,xr,xl,yd,yt,mx,my,x0,y0);
+                Hatching(-10,10,mx,my,x0,y0);
             end;
         end;
     until ch=#13;
