@@ -227,6 +227,19 @@ end;
 //     if (ay mod 25) = 0 then 
 //     dx:=trunc(dx-c);
 // end;
+procedure ShowInfo();
+begin
+    OutTextXY(10,785,'Task: 2*x^3+(2)*x^2+(-2)*x+(7)');
+    OutTextXY(10,800,'<+> - The approach');
+    OutTextXY(10,815,'<-> - The distance');
+    OutTextXY(10,830,'<1> - The approach of the x-axis');
+    OutTextXY(10,845,'<2> - The distance of the x-axis');
+    OutTextXY(10,860,'<3> - The approach of the y-axis');
+    OutTextXY(10,875,'<4> - The distance of the y-axis');
+    OutTextXY(10,890,'<5> - Show graphic solution');
+    OutTextXY(10,905,'<6> - Hatching');
+    OutTextXY(10,920,'<Enter> - Exit')
+end;
 
 
 procedure Draw(n:integer;var a,b,ay,by: real;xr,xl,yd,yt:integer; var mx,my:real;var x0,y0:integer);
@@ -238,6 +251,7 @@ begin
     y0 := yd - trunc(abs(ay) * my);
     Axes(x0,y0,n,a,b,ay,by,mx,my);
     curveGraph(x0,y0,yt,yd,a,b);
+    ShowInfo();
 end;
 
 procedure Task(a,b,n,mx,my:real;x0,y0:integer);
