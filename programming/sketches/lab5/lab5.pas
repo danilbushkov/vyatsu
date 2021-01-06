@@ -13,13 +13,18 @@ begin
     Readln(path);
     Writeln('1 - Bubble Sort');
     Writeln('2 - Insertion Sort');
+    Writeln('3 - Selection Sort');
+    Writeln('4 - Counting Sort');
     Writeln('Select the sorting method: ');
+    
     Readln(method);
     Assign(f,path);
     ReadFile(arr,f);
     case method of 
         1: BubbleSort(arr, @ASC);
         2: InsertionSort(arr, @ASC);
+        3: SelectionSort(arr, @ASC);
+        4: CountingSort(arr, @ASC);
     end;
     ShowSortedArray(arr);
     arr:=nil;
