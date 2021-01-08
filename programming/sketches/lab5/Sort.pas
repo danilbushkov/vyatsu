@@ -7,7 +7,8 @@ uses WorkWithFile,WorkWithArr,comprtr;
 procedure BubbleSort(var arr:numbers; c:comparator);
 procedure InsertionSort(var arr:numbers; c:comparator);
 procedure SelectionSort(var arr:numbers; c:comparator);
-procedure CountingSort(var arr:numbers; c:comparator);
+procedure CountingSort(var arr:numbers);
+procedure HeapSort(var arr:numbers; c:comparator);
 
 implementation
 
@@ -59,7 +60,7 @@ begin
 end;
 
 
-procedure CountingSort(var arr:numbers; c:comparator);
+procedure CountingSort(var arr:numbers);
 var 
     max,i,j,a,n:integer;
     hArr:numbers;
@@ -82,6 +83,52 @@ begin
         end;
     end;
     hArr:=nil;
+end;
+
+
+procedure heapify(var arr:numbers; n,i:integer; c:comparator);
+var l,r,t:integer;
+begin
+    t:=i;
+    l:=2*i+1;
+    r:=2*i+2;
+
+    if l < n then begin
+        if c(arr[l], arr[t]) then
+        begin
+            t:=l;
+        end; 
+    end;
+
+    if r < n then begin
+        if c(arr[r], arr[t]) then
+        begin
+            t:=r;
+        end;
+    end;
+
+    if t<>i then begin
+        Swap(arr[i], arr[t]);
+        heapify(arr,n,t,c);
+    end;
+end;
+
+procedure HeapSort(var arr:numbers; c:comparator);
+var n,i:integer;
+begin
+    n:=length(arr);
+
+    for i:=(n div 2)-1 downto 0 do
+    begin
+        heapify(arr,n,i,c);
+    end;
+    for i:=n-1 downto 1 do
+    begin
+        Swap(arr[0],arr[i]);
+
+        heapify(arr,i,0,c);
+    end;
+
 end;
 
 end.
