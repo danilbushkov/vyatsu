@@ -1,4 +1,4 @@
-program lab3;
+program lab4;
 uses graph,Crt,wincrt;
 const
     NORM=LightGray; 
@@ -235,7 +235,6 @@ end;
 //Graphic
 procedure Axes(x0,y0,n:integer;a,b,ay,by,mx,my:real);
 var 
-    //n:integer;
     num:real;
     x,y,i:integer;
     s:string;
@@ -253,8 +252,7 @@ begin
     SetColor(15); 
     SetTextStyle(1, 0, 1); 
 
-    //n := round((b - a) / dx);
-    //if (n mod 2) = 0 then n:=n+1;
+    
     dx:=(b-a)/n;
     for i := 1 to n+1 do
     begin
@@ -265,8 +263,7 @@ begin
         if abs(num) > 1e-10 then 
         OutTextXY(x - TextWidth(s) div 2, y0 + 10, s);
     end;
-    //n := round((by - ay) / dy); 
-    //if (n mod 2) = 0 then n:=n+1;
+    
     dy:=(by-ay)/n;
     for i := 1 to n+1 do
     begin
@@ -279,14 +276,7 @@ begin
         OutTextXY(x0 + 7, y - TextHeight(s) div 2, s);
     end;
     OutTextXY(x0 - 10, y0 + 10, '0'); 
-    // str(dy, s);
-    // OutTextXY(10,10,s);
-    // str(ay, s);
-    // OutTextXY(10,20,s);
-    // str(by, s);
-    // OutTextXY(10,30,s);
-    // str(n, s);
-    // OutTextXY(10,40,s);
+    
 end;
 
 
@@ -315,7 +305,7 @@ var
     x,y:longint;
     x3,y3,yd:extended;
     t:real =0;
-    //d:real =0;
+    
 begin
     SetColor(9);
     y1:=Func(a);
@@ -328,16 +318,11 @@ begin
     
     x2:=x0 + round(b * mx);
     y:=y0 - round(y2 * my);
-    // writeln(y0 - round(y2 * my));
-    // writeln(y);
-    //writeln(y0,' ',getmaxy, ' ', y, ' ',y0 - round(y2 * my));
+    
     if y < 0 then y:=0;
     line(x2,y0,x2,y);
-    //writeln(y0 - round(y2 * my));
     x3:=a;
     y3:=0;
-    //write(y2);
-    //write(Func(6));
 
     while x3 <= b do
     begin
@@ -345,35 +330,28 @@ begin
         x := x0 + round(x3 * mx);
         y3:=0+t;
         y:=1;
-        //yd:=0;
-        // while yd<=y3 do begin
-        //     y := y0 - round(yd*my);
-        //     PutPixel(x,y,9);
-        //     yd:=yd+1;
-        // end;
+        
         while (y3<=y1) and (y>=0) do begin
             y := y0 - round(y3*my);
-            //y3:=y3+0.001;
+            
             PutPixel(x, y, 9);
             y3:=y3+2;
         end;
         
         t:=t+0.001;
-        //l:=l+1;
-        //line(x,y0,x,y0 - round(y1 * my));
-        //PutPixel(x, y0-10, 9);
+        
         x3 := x3 + 0.001;
     end;
-    //line(x2+10,y0-round((t-1)*my),x2,y0-round(t*my));
+    
     x3:=b;
-    //t:=0;
+    
     y3:=t-2;
     while x3 >= a do begin
         x := x0 + round(x3 * mx);
         yd:=y3;
         while yd>=0 do begin
             y := y0 - round(yd*my);
-            //y3:=y3+0.001;
+            
             PutPixel(x, y, 9);
             yd:=yd-2;
         end;
@@ -389,7 +367,7 @@ begin
     if (a<sc+1e-6) and (b>sc+1e-6) then begin
         a:=round(a+sc);
         b:=round(b-sc);
-        //if ((b-a) mod (dx-c)) = 0 then dx:=dx-c;
+        
     end;
 end;
 procedure ScalePlusY(var ay,by:real);
@@ -397,7 +375,7 @@ begin
     if (ay<sc+1e-6) and (by>sc+1e-6) then begin
         ay:=round(ay+sc);
         by:=round(by-sc);
-        //if ((by-ay) mod (dy-c)) = 0 then dy:=dy-c;
+        
     end;
     
 end;
@@ -406,14 +384,14 @@ procedure ScaleMinusX(var a,b:real);
 begin
     a:=round(a-sc);
     b:=round(b+sc);
-    //if ((b-a) mod (dx+c)) = 0 then dx:=dx+c;
+    
 end;
 
 procedure ScaleMinusY(var ay,by:real);
 begin
     ay:=round(ay-sc);
     by:=round(by+sc);
-    //if ((by-ay) mod (dy+c)) = 0 then dy:=dy+c;
+    
 end;
 
 procedure ScalePlus(var a,b,ay,by:real);
@@ -428,13 +406,7 @@ begin
     ScaleMinusY(ay,by);
 end;
 
-// procedure ChangeScale();
-// begin
-//     if (a mod 25) = 0 then 
-//     dx:=trunc(dx-c);
-//     if (ay mod 25) = 0 then 
-//     dx:=trunc(dx-c);
-// end;
+
 procedure ShowInfo();
 var st,s:string;
 begin
@@ -478,21 +450,14 @@ var
 begin
 
     SetColor(13);
-    // y1:=Func(a);
-    // x1:=x0 + round(a * mx);
-    // line(x1,y0,x1,y0 - round(y1 * my));
-
-    // y2:=Func(b);
-    // x2:=x0 + round(b * mx);
-    // line(x2,y0,x2,y0 - round(y2 * my));
-    // x3:=a+0.5;
+   
     step:=(b-a)/n;
     x := a;
     y := Func(x);
     x1 := x0 + round(x * mx);
     y1 := y0 - round(y * my);
     if y1 < 0 then y1:=0;
-    //line(0,0,)
+   
     x:=x+step;
     while x-(1e-6) <= b do
     begin
@@ -544,12 +509,9 @@ begin
     ay:=-10;
     xr:=GetMaxX-30;
     yd:=GetMaxY-30;
-    // mx := (xr - xl) / (b - a); 
-    // my := (yd - yt) / (by - ay); 
-    // x0 := trunc(abs(a) * mx) + xl;
-    // y0 := yd - trunc(abs(ay) * my);
+    
     Draw(n,ax,bx,ay,by,xr,xl,yd,yt,mx,my,x0,y0);
-    //Hatching(0,9);
+   
     repeat
         ch:= wincrt.readkey; 
 
