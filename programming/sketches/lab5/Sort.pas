@@ -9,6 +9,8 @@ procedure InsertionSort(var arr:numbers; c:comparator);
 procedure SelectionSort(var arr:numbers; c:comparator);
 procedure CountingSort(var arr:numbers);
 procedure HeapSort(var arr:numbers; c:comparator);
+procedure QuickSort(var arr:numbers;l,h:integer; c:comparator);
+procedure MergeSort(var arr: numbers; f, l: integer;c:comparator);
 
 implementation
 
@@ -85,7 +87,7 @@ begin
     hArr:=nil;
 end;
 
-
+//HeapSort
 procedure heapify(var arr:numbers; n,i:integer; c:comparator);
 var l,r,t:integer;
 begin
@@ -130,5 +132,72 @@ begin
     end;
 
 end;
+
+//QuickSort
+
+function Partition(var arr:numbers; l,h:integer; c:comparator):integer;
+var t,i,j:integer;
+begin
+    t:=arr[h];
+    i:=l;
+    for j:=l to h do
+    begin
+        if c(t,arr[j]) then
+        begin
+            Swap(arr[i],arr[j]);
+            i:=i+1;
+        end;
+    end;
+    Swap(arr[i],arr[h]);
+    Exit(i);
+end;
+
+
+procedure QuickSort(var arr:numbers;l,h:integer; c:comparator);
+var p:integer;
+begin
+    if l < h then begin
+        p := Partition(arr, l, h,c);
+        QuickSort(arr, l, p - 1,c);
+        QuickSort(arr, p + 1, h,c);
+    end;
+end;
+
+//MargeSort
+
+procedure Merge(var arr: numbers; f, l: integer;c:comparator);
+var middle, start, final , j: integer;
+    arrBuf: numbers;
+begin
+    setLength(arrBuf, length(arr));
+    middle:=(f+l) div 2; 
+    start:=f; 
+    final:=middle+1; 
+    for j:=f to l do 
+    if (start<=middle) and ((final>l) or c(arr[final], arr[start])) then 
+    begin
+        arrBuf[j]:=arr[start];
+        inc(start);
+    end
+    else
+    begin
+        arrBuf[j]:=arr[final];
+        inc(final);
+    end;
+    for j:=f to l do arr[j]:=arrBuf[j];
+    arrBuf:=nil;
+end;
+
+procedure MergeSort(var arr: numbers; f, l: integer;c:comparator);
+begin
+    if f<l then
+    begin
+        MergeSort(arr, f, (f+l) div 2,c); 
+        MergeSort(arr, ((f+l) div 2)+1, l,c); 
+        Merge(arr, f, l,c); 
+    end;
+end;
+
+
 
 end.

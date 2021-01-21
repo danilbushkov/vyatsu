@@ -16,6 +16,8 @@ begin
     Writeln('3 - Selection Sort');
     Writeln('4 - Counting Sort');
     Writeln('5 - Heap Sort');
+    Writeln('6 - Quick Sort');
+    Writeln('7 - Marge Sort');
     Writeln('Select the sorting method: ');
     
     Readln(method);
@@ -27,6 +29,9 @@ begin
         3: SelectionSort(arr, @ASC);
         4: CountingSort(arr);
         5: HeapSort(arr, @ASC);
+        6: QuickSort(arr,0,length(arr)-1 ,@ASC);
+        7: MergeSort(arr,0,length(arr)-1, @ASC);
+        
     end;
     ShowSortedArray(arr);
     arr:=nil;

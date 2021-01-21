@@ -28,6 +28,7 @@ begin
         write(arr[j]);
         write(' ');
     end;
+    writeln();
 end;
 
 function FindMaxElem(var arr:numbers):integer;
