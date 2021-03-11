@@ -1,25 +1,25 @@
 program heapsort_desc;
 
-type numbers=array of integer;
-     comparator=function(a,b:integer):boolean;
+type numbers=array of longint;
+     comparator=function(a,b:longint):boolean;
 
 var 
     f:text;
     f1:text;
     a:numbers;
 
-function DESC(a,b:integer):boolean;
+function DESC(a,b:longint):boolean;
 begin
     Exit(a<b);
 end;
 
-function ASC(a,b:integer):boolean;
+function ASC(a,b:longint):boolean;
 begin
     Exit(a>b);
 end;
 
-procedure Swap(var a,b:integer);
-var c: integer;
+procedure Swap(var a,b:longint);
+var c: longint;
 begin
     c:=a;
     a:=b;
@@ -27,8 +27,8 @@ begin
 end;
 
 
-procedure heapify(var arr:numbers; n,i:integer; c:comparator);
-var l,r,t:integer;
+procedure heapify(var arr:numbers; n,i:longint; c:comparator);
+var l,r,t:longint;
 begin
     t:=i;
     l:=2*i+1;
@@ -55,7 +55,7 @@ begin
 end;
 
 procedure HeapSort(var arr:numbers; c:comparator);
-var n,i:integer;
+var n,i:longint;
 begin
     n:=length(arr);
 
@@ -75,9 +75,9 @@ end;
 
 procedure ReadFile(var arr: numbers;var f: text);
 var 
-    i:integer=1;
-    a:integer;
-    c:integer;
+    i:longint=1;
+    a:longint;
+    c:longint;
 begin
     Reset(f);
     read(f,c);
@@ -90,7 +90,7 @@ begin
     Close(f);
 end;
 procedure WriteFile(var arr: numbers;var f:text);
-var l,i: integer;
+var l,i: longint;
 begin
     Rewrite(f);
     l:=length(arr);
