@@ -1,8 +1,9 @@
-unit queueStruct;
+unit QueueStruct;
 
 interface
+
 type
-    TypeValue = integer;
+TypeValue = integer;
     node = record
         data: TypeValue;
         next: ^node;
@@ -12,12 +13,14 @@ type
     end;
 
 procedure InitQueue(var q:queue);
-procedure Clear(var q:Queue);
 function Empty(var q:Queue):boolean;
-procedure InsertQueue(var q:Queue;d:TypeValue);
+procedure InsertQ(var q:Queue;d:TypeValue);
 function Remove(var q:Queue;var n:TypeValue):boolean;
 procedure ShowQueue(var q:Queue);
 procedure Clear(var q:Queue);
+
+    
+
 
 implementation
 
@@ -32,7 +35,7 @@ begin
     Exit(q.beginQ=nil);
 end;
 
-procedure InsertQueue(var q:Queue;d:TypeValue);
+procedure InsertQ(var q:Queue;d:TypeValue);
 begin
     if q.beginQ = nil then
     begin
@@ -85,7 +88,5 @@ var e:TypeValue;
 begin
     while Remove(q,e) do;
 end;
-
-
 
 end.
