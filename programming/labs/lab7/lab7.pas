@@ -2,7 +2,7 @@ program lab7;
 uses graph,math,wincrt,fractalModule;
 const   eps=1e-6;
         step=10.0;
-        scale=8.0;
+        scale=10.0;
 var 
     d,m:integer;
     x,y:real;
@@ -61,25 +61,35 @@ begin
             case code of
                 72 : // up
                 begin
-                    y1:=y1+step;
-                    y2:=y2+step;
+                    if y1 < getmaxy()+100 then
+                    begin
+                        y1:=y1+step;
+                        y2:=y2+step;
+                    end;
                 end;
                     
                 80 : // down
                 begin
-                    y1:=y1-step;
-                    y2:=y2-step;
+                    if y1 > -100 then
+                    begin
+                        y1:=y1-step;
+                        y2:=y2-step;
+                    end;
                 end;
                 75 : // left
+                    if x2 < getmaxx()+200 then
                     begin
-                    x1:=x1+step;
-                    x2:=x2+step;
+                        x1:=x1+step;
+                        x2:=x2+step;
                     end;
                     
                 77 : // right
                 begin
-                    x1:=x1-step;
-                    x2:=x2-step;
+                    if x1 > -200 then
+                    begin
+                        x1:=x1-step;
+                        x2:=x2-step;
+                    end;
                 end;
                 else
                 begin
@@ -115,15 +125,19 @@ begin
                 end;
             119: // w - увеличить
                 begin
-                    y1:=y1-scale*((y/2)-y1)/((x2-x1)/2);
-                    y2:=y1;
-                    x1:=x1-scale*2*((x/2)-x1)/((x2-x1));
-                    x2:=x2+scale*2*(x2-(x/2))/((x2-x1));
+                    
+                    if(x2-x1)<10000 then
+                    begin
+                        y1:=y1-scale*((y/2)-y1)/((x2-x1)/2);
+                        y2:=y1;
+                        x1:=x1-scale*2*((x/2)-x1)/((x2-x1));
+                        x2:=x2+scale*2*(x2-(x/2))/((x2-x1));
+                    end;
                     
                 end;
             115: // s - уменьшить
                 begin
-                    if x2-scale*4>x1+eps then
+                    if x2-scale*10>x1+eps then
                     begin
                         y1:=y1+scale*((y/2)-y1)/((x2-x1)/2);
                         y2:=y1;

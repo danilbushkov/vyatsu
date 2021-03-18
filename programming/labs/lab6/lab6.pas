@@ -9,18 +9,9 @@ type
     
 Const
     max:Integer = 255;
-    cmdList : array of String = (
-        'clear',
-        'exit',
-        'empty',
-        'help',
-        'insert',
-        'print',
-        'remove'
-        );
-    windowSize=80;
+    windowSize=120;
 Var 
-    
+    cmdList : array[0..6] of String;
     buffer: commands;
     cmdEl: commands;
     curCom: integer = -1;
@@ -468,6 +459,13 @@ begin
 end;
 
 Begin
+    cmdList[0]:='clear';
+    cmdList[1]:='exit';
+    cmdList[2]:='empty';
+    cmdList[3]:='help';
+    cmdList[4]:='insert';
+    cmdList[5]:='print';
+    cmdList[6]:='remove';
     InitQueue(q);
     ClrScr;
     write(h,' ');
