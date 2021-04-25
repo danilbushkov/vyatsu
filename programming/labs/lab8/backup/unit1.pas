@@ -248,7 +248,7 @@ end;
 
 procedure TForm1.Memo1Click(Sender: TObject);
 begin
-  Statistics;
+  Statistic;
 end;
 
 procedure TForm1.Memo1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState
