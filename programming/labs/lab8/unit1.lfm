@@ -1,0 +1,133 @@
+object Form1: TForm1
+  Left = 565
+  Height = 264
+  Top = 243
+  Width = 335
+  Caption = 'Form1'
+  ClientHeight = 244
+  ClientWidth = 335
+  Menu = MainMenu1
+  OnCreate = FormInit
+  LCLVersion = '2.0.12.0'
+  object Memo1: TMemo
+    Left = 0
+    Height = 244
+    Top = 0
+    Width = 335
+    Align = alClient
+    OnChange = Memo1Change
+    TabOrder = 0
+  end
+  object MainMenu1: TMainMenu
+    Left = 120
+    Top = 40
+    object MenuItem1: TMenuItem
+      Caption = 'Файл'
+      OnClick = MenuItem1Click
+      object NewDocument: TMenuItem
+        Caption = 'Создать'
+        OnClick = CreateDocument
+      end
+      object OpenDocument: TMenuItem
+        Caption = 'Открыть'
+        OnClick = OpenDocumentClick
+      end
+      object SaveDocument: TMenuItem
+        Caption = 'Сохранить'
+        OnClick = SaveDocumentClick
+      end
+      object SaveHowDocument: TMenuItem
+        Caption = 'Сохранить как'
+        OnClick = SaveHowDocumentClick
+      end
+      object MenuItem12: TMenuItem
+        Caption = '-'
+        OnClick = MenuItem12Click
+      end
+      object PrintDocument: TMenuItem
+        Caption = 'Печать'
+        OnClick = PrintDocumentClick
+      end
+      object MenuItem11: TMenuItem
+        Caption = '-'
+      end
+      object ExitProgram: TMenuItem
+        Caption = 'Выход'
+        OnClick = ExitProgramClick
+      end
+    end
+    object MenuItem2: TMenuItem
+      Caption = 'Правка'
+      object UndoDocument: TMenuItem
+        Caption = 'Отменить'
+        OnClick = UndoDocumentClick
+      end
+      object MenuItem21: TMenuItem
+        Caption = '-'
+      end
+      object CutDocument: TMenuItem
+        Caption = 'Вырезать'
+        OnClick = CutDocumentClick
+      end
+      object CopyDocument: TMenuItem
+        Caption = 'Копировать'
+        OnClick = CopyDocumentClick
+      end
+      object PasteDocument: TMenuItem
+        Caption = 'Вставить'
+        OnClick = PasteDocumentClick
+      end
+      object DeleteDocument: TMenuItem
+        Caption = 'Удалить'
+        OnClick = DeleteDocumentClick
+      end
+      object MenuItem22: TMenuItem
+        Caption = '-'
+      end
+      object SelectAll: TMenuItem
+        Caption = 'Вделить все'
+        OnClick = SelectAllClick
+      end
+    end
+    object MenuItem3: TMenuItem
+      Caption = 'Формат'
+      object FontText: TMenuItem
+        Caption = 'Шрифт'
+        OnClick = FontTextClick
+      end
+      object WordWrap: TMenuItem
+        Caption = 'Перенос по словам'
+        OnClick = WordWrapClick
+      end
+    end
+    object MenuItem4: TMenuItem
+      Caption = 'Вид'
+      OnClick = MenuItem4Click
+      object InfoFile: TMenuItem
+        Caption = 'Информация'
+        OnClick = InfoFileClick
+      end
+    end
+  end
+  object OpenDialog1: TOpenDialog
+    Filter = 'Текстовый документ|*.txt|Все|*.*'
+    Left = 256
+    Top = 112
+  end
+  object SaveDialog1: TSaveDialog
+    Filter = 'Текстовый документ|*.txt|Все|*.*'
+    Options = [ofOverwritePrompt, ofEnableSizing, ofViewDetail]
+    Left = 256
+    Top = 40
+  end
+  object FontDialog1: TFontDialog
+    MinFontSize = 0
+    MaxFontSize = 0
+    Left = 192
+    Top = 40
+  end
+  object PrintDialog1: TPrintDialog
+    Left = 120
+    Top = 112
+  end
+end
