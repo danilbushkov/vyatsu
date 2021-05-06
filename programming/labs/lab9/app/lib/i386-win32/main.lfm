@@ -33,4 +33,13 @@ object MainForm: TMainForm
     OnClick = SortButtonClick
     TabOrder = 2
   end
+  object ButtonMerge: TButton
+    Left = 157
+    Height = 25
+    Top = 182
+    Width = 75
+    Caption = 'ButtonMerge'
+    OnClick = ButtonMergeClick
+    TabOrder = 3
+  end
 end

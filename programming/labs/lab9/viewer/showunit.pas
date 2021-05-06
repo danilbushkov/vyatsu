@@ -5,8 +5,7 @@ unit ShowUnit;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Grids,
-  Generate;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Grids;
 
 type
 
@@ -20,15 +19,23 @@ type
   public
 
   end;
+  TRecord = record
+     id: LongWord;
+     text: string[255];
+     id_user: LongWord;//+
+     date: LongWord;//+
+     header: string[255];
+     countLike: LongWord; //+
+  end;
 
 var
   FormShow: TFormShow;
 
 implementation
 
-
-
 {$R *.lfm}
+
+
 procedure TFormShow.ShowFile(path:string);
 var
   r:TRecord;

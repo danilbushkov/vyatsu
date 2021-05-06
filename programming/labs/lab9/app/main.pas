@@ -15,9 +15,11 @@ type
   { TMainForm }
 
   TMainForm = class(TForm)
+    ButtonMerge: TButton;
     SortButton: TButton;
     ShowButton: TButton;
     ButtonGenerate: TButton;
+    procedure ButtonMergeClick(Sender: TObject);
     procedure SortButtonClick(Sender: TObject);
     //procedure ShowButtonClick(Sender: TObject);
     procedure ButtonGenerateClick(Sender: TObject);
@@ -55,6 +57,12 @@ procedure TMainForm.SortButtonClick(Sender: TObject);
 begin
     SplitFile(GenerateForm);
 end;
+
+procedure TMainForm.ButtonMergeClick(Sender: TObject);
+begin
+  merge(GenerateForm);
+end;
+
 
 end.
 
