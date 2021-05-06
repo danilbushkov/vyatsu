@@ -53,7 +53,7 @@ end;
 
 procedure TMainForm.SortButtonClick(Sender: TObject);
 begin
-    SplitFile(GenerateForm);
+    SplitFile(GenerateForm.workingArea);
 end;
 
 end.

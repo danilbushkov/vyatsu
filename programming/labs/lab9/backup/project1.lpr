@@ -19,6 +19,7 @@ begin
   Application.CreateForm(TMainForm, MainForm);
   Application.CreateForm(TGenerateForm, GenerateForm);
   Application.CreateForm(TFormStatus, FormStatus);
+  Application.CreateForm(TFormShow, FormShow);
   Application.Run;
 end.
 
