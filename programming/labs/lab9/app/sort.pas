@@ -22,6 +22,7 @@ type records=array of TRecord;
 procedure HeapSort(var arr:records; c:comparator);
 procedure SplitFile(G:TGenerateForm);
 procedure merge(G:TGenerateForm);
+function CheckFile(G:TGenerateForm):boolean;
 
 implementation
 
@@ -234,6 +235,27 @@ begin
         Close(arr[i]);
      end;
      Close(f);
+end;
+
+function CheckFile(G:TGenerateForm):boolean;
+var b:boolean = true;
+    f: file of Trecord;
+    l,r:Trecord;
+begin
+     Assign(f,g.workingArea+'\sort.txt');
+     Reset(f);
+     read(f,l);
+     While not eof(f) and b do
+     begin
+        read(f,r);
+        if ASC(l,r) then
+        begin
+           b:=false;
+        end;
+        l:=r;
+     end;
+     Close(f);
+     Exit(b);
 end;
 
 end.

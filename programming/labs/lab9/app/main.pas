@@ -15,10 +15,12 @@ type
   { TMainForm }
 
   TMainForm = class(TForm)
+    ButtonCheck: TButton;
     ButtonMerge: TButton;
+    LabelCheck: TLabel;
     SortButton: TButton;
-    ShowButton: TButton;
     ButtonGenerate: TButton;
+    procedure ButtonCheckClick(Sender: TObject);
     procedure ButtonMergeClick(Sender: TObject);
     procedure SortButtonClick(Sender: TObject);
     //procedure ShowButtonClick(Sender: TObject);
@@ -61,6 +63,20 @@ end;
 procedure TMainForm.ButtonMergeClick(Sender: TObject);
 begin
   merge(GenerateForm);
+end;
+
+procedure TMainForm.ButtonCheckClick(Sender: TObject);
+var b: boolean;
+begin
+   b:=CheckFile(GenerateForm);
+   if b then
+   begin
+      labelCheck.caption:='Отсортирован';
+   end
+   else
+   begin
+      labelCheck.caption:='Не отсортирован';
+   end;
 end;
 
 
