@@ -5,8 +5,8 @@ unit Main;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, GenerateUnit,
-  Sort;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Sort,
+  Generate;
 
 type
 
@@ -15,20 +15,26 @@ type
   { TMainForm }
 
   TMainForm = class(TForm)
+    ButtonSort: TButton;
+    ButtonSelectFile: TButton;
     ButtonCheck: TButton;
-    ButtonMerge: TButton;
     LabelCheck: TLabel;
-    SortButton: TButton;
+    OpenDialog: TOpenDialog;
     ButtonGenerate: TButton;
     procedure ButtonCheckClick(Sender: TObject);
-    procedure ButtonMergeClick(Sender: TObject);
-    procedure SortButtonClick(Sender: TObject);
-    //procedure ShowButtonClick(Sender: TObject);
     procedure ButtonGenerateClick(Sender: TObject);
+    //procedure ButtonMergeClick(Sender: TObject);
+    procedure ButtonSelectFileClick(Sender: TObject);
+    procedure ButtonSortClick(Sender: TObject);
+    //procedure FormCreate(Sender: TObject);
+    //procedure SortButtonClick(Sender: TObject);
+    //procedure ShowButtonClick(Sender: TObject);
+    //procedure ButtonGenerateClick(Sender: TObject);
   private
 
   public
-
+    sourceFileName: String;
+    workingArea: String;
   end;
 
 var
@@ -44,10 +50,10 @@ implementation
 
 { TMainForm }
 
-procedure TMainForm.ButtonGenerateClick(Sender: TObject);
-begin
-   GenerateForm.ShowModal();
-end;
+//procedure TMainForm.ButtonGenerateClick(Sender: TObject);
+//begin
+//   GenerateForm.ShowModal();
+//end;
 
 //procedure TMainForm.ShowButtonClick(Sender: TObject);
 //begin
@@ -55,20 +61,39 @@ end;
 //   FormShow.ShowModal();
 //end;
 
-procedure TMainForm.SortButtonClick(Sender: TObject);
+//procedure TMainForm.SortButtonClick(Sender: TObject);
+//begin
+//    SplitFile(GenerateForm);
+//end;
+//
+//procedure TMainForm.ButtonMergeClick(Sender: TObject);
+//begin
+//  merge(GenerateForm);
+//end;
+
+procedure TMainForm.ButtonSelectFileClick(Sender: TObject);
 begin
-    SplitFile(GenerateForm);
+    if OpenDialog.Execute then
+    begin
+      sourceFileName := OpenDialog.FileName;
+      workingArea := OpenDialog.InitiaLDir;
+      ButtonGenerate.Enabled:=true;
+    end;
 end;
 
-procedure TMainForm.ButtonMergeClick(Sender: TObject);
+procedure TMainForm.ButtonSortClick(Sender: TObject);
 begin
-  merge(GenerateForm);
+    SplitFile(sourceFileName,workingArea);
+    Merge(workingArea);
+    ButtonCheck.Enabled:=true;
 end;
+
+
 
 procedure TMainForm.ButtonCheckClick(Sender: TObject);
 var b: boolean;
 begin
-   b:=CheckFile(GenerateForm);
+   b:=CheckFile(workingArea);
    if b then
    begin
       labelCheck.caption:='Отсортирован';
@@ -77,6 +102,12 @@ begin
    begin
       labelCheck.caption:='Не отсортирован';
    end;
+end;
+
+procedure TMainForm.ButtonGenerateClick(Sender: TObject);
+begin
+  GenerateFile(sourceFileName);
+  ButtonSort.Enabled:=true;
 end;
 
 

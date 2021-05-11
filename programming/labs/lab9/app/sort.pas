@@ -5,7 +5,7 @@ unit Sort;
 interface
 
 uses
-  Classes, SysUtils, Generate, GenerateUnit;
+  Classes, SysUtils, Generate;
 
 
 const
@@ -20,9 +20,9 @@ type records=array of TRecord;
      urecords=array of URecord;
 
 procedure HeapSort(var arr:records; c:comparator);
-procedure SplitFile(G:TGenerateForm);
-procedure merge(G:TGenerateForm);
-function CheckFile(G:TGenerateForm):boolean;
+procedure SplitFile(pf:string;pd:string);
+procedure merge(pd:string);
+function CheckFile(pd:string):boolean;
 
 implementation
 
@@ -127,13 +127,13 @@ begin
     Close(f1);
 end;
 
-procedure SplitFile(G:TGenerateForm);
+procedure SplitFile(pf:string;pd:string);
 var i,j,k: longint;
     f1: File of TRecord;
     arr: records;
     r:TRecord;
 begin
-    Assign(f1,g.sourceFileName);
+    Assign(f1,pf);
     Reset(f1);
     i:=1;
     j:=0;//количество элементов в массиве
@@ -148,7 +148,7 @@ begin
         begin
             HeapSort(arr,@ASC);
             Inc(k);
-            WriteInFile(arr,k,j,g.workingArea);
+            WriteInFile(arr,k,j,pd);
             j:=0;
             //arr:=nil;
         end;
@@ -157,7 +157,7 @@ begin
     if j<>0 then begin
          HeapSort(arr,@ASC);
          Inc(k);
-         WriteInFile(arr,k,j,g.workingArea);
+         WriteInFile(arr,k,j,pd);
 
     end;
     arr:=nil;
@@ -188,18 +188,18 @@ begin
      GetNeedRecord:=k;
 end;
 
-procedure merge(G:TGenerateForm);
+procedure merge(pd:string{G:TGenerateForm});
 var arr:array[0..countFiles] of File of TRecord;
     r:Urecords;
     a:TRecord;
     f:File of TRecord;
     i,j,k,index:longint;
 begin
-     Assign(f,g.workingArea+'\sort.txt');
+     Assign(f,pd+'\sort.txt');
      Rewrite(f);
      for i:=0 to countFiles do
      begin
-        Assign(arr[i],g.workingArea+'\'+inttostr(i+1)+'.txt');
+        Assign(arr[i],pd+'\'+inttostr(i+1)+'.txt');
         Reset(arr[i]);
      end;
 
@@ -235,14 +235,19 @@ begin
         Close(arr[i]);
      end;
      Close(f);
+     for i:=0 to countFiles do
+     begin
+        Assign(arr[i],pd+'\'+inttostr(i+1)+'.txt');
+        Erase(arr[i]);
+     end;
 end;
 
-function CheckFile(G:TGenerateForm):boolean;
+function CheckFile(pd:string{G:TGenerateForm}):boolean;
 var b:boolean = true;
     f: file of Trecord;
     l,r:Trecord;
 begin
-     Assign(f,g.workingArea+'\sort.txt');
+     Assign(f,pd+'\sort.txt');
      Reset(f);
      read(f,l);
      While not eof(f) and b do

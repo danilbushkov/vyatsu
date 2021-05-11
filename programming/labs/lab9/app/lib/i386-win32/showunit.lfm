@@ -1,10 +1,10 @@
 object FormShow: TFormShow
-  Left = 372
+  Left = 358
   Height = 494
-  Top = 251
+  Top = 283
   Width = 884
-  ClientHeight = 494
-  ClientWidth = 884
+  ClientHeight = 0
+  ClientWidth = 0
   LCLVersion = '2.0.12.0'
   object StringGrid: TStringGrid
     Left = 0
