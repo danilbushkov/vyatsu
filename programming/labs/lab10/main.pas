@@ -5,7 +5,8 @@ unit main;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls,utruck;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
+  utruck, ufruit, uFruitItem;
 
 type
 
@@ -13,20 +14,26 @@ type
 
   TFormGame = class(TForm)
     Fon: TImage;
+    pointsLabel: TLabel;
+    MainTimer: TTimer;
     truckImage: TImage;
+
     procedure CreateFormGame(Sender: TObject);
     procedure FonClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure pointsLabelClick(Sender: TObject);
+    procedure MainTimerTimer(Sender: TObject);
     procedure truckImageClick(Sender: TObject);
   private
 
   public
-
+    time:longint;
   end;
 
 var
   FormGame: TFormGame;
-  truck: TTruck;
+
 
 implementation
 
@@ -45,15 +52,48 @@ begin
        truck.moving(truckImage,key);
 end;
 
+procedure TFormGame.pointsLabelClick(Sender: TObject);
+begin
+
+end;
+
+
+procedure TFormGame.MainTimerTimer(Sender: TObject);//таймер
+begin
+       if time = 300 then
+          Fruits.RandomFruits();
+
+       Fruits.GoDown();
+    //fruit.GoDown();
+   // truck.moving(truckImage,key);
+       if time > 300 then
+       begin
+          time:=0;
+       end;
+       time:=time+MainTimer.Interval
+end;
+
 procedure TFormGame.FonClick(Sender: TObject);
 begin
 
+end;
+
+procedure TFormGame.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+begin
+
+   fruits.deleteFruits();
+   //truckImage.free;
+   truck.Free;
+   fruits.free;
+   //pointsLabel.Free;
+   //fon.free;
 end;
 
 procedure TFormGame.CreateFormGame(Sender: TObject);
 begin
   truck:=TTruck.Create;
   truck.ScreenResolution:=width-truckImage.width;
+  Fruits:=TFruits.Create();
 end;
 
 end.

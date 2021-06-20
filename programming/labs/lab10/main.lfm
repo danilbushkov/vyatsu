@@ -1,12 +1,13 @@
 object FormGame: TFormGame
-  Left = 99
+  Left = 351
   Height = 679
-  Top = 113
+  Top = 114
   Width = 1036
   BorderStyle = bsSingle
   Caption = 'FormGame'
   ClientHeight = 679
   ClientWidth = 1036
+  OnClose = FormClose
   OnCreate = CreateFormGame
   OnKeyDown = FormKeyDown
   LCLVersion = '2.0.12.0'
@@ -3871,10 +3872,10 @@ object FormGame: TFormGame
     Stretch = True
   end
   object truckImage: TImage
-    Left = 360
-    Height = 104
-    Top = 480
-    Width = 234
+    Left = 576
+    Height = 80
+    Top = 504
+    Width = 184
     OnClick = truckImageClick
     ParentShowHint = False
     Picture.Data = {
@@ -6258,6 +6259,24 @@ object FormGame: TFormGame
       C44AD89E0D70465809D8F65478C4C90061A5F92A61A521EB8C954A3C06CFBF0D
       D098B132B7DEF6FF05180069AA6E0F17DEA6070000000049454E44AE426082
     }
+    Proportional = True
     Stretch = True
+  end
+  object pointsLabel: TLabel
+    Left = 16
+    Height = 30
+    Top = 8
+    Width = 79
+    Caption = 'points: 0'
+    Font.Height = 30
+    ParentColor = False
+    ParentFont = False
+    OnClick = pointsLabelClick
+  end
+  object MainTimer: TTimer
+    Interval = 100
+    OnTimer = MainTimerTimer
+    Left = 760
+    Top = 8
   end
 end

@@ -4,26 +4,27 @@ unit UTruck;
 
 interface
 uses
-  Classes, SysUtils, ExtCtrls;
+  Classes, SysUtils, ExtCtrls,Windows;
 
 type
   TTruck = class
 
     private
-    pictureLeft:boolean;
-    procedure left(var t:TImage);
-    procedure right(var t:TImage);
+      pictureLeft:boolean;
+      procedure left(var t:TImage);
+      procedure right(var t:TImage);
 
     public
-    screenResolution:integer;
-    procedure moving(var t:TImage;key:word);
-    constructor Create;
+      screenResolution:integer;
+      procedure moving(var t:TImage;key:word);
+      constructor Create;
 
 
   end;
 const
   speed=10;
-
+var
+  truck: TTruck;
 
 implementation
 
@@ -32,19 +33,33 @@ begin
     pictureLeft:=false;
 end;
 
+//procedure TTruck.moving(var t:TImage);
+//begin
+//    if (GetKeyState(39) and $8000)<>0 then
+//    begin
+//        right(t);
+//    end
+//    else if (GetKeyState(37) and $8000)<>0 then
+//    begin
+//        left(t);
+//    end;
+//
+//
+//end;
+
 procedure TTruck.moving(var t:TImage;key:word);
 begin
      case ord(key) of
            39: begin //вправо
                 right(t);
 
-              
+
 
            end;
            37: begin //влево
                 left(t);
 
-               
+
            end;
       end;
 end;
