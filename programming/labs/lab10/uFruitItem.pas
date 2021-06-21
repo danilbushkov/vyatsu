@@ -103,7 +103,7 @@ implementation
           if tmp^.data.catch() then
           begin
               a:=true;
-              inc(points);
+              points:=points+tmp^.data.points;
               FormGame.pointsLabel.caption:='points: ' + IntToStr(points);
           end;
 
@@ -132,5 +132,8 @@ implementation
            addNewFruit();
         end;
     end;
+
+
+
 
 end.
