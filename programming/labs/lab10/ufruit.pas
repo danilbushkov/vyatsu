@@ -4,7 +4,7 @@ unit ufruit;
 
 interface
 uses
-    Classes, SysUtils, Forms, ExtCtrls,utruck;
+    Classes, SysUtils, Forms, ExtCtrls,MMSystem;
 type
    TFruit=class
      private
@@ -19,6 +19,8 @@ type
      public
        FruitImage: TImage;
        points:integer;
+       lives:integer;
+       typeFruit:string[10];
        function goDown():boolean;
        function catch():boolean;
        procedure FruitImageFree();
@@ -37,31 +39,31 @@ implementation
     uses main;
     constructor TFruit.Create();
     begin
-         //FruitImage:=TImage.create(FormGame);
-         //FruitImage.parent:=FormGame;
-         //FruitImage.Picture.LoadFromFile('image\fruits\pineapple.png');
-         //
-         //FruitImage.Stretch:=true;
-         //FruitImage.Proportional:=true;
-         ////FruitImage.Top:=10;
-         ////FruitImage.left:=10;
-         //FruitImage.top:=-100;
-         //FruitImage.Width:=100;
-         //FruitImage.left:=random(FormGame.Width-FruitImage.Width);
+
          GetRandomFruits();
 
-         //FruitImage.Height:=200;
     end;
 
     function TFruit.GoDown():boolean;
     begin
-         if FruitImage.top < FormGame.Height-100 then
+         if FruitImage.top < FormGame.Height-170 then
          begin
               FruitImage.top:=FruitImage.top+25;
          end
+         else if lives = 100 then
+         begin
+            FruitImage.Picture.LoadFromFile('image\fruits\'+typeFruit+'fell.png');
+            FruitImage.top:=FruitImage.top+40;
+            lives:=lives-5;
+            sndPlaySound('sounds/fell.wav',SND_ASYNC);
+         end
+         else if lives > 1 then
+         begin
+            lives:=lives-5;
+         end
          else
          begin
-             Exit(false);
+           Exit(false);
          end;
          Exit(true);
     end;
@@ -73,6 +75,7 @@ implementation
            and (FruitImage.Left+25 > FormGame.TruckImage.Left)
            and (FruitImage.Left < FormGame.TruckImage.Left+
                FormGame.TruckImage.width-FruitImage.width/2)
+           and (lives=100)
            then
                Exit(true);
         Exit(false);
@@ -121,67 +124,53 @@ implementation
             GetWatermelon();
           end;
 
-          //case i of
-          //  0:begin
-          //    GetApple();
-          //  end;
-          //  1:begin
-          //    GetPineApple();
-          //  end;
-          //  2:begin
-          //    GetGrape();
-          //  end;
-          //  3:begin
-          //    GetWatermelon();
-          //  end;
-          //  4:begin
-          //    GetBanana();
-          //  end;
-          //  5:begin
-          //    GetOrange();
-          //  end;
-          //end;
-
           FruitImage.top:=-100;
           FruitImage.Width:=100;
           FruitImage.Stretch:=true;
           FruitImage.Proportional:=true;
           FruitImage.left:=random(FormGame.Width-FruitImage.Width div 2);
-
+          lives:=100;
     end;
+
 
     procedure TFruit.GetPineapple();
     begin
          FruitImage.Picture.LoadFromFile('image\fruits\pineapple.png');
          points:=2;
+         typeFruit:='pineapple';
     end;
 
     procedure TFruit.GetApple();
     begin
          FruitImage.Picture.LoadFromFile('image\fruits\apple.png');
          points:=2;
+         typeFruit:='apple';
     end;
 
     procedure TFruit.GetWatermelon();
     begin
          FruitImage.Picture.LoadFromFile('image\fruits\watermelon.png');
          points:=3;
+         typeFruit:='watermelon';
     end;
 
     procedure TFruit.GetOrange();
     begin
          FruitImage.Picture.LoadFromFile('image\fruits\orange.png');
          points:=1;
+         typeFruit:='orange';
     end;
     procedure TFruit.GetBanana();
     begin
          FruitImage.Picture.LoadFromFile('image\fruits\banana.png');
          points:=1;
+         typeFruit:='banana';
     end;
     procedure TFruit.GetGrape();
     begin
          FruitImage.Picture.LoadFromFile('image\fruits\grape.png');
          points:=1;
+         typeFruit:='grape';
     end;
 
 end.

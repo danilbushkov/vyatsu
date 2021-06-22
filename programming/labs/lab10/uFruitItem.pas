@@ -2,7 +2,7 @@ unit uFruitItem;
 
 
 interface
-uses ufruit,SysUtils;
+uses ufruit,SysUtils,MMSystem;
 
 
 type
@@ -105,6 +105,7 @@ implementation
               a:=true;
               points:=points+tmp^.data.points;
               FormGame.pointsLabel.caption:='points: ' + IntToStr(points);
+              sndPlaySound('sounds/catch.wav',SND_ASYNC);
           end;
 
           if not b or a then

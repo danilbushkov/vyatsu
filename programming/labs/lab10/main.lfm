@@ -3,6 +3,7 @@ object FormGame: TFormGame
   Height = 679
   Top = 114
   Width = 1036
+  BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'FormGame'
   ClientHeight = 679
