@@ -2,7 +2,7 @@ unit uFruitItem;
 
 
 interface
-uses ufruit,SysUtils,MMSystem,ubonus,usetting;
+uses ufruit,SysUtils,MMSystem,ubonus,usetting,utruck;
 
 
 type
@@ -118,18 +118,50 @@ implementation
        while tmp<>nil do
        begin
           b:=tmp^.data.goDown();
-          if (tmp^.data.catch()) and (tmp^.data.typeFruit<>'bonus') then
+          if (tmp^.data.catch())
+          and (tmp^.data.typeFruit<>'bonus')
+          and (tmp^.data.typeFruit<>'bomb') then
           begin
               a:=true;
               points:=points+tmp^.data.points*ratiopoint;
               FormGame.pointsLabel.caption:='points: ' + IntToStr(points);
               sndPlaySound('sounds/catch.wav',SND_ASYNC);
           end
-          else if (tmp^.data.catch()) and (tmp^.data.typeFruit='bonus') then
+          else if (tmp^.data.catch())
+          and (tmp^.data.typeFruit='bonus')
+          and (tmp^.data.typeFruit<>'bomb')
+          then
           begin
               a:=true;
               ActivateBonus(tmp^.data.bonus);
               sndPlaySound('sounds/catch.wav',SND_ASYNC);
+          end
+          else if(tmp^.data.catch())
+          and (tmp^.data.typeFruit='bomb')
+          and not tmp^.data.catchBomb then
+          begin
+              tmp^.data.lives:=tmp^.data.lives-5;
+              tmp^.data.catchBomb:=true;
+              //a:=true;
+              truck.lives:=truck.lives-tmp^.data.Bomb.damage;
+              truck.countinglives();
+              if truck.lives <= 0 then
+              begin
+                 truck.lives:=0;
+                 FormGame.GameOver();
+              end;
+
+
+              tmp^.data.FruitImage.Picture.LoadFromFile('image\bombs\catch.png');
+              sndPlaySound('sounds/bombcatch.wav',SND_ASYNC);
+          end
+          else if(tmp^.data.catchBomb) and (tmp^.data.lives > 0) then
+          begin
+              tmp^.data.lives:=tmp^.data.lives-5;
+          end
+          else if tmp^.data.catchBomb then
+          begin
+              a:=true;
           end;
           ActiveBonus();
           if not b or a then

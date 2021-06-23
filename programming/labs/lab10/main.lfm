@@ -1,7 +1,7 @@
 object FormGame: TFormGame
-  Left = 162
+  Left = 167
   Height = 679
-  Top = 179
+  Top = 165
   Width = 1036
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
@@ -3880,7 +3880,29 @@ object FormGame: TFormGame
     Font.Height = 30
     ParentColor = False
     ParentFont = False
-    OnClick = pointsLabelClick
+  end
+  object GameOverL: TLabel
+    Left = 200
+    Height = 175
+    Top = 232
+    Width = 660
+    Caption = 'Game Over'
+    Font.Color = clBlack
+    Font.Height = -133
+    ParentColor = False
+    ParentFont = False
+  end
+  object Label1: TLabel
+    Left = 288
+    Height = 37
+    Top = 440
+    Width = 468
+    Caption = 'Нажмите Enter, чтобы начать сначала'
+    Color = clSkyBlue
+    Font.Height = -27
+    ParentColor = False
+    ParentFont = False
+    Transparent = False
   end
   object MainTimer: TTimer
     Interval = 100

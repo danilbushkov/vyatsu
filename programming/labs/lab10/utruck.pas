@@ -4,7 +4,7 @@ unit UTruck;
 
 interface
 uses
-  Classes, SysUtils, ExtCtrls,Windows,usetting;
+  Classes, SysUtils, ExtCtrls,usetting;
 
 type
   TTruck = class
@@ -18,9 +18,14 @@ type
       screenResolution:integer;
       speed:integer;
       lives:integer;
+      livesImage:array[1..10] of Timage;
       truckImage:Timage;
+      procedure countinglives();
+      procedure viewLives();
+      procedure CreateLive(id:integer);
       procedure normSize();
       procedure moving(key:word);
+      procedure DeleteLives();
       constructor Create;
 
 
@@ -44,6 +49,10 @@ begin
     TruckImage.Proportional:=true;
     TruckImage.left:=100;
     truckImage.Picture.LoadFromFile('image\truck_right.png');
+    ViewLives();
+    lives:=setting.truckMaxLives;
+
+
 end;
 
 //procedure TTruck.moving(var t:TImage);
@@ -107,6 +116,53 @@ procedure Ttruck.NormSize();
 begin
      TruckImage.top:=formGame.height-90-truckimage.height;
      ScreenResolution:=formgame.width-truckImage.width;
+end;
+
+procedure tTruck.ViewLives();
+var i:integer;
+begin
+     for i:=1 to setting.truckMaxLives do
+     begin
+          CreateLive(i);
+
+     end;
+end;
+
+procedure ttruck.countinglives();
+var i:integer;
+begin
+     if(lives >= 0) then begin
+       for i:=lives+1 to setting.truckMaxLives do
+       begin
+            if livesImage[i] <> nil then
+            freeandnil(livesImage[i]);
+
+       end;
+
+     end;
+end;
+
+procedure tTruck.CreateLive(id:integer);
+begin
+    livesImage[id]:=TImage.create(FormGame);
+    livesImage[id].parent:=FormGame;
+    livesImage[id].Width:=30;
+
+
+    livesImage[id].Stretch:=true;
+    livesImage[id].Proportional:=true;
+    livesImage[id].top:=10;
+    livesImage[id].left:=100+40*(id);
+    livesImage[id].Picture.LoadFromFile('image\live.png');
+end;
+
+procedure tTruck.DeleteLives();
+var i:integer;
+begin
+    for i:=1 to 10 do
+    begin
+       livesImage[i].free;
+    end;
 end;
 
 end.

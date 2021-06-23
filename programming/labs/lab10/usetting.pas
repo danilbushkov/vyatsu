@@ -28,7 +28,7 @@ type
 implementation
       constructor tsetting.create();
       begin
-         truckSpeed:=10;
+         truckSpeed:=14;
          truckWidth:=200;
          truckHeight:=trunc(200*0.45);
          truckMaxLives:=5;

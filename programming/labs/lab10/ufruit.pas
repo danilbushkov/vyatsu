@@ -4,7 +4,7 @@ unit ufruit;
 
 interface
 uses
-    Classes, SysUtils, Forms, ExtCtrls,MMSystem,usetting,utruck,ubonus;
+    Classes, SysUtils, Forms, ExtCtrls,MMSystem,usetting,utruck,ubonus,ubomb;
 type
    TFruit=class
      private
@@ -16,14 +16,17 @@ type
        procedure getBanana();
        procedure GetRandomFruits();
        procedure getBonus();
+       procedure GetBomb();
 
      public
        FruitImage: TImage;
        points:integer;
        lives:integer;
        speed:integer;
+       catchBomb:boolean;
        typeFruit:string[10];
        Bonus:Tbonus;
+       Bomb:Tbomb;
        function goDown():boolean;
        function catch():boolean;
        procedure FruitFree();
@@ -42,23 +45,28 @@ implementation
     uses main;
     constructor TFruit.Create();
     begin
-
+         catchBomb:=false;
          GetRandomFruits();
          speed:=setting.fruitSpeed;
     end;
 
     function TFruit.GoDown():boolean;
     begin
-         if FruitImage.top < FormGame.Height-170 then
+         if (FruitImage.top < FormGame.Height-170) and (not catchBomb) then
          begin
               FruitImage.top:=FruitImage.top+speed;
          end
-         else if (lives = 100) and (typefruit<>'bonus')  then
+         else if (lives = 100) and (typefruit<>'bonus') and (typefruit<>'bomb')then
          begin
             FruitImage.Picture.LoadFromFile('image\fruits\'+typeFruit+'fell.png');
             FruitImage.top:=FruitImage.top+40;
             lives:=lives-5;
-            sndPlaySound('sounds/fell.wav',SND_ASYNC);
+            //sndPlaySound('sounds/fell.wav',SND_ASYNC);
+         end
+         else if (lives = 25) and (typefruit='bomb') then
+         begin
+            FruitImage.Picture.LoadFromFile('image\bombs\fell.png');
+            lives:=lives-5;
          end
          else if lives > 1 then
          begin
@@ -78,7 +86,7 @@ implementation
            and (FruitImage.Left+25 > truck.TruckImage.Left)
            and (FruitImage.Left < truck.TruckImage.Left+
                truck.TruckImage.width-FruitImage.width/2)
-           and ((lives=100) or (typefruit='bonus'))
+           and ((lives>0) or (typefruit='bonus'))
            then
                Exit(true);
         Exit(false);
@@ -89,6 +97,7 @@ implementation
         FruitImage.Width:=0;
         FruitImage.Free;
         bonus.free;
+        bomb.free;
     end;
 
 
@@ -127,10 +136,15 @@ implementation
           begin
             GetWatermelon();
           end
-          else
+          else if i < 103 then
           begin
             GetBonus();
             lives:=0;
+          end
+          else
+          begin
+             GetBomb();
+             lives:=25;
           end;
 
           FruitImage.top:=-100;
@@ -141,6 +155,13 @@ implementation
 
     end;
 
+    procedure TFruit.GetBomb();
+    begin
+         bomb:=tbomb.create;
+         FruitImage.Picture.LoadFromFile('image\bombs\'+bomb.typeBomb+'.png');
+
+         typeFruit:='bomb';
+    end;
 
     procedure TFruit.getBonus();
     begin

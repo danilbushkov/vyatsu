@@ -32,7 +32,7 @@ implementation
 
    constructor tbonus.create();
    const
-        j=47;
+        j=50;
    var i:integer;
    begin
 
@@ -83,7 +83,12 @@ implementation
    end;
    procedure tbonus.activate();
    begin
-        active:=true;
+        if(typeBonus<>'kit') then
+        begin
+
+           active:=true;
+
+        end;
         choiceBonus();
 
 
@@ -164,13 +169,10 @@ implementation
       end
       else if typeBonus='kit' then //6
       begin
-         if active then
+         if truck.Lives<setting.truckMaxLives then
          begin
-
-         end
-         else
-         begin
-
+          truck.lives:=truck.lives+1;
+          truck.CreateLive(truck.lives);
          end;
       end;
    end;
