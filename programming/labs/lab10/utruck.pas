@@ -4,7 +4,7 @@ unit UTruck;
 
 interface
 uses
-  Classes, SysUtils, ExtCtrls,Windows;
+  Classes, SysUtils, ExtCtrls,Windows,usetting;
 
 type
   TTruck = class
@@ -16,21 +16,32 @@ type
 
     public
       screenResolution:integer;
-      procedure moving(var t:TImage;key:word);
+      speed:integer;
+      lives:integer;
+      truckImage:Timage;
+      procedure moving(key:word);
       constructor Create;
 
 
   end;
-const
-  speed=10;
 var
   truck: TTruck;
 
 implementation
-
+  uses main;
 constructor TTruck.Create;
 begin
     pictureLeft:=false;
+    speed:=setting.truckspeed;
+
+    TruckImage:=TImage.create(FormGame);
+    TruckImage.parent:=FormGame;
+    TruckImage.top:=504;
+    TruckImage.Width:=setting.truckwidth;
+    TruckImage.Stretch:=true;
+    TruckImage.Proportional:=true;
+    TruckImage.left:=100;
+    truckImage.Picture.LoadFromFile('image\truck_right.png');
 end;
 
 //procedure TTruck.moving(var t:TImage);
@@ -47,17 +58,17 @@ end;
 //
 //end;
 
-procedure TTruck.moving(var t:TImage;key:word);
+procedure TTruck.moving(key:word);
 begin
      case ord(key) of
            39: begin //вправо
-                right(t);
+                right(truckImage);
 
 
 
            end;
            37: begin //влево
-                left(t);
+                left(truckImage);
 
 
            end;

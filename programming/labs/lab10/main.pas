@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
-  utruck, ufruit, uFruitItem;
+  utruck, ufruit, uFruitItem, usetting,ubonus;
 
 type
 
@@ -16,10 +16,8 @@ type
     Fon: TImage;
     pointsLabel: TLabel;
     MainTimer: TTimer;
-    truckImage: TImage;
 
     procedure CreateFormGame(Sender: TObject);
-    procedure FonClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure pointsLabelClick(Sender: TObject);
@@ -49,7 +47,7 @@ end;
 procedure TFormGame.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-       truck.moving(truckImage,key);
+       truck.moving(key);
 end;
 
 procedure TFormGame.pointsLabelClick(Sender: TObject);
@@ -73,26 +71,25 @@ begin
        time:=time+MainTimer.Interval
 end;
 
-procedure TFormGame.FonClick(Sender: TObject);
-begin
-
-end;
 
 procedure TFormGame.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
-
+   fruits.deletebonuses();
    fruits.deleteFruits();
    //truckImage.free;
    truck.Free;
    fruits.free;
+   setting.Free;
+
    //pointsLabel.Free;
    //fon.free;
 end;
 
 procedure TFormGame.CreateFormGame(Sender: TObject);
 begin
+  setting:=Tsetting.Create();
   truck:=TTruck.Create;
-  truck.ScreenResolution:=width-truckImage.width;
+  truck.ScreenResolution:=width-truck.truckImage.width;
   Fruits:=TFruits.Create();
 end;
 

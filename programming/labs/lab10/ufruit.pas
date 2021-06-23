@@ -4,7 +4,7 @@ unit ufruit;
 
 interface
 uses
-    Classes, SysUtils, Forms, ExtCtrls,MMSystem;
+    Classes, SysUtils, Forms, ExtCtrls,MMSystem,usetting,utruck,ubonus;
 type
    TFruit=class
      private
@@ -15,15 +15,18 @@ type
        procedure getOrange();
        procedure getBanana();
        procedure GetRandomFruits();
+       procedure getBonus();
 
      public
        FruitImage: TImage;
        points:integer;
        lives:integer;
+       speed:integer;
        typeFruit:string[10];
+       Bonus:Tbonus;
        function goDown():boolean;
        function catch():boolean;
-       procedure FruitImageFree();
+       procedure FruitFree();
        constructor Create();
    end;
 
@@ -41,16 +44,16 @@ implementation
     begin
 
          GetRandomFruits();
-
+         speed:=setting.fruitSpeed;
     end;
 
     function TFruit.GoDown():boolean;
     begin
          if FruitImage.top < FormGame.Height-170 then
          begin
-              FruitImage.top:=FruitImage.top+25;
+              FruitImage.top:=FruitImage.top+speed;
          end
-         else if lives = 100 then
+         else if (lives = 100) and (typefruit<>'bonus')  then
          begin
             FruitImage.Picture.LoadFromFile('image\fruits\'+typeFruit+'fell.png');
             FruitImage.top:=FruitImage.top+40;
@@ -70,34 +73,35 @@ implementation
 
     function TFruit.catch():boolean;
     begin
-        if (FruitImage.top+50 > FormGame.TruckImage.top)
-           and (FruitImage.top < FormGame.TruckImage.top+50)
-           and (FruitImage.Left+25 > FormGame.TruckImage.Left)
-           and (FruitImage.Left < FormGame.TruckImage.Left+
-               FormGame.TruckImage.width-FruitImage.width/2)
-           and (lives=100)
+        if (FruitImage.top+50 > truck.TruckImage.top)
+           and (FruitImage.top < truck.TruckImage.top+50)
+           and (FruitImage.Left+25 > truck.TruckImage.Left)
+           and (FruitImage.Left < truck.TruckImage.Left+
+               truck.TruckImage.width-FruitImage.width/2)
+           and ((lives=100) or (typefruit='bonus'))
            then
                Exit(true);
         Exit(false);
     end;
 
-    procedure TFruit.FruitImageFree();
+    procedure TFruit.FruitFree();
     begin
         FruitImage.Width:=0;
         FruitImage.Free;
+        bonus.free;
     end;
 
 
 
     procedure TFruit.GetRandomFruits();
     const
-        j=100;
+        j=120;
     var i:integer;
     begin
           i:=random(j);
           FruitImage:=TImage.create(FormGame);
           FruitImage.parent:=FormGame;
-
+          lives:=100;
 
           if i < 23 then    //1
           begin
@@ -119,17 +123,32 @@ implementation
           begin
             GetPineApple();
           end
-          else //6
+          else if i < 100 then //6
           begin
             GetWatermelon();
+          end
+          else
+          begin
+            GetBonus();
+            lives:=0;
           end;
 
           FruitImage.top:=-100;
-          FruitImage.Width:=100;
+          FruitImage.Width:=setting.fruitwidth;
           FruitImage.Stretch:=true;
           FruitImage.Proportional:=true;
           FruitImage.left:=random(FormGame.Width-FruitImage.Width div 2);
-          lives:=100;
+
+    end;
+
+
+    procedure TFruit.getBonus();
+    begin
+         bonus:=tbonus.create;
+
+         FruitImage.Picture.LoadFromFile('image\bonuses\'+bonus.typeBonus+'.png');
+
+         typeFruit:='bonus';
     end;
 
 

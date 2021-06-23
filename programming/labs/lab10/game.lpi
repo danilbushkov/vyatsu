@@ -37,7 +37,7 @@
         <PackageName Value="LCL"/>
       </Item3>
     </RequiredPackages>
-    <Units Count="3">
+    <Units Count="7">
       <Unit0>
         <Filename Value="game.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -53,6 +53,22 @@
         <Filename Value="ufruit.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit2>
+      <Unit3>
+        <Filename Value="ubonus.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="setting.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="usetting.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="ubonuses.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit6>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
