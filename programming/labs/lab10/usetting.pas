@@ -12,6 +12,7 @@ type
      public
        truckSpeed:integer;
        truckWidth:integer;
+       truckHeight:integer;
        fruitSpeed:integer;
        fruitWidth:integer;
        ratioPoint:integer;
@@ -29,6 +30,7 @@ implementation
       begin
          truckSpeed:=10;
          truckWidth:=200;
+         truckHeight:=trunc(200*0.45);
          truckMaxLives:=5;
          fruitSpeed:=25;
          fruitWidth:=100;

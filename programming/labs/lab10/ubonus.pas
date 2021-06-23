@@ -18,6 +18,7 @@ type
           active:boolean;
           procedure activate();
           procedure deactivate();
+          procedure choiceBonus();
           procedure view();
           constructor create();
   end;
@@ -25,7 +26,7 @@ type
 
 
 implementation
-   uses main;
+   uses main,uFruitItem,utruck;
 
 
 
@@ -83,10 +84,95 @@ implementation
    procedure tbonus.activate();
    begin
         active:=true;
+        choiceBonus();
+
+
    end;
    procedure tbonus.deactivate();
    begin
         active:=false;
+        choiceBonus();
+   end;
+
+   procedure tbonus.choiceBonus();
+   begin
+      if typeBonus='big' then    //1
+      begin
+         if active then
+         begin
+            truck.truckImage.width:=truck.truckImage.width+70;
+            truck.truckImage.height:=truck.truckImage.height+trunc(70*0.45);
+            truck.NormSize();
+         end
+         else
+         begin
+            truck.truckImage.width:=truck.truckImage.Width-70;
+            truck.truckImage.height:=truck.truckImage.height-trunc(70*0.45);
+            truck.NormSize();
+         end;
+      end
+      else if typeBonus='little' then  //2
+      begin
+         if active then
+         begin
+           truck.truckImage.width:=truck.truckImage.width-50;
+           truck.TruckImage.height:=truck.TruckImage.Height-trunc(50*0.45);
+           truck.NormSize();
+
+         end
+         else
+         begin
+           truck.truckImage.width:=truck.truckImage.width+50;
+           truck.TruckImage.height:=truck.TruckImage.Height+trunc(50*0.45);
+           truck.NormSize();
+
+         end;
+
+      end
+      else if typeBonus='slow' then     //3
+      begin
+         if active then
+         begin
+            truck.speed:=truck.speed-5;
+         end
+         else
+         begin
+            truck.speed:=truck.speed+5;
+         end;
+      end
+      else if typeBonus='fast' then  //4
+      begin
+         if active then
+         begin
+            truck.speed:=truck.speed+5;
+         end
+         else
+         begin
+            truck.speed:=truck.speed-5;
+         end;
+      end
+      else if typeBonus='double' then     //5
+      begin
+         if active then
+         begin
+            Fruits.ratiopoint:=2;
+         end
+         else
+         begin
+            Fruits.ratiopoint:=1;
+         end;
+      end
+      else if typeBonus='kit' then //6
+      begin
+         if active then
+         begin
+
+         end
+         else
+         begin
+
+         end;
+      end;
    end;
 
 end.

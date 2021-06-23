@@ -19,6 +19,7 @@ type
       speed:integer;
       lives:integer;
       truckImage:Timage;
+      procedure normSize();
       procedure moving(key:word);
       constructor Create;
 
@@ -36,8 +37,9 @@ begin
 
     TruckImage:=TImage.create(FormGame);
     TruckImage.parent:=FormGame;
-    TruckImage.top:=504;
     TruckImage.Width:=setting.truckwidth;
+    normsize();
+
     TruckImage.Stretch:=true;
     TruckImage.Proportional:=true;
     TruckImage.left:=100;
@@ -99,6 +101,12 @@ begin
       begin
            t.left:=t.left-speed;
       end;
+end;
+
+procedure Ttruck.NormSize();
+begin
+     TruckImage.top:=formGame.height-90-truckimage.height;
+     ScreenResolution:=formgame.width-truckImage.width;
 end;
 
 end.

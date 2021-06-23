@@ -20,6 +20,7 @@ type
        public
          points:integer;
          firstf,lastf:fruitItemPtr;
+         ratiopoint:integer;
          procedure changePriority();
          procedure offset();
          procedure activateBonus(var bonus:TBonus);
@@ -48,7 +49,7 @@ implementation
        begin
          bonuses[i]:=tbonus.create();
        end;
-
+       ratiopoint:=1;
    end;
 
    procedure TFruits.addNewFruit();
@@ -120,7 +121,7 @@ implementation
           if (tmp^.data.catch()) and (tmp^.data.typeFruit<>'bonus') then
           begin
               a:=true;
-              points:=points+tmp^.data.points;
+              points:=points+tmp^.data.points*ratiopoint;
               FormGame.pointsLabel.caption:='points: ' + IntToStr(points);
               sndPlaySound('sounds/catch.wav',SND_ASYNC);
           end
@@ -194,17 +195,18 @@ implementation
            end;
         end;
         //if j > 1 then begin
-          for i:=1 to 5 do
+          for i:=1 to 6 do
           begin
              if bonuses[i].active then
              begin
-                  j:=i+1;
+                  j:=1;
                   while j<=6 do
                   begin
                        if bonuses[j].active then
                        begin
                             if (bonuses[i].time > bonuses[j].time)
-                            and (bonuses[i].priority > bonuses[j].priority) then
+                            and (bonuses[i].priority > bonuses[j].priority)
+                            and (i<>j)then
                             begin
                                t:=bonuses[i].priority;
                                bonuses[i].priority:=bonuses[j].priority;
@@ -227,6 +229,18 @@ implementation
                if bonuses[i].time > 0 then
                begin
                  bonuses[i].time:=bonuses[i].time-1;
+                 if(bonuses[i].time < 150)then
+                 begin
+                     if bonuses[i].bonusimage.visible and
+                     (bonuses[i].time mod 20 = 0) then
+                     begin
+                        bonuses[i].bonusimage.visible:=false;
+                     end
+                     else if(bonuses[i].time mod 20 = 0) then
+                     begin
+                        bonuses[i].bonusimage.visible:=true;
+                     end;
+                 end;
                end
                else if bonuses[i].active then
                begin
