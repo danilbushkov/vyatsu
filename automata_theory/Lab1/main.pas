@@ -23,10 +23,10 @@ type
     procedure ClickOnBoard(Sender: TObject);
     procedure FormPaint(Sender: TObject);
     procedure initCheckersAndCellsActive(var checkers:Tcheckers;
-      var cellsActive:TcellsActive);
+      var cellsActive:TviewActiveCells);
     procedure initChecker(var checker: TShape; t,l:integer;c:Tcolor);
     procedure initCellActive(var cellActive: TShape; t,l:integer; c:Tcolor);
-
+    procedure init();
   private
 
   public
@@ -38,7 +38,7 @@ type
 var
   MainForm: TMainForm;
   board:TBitmap;
-
+  player:integer=1;
 
 implementation
 
@@ -50,9 +50,9 @@ implementation
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
-
+     init();
      initboard(board);
-     initCheckersAndCellsActive(checkers,cellsActive);
+     initCheckersAndCellsActive(checkers,viewActiveCells);
 
 end;
 
@@ -71,21 +71,22 @@ begin
 end;
 
 procedure TMainForm.initCheckersAndCellsActive(var checkers:Tcheckers;
-  var cellsActive:TcellsActive);
+  var cellsActive:TviewActiveCells);
 var i,j,c:integer;
     CheckerColor:Tcolor;
 begin
    c:=0;
    CheckerColor:=clRed;
 
-   for i:=0 to 7 do begin
+   for i:=7 downto 0 do begin
        for j:=0 to 7 do begin
+            //location[j,i]:=0;
             if (((i mod 2 <> 0) and (j mod 2 = 0)) or
              ((i mod 2 = 0) and (j mod 2 <> 0))) then
               begin
-                  initCellActive(cellsActive[i][j],
-                                                   j*cellsize+3,
+                  initCellActive(cellsActive[j][i],
                                                    i*cellsize+3,
+                                                   j*cellsize+3,
                                                    clAqua);
                   if ((i<3) or (i>4)) then
                   begin
@@ -94,7 +95,17 @@ begin
                     end;
                     initChecker(checkers[c],i*cellsize+5,j*cellsize+5,CheckerColor);
                     inc(c);
+                    location[j,i]:=c;
+                  end
+                  else
+                  begin
+                     location[j,i]:=0;
                   end;
+
+              end
+              else
+              begin
+                 location[j,i]:=-1;
               end;
 
        end;
@@ -105,18 +116,35 @@ end;
 procedure TMainForm.ClickOnBoard(Sender:TObject);
 var point:Tpoint;
     cellx,celly:integer;
+    crd:tcrd;
 begin
       point:=self.ScreenToClient(Mouse.CursorPos);
       cellx:=point.x div cellsize;
       celly:=point.y div cellsize;
-      self.Caption:=inttostr(celly);
-      if (cellx<8) and (celly<8) and
-      (((cellx mod 2 <>0) and (celly mod 2 = 0))
-      or((cellx mod 2 = 0) and (celly mod 2 <> 0)))
-      then
+      crd.cellx:=cellx;
+      crd.celly:=celly;
+      self.Caption:=inttostr(location[cellx][celly]);
+      //if (cellx<8) and (celly<8) and
+      //(((cellx mod 2 <>0) and (celly mod 2 = 0))
+      //or((cellx mod 2 = 0) and (celly mod 2 <> 0)))
+      //then
+      //begin
+      if ActiveCell then
       begin
-           cellsActive[cellx][celly].visible:=true;
+         //ход, если нажали на активные
+      end
+      else
+      begin
+         ClearActiveCalls();
+         if checkPlayer(location[cellx][celly],player) then
+         begin
+              possibility(player,crd);
+              viewActiveCells[cellx][celly].visible:=true;
+
+         end;
       end;
+
+
       //checkers[5].visible:=false;
       //board.
       //MainForm.Canvas.Draw(0,0,board);
@@ -157,6 +185,11 @@ begin
       cellActive.visible:=false;
 end;
 
+Procedure TMainForm.init();
+begin
+   activeChecker.cellx:=-1;
+   activeChecker.celly:=-1;
+end;
 
 end.
 
