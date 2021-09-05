@@ -37,7 +37,7 @@ type
 var
   MainForm: TMainForm;
   board:TBitmap;
-  player:integer=1;
+
 
 implementation
 

@@ -29,6 +29,7 @@ var
   activeCell:boolean=False;
   activeChecker:TCrd;
   activeCells:TActiveCells;
+  player:integer=1;
 
 function checkPlayer(current:integer;Player:integer):boolean;
 procedure possibility(player:integer;crd:tcrd);
@@ -55,14 +56,24 @@ begin
     setlength(activeCells.cells,activeCells.len);
     activeCells.cells[activeCells.len-1].cellx:=cellx;
     activeCells.cells[activeCells.len-1].celly:=celly;
+    viewActiveCells[cellx][celly].visible:=true;
+
 end;
 
 //ход шашки
 procedure checkerMove(sh:TShape;crd:Tcrd);
 var i:integer;
+  a,b:integer;
 begin
+   a:=(crd.cellx-activeChecker.cellx) div 2;
+   b:=(crd.celly-activeChecker.celly) div 2;
    sh.top:=crd.celly*cellsize+5;
    sh.left:=crd.cellx*cellsize+5;
+   if abs(crd.cellx - activeChecker.cellx) > 1 then
+   begin
+     checkers[location[crd.cellx-a][crd.celly-b]-1].visible:=false;
+     location[crd.cellx-a][crd.celly-b]:=0;
+   end;
    i:=location[crd.cellx][crd.celly];
    location[crd.cellx][crd.celly]:=location[activeChecker.cellx][activeChecker.celly];
    location[activeChecker.cellx][activeChecker.celly]:=i;
@@ -84,20 +95,45 @@ begin
   activeChecker:=crd;
   viewActiveCells[Crd.cellx][Crd.celly].visible:=true;
 
-  if location[Crd.cellx+1][Crd.celly+direction]=0 then
-  begin
-       AddActiveCells(Crd.cellx+1,Crd.celly+direction);
 
 
-       viewActiveCells[Crd.cellx+1][Crd.celly+direction].visible:=true;
-  end;
-  if location[Crd.cellx-1][Crd.celly+direction]=0 then
-  begin
-       AddActiveCells(Crd.cellx-1,Crd.celly+direction);
+    if (location[Crd.cellx+1][Crd.celly+direction]=0) and
+    (Crd.cellx+1<8)
+    then
+    begin
+         AddActiveCells(Crd.cellx+1,Crd.celly+direction);
 
-       viewActiveCells[Crd.cellx-1][Crd.celly+direction].visible:=true;
 
-  end;
+         //viewActiveCells[Crd.cellx+1][Crd.celly+direction].visible:=true;
+    end;
+    if (location[Crd.cellx-1][Crd.celly+direction]=0)  and
+    (Crd.cellx-1>=0)
+    then
+    begin
+         AddActiveCells(Crd.cellx-1,Crd.celly+direction);
+
+         //viewActiveCells[Crd.cellx-1][Crd.celly+direction].visible:=true;
+
+    end;
+
+    if (location[Crd.cellx-1][Crd.celly+direction]>=1) and
+    (not checkPlayer(location[Crd.cellx-1][Crd.celly+direction],player)) and
+    (location[Crd.cellx-2][Crd.celly+2*direction]=0) and (Crd.cellx-2>=0)
+    then
+    begin
+        AddActiveCells(Crd.cellx-2,Crd.celly+2*direction);
+
+    end;
+    if (location[Crd.cellx+1][Crd.celly+direction]>=1) and
+    (not checkPlayer(location[Crd.cellx+1][Crd.celly+direction],player)) and
+    (location[Crd.cellx+2][Crd.celly+2*direction]=0) and (Crd.cellx+2<8)
+    then
+    begin
+         AddActiveCells(Crd.cellx+2,Crd.celly+2*direction);
+    end;
+
+
+
 end;
 
 //Стереть возможные ходы
