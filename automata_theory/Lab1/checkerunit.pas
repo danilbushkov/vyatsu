@@ -5,7 +5,7 @@ unit checkerunit;
 interface
 
 uses
-  Classes, SysUtils,Forms,Graphics,ExtCtrls;
+  Classes, SysUtils,Forms,Graphics,ExtCtrls,boardUnit;
 
 type
 Tcheckers= array[0..23] of TShape;
@@ -21,7 +21,8 @@ TActiveCells=record
     len:integer;
 end;
 
-var checkers: Tcheckers;
+var
+  checkers: Tcheckers;
   viewActiveCells: TviewActiveCells;
   location:Tlocation;
 
@@ -33,8 +34,20 @@ function checkPlayer(current:integer;Player:integer):boolean;
 procedure possibility(player:integer;crd:tcrd);
 procedure AddActiveCells(cellx,celly:integer);
 Procedure ClearActiveCalls();
+procedure resetActiveChecker();
+procedure checkerMove(sh:TShape;crd:Tcrd);
+
 
 implementation
+
+
+
+procedure resetActiveChecker();
+begin
+   activeChecker.cellx:=-1;
+   activeChecker.celly:=-1;
+end;
+
 
 procedure AddActiveCells(cellx,celly:integer);
 begin
@@ -42,6 +55,18 @@ begin
     setlength(activeCells.cells,activeCells.len);
     activeCells.cells[activeCells.len-1].cellx:=cellx;
     activeCells.cells[activeCells.len-1].celly:=celly;
+end;
+
+//ход шашки
+procedure checkerMove(sh:TShape;crd:Tcrd);
+var i:integer;
+begin
+   sh.top:=crd.celly*cellsize+5;
+   sh.left:=crd.cellx*cellsize+5;
+   i:=location[crd.cellx][crd.celly];
+   location[crd.cellx][crd.celly]:=location[activeChecker.cellx][activeChecker.celly];
+   location[activeChecker.cellx][activeChecker.celly]:=i;
+
 end;
 
 
@@ -59,18 +84,18 @@ begin
   activeChecker:=crd;
   viewActiveCells[Crd.cellx][Crd.celly].visible:=true;
 
-  if location[Crd.cellx+direction][Crd.celly-1]=0 then
+  if location[Crd.cellx+1][Crd.celly+direction]=0 then
   begin
-       AddActiveCells(Crd.cellx+direction,Crd.celly-1);
+       AddActiveCells(Crd.cellx+1,Crd.celly+direction);
 
 
-       viewActiveCells[Crd.cellx+direction][Crd.celly-1].visible:=true;
+       viewActiveCells[Crd.cellx+1][Crd.celly+direction].visible:=true;
   end;
-  if location[Crd.cellx-direction][Crd.celly-1]=0 then
+  if location[Crd.cellx-1][Crd.celly+direction]=0 then
   begin
-       AddActiveCells(Crd.cellx-direction,Crd.celly-1);
+       AddActiveCells(Crd.cellx-1,Crd.celly+direction);
 
-       viewActiveCells[Crd.cellx-direction][Crd.celly-1].visible:=true;
+       viewActiveCells[Crd.cellx-1][Crd.celly+direction].visible:=true;
 
   end;
 end;
@@ -81,14 +106,17 @@ var i:integer;
 begin
   for i:=0 to ActiveCells.len-1 do
   begin
-       viewActiveCells[ActiveCells.Cells[i].cellx]
-                                           [ActiveCells.Cells[i].celly].visible:=false;
+       viewActiveCells[ActiveCells.Cells[i].cellx][ActiveCells.Cells[i].celly].visible:=false;
 
   end;
-  viewActiveCells[activeChecker .cellx][activeChecker .celly].visible:=false;
+  if activeCell then begin
+      viewActiveCells[activeChecker.cellx][activeChecker.celly].visible:=false;
+  end;
+
   ActiveCell:=false;
   activeCells.len:=0;
   setlength(activeCells.cells,activeCells.len);
+  resetActiveChecker();
 end;
 
 //проверить игрока ли шашка
@@ -99,8 +127,8 @@ begin
     if(current<=12) and (Player=1)then
     begin
       Exit(True);
-    end
-    else if (current<=24) and (Player=2) then
+    end;
+    if ((12<current) and (current<=24)) and (Player=2) then
     begin
       Exit(True);
     end;

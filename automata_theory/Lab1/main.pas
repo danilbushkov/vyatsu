@@ -26,7 +26,6 @@ type
       var cellsActive:TviewActiveCells);
     procedure initChecker(var checker: TShape; t,l:integer;c:Tcolor);
     procedure initCellActive(var cellActive: TShape; t,l:integer; c:Tcolor);
-    procedure init();
   private
 
   public
@@ -46,11 +45,22 @@ implementation
 
 { TMainForm }
 
+procedure ChangePlayer();
+begin
+   if player = 1 then
+   begin
+       player:=2;
+   end
+   else
+   begin
+       player:=1;
+   end;
 
+end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
-     init();
+     resetActiveChecker();
      initboard(board);
      initCheckersAndCellsActive(checkers,viewActiveCells);
 
@@ -117,6 +127,8 @@ procedure TMainForm.ClickOnBoard(Sender:TObject);
 var point:Tpoint;
     cellx,celly:integer;
     crd:tcrd;
+    i:integer;
+    a:boolean=false;
 begin
       point:=self.ScreenToClient(Mouse.CursorPos);
       cellx:=point.x div cellsize;
@@ -129,17 +141,43 @@ begin
       //or((cellx mod 2 = 0) and (celly mod 2 <> 0)))
       //then
       //begin
+      a := false;
       if ActiveCell then
       begin
          //ход, если нажали на активные
-      end
-      else
+         i:=0;
+
+         while((i<activeCells.len) and (not a)) do
+         begin
+            if(activeCells.cells[i].cellx = cellx) and
+            (activeCells.cells[i].celly = celly) then
+            begin
+                a:=true;
+                checkerMove(checkers[location[activeChecker.cellx]
+                [activeChecker.celly]-1],crd);
+                ClearActiveCalls();
+                changePlayer;
+            end;
+            Inc(i);
+         end;
+         //if ((cellx <> activeChecker.cellx) and
+         //(celly<>activeChecker.celly)) then
+         //begin
+         //    ClearActiveCalls();
+         //
+         //end;
+         //a:=false;
+
+      end;
+      if (not a) and ((cellx <> activeChecker.cellx) or
+         (celly<>activeChecker.celly))  then
       begin
          ClearActiveCalls();
          if checkPlayer(location[cellx][celly],player) then
          begin
+              ActiveCell:=true;
               possibility(player,crd);
-              viewActiveCells[cellx][celly].visible:=true;
+
 
          end;
       end;
@@ -185,11 +223,7 @@ begin
       cellActive.visible:=false;
 end;
 
-Procedure TMainForm.init();
-begin
-   activeChecker.cellx:=-1;
-   activeChecker.celly:=-1;
-end;
+
 
 end.
 
