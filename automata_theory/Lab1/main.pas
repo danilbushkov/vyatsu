@@ -169,6 +169,7 @@ begin
          //a:=false;
 
       end;
+      //Возможные ходы
       if (not a) and ((cellx <> activeChecker.cellx) or
          (celly<>activeChecker.celly))  then
       begin
