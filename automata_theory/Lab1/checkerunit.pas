@@ -29,15 +29,16 @@ var
   activeCell:boolean=False;
   activeChecker:TCrd;
   activeCells:TActiveCells;
+  pathCells:TActiveCells;
   player:integer=1;
 
 function checkPlayer(current:integer;Player:integer):boolean;
 procedure possibility(player:integer;crd:tcrd);
-procedure AddActiveCells(cellx,celly:integer);
-Procedure ClearActiveCalls();
+procedure AddActiveCells(var activeCells:TactiveCells;cellx,celly:integer;c:Tcolor);
+Procedure ClearActiveCells(var ActiveCells:TActiveCells);
 procedure resetActiveChecker();
 procedure checkerMove(sh:TShape;crd:Tcrd);
-function checkCapture(crd:tcrd;dx,dy:integer):boolean;
+//function checkCapture(crd:tcrd;dx,dy:integer):boolean;
 function compareCoordinates(crd,crd2:tcrd;cx,cy:integer):boolean;
 
 implementation
@@ -51,8 +52,9 @@ begin
 end;
 
 
-procedure AddActiveCells(cellx,celly:integer);
+procedure AddActiveCells(var activeCells:TactiveCells;cellx,celly:integer;c:Tcolor);
 begin
+    viewActiveCells[cellx][celly].pen.Color:=c;
     activeCells.len:=activeCells.len+1;
     setlength(activeCells.cells,activeCells.len);
     activeCells.cells[activeCells.len-1].cellx:=cellx;
@@ -61,7 +63,13 @@ begin
 
 end;
 
-
+//procedure ViewPath(cellx,celly:integer);
+//begin
+//    activeCells.len:=activeCells.len+1;
+//    viewActiveCells[cellx][celly].pen.Color:=clTeal;
+//    //cellActive.pen.Color:=clred;
+//    viewActiveCells[cellx][celly].visible:=true;
+//end;
 
 
 //ход шашки
@@ -85,7 +93,7 @@ begin
 end;
 
 
-function checkCapture(crd:tcrd;dx,dy:integer):boolean;
+function checkCapture(location:tlocation;crd:tcrd;dx,dy:integer):boolean;
 var a:boolean;
 begin
    if (crd.cellx+2*dx<8) and (crd.cellx+2*dx>=0)
@@ -110,51 +118,96 @@ begin
     );
 end;
 
+function Capture(l:tlocation;crd:tcrd;dx,dy:integer):tlocation;
+begin
+    l[crd.cellx+2*dx,crd.celly+2*dy]:=l[crd.cellx,crd.celly];
+    l[crd.cellx,crd.celly]:=0;
+    l[crd.cellx+dx,crd.celly+dy]:=0;
+    Exit(l);
+end;
 
 //показать возможный захват
-function possibleCapture(crd,Crd2:tcrd):boolean;
-var a:boolean;
-
+function possibleCapture(crd:tcrd;l:tlocation):boolean;
+var a,b:boolean;
+    crd2:tcrd;
 begin
     a:=false;
-    if (checkCapture(crd,-1,1)) and not (compareCoordinates(crd,crd2,1,-1))
+    if (checkCapture(l,crd,-1,1)) //not (compareCoordinates(crd,crd2,1,-1))
     then
     begin
         crd2.cellx:=crd.cellx-2;
         crd2.celly:=crd.celly+2;
-        possibleCapture(crd2,crd);
+        b:=possibleCapture(crd2,capture(l,crd,-1,1));
 
-        AddActiveCells(Crd.cellx-2,Crd.celly+2);
+        AddActiveCells(pathCells,Crd.cellx-1,Crd.celly+1,clTeal);
+        if not b then
+        begin
+           AddActiveCells(ActiveCells,Crd.cellx-2,Crd.celly+2,clAqua);
+        end else
+        begin
+            AddActiveCells(pathCells,Crd.cellx-2,Crd.celly+2,clTeal);
+
+        end;
+
         a:=true;
     end;
-    if (checkCapture(crd,+1,1)) and not (compareCoordinates(crd,crd2,-1,-1))
+    if (checkCapture(l,crd,+1,1))  //not (compareCoordinates(crd,crd2,-1,-1))
     then
     begin
 
         crd2.cellx:=crd.cellx+2;
         crd2.celly:=crd.celly+2;
-        possibleCapture(crd2,crd);
-         AddActiveCells(Crd.cellx+2,Crd.celly+2);
-         a:=true;
+        b:=possibleCapture(crd2,capture(l,crd,1,1));
+
+        AddActiveCells(pathCells,Crd.cellx+1,Crd.celly+1,clTeal);
+        if not b then
+        begin
+            AddActiveCells(ActiveCells,Crd.cellx+2,Crd.celly+2,clAqua);
+        end else
+        begin
+            AddActiveCells(pathCells,Crd.cellx+2,Crd.celly+2,clTeal);
+
+        end;
+
+
+
+        a:=true;
     end;
-    if (checkCapture(crd,-1,-1)) and  not (compareCoordinates(crd,crd2,1,1))
+    if (checkCapture(l,crd,-1,-1))   //not (compareCoordinates(crd,crd2,1,1))
     then
     begin
 
         crd2.cellx:=crd.cellx-2;
         crd2.celly:=crd.celly-2;
-        possibleCapture(crd2,crd);
-         AddActiveCells(Crd.cellx-2,Crd.celly-2);
-         a:=true;
+        b:=possibleCapture(crd2,capture(l,crd,-1,-1));
+
+        AddActiveCells(pathCells,Crd.cellx-1,Crd.celly-1,clTeal);
+        if not b then
+        begin
+         AddActiveCells(ActiveCells,Crd.cellx-2,Crd.celly-2,clAqua);
+        end else
+        begin
+            AddActiveCells(pathCells,Crd.cellx-2,Crd.celly-2,clTeal);
+
+        end;
+        a:=true;
     end;
-    if (checkCapture(crd,+1,-1)) and  not (compareCoordinates(crd,crd2,-1,1))
+    if (checkCapture(l,crd,+1,-1))   //not (compareCoordinates(crd,crd2,-1,1))
     then
     begin
         crd2.cellx:=crd.cellx+2;
         crd2.celly:=crd.celly-2;
-        possibleCapture(crd2,crd);
-         AddActiveCells(Crd.cellx+2,Crd.celly-2);
-         a:=true;
+        b:=possibleCapture(crd2,capture(l,crd,1,-1));
+
+        AddActiveCells(pathCells,Crd.cellx+1,Crd.celly-1,clTeal);
+        if not b then
+        begin
+           AddActiveCells(ActiveCells,Crd.cellx+2,Crd.celly-2,clAqua);
+        end else
+        begin
+            AddActiveCells(pathCells,Crd.cellx+2,Crd.celly-2,clTeal);
+        end;
+        a:=true;
     end;
     Exit(a);
 end;
@@ -173,7 +226,8 @@ begin
   //setlength(activeCells.cells,activeCells.len);
 
   activeChecker:=crd;
-  viewActiveCells[Crd.cellx][Crd.celly].visible:=true;
+  AddActiveCells(pathCells,Crd.cellx,Crd.celly,clTeal);
+  //viewActiveCells[Crd.cellx][Crd.celly].visible:=true;
 
   a:=true;
 
@@ -191,7 +245,7 @@ begin
   //
     tmpcrd.cellx:=-1;
     tmpcrd.celly:=-1;
-    a:=possibleCapture(crd,tmpcrd);
+    a:=possibleCapture(crd,location);
 
 
     if {not} true then
@@ -200,7 +254,7 @@ begin
       (Crd.cellx+1<8)
       then
       begin
-           AddActiveCells(Crd.cellx+1,Crd.celly+direction);
+           AddActiveCells(ActiveCells,Crd.cellx+1,Crd.celly+direction,clAqua);
 
 
            //viewActiveCells[Crd.cellx+1][Crd.celly+direction].visible:=true;
@@ -209,7 +263,7 @@ begin
       (Crd.cellx-1>=0)
       then
       begin
-           AddActiveCells(Crd.cellx-1,Crd.celly+direction);
+           AddActiveCells(ActiveCells,Crd.cellx-1,Crd.celly+direction,clAqua);
 
            //viewActiveCells[Crd.cellx-1][Crd.celly+direction].visible:=true;
 
@@ -249,7 +303,7 @@ end;
 
 
 //Стереть возможные ходы
-Procedure ClearActiveCalls();
+Procedure ClearActiveCells(var ActiveCells:TActiveCells);
 var i:integer;
 begin
   for i:=0 to ActiveCells.len-1 do

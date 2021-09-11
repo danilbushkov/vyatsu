@@ -155,7 +155,8 @@ begin
                 a:=true;
                 checkerMove(checkers[location[activeChecker.cellx]
                 [activeChecker.celly]-1],crd);
-                ClearActiveCalls();
+                ClearActiveCells(ActiveCells);
+                ClearActiveCells(PathCells);
                 changePlayer;
             end;
             Inc(i);
@@ -173,7 +174,7 @@ begin
       if (not a) and ((cellx <> activeChecker.cellx) or
          (celly<>activeChecker.celly))  then
       begin
-         ClearActiveCalls();
+         ClearActiveCells(ActiveCells);
          if checkPlayer(location[cellx][celly],player) then
          begin
               ActiveCell:=true;

@@ -10,7 +10,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="25" Y="10"/>
-        <UsageCount Value="66"/>
+        <UsageCount Value="70"/>
       </Unit0>
       <Unit1>
         <Filename Value="main.pas"/>
@@ -18,79 +18,73 @@
         <ComponentName Value="MainForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <TopLine Value="181"/>
-        <CursorPos Y="193"/>
-        <UsageCount Value="66"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="143"/>
+        <CursorPos X="38" Y="159"/>
+        <UsageCount Value="70"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="boardunit.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="2"/>
         <CursorPos X="16" Y="12"/>
-        <UsageCount Value="66"/>
+        <UsageCount Value="70"/>
         <Loaded Value="True"/>
       </Unit2>
       <Unit3>
         <Filename Value="checkerunit.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="7"/>
-        <TopLine Value="107"/>
-        <CursorPos Y="119"/>
-        <UsageCount Value="61"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="218"/>
+        <CursorPos X="47" Y="229"/>
+        <UsageCount Value="65"/>
         <Loaded Value="True"/>
       </Unit3>
       <Unit4>
         <Filename Value="D:\Lazarus\lcl\include\control.inc"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="2901"/>
         <CursorPos Y="2913"/>
         <UsageCount Value="12"/>
-        <Loaded Value="True"/>
       </Unit4>
       <Unit5>
         <Filename Value="D:\Lazarus\lcl\include\wincontrol.inc"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="5400"/>
         <CursorPos Y="5412"/>
         <UsageCount Value="11"/>
-        <Loaded Value="True"/>
       </Unit5>
       <Unit6>
         <Filename Value="D:\Lazarus\lcl\include\customform.inc"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="1466"/>
         <CursorPos Y="1478"/>
         <UsageCount Value="11"/>
-        <Loaded Value="True"/>
       </Unit6>
       <Unit7>
         <Filename Value="D:\Lazarus\lcl\lclmessageglue.pas"/>
         <UnitName Value="LCLMessageGlue"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="110"/>
         <CursorPos Y="123"/>
         <UsageCount Value="11"/>
-        <Loaded Value="True"/>
       </Unit7>
       <Unit8>
         <Filename Value="D:\Lazarus\lcl\interfaces\win32\win32callback.inc"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="2668"/>
         <CursorPos Y="2680"/>
         <UsageCount Value="11"/>
-        <Loaded Value="True"/>
       </Unit8>
       <Unit9>
         <Filename Value="D:\Lazarus\lcl\interfaces\win32\win32wsforms.pp"/>
         <UnitName Value="Win32WSForms"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="376"/>
         <CursorPos Y="388"/>
         <UsageCount Value="11"/>
-        <Loaded Value="True"/>
       </Unit9>
       <Unit10>
         <Filename Value="D:\Lazarus\lcl\interfaces\win32\win32object.inc"/>
@@ -103,123 +97,123 @@
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="checkerunit.pas"/>
-        <Caret Line="130" TopLine="110"/>
+        <Caret Line="147" TopLine="135"/>
       </Position1>
       <Position2>
         <Filename Value="checkerunit.pas"/>
-        <Caret Line="134" TopLine="123"/>
+        <Caret Line="157" TopLine="137"/>
       </Position2>
       <Position3>
         <Filename Value="checkerunit.pas"/>
-        <Caret Line="135" TopLine="123"/>
+        <Caret Line="160" TopLine="140"/>
       </Position3>
       <Position4>
         <Filename Value="checkerunit.pas"/>
-        <Caret Line="136" TopLine="123"/>
+        <Caret Line="161" TopLine="141"/>
       </Position4>
       <Position5>
         <Filename Value="checkerunit.pas"/>
-        <Caret Line="119" TopLine="107"/>
+        <Caret Line="162" TopLine="142"/>
       </Position5>
       <Position6>
         <Filename Value="checkerunit.pas"/>
-        <Caret Line="120" TopLine="107"/>
+        <Caret Line="126" TopLine="113"/>
       </Position6>
       <Position7>
         <Filename Value="checkerunit.pas"/>
-        <Caret Line="130" TopLine="110"/>
+        <Caret Line="127" TopLine="113"/>
       </Position7>
       <Position8>
         <Filename Value="checkerunit.pas"/>
-        <Caret Line="140" TopLine="129"/>
+        <Caret Line="114" Column="74" TopLine="146"/>
       </Position8>
       <Position9>
         <Filename Value="checkerunit.pas"/>
-        <Caret Line="150" TopLine="131"/>
+        <Caret Line="126" TopLine="119"/>
       </Position9>
       <Position10>
         <Filename Value="checkerunit.pas"/>
-        <Caret Line="153" TopLine="134"/>
+        <Caret Line="127" TopLine="119"/>
       </Position10>
       <Position11>
         <Filename Value="checkerunit.pas"/>
-        <Caret Line="154" TopLine="135"/>
+        <Caret Line="137" TopLine="119"/>
       </Position11>
       <Position12>
         <Filename Value="checkerunit.pas"/>
-        <Caret Line="155" TopLine="136"/>
+        <Caret Line="141" TopLine="120"/>
       </Position12>
       <Position13>
         <Filename Value="checkerunit.pas"/>
-        <Caret Line="119" TopLine="107"/>
+        <Caret Line="142" TopLine="121"/>
       </Position13>
       <Position14>
         <Filename Value="checkerunit.pas"/>
-        <Caret Line="120" TopLine="107"/>
+        <Caret Line="143" TopLine="122"/>
       </Position14>
       <Position15>
         <Filename Value="checkerunit.pas"/>
-        <Caret Line="130" TopLine="110"/>
+        <Caret Line="126" TopLine="121"/>
       </Position15>
       <Position16>
         <Filename Value="checkerunit.pas"/>
-        <Caret Line="140" TopLine="129"/>
+        <Caret Line="162" Column="43" TopLine="109"/>
       </Position16>
       <Position17>
         <Filename Value="checkerunit.pas"/>
-        <Caret Line="144" TopLine="129"/>
+        <Caret Line="66" Column="32" TopLine="51"/>
       </Position17>
       <Position18>
         <Filename Value="checkerunit.pas"/>
-        <Caret Line="145" TopLine="129"/>
+        <Caret Line="316" Column="14" TopLine="35"/>
       </Position18>
       <Position19>
         <Filename Value="checkerunit.pas"/>
-        <Caret Line="146" TopLine="129"/>
+        <Caret Line="38" Column="56" TopLine="22"/>
       </Position19>
       <Position20>
-        <Filename Value="checkerunit.pas"/>
-        <Caret Line="119" TopLine="107"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="158" Column="45" TopLine="145"/>
       </Position20>
       <Position21>
         <Filename Value="checkerunit.pas"/>
-        <Caret Line="120" TopLine="107"/>
+        <Caret Line="58" Column="20" TopLine="44"/>
       </Position21>
       <Position22>
         <Filename Value="checkerunit.pas"/>
-        <Caret Line="123" TopLine="107"/>
+        <Caret Line="55" Column="54" TopLine="46"/>
       </Position22>
       <Position23>
         <Filename Value="checkerunit.pas"/>
-        <Caret Line="124" TopLine="107"/>
+        <Caret Line="144" Column="38" TopLine="132"/>
       </Position23>
       <Position24>
         <Filename Value="checkerunit.pas"/>
-        <Caret Line="125" TopLine="107"/>
+        <Caret Line="163" Column="40" TopLine="148"/>
       </Position24>
       <Position25>
         <Filename Value="checkerunit.pas"/>
-        <Caret Line="119" TopLine="107"/>
+        <Caret Line="184" Column="37" TopLine="172"/>
       </Position25>
       <Position26>
         <Filename Value="checkerunit.pas"/>
-        <Caret Line="120" TopLine="107"/>
+        <Caret Line="201" Column="39" TopLine="189"/>
       </Position26>
       <Position27>
         <Filename Value="checkerunit.pas"/>
-        <Caret Line="130" TopLine="110"/>
+        <Caret Line="37" Column="83" TopLine="31"/>
       </Position27>
       <Position28>
         <Filename Value="checkerunit.pas"/>
-        <Caret Line="134" TopLine="123"/>
+        <Caret Line="253" Column="39" TopLine="243"/>
       </Position28>
       <Position29>
         <Filename Value="checkerunit.pas"/>
-        <Caret Line="135" TopLine="123"/>
+        <Caret Line="142" Column="56" TopLine="128"/>
       </Position29>
       <Position30>
         <Filename Value="checkerunit.pas"/>
-        <Caret Line="136" TopLine="123"/>
+        <Caret Line="184" Column="9" TopLine="171"/>
       </Position30>
     </JumpHistory>
     <RunParams>
@@ -227,15 +221,4 @@
       <Modes Count="0" ActiveMode=""/>
     </RunParams>
   </ProjectSession>
-  <Debugging>
-    <BreakPoints Count="1">
-      <Item1>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="checkerunit.pas"/>
-        <Line Value="119"/>
-      </Item1>
-    </BreakPoints>
-  </Debugging>
 </CONFIG>
