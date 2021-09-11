@@ -26,6 +26,7 @@ type
       var cellsActive:TviewActiveCells);
     procedure initChecker(var checker: TShape; t,l:integer;c:Tcolor);
     procedure initCellActive(var cellActive: TShape; t,l:integer; c:Tcolor);
+    procedure MainTimerTimer(Sender: TObject);
   private
 
   public
@@ -37,6 +38,7 @@ type
 var
   MainForm: TMainForm;
   board:TBitmap;
+
 
 
 implementation
@@ -70,7 +72,10 @@ end;
 
 procedure TMainForm.FormClick(Sender: TObject);
 begin
+   if not timerWork then
+   begin
      ClickOnBoard(Sender);
+   end;
 end;
 
 procedure TMainForm.FormPaint(Sender: TObject);
@@ -130,6 +135,11 @@ var point:Tpoint;
     i:integer;
     a:boolean=false;
 begin
+      if timerWork then
+      begin
+        Exit();
+      end;
+
       point:=self.ScreenToClient(Mouse.CursorPos);
       cellx:=point.x div cellsize;
       celly:=point.y div cellsize;
@@ -154,7 +164,7 @@ begin
             begin
                 a:=true;
                 checkerMove(checkers[location[activeChecker.cellx]
-                [activeChecker.celly]-1],crd);
+                [activeChecker.celly]-1],crd,maintimer);
                 ClearActiveCells(ActiveCells);
                 ClearActiveCells(PathCells);
                 changePlayer;
@@ -174,7 +184,9 @@ begin
       if (not a) and ((cellx <> activeChecker.cellx) or
          (celly<>activeChecker.celly))  then
       begin
+         DeleteMoves();
          ClearActiveCells(ActiveCells);
+         ClearActiveCells(PathCells);
          if checkPlayer(location[cellx][celly],player) then
          begin
               ActiveCell:=true;
@@ -223,6 +235,41 @@ begin
       cellActive.pen.style:=psSolid;
       cellActive.pen.width:=2;
       cellActive.visible:=false;
+end;
+
+procedure TMainForm.MainTimerTimer(Sender: TObject);
+var pl,pt:integer;
+begin
+      timerWork:=true;
+      if(abs(startPath.cellx-endPath.cellx) = 1) then
+      begin
+          pl:= startPath.cellx-endPath.cellx;
+          pt:= startPath.celly-endPath.celly;
+      end
+      else
+      begin
+          pl:= (startPath.cellx-endPath.cellx)div 2;
+          pt:= (startPath.celly-endPath.celly)div 2;
+      end;
+
+
+      if (ash.left < (endPath.cellx*cellsize+5)) or (ash.left > (endPath.cellx*cellsize+5)) then
+      begin
+         ash.left:=ash.left-pl;
+         ash.top:=ash.top-pt;
+        // sleep(2);
+
+      end
+      else
+      begin
+         ash.left:=endPath.cellx*cellsize+5;
+         ash.top:=endPath.celly*cellsize+5;
+         MainTimer.Enabled:=false;
+         timerWork:=false;
+      end;
+      //ash.left:=endPath.cellx*cellsize+5;
+      //ash.top:=endPath.celly*cellsize+5;
+
 end;
 
 

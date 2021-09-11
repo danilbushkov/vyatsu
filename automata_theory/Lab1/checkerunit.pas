@@ -20,6 +20,8 @@ TActiveCells=record
     cells:array of TCrd;
     len:integer;
 end;
+Tmove=array of TCrd;
+Tmoves=array of Tmove;
 
 var
   checkers: Tcheckers;
@@ -30,16 +32,24 @@ var
   activeChecker:TCrd;
   activeCells:TActiveCells;
   pathCells:TActiveCells;
+  moves:Tmoves;
   player:integer=1;
+  Startpath:tcrd;
+  EndPath:Tcrd;
+  aSh:Tshape;
+  timerWork: boolean=false;
+
 
 function checkPlayer(current:integer;Player:integer):boolean;
 procedure possibility(player:integer;crd:tcrd);
 procedure AddActiveCells(var activeCells:TactiveCells;cellx,celly:integer;c:Tcolor);
 Procedure ClearActiveCells(var ActiveCells:TActiveCells);
 procedure resetActiveChecker();
-procedure checkerMove(sh:TShape;crd:Tcrd);
+procedure checkerMove(var sh:TShape;crd:Tcrd;var t:ttimer);
 //function checkCapture(crd:tcrd;dx,dy:integer):boolean;
 function compareCoordinates(crd,crd2:tcrd;cx,cy:integer):boolean;
+procedure DeleteMoves();
+function GetMove(crd:tcrd):tmove;
 
 implementation
 
@@ -71,24 +81,88 @@ end;
 //    viewActiveCells[cellx][celly].visible:=true;
 //end;
 
+//анимация перехода
+procedure animMove(var sh:Tshape;crd:tcrd;var t:ttimer);
+var pl,pt:integer;
+  i:integer;
+begin
+      //pl:=round(((sh.left / cellsize)-crd.cellx) / 2);
+      //pt:=round(((sh.top / cellsize)-crd.celly) / 2);
+
+      //for i:=0 to abs(sh.left-(crd.cellx*cellsize+5)) do
+      //begin
+         //sh.left:=sh.left+pl;
+         //sh.top:=sh.top+pt;
+        // sleep(2);
+      //end;
+      //sh.left:=crd.cellx*cellsize+5;
+      //sh.top:=crd.celly*cellsize+5;
+end;
 
 //ход шашки
-procedure checkerMove(sh:TShape;crd:Tcrd);
-var i:integer;
+procedure checkerMove(var sh:TShape;crd:Tcrd; var t:ttimer);
+var i,j:integer;
   a,b:integer;
+  tmpcrd:tcrd;
+  move:tmove;
 begin
-   a:=(crd.cellx-activeChecker.cellx) div 2;
-   b:=(crd.celly-activeChecker.celly) div 2;
-   sh.top:=crd.celly*cellsize+5;
-   sh.left:=crd.cellx*cellsize+5;
-   if abs(crd.cellx - activeChecker.cellx) > 1 then
-   begin
-     checkers[location[crd.cellx-a][crd.celly-b]-1].visible:=false;
-     location[crd.cellx-a][crd.celly-b]:=0;
-   end;
-   i:=location[crd.cellx][crd.celly];
-   location[crd.cellx][crd.celly]:=location[activeChecker.cellx][activeChecker.celly];
-   location[activeChecker.cellx][activeChecker.celly]:=i;
+    if abs(crd.cellx - activeChecker.cellx) = 1 then
+    begin
+        j:=location[crd.cellx][crd.celly];
+        location[crd.cellx][crd.celly]:=location[activeChecker.cellx][activeChecker.celly];
+        location[activeChecker.cellx][activeChecker.celly]:=j;
+        startpath:=activeChecker;
+        endPath:=crd;
+        ash:=sh;
+        t.Enabled:=true;
+
+        //sh.top:=crd.celly*cellsize+5;
+        //sh.left:=crd.cellx*cellsize+5;
+        //animMove(sh,crd);
+    end
+    else
+    begin
+      tmpcrd:=activeChecker;
+      move:=getMove(crd);
+      for i:=1 to length(move)-1 do
+      begin
+
+         a:=(move[i].cellx-tmpcrd.cellx) div 2;
+         b:=(move[i].celly-tmpcrd.celly) div 2;
+         checkers[location[move[i].cellx-a][move[i].celly-b]-1].visible:=false;
+         location[move[i].cellx-a][move[i].celly-b]:=0;
+         //sh.top:=move[i].celly*cellsize+5;
+         //sh.left:=move[i].cellx*cellsize+5;
+         //animMove(sh,move[i]);
+         startpath:=tmpcrd;
+         endPath:=move[i];
+         ash:=sh;
+         t.Enabled:=true;
+         //timerWork:=true;
+
+         //
+         j:=location[move[i].cellx][move[i].celly];
+         location[move[i].cellx][move[i].celly]:=location[tmpcrd.cellx][tmpcrd.celly];
+         location[tmpcrd.cellx][tmpcrd.celly]:=j;
+         tmpcrd:=move[i];
+
+      end;
+
+    end;
+
+   //a:=(crd.cellx-activeChecker.cellx) div 2;
+   //b:=(crd.celly-activeChecker.celly) div 2;
+   //sh.top:=crd.celly*cellsize+5;
+   //sh.left:=crd.cellx*cellsize+5;
+   //if abs(crd.cellx - activeChecker.cellx) > 1 then
+   //begin
+   //  checkers[location[crd.cellx-a][crd.celly-b]-1].visible:=false;
+   //  location[crd.cellx-a][crd.celly-b]:=0;
+   //end;
+   //i:=location[crd.cellx][crd.celly];
+   //location[crd.cellx][crd.celly]:=location[activeChecker.cellx][activeChecker.celly];
+   //location[activeChecker.cellx][activeChecker.celly]:=i;
+
 
 end;
 
@@ -126,22 +200,31 @@ begin
     Exit(l);
 end;
 
-//показать возможный захват
-function possibleCapture(crd:tcrd;l:tlocation):boolean;
+//поиск возможных захватов
+function possibleCapture(crd:tcrd;l:tlocation;move:tmove;depth:integer;var i:integer):boolean;
 var a,b:boolean;
     crd2:tcrd;
+
 begin
     a:=false;
     if (checkCapture(l,crd,-1,1)) //not (compareCoordinates(crd,crd2,1,-1))
     then
     begin
+
         crd2.cellx:=crd.cellx-2;
         crd2.celly:=crd.celly+2;
-        b:=possibleCapture(crd2,capture(l,crd,-1,1));
+
+        setLength(move,depth+2);
+        move[depth+1]:=crd2;
+        b:=possibleCapture(crd2,capture(l,crd,-1,1),move,depth+1,i);
 
         AddActiveCells(pathCells,Crd.cellx-1,Crd.celly+1,clTeal);
         if not b then
         begin
+           move[0]:=crd2;
+           inc(i);
+           setLength(moves,i);
+           moves[i-1]:=move;
            AddActiveCells(ActiveCells,Crd.cellx-2,Crd.celly+2,clAqua);
         end else
         begin
@@ -157,20 +240,25 @@ begin
 
         crd2.cellx:=crd.cellx+2;
         crd2.celly:=crd.celly+2;
-        b:=possibleCapture(crd2,capture(l,crd,1,1));
+
+        setLength(move,depth+2);
+        move[depth+1]:=crd2;
+
+        b:=possibleCapture(crd2,capture(l,crd,1,1),move,depth+1,i);
 
         AddActiveCells(pathCells,Crd.cellx+1,Crd.celly+1,clTeal);
         if not b then
         begin
+            move[0]:=crd2;
+            inc(i);
+            setLength(moves,i);
+            moves[i-1]:=move;
             AddActiveCells(ActiveCells,Crd.cellx+2,Crd.celly+2,clAqua);
         end else
         begin
             AddActiveCells(pathCells,Crd.cellx+2,Crd.celly+2,clTeal);
 
         end;
-
-
-
         a:=true;
     end;
     if (checkCapture(l,crd,-1,-1))   //not (compareCoordinates(crd,crd2,1,1))
@@ -179,12 +267,21 @@ begin
 
         crd2.cellx:=crd.cellx-2;
         crd2.celly:=crd.celly-2;
-        b:=possibleCapture(crd2,capture(l,crd,-1,-1));
+
+        setLength(move,depth+2);
+        move[depth+1]:=crd2;
+
+
+        b:=possibleCapture(crd2,capture(l,crd,-1,-1),move,depth+1,i);
 
         AddActiveCells(pathCells,Crd.cellx-1,Crd.celly-1,clTeal);
         if not b then
         begin
-         AddActiveCells(ActiveCells,Crd.cellx-2,Crd.celly-2,clAqua);
+            move[0]:=crd2;
+            inc(i);
+            setLength(moves,i);
+            moves[i-1]:=move;
+            AddActiveCells(ActiveCells,Crd.cellx-2,Crd.celly-2,clAqua);
         end else
         begin
             AddActiveCells(pathCells,Crd.cellx-2,Crd.celly-2,clTeal);
@@ -197,11 +294,19 @@ begin
     begin
         crd2.cellx:=crd.cellx+2;
         crd2.celly:=crd.celly-2;
-        b:=possibleCapture(crd2,capture(l,crd,1,-1));
+
+        setLength(move,depth+2);
+        move[depth+1]:=crd2;
+
+        b:=possibleCapture(crd2,capture(l,crd,1,-1),move,depth+1,i);
 
         AddActiveCells(pathCells,Crd.cellx+1,Crd.celly-1,clTeal);
         if not b then
         begin
+            move[0]:=crd2;
+            inc(i);
+            setLength(moves,i);
+            moves[i-1]:=move;
            AddActiveCells(ActiveCells,Crd.cellx+2,Crd.celly-2,clAqua);
         end else
         begin
@@ -214,8 +319,10 @@ end;
 //Показать возможные ходы
 procedure possibility(player:integer;crd:TCrd);
 var direction:integer=1;
+    i:integer;
   tmpcrd:tcrd;
   a:boolean;
+  move:tmove;
   //взятие
 begin
   if player=1 then
@@ -245,10 +352,11 @@ begin
   //
     tmpcrd.cellx:=-1;
     tmpcrd.celly:=-1;
-    a:=possibleCapture(crd,location);
+    i:=0;
+    a:=possibleCapture(crd,location,move,0,i);
 
 
-    if {not} true then
+    if not a then
     begin
       if (location[Crd.cellx+1][Crd.celly+direction]=0) and
       (Crd.cellx+1<8)
@@ -336,6 +444,36 @@ begin
     end;
   end;
   Exit(False);
+end;
+
+//удалить возможные пути
+procedure DeleteMoves();
+var i:integer;
+begin
+    for i:=0 to length(moves)-1 do
+    begin
+        setlength(moves[i],0);
+    end;
+    setlength(moves,0);
+end;
+
+//Получить нужный ход, должны передать конечную точку
+function GetMove(crd:tcrd):tmove;
+var move:tmove;
+var
+    i:integer;
+begin
+   i:=0;
+   while(i<length(moves))do
+   begin
+       if (moves[i][0].cellx=crd.cellx) and (moves[i][0].celly=crd.celly) then
+       begin
+           move:=moves[i];
+           DeleteMoves();
+           Exit(move);
+       end;
+       Inc(i);
+   end;
 end;
 
 end.
