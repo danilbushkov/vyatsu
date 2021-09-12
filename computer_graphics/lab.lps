@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="11"/>
+    <BuildModes Active="Default"/>
+    <Units Count="3">
+      <Unit0>
+        <Filename Value="lab.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="main.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form1"/>
+        <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="22"/>
+        <CursorPos X="28" Y="43"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="ushapes.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="203"/>
+        <CursorPos X="40" Y="218"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit2>
+    </Units>
+    <JumpHistory Count="15" HistoryIndex="14">
+      <Position1>
+        <Filename Value="main.pas"/>
+        <Caret Line="24" Column="17"/>
+      </Position1>
+      <Position2>
+        <Filename Value="main.pas"/>
+        <Caret Line="40" Column="31" TopLine="17"/>
+      </Position2>
+      <Position3>
+        <Filename Value="main.pas"/>
+        <Caret Line="38" Column="21" TopLine="17"/>
+      </Position3>
+      <Position4>
+        <Filename Value="ushapes.pas"/>
+        <Caret Line="199" Column="5"/>
+      </Position4>
+      <Position5>
+        <Filename Value="ushapes.pas"/>
+        <Caret Line="167" Column="23" TopLine="160"/>
+      </Position5>
+      <Position6>
+        <Filename Value="ushapes.pas"/>
+        <Caret Line="8" Column="29"/>
+      </Position6>
+      <Position7>
+        <Filename Value="ushapes.pas"/>
+        <Caret Line="31" Column="26" TopLine="19"/>
+      </Position7>
+      <Position8>
+        <Filename Value="ushapes.pas"/>
+        <Caret Line="90" Column="4" TopLine="73"/>
+      </Position8>
+      <Position9>
+        <Filename Value="ushapes.pas"/>
+        <Caret Line="8" Column="34"/>
+      </Position9>
+      <Position10>
+        <Filename Value="main.pas"/>
+        <Caret Line="40" Column="43" TopLine="18"/>
+      </Position10>
+      <Position11>
+        <Filename Value="ushapes.pas"/>
+        <Caret Line="212" Column="14" TopLine="197"/>
+      </Position11>
+      <Position12>
+        <Filename Value="ushapes.pas"/>
+        <Caret Line="217" Column="42" TopLine="201"/>
+      </Position12>
+      <Position13>
+        <Filename Value="main.pas"/>
+        <Caret Line="43" Column="42" TopLine="21"/>
+      </Position13>
+      <Position14>
+        <Filename Value="ushapes.pas"/>
+        <Caret Line="221" Column="37" TopLine="202"/>
+      </Position14>
+      <Position15>
+        <Filename Value="ushapes.pas"/>
+        <Caret Line="222" Column="31" TopLine="200"/>
+      </Position15>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes Count="0" ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>
