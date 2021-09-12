@@ -27,6 +27,8 @@ type
     procedure initChecker(var checker: TShape; t,l:integer;c:Tcolor);
     procedure initCellActive(var cellActive: TShape; t,l:integer; c:Tcolor);
     procedure MainTimerTimer(Sender: TObject);
+    procedure MoveCheckerTimer();
+    procedure AnimMove();
   private
 
   public
@@ -38,7 +40,7 @@ type
 var
   MainForm: TMainForm;
   board:TBitmap;
-
+  speed:integer=5;
 
 
 implementation
@@ -72,7 +74,7 @@ end;
 
 procedure TMainForm.FormClick(Sender: TObject);
 begin
-   if not timerWork then
+   if not MainTimer.Enabled then
    begin
      ClickOnBoard(Sender);
    end;
@@ -135,7 +137,7 @@ var point:Tpoint;
     i:integer;
     a:boolean=false;
 begin
-      if timerWork then
+      if mainTimer.Enabled then
       begin
         Exit();
       end;
@@ -238,41 +240,130 @@ begin
 end;
 
 procedure TMainForm.MainTimerTimer(Sender: TObject);
-var pl,pt:integer;
+var
+    i:integer;
 begin
-      timerWork:=true;
-      if(abs(startPath.cellx-endPath.cellx) = 1) then
+    MoveCheckerTimer();
+    AnimMove;
+
+end;
+
+//ход шашки
+procedure TMainForm.MoveCheckerTimer;
+var //i,j:integer;
+  a,b:integer;
+  //tmpcrd:tcrd;
+  //move:tmove;
+begin
+    if mt.countPath=0 then
+    begin
+        exchange(mt.Startpath,mt.EndPath);
+        //t.Enabled:=true;
+        mt.anim:=true;
+        //AnimMove();
+        //sh.top:=crd.celly*cellsize+5;
+        //sh.left:=crd.cellx*cellsize+5;
+        //animMove(sh,crd);
+    end
+    else
+    begin
+      //tmpcrd:=activeChecker;
+      //move:=getMove(crd);
+      //if i:=1 to length(move)-1 do
+      //begin
+
+       if (mt.i<(mt.countPath)) and (not mt.anim) then
+       begin
+         a:=(mt.move[mt.i].cellx-mt.Startpath.cellx) div 2;
+         b:=(mt.move[mt.i].celly-mt.Startpath.celly) div 2;
+         //caption:=inttostr(location[mt.move[mt.i].cellx-a][mt.move[mt.i].celly-b]);
+         checkers[location[mt.move[mt.i].cellx-a][mt.move[mt.i].celly-b]-1].visible:=false;
+         location[mt.move[mt.i].cellx-a][mt.move[mt.i].celly-b]:=0;
+         exchange(mt.Startpath,mt.move[mt.i]);
+         mt.EndPath:=mt.move[mt.i];
+         mt.anim:=true;
+         //AnimMove();
+         //mt.Startpath:=mt.move[mt.i];
+         //inc(mt.i);
+         ////sh.top:=move[i].celly*cellsize+5;
+         ////sh.left:=move[i].cellx*cellsize+5;
+         ////animMove(sh,move[i]);
+         //startpath:=tmpcrd;
+         //endPath:=move[i];
+         //ash:=sh;
+         //t.Enabled:=true;
+         ////timerWork:=true;
+         //
+         ////
+         //exchange(move[i],tmpcrd);
+         //tmpcrd:=move[i];
+
+      //end;
+       end;
+
+    end;
+
+end;
+
+procedure TMainForm.AnimMove();
+var pl,pt:integer;
+  condition:boolean;
+begin
+   if mt.Anim then
+   begin
+     // timerWork:=true;
+      if(abs(mt.startPath.cellx-mt.endPath.cellx) = 1) then
       begin
-          pl:= startPath.cellx-endPath.cellx;
-          pt:= startPath.celly-endPath.celly;
+          pl:= mt.startPath.cellx-mt.endPath.cellx;
+          pt:= mt.startPath.celly-mt.endPath.celly;
       end
       else
       begin
-          pl:= (startPath.cellx-endPath.cellx)div 2;
-          pt:= (startPath.celly-endPath.celly)div 2;
+          pl:= (mt.startPath.cellx-mt.endPath.cellx)div 2;
+          pt:= (mt.startPath.celly-mt.endPath.celly)div 2;
       end;
 
-
-      if (ash.left < (endPath.cellx*cellsize+5)) or (ash.left > (endPath.cellx*cellsize+5)) then
+      if pl > 0 then
       begin
-         ash.left:=ash.left-pl;
-         ash.top:=ash.top-pt;
+         condition:=mt.sh.left > ((mt.endPath.cellx*cellsize+5)+speed)
+      end
+      else
+      begin
+         condition:=mt.sh.left < ((mt.endPath.cellx*cellsize+5)-speed)
+      end;
+
+      if (condition)
+      then
+      begin
+         mt.sh.left:=mt.sh.left-pl*speed;
+         mt.sh.top:=mt.sh.top-pt*speed;
         // sleep(2);
 
       end
       else
       begin
-         ash.left:=endPath.cellx*cellsize+5;
-         ash.top:=endPath.celly*cellsize+5;
-         MainTimer.Enabled:=false;
-         timerWork:=false;
+         mt.sh.left:=mt.endPath.cellx*cellsize+5;
+         mt.sh.top:=mt.endPath.celly*cellsize+5;
+         //MainTimer.Enabled:=false;
+         mt.anim:=false;
+
+
+
+         if (mt.countPath=0) or (mt.i>=mt.countPath-1) then
+         begin
+                MainTimer.Enabled:=false;
+         end
+         else
+         begin
+            mt.Startpath:=mt.move[mt.i];
+            inc(mt.i);
+         end;
       end;
       //ash.left:=endPath.cellx*cellsize+5;
       //ash.top:=endPath.celly*cellsize+5;
 
+   end;
 end;
-
-
 
 end.
 

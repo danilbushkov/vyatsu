@@ -23,6 +23,16 @@ end;
 Tmove=array of TCrd;
 Tmoves=array of Tmove;
 
+TMoveTimer=record
+   Startpath:tcrd;
+   EndPath:Tcrd;
+   Sh:Tshape;
+   move:Tmove;
+   i:integer;
+   countPath:integer;//количество ходов
+   anim:boolean;
+end;
+
 var
   checkers: Tcheckers;
   viewActiveCells: TviewActiveCells;
@@ -34,10 +44,11 @@ var
   pathCells:TActiveCells;
   moves:Tmoves;
   player:integer=1;
-  Startpath:tcrd;
-  EndPath:Tcrd;
-  aSh:Tshape;
-  timerWork: boolean=false;
+  //Startpath:tcrd;
+  //EndPath:Tcrd;
+  //Sh:Tshape;
+  //timerWork: boolean=false;
+  mt:TMoveTimer;//информация для перехода
 
 
 function checkPlayer(current:integer;Player:integer):boolean;
@@ -50,6 +61,7 @@ procedure checkerMove(var sh:TShape;crd:Tcrd;var t:ttimer);
 function compareCoordinates(crd,crd2:tcrd;cx,cy:integer):boolean;
 procedure DeleteMoves();
 function GetMove(crd:tcrd):tmove;
+procedure exchange(var crd,crd2:tcrd);
 
 implementation
 
@@ -59,6 +71,14 @@ procedure resetActiveChecker();
 begin
    activeChecker.cellx:=-1;
    activeChecker.celly:=-1;
+end;
+
+procedure exchange(var crd,crd2:tcrd);
+var j:integer;
+begin
+   j:=location[crd.cellx][crd.celly];
+   location[crd.cellx][crd.celly]:=location[crd2.cellx][crd2.celly];
+   location[crd2.cellx][crd2.celly]:=j;
 end;
 
 
@@ -101,69 +121,87 @@ end;
 
 //ход шашки
 procedure checkerMove(var sh:TShape;crd:Tcrd; var t:ttimer);
-var i,j:integer;
-  a,b:integer;
-  tmpcrd:tcrd;
-  move:tmove;
 begin
-    if abs(crd.cellx - activeChecker.cellx) = 1 then
+    mt.Startpath:=activeChecker;
+    mt.EndPath:=crd;
+    mt.Sh:=sh;
+    mt.move:=getMove(crd);
+    mt.i:=1;
+    mt.anim:=false;
+    if abs(mt.EndPath.cellx - mt.Startpath.cellx) = 1 then
     begin
-        j:=location[crd.cellx][crd.celly];
-        location[crd.cellx][crd.celly]:=location[activeChecker.cellx][activeChecker.celly];
-        location[activeChecker.cellx][activeChecker.celly]:=j;
-        startpath:=activeChecker;
-        endPath:=crd;
-        ash:=sh;
-        t.Enabled:=true;
-
-        //sh.top:=crd.celly*cellsize+5;
-        //sh.left:=crd.cellx*cellsize+5;
-        //animMove(sh,crd);
+      mt.countPath:=0;
     end
     else
     begin
-      tmpcrd:=activeChecker;
-      move:=getMove(crd);
-      for i:=1 to length(move)-1 do
-      begin
-
-         a:=(move[i].cellx-tmpcrd.cellx) div 2;
-         b:=(move[i].celly-tmpcrd.celly) div 2;
-         checkers[location[move[i].cellx-a][move[i].celly-b]-1].visible:=false;
-         location[move[i].cellx-a][move[i].celly-b]:=0;
-         //sh.top:=move[i].celly*cellsize+5;
-         //sh.left:=move[i].cellx*cellsize+5;
-         //animMove(sh,move[i]);
-         startpath:=tmpcrd;
-         endPath:=move[i];
-         ash:=sh;
-         t.Enabled:=true;
-         //timerWork:=true;
-
-         //
-         j:=location[move[i].cellx][move[i].celly];
-         location[move[i].cellx][move[i].celly]:=location[tmpcrd.cellx][tmpcrd.celly];
-         location[tmpcrd.cellx][tmpcrd.celly]:=j;
-         tmpcrd:=move[i];
-
-      end;
-
+       mt.countPath:=length(mt.move);
     end;
-
-   //a:=(crd.cellx-activeChecker.cellx) div 2;
-   //b:=(crd.celly-activeChecker.celly) div 2;
-   //sh.top:=crd.celly*cellsize+5;
-   //sh.left:=crd.cellx*cellsize+5;
-   //if abs(crd.cellx - activeChecker.cellx) > 1 then
-   //begin
-   //  checkers[location[crd.cellx-a][crd.celly-b]-1].visible:=false;
-   //  location[crd.cellx-a][crd.celly-b]:=0;
-   //end;
-   //i:=location[crd.cellx][crd.celly];
-   //location[crd.cellx][crd.celly]:=location[activeChecker.cellx][activeChecker.celly];
-   //location[activeChecker.cellx][activeChecker.celly]:=i;
+    t.enabled:=true;
 
 
+//var i,j:integer;
+//  a,b:integer;
+//  tmpcrd:tcrd;
+//  move:tmove;
+//begin
+//    if abs(crd.cellx - activeChecker.cellx) = 1 then
+//    begin
+//        j:=location[crd.cellx][crd.celly];
+//        location[crd.cellx][crd.celly]:=location[activeChecker.cellx][activeChecker.celly];
+//        location[activeChecker.cellx][activeChecker.celly]:=j;
+//        startpath:=activeChecker;
+//        endPath:=crd;
+//        ash:=sh;
+//        t.Enabled:=true;
+//
+//        //sh.top:=crd.celly*cellsize+5;
+//        //sh.left:=crd.cellx*cellsize+5;
+//        //animMove(sh,crd);
+//    end
+//    else
+//    begin
+//      tmpcrd:=activeChecker;
+//      move:=getMove(crd);
+//      for i:=1 to length(move)-1 do
+//      begin
+//
+//         a:=(move[i].cellx-tmpcrd.cellx) div 2;
+//         b:=(move[i].celly-tmpcrd.celly) div 2;
+//         checkers[location[move[i].cellx-a][move[i].celly-b]-1].visible:=false;
+//         location[move[i].cellx-a][move[i].celly-b]:=0;
+//         //sh.top:=move[i].celly*cellsize+5;
+//         //sh.left:=move[i].cellx*cellsize+5;
+//         //animMove(sh,move[i]);
+//         startpath:=tmpcrd;
+//         endPath:=move[i];
+//         ash:=sh;
+//         t.Enabled:=true;
+//         //timerWork:=true;
+//
+//         //
+//         j:=location[move[i].cellx][move[i].celly];
+//         location[move[i].cellx][move[i].celly]:=location[tmpcrd.cellx][tmpcrd.celly];
+//         location[tmpcrd.cellx][tmpcrd.celly]:=j;
+//         tmpcrd:=move[i];
+//
+//      end;
+//
+//    end;
+//
+//   //a:=(crd.cellx-activeChecker.cellx) div 2;
+//   //b:=(crd.celly-activeChecker.celly) div 2;
+//   //sh.top:=crd.celly*cellsize+5;
+//   //sh.left:=crd.cellx*cellsize+5;
+//   //if abs(crd.cellx - activeChecker.cellx) > 1 then
+//   //begin
+//   //  checkers[location[crd.cellx-a][crd.celly-b]-1].visible:=false;
+//   //  location[crd.cellx-a][crd.celly-b]:=0;
+//   //end;
+//   //i:=location[crd.cellx][crd.celly];
+//   //location[crd.cellx][crd.celly]:=location[activeChecker.cellx][activeChecker.celly];
+//   //location[activeChecker.cellx][activeChecker.celly]:=i;
+//
+//
 end;
 
 
