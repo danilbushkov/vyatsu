@@ -1,0 +1,130 @@
+object Form1: TForm1
+  Left = 309
+  Height = 675
+  Top = 251
+  Width = 637
+  BorderIcons = [biSystemMenu, biMinimize]
+  BorderStyle = bsSingle
+  Caption = 'Form1'
+  ClientHeight = 675
+  ClientWidth = 637
+  OnActivate = FormActivate
+  OnCreate = FormCreate
+  OnPaint = FormPaint
+  LCLVersion = '2.0.12.0'
+  object BLine: TButton
+    Left = 32
+    Height = 25
+    Top = 608
+    Width = 75
+    Caption = 'BLine'
+    OnClick = BLineClick
+    TabOrder = 0
+  end
+  object BLineBr8: TButton
+    Left = 32
+    Height = 25
+    Top = 640
+    Width = 75
+    Caption = 'BLineBr8'
+    OnClick = BLineBr8Click
+    TabOrder = 1
+  end
+  object BLineBr4: TButton
+    Left = 136
+    Height = 25
+    Top = 608
+    Width = 75
+    Caption = 'BLineBr4'
+    OnClick = BLineBr4Click
+    TabOrder = 2
+  end
+  object BCircle: TButton
+    Left = 248
+    Height = 25
+    Top = 640
+    Width = 75
+    Caption = 'BCircle'
+    OnClick = BCircleClick
+    TabOrder = 3
+  end
+  object BCircleBr: TButton
+    Left = 248
+    Height = 25
+    Top = 608
+    Width = 75
+    Caption = 'BCircleBr'
+    OnClick = BCircleBrClick
+    TabOrder = 4
+  end
+  object EditX1: TEdit
+    Left = 401
+    Height = 23
+    Top = 610
+    Width = 80
+    OnChange = EditX1Change
+    OnKeyPress = EditX1KeyPress
+    TabOrder = 5
+    Text = '0'
+  end
+  object Editx2: TEdit
+    Left = 401
+    Height = 23
+    Top = 642
+    Width = 80
+    OnKeyPress = Editx2KeyPress
+    TabOrder = 6
+    Text = '0'
+  end
+  object EditY1: TEdit
+    Left = 505
+    Height = 23
+    Top = 610
+    Width = 80
+    OnKeyPress = EditY1KeyPress
+    TabOrder = 7
+    Text = '0'
+  end
+  object EditY2: TEdit
+    Left = 505
+    Height = 23
+    Top = 642
+    Width = 80
+    OnKeyPress = EditY2KeyPress
+    TabOrder = 8
+    Text = '0'
+  end
+  object X1: TLabel
+    Left = 376
+    Height = 15
+    Top = 610
+    Width = 13
+    Caption = 'X1'
+    ParentColor = False
+  end
+  object X2: TLabel
+    Left = 376
+    Height = 15
+    Top = 642
+    Width = 13
+    Caption = 'X2'
+    ParentColor = False
+  end
+  object Y1: TLabel
+    Left = 488
+    Height = 15
+    Top = 610
+    Width = 13
+    Caption = 'Y1'
+    ParentColor = False
+    WordWrap = True
+  end
+  object Y2: TLabel
+    Left = 488
+    Height = 15
+    Top = 642
+    Width = 13
+    Caption = 'Y2'
+    ParentColor = False
+  end
+end
