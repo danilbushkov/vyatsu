@@ -13,6 +13,7 @@ Procedure lineBr4(x1,y1,x2,y2,col:integer);
 procedure circle(x1,y1:integer;rad:integer;col:integer);
 procedure simpleCircle(x0,y0:integer;R:integer;col:Tcolor);
 procedure Uline(x1,y1,x2,y2,col:integer);
+procedure star(x1,y1,len,col:integer);
 
 implementation
 uses main;
@@ -30,7 +31,7 @@ begin
 		for x:=x1 to x2 do
 		begin
 			Form1.bm.Canvas.Pixels[x,round(y)]:=col;
-                        sleep(10);
+                        sleep(5);
                         Form1.Canvas.Draw(0,0,Form1.bm);
 			y:=y+m;
 		end;
@@ -50,7 +51,7 @@ begin
                             begin
                                 Form1.bm.Canvas.Pixels[x1,yt]:=col;
                                 Form1.Canvas.Draw(0,0,Form1.bm);
-                                sleep(10);
+                                sleep(5);
                             end;
 
                         end
@@ -60,7 +61,7 @@ begin
                             begin
                                 Form1.bm.Canvas.Pixels[x1,yt]:=col;
                                 Form1.Canvas.Draw(0,0,Form1.bm);
-                                sleep(10);
+                                sleep(5);
                             end;
                         end;
 
@@ -89,7 +90,7 @@ begin
           x:=x+k1;
           y:=y+k2;
           Form1.bm.Canvas.Pixels[round(x),round(y)]:=col;
-          sleep(10);
+          sleep(5);
           Form1.Canvas.Draw(0,0,Form1.bm);
           I:=I+1;
       end;
@@ -143,7 +144,7 @@ begin
 		begin
 			x:=x+s1;
 		end;
-                sleep(25);
+                sleep(5);
                 Form1.Canvas.Draw(0,0,Form1.bm);
 		e:=e+2*dy;
 	end;
@@ -206,7 +207,7 @@ begin
 			e:=e-2*dx;
 		end;
 
-                sleep(10);
+                sleep(5);
                 Form1.Canvas.Draw(0,0,Form1.bm);
 
 	end;
@@ -247,7 +248,7 @@ begin
 			e:=e+4*(x-y)+10;
 			y:=y-1;
 		end;
-                sleep(25);
+                sleep(5);
                 Form1.Canvas.Draw(0,0,Form1.bm);
 		x:=x+1;
 
@@ -279,13 +280,32 @@ begin
             Form1.bm.Canvas.Pixels[x0-x,y0+y]:=col; //
             Form1.bm.Canvas.Pixels[x0+x,y0+y]:=col;
             Form1.bm.Canvas.Pixels[x0+x,y0-y]:=col;
-            sleep(10);
+            sleep(5);
             Form1.Canvas.Draw(0,0,Form1.bm);
             x:=x+1;
     end;
 end;
 
 
+procedure star(x1,y1,len,col:integer);
+var step:real;
+    i:integer;
+    angle:real;
+    x,y:real;
+begin
+      step:=pi/10;
+      for i:=0 to 20 do
+      begin
+          angle:=i*step;
+          x:=cos(angle) * len + x1;
+          y:=sin(angle) * len + y1;
+
+          lineBr4(x1,y1,round(x),round(y),col);
+          //sleep(10);
+          //Form1.Canvas.Draw(0,0,Form1.bm);
+      end;
+
+end;
 
 end.
 

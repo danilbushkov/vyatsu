@@ -18,6 +18,7 @@ type
     BCircle: TButton;
     BCircleBr: TButton;
     BLine: TButton;
+    Bstar: TButton;
     EditX1: TEdit;
     Editx2: TEdit;
     EditY1: TEdit;
@@ -31,6 +32,7 @@ type
     procedure BLineBr4Click(Sender: TObject);
     procedure BLineBr8Click(Sender: TObject);
     procedure BLineClick(Sender: TObject);
+    procedure BstarClick(Sender: TObject);
     procedure EditX1Change(Sender: TObject);
     procedure EditX1KeyPress(Sender: TObject; var Key: char);
     procedure Editx2KeyPress(Sender: TObject; var Key: char);
@@ -70,6 +72,12 @@ begin
    getCor();
     ushapes.uline(tx1,ty1,tx2,ty2,clwhite);
 
+end;
+
+procedure TForm1.BstarClick(Sender: TObject);
+begin
+     getCor();
+     star(tx1,ty1,tx2,clwhite);
 end;
 
 procedure TForm1.EditX1Change(Sender: TObject);

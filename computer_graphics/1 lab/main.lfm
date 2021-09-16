@@ -127,4 +127,13 @@ object Form1: TForm1
     Caption = 'Y2'
     ParentColor = False
   end
+  object Bstar: TButton
+    Left = 136
+    Height = 25
+    Top = 640
+    Width = 75
+    Caption = 'Bstar'
+    OnClick = BstarClick
+    TabOrder = 9
+  end
 end
