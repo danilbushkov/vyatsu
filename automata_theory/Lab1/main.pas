@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Menus,
-  boardunit, checkerunit;
+  boardunit, checkerunit, ubot,UTestBot;
 
 type
 
@@ -137,11 +137,13 @@ var point:Tpoint;
     i:integer;
     a:boolean=false;
 begin
-      if mainTimer.Enabled then
+     //если ход-движение запрещено
+      if (mainTimer.Enabled) or (player=2) then
       begin
         Exit();
       end;
 
+      //позиция
       point:=self.ScreenToClient(Mouse.CursorPos);
       cellx:=point.x div cellsize;
       celly:=point.y div cellsize;
@@ -170,6 +172,7 @@ begin
                 ClearActiveCells(ActiveCells);
                 ClearActiveCells(PathCells);
                 changePlayer;
+                moveBot();
             end;
             Inc(i);
          end;

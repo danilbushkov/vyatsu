@@ -4,13 +4,15 @@
     <PathDelim Value="\"/>
     <Version Value="11"/>
     <BuildModes Active="Default"/>
-    <Units Count="12">
+    <Units Count="14">
       <Unit0>
         <Filename Value="project1.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="25" Y="10"/>
-        <UsageCount Value="90"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="3"/>
+        <CursorPos X="35" Y="10"/>
+        <UsageCount Value="97"/>
+        <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="main.pas"/>
@@ -18,204 +20,224 @@
         <ComponentName Value="MainForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
-        <TopLine Value="270"/>
-        <CursorPos X="32" Y="283"/>
-        <UsageCount Value="90"/>
+        <CursorPos X="8" Y="7"/>
+        <UsageCount Value="97"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="boardunit.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="4"/>
         <TopLine Value="67"/>
         <CursorPos X="16" Y="12"/>
-        <UsageCount Value="90"/>
+        <UsageCount Value="97"/>
         <Loaded Value="True"/>
       </Unit2>
       <Unit3>
         <Filename Value="checkerunit.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="178"/>
-        <CursorPos X="20" Y="130"/>
-        <UsageCount Value="85"/>
+        <TopLine Value="229"/>
+        <CursorPos X="21" Y="471"/>
+        <UsageCount Value="92"/>
         <Loaded Value="True"/>
       </Unit3>
       <Unit4>
+        <Filename Value="ubot.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="UBot"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="55"/>
+        <CursorPos X="18" Y="81"/>
+        <UsageCount Value="27"/>
+        <Loaded Value="True"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="utestbot.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="UTestBot"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="14"/>
+        <UsageCount Value="23"/>
+      </Unit5>
+      <Unit6>
         <Filename Value="D:\Lazarus\lcl\include\control.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2901"/>
         <CursorPos Y="2913"/>
-        <UsageCount Value="10"/>
-      </Unit4>
-      <Unit5>
+        <UsageCount Value="9"/>
+      </Unit6>
+      <Unit7>
         <Filename Value="D:\Lazarus\lcl\include\wincontrol.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="5400"/>
         <CursorPos Y="5412"/>
-        <UsageCount Value="9"/>
-      </Unit5>
-      <Unit6>
+        <UsageCount Value="8"/>
+      </Unit7>
+      <Unit8>
         <Filename Value="D:\Lazarus\lcl\include\customform.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1466"/>
         <CursorPos Y="1478"/>
-        <UsageCount Value="9"/>
-      </Unit6>
-      <Unit7>
+        <UsageCount Value="8"/>
+      </Unit8>
+      <Unit9>
         <Filename Value="D:\Lazarus\lcl\lclmessageglue.pas"/>
         <UnitName Value="LCLMessageGlue"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="110"/>
         <CursorPos Y="123"/>
-        <UsageCount Value="9"/>
-      </Unit7>
-      <Unit8>
+        <UsageCount Value="8"/>
+      </Unit9>
+      <Unit10>
         <Filename Value="D:\Lazarus\lcl\interfaces\win32\win32callback.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2831"/>
         <CursorPos Y="2850"/>
-        <UsageCount Value="10"/>
-      </Unit8>
-      <Unit9>
+        <UsageCount Value="9"/>
+      </Unit10>
+      <Unit11>
         <Filename Value="D:\Lazarus\lcl\interfaces\win32\win32wsforms.pp"/>
         <UnitName Value="Win32WSForms"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="376"/>
         <CursorPos Y="388"/>
-        <UsageCount Value="9"/>
-      </Unit9>
-      <Unit10>
+        <UsageCount Value="8"/>
+      </Unit11>
+      <Unit12>
         <Filename Value="D:\Lazarus\lcl\interfaces\win32\win32object.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="389"/>
         <CursorPos Y="401"/>
-        <UsageCount Value="8"/>
-      </Unit10>
-      <Unit11>
+        <UsageCount Value="7"/>
+      </Unit12>
+      <Unit13>
         <Filename Value="D:\Lazarus\lcl\customtimer.pas"/>
         <UnitName Value="CustomTimer"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="138"/>
         <CursorPos Y="151"/>
-        <UsageCount Value="10"/>
-      </Unit11>
+        <UsageCount Value="9"/>
+      </Unit13>
     </Units>
-    <JumpHistory Count="28" HistoryIndex="27">
+    <JumpHistory Count="29" HistoryIndex="28">
       <Position1>
         <Filename Value="main.pas"/>
-        <Caret Line="278" TopLine="268"/>
+        <Caret Line="101" TopLine="95"/>
       </Position1>
       <Position2>
         <Filename Value="main.pas"/>
-        <Caret Line="279" TopLine="268"/>
+        <Caret Line="102" TopLine="95"/>
       </Position2>
       <Position3>
         <Filename Value="main.pas"/>
-        <Caret Line="280" TopLine="268"/>
+        <Caret Line="125" TopLine="97"/>
       </Position3>
       <Position4>
         <Filename Value="main.pas"/>
-        <Caret Line="301" TopLine="289"/>
+        <Caret Line="99" TopLine="93"/>
       </Position4>
       <Position5>
         <Filename Value="main.pas"/>
-        <Caret Line="247" TopLine="234"/>
+        <Caret Line="101" TopLine="93"/>
       </Position5>
       <Position6>
         <Filename Value="main.pas"/>
-        <Caret Line="249" TopLine="261"/>
+        <Caret Line="102" TopLine="93"/>
       </Position6>
       <Position7>
         <Filename Value="main.pas"/>
-        <Caret Line="276" TopLine="262"/>
+        <Caret Line="125" TopLine="97"/>
       </Position7>
       <Position8>
         <Filename Value="main.pas"/>
-        <Caret Line="277" TopLine="262"/>
+        <Caret Line="101" TopLine="95"/>
       </Position8>
       <Position9>
         <Filename Value="main.pas"/>
-        <Caret Line="278" TopLine="262"/>
+        <Caret Line="102" TopLine="95"/>
       </Position9>
       <Position10>
         <Filename Value="main.pas"/>
-        <Caret Line="280" Column="24" TopLine="282"/>
+        <Caret Line="106" TopLine="95"/>
       </Position10>
       <Position11>
         <Filename Value="main.pas"/>
-        <Caret Line="276" TopLine="264"/>
+        <Caret Line="105" TopLine="95"/>
       </Position11>
       <Position12>
         <Filename Value="main.pas"/>
-        <Caret Line="277" TopLine="264"/>
+        <Caret Line="108" TopLine="95"/>
       </Position12>
       <Position13>
         <Filename Value="main.pas"/>
-        <Caret Line="278" Column="43" TopLine="266"/>
+        <Caret Line="110" TopLine="95"/>
       </Position13>
       <Position14>
         <Filename Value="main.pas"/>
-        <Caret Line="275" Column="56" TopLine="266"/>
+        <Caret Line="113" TopLine="95"/>
       </Position14>
       <Position15>
         <Filename Value="main.pas"/>
-        <Caret Line="278" Column="28" TopLine="261"/>
+        <Caret Line="114" TopLine="95"/>
       </Position15>
       <Position16>
         <Filename Value="main.pas"/>
-        <Caret Line="281" TopLine="261"/>
+        <Caret Line="115" TopLine="95"/>
       </Position16>
       <Position17>
         <Filename Value="main.pas"/>
-        <Caret Line="278" Column="81" TopLine="261"/>
+        <Caret Line="101" TopLine="95"/>
       </Position17>
       <Position18>
-        <Filename Value="main.pas"/>
-        <Caret Line="274" Column="59" TopLine="266"/>
+        <Filename Value="ubot.pas"/>
+        <Caret Line="24"/>
       </Position18>
       <Position19>
-        <Filename Value="main.pas"/>
-        <Caret Line="275" TopLine="265"/>
+        <Filename Value="ubot.pas"/>
+        <Caret Line="25"/>
       </Position19>
       <Position20>
-        <Filename Value="main.pas"/>
-        <Caret Line="277" TopLine="265"/>
+        <Filename Value="ubot.pas"/>
+        <Caret Line="24"/>
       </Position20>
       <Position21>
-        <Filename Value="main.pas"/>
-        <Caret Line="278" TopLine="265"/>
+        <Filename Value="ubot.pas"/>
+        <Caret Line="25"/>
       </Position21>
       <Position22>
-        <Filename Value="main.pas"/>
-        <Caret Line="281" TopLine="265"/>
+        <Filename Value="ubot.pas"/>
+        <Caret Line="24"/>
       </Position22>
       <Position23>
-        <Filename Value="main.pas"/>
-        <Caret Line="282" TopLine="265"/>
+        <Filename Value="ubot.pas"/>
+        <Caret Line="25"/>
       </Position23>
       <Position24>
-        <Filename Value="main.pas"/>
-        <Caret Line="304" TopLine="292"/>
+        <Filename Value="ubot.pas"/>
+        <Caret Line="24"/>
       </Position24>
       <Position25>
-        <Filename Value="main.pas"/>
-        <Caret Line="247" TopLine="234"/>
+        <Filename Value="ubot.pas"/>
+        <Caret Line="25"/>
       </Position25>
       <Position26>
-        <Filename Value="main.pas"/>
-        <Caret Line="249" TopLine="234"/>
+        <Filename Value="ubot.pas"/>
+        <Caret Line="24"/>
       </Position26>
       <Position27>
-        <Filename Value="checkerunit.pas"/>
-        <Caret Line="130" Column="20" TopLine="157"/>
+        <Filename Value="ubot.pas"/>
+        <Caret Line="26" Column="13"/>
       </Position27>
       <Position28>
-        <Filename Value="main.pas"/>
-        <Caret Line="282" Column="42" TopLine="269"/>
+        <Filename Value="ubot.pas"/>
+        <Caret Line="24"/>
       </Position28>
+      <Position29>
+        <Filename Value="ubot.pas"/>
+        <Caret Line="81" Column="18" TopLine="55"/>
+      </Position29>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
