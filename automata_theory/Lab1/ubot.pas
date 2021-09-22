@@ -27,6 +27,9 @@ type
         ls:btlocations;
     end;
 
+var tmpPlayer:integer;
+
+
 procedure moveBot();
 function checkMoveCapture(x,y:integer;var location:tlocation):boolean;
 function BGetMoveCapture(crd:tcrd;  //координаты
@@ -334,6 +337,131 @@ begin
 
      Exit(false);
 
+end;
+
+
+function getSimpleLocation(crd:tcrd;var ls:btlocations;l:tlocation):boolean;
+var d:integer=1;
+    tmpCrd:tcrd;
+    var i:integer=0;
+    var x,y:integer;
+    var tmpl:tlocation;
+begin
+     if(tmpPlayer=1) then
+     begin
+        d:=-1;
+     end;
+     tmpCrd:=crd;
+     x:=crd.cellx;
+     y:=crd.celly;
+     tmpL:=l;
+     if( (x-1)>=0 ) and ( ((y+d)<8) and ((y+d)>=0) ) then
+      begin
+        if(l[x-1,y+d] = 0) then
+        begin
+           tmpCrd.cellx:=tmpCrd.cellx-1;
+           tmpCrd.cellx:=tmpCrd.cellx+d;
+
+           tmpl[crd.cellx,crd.celly]:=l[x,y];
+           tmpl[x,y]:=0;
+
+           setLength(ls,i+1);
+           ls[i]:=l;
+           inc(i);
+
+        end;
+     end;
+     tmpL:=l;
+     if( (x+1)<8 ) and ( ((y+d)<8) and ((y+d)>=0) ) then
+     begin
+        if(l[x+1,y+d] = 0) then
+        begin
+           tmpCrd.cellx:=tmpCrd.cellx+1;
+           tmpCrd.cellx:=tmpCrd.cellx+d;
+
+           tmpl[crd.cellx,crd.celly]:=l[x,y];
+           tmpl[x,y]:=0;
+
+           setLength(ls,i+1);
+           ls[i]:=l;
+
+           inc(i);
+        end;
+     end;
+     if(i=0) then
+     begin
+        Exit(false);
+     end
+     else
+     begin
+        Exit(true);
+     end;
+end;
+
+
+
+function getSimpleMove(crd:tcrd;var ms:btmoves;l:tlocation):boolean;
+var d:integer=1;
+    tmpCrd:tcrd;
+    var i:integer=0;
+    var x,y:integer;
+    var tmpl:tlocation;
+begin
+     if(tmpPlayer=1) then
+     begin
+        d:=-1;
+     end;
+     tmpL:=l;
+     tmpCrd:=crd;
+     x:=crd.cellx;
+     y:=crd.celly;
+
+     if( (x-1)>=0 ) and ( ((y+d)<8) and ((y+d)>=0) ) then
+      begin
+        if(l[x-1,y+d] = 0) then
+        begin
+           tmpCrd.cellx:=tmpCrd.cellx-1;
+           tmpCrd.cellx:=tmpCrd.cellx+d;
+
+            tmpl[crd.cellx,crd.celly]:=l[x,y];
+            tmpl[x,y]:=0;
+
+           setLength(ms.ls,i+1);
+           setLength(ms.ms,i+1);
+           setLength(ms.ms[i],1);
+           ms.ls[i]:=l;
+           ms.ms[i][i]:=tmpCrd;
+           inc(i);
+
+        end;
+     end;
+     tmpL:=l;
+     if( (x+1)<8 ) and ( ((y+d)<8) and ((y+d)>=0) ) then
+     begin
+        if(l[x+1,y+d] = 0) then
+        begin
+           tmpCrd.cellx:=tmpCrd.cellx+1;
+           tmpCrd.cellx:=tmpCrd.cellx+d;
+
+           tmpl[crd.cellx,crd.celly]:=l[x,y];
+           tmpl[x,y]:=0;
+
+           setLength(ms.ls,i+1);
+           setLength(ms.ms,i+1);
+           setLength(ms.ms[i],1);
+           ms.ls[i]:=l;
+           ms.ms[i][i]:=tmpCrd;
+           inc(i);
+        end;
+     end;
+     if(i=0) then
+     begin
+        Exit(false);
+     end
+     else
+     begin
+        Exit(true);
+     end;
 end;
 
 //function checkMoveSimple(x,y:integer;var location:tlocation):boolean;
