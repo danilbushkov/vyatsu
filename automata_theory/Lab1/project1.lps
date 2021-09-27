@@ -10,7 +10,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="35" Y="10"/>
-        <UsageCount Value="114"/>
+        <UsageCount Value="116"/>
       </Unit0>
       <Unit1>
         <Filename Value="main.pas"/>
@@ -19,7 +19,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <CursorPos X="18" Y="286"/>
-        <UsageCount Value="114"/>
+        <UsageCount Value="116"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -29,16 +29,16 @@
         <EditorIndex Value="3"/>
         <TopLine Value="46"/>
         <CursorPos X="16" Y="12"/>
-        <UsageCount Value="114"/>
+        <UsageCount Value="116"/>
         <Loaded Value="True"/>
       </Unit2>
       <Unit3>
         <Filename Value="checkerunit.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="45"/>
-        <CursorPos X="10" Y="13"/>
-        <UsageCount Value="109"/>
+        <TopLine Value="461"/>
+        <CursorPos X="32" Y="481"/>
+        <UsageCount Value="111"/>
         <Loaded Value="True"/>
       </Unit3>
       <Unit4>
@@ -47,9 +47,9 @@
         <UnitName Value="UBot"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="52"/>
-        <CursorPos X="32" Y="72"/>
-        <UsageCount Value="44"/>
+        <TopLine Value="92"/>
+        <CursorPos X="52" Y="118"/>
+        <UsageCount Value="46"/>
         <Loaded Value="True"/>
       </Unit4>
       <Unit5>
@@ -58,7 +58,7 @@
         <UnitName Value="UTestBot"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="14"/>
-        <UsageCount Value="40"/>
+        <UsageCount Value="42"/>
       </Unit5>
       <Unit6>
         <Filename Value="D:\Lazarus\lcl\include\control.inc"/>
@@ -247,15 +247,4 @@
       <Modes Count="0" ActiveMode=""/>
     </RunParams>
   </ProjectSession>
-  <Debugging>
-    <BreakPoints Count="1">
-      <Item1>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="ubot.pas"/>
-        <Line Value="71"/>
-      </Item1>
-    </BreakPoints>
-  </Debugging>
 </CONFIG>

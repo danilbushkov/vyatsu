@@ -113,18 +113,18 @@ begin
                   begin
                      ms.start.cellx:=i;
                      ms.start.celly:=j;
-                     //for a:=0 to length(ms.ms)-1 do
-                     //begin
-                     //     eval:=minimax(ms.ls[a],1,-1000000,1000000,false);
-                     //     if eval>maxEval then
-                     //     begin
-                     //        maxEval:=eval;
-                     //        move:=ms;
-                     //        move.move:=a;
-                     //     end;
-                     //end;
-                      move:=ms;
-                      move.move:=0;
+                     for a:=0 to length(ms.ms)-1 do
+                     begin
+                          eval:=minimax(ms.ls[a],6,-1000000,1000000,false);
+                          if eval>maxEval then
+                          begin
+                             maxEval:=eval;
+                             move:=ms;
+                             move.move:=a;
+                          end;
+                     end;
+                      //move:=ms;
+                     // move.move:=0;
                   end;
                end;
 
@@ -135,6 +135,45 @@ begin
      Exit(move); //вернуть ход
 end;
 
+
+function GetEval(var l:tlocation):integer;
+var i,j:integer;
+    b,g:integer;
+    eval:integer;
+begin
+     eval:=0;
+     b:=0;
+     g:=0;
+     for j:=0 to 7 do
+     begin
+        for i:=0 to 7 do
+        begin
+            if (l[i][j]>0) and (l[i][j]<=12) then
+            begin
+                inc(g);
+            end
+            else if (l[i][j]>12) then
+            begin
+               inc(b);
+               if (j=7) or (j=0) then
+               begin
+                  eval:=eval+2;
+               end;
+               if (j=6)then
+               begin
+                  eval:=eval+1;
+               end;
+               if (j=1)then
+               begin
+                  eval:=eval+1;
+               end;
+            end;
+        end;
+     end;
+     eval:=eval+b-g;
+     exit(eval);
+end;
+
 function minimax(location:tlocation;depth:integer;alpha,beta:integer;maxPlayer:boolean):integer;
 var maxEval,minEval,eval:integer;
     ls:btlocations;
@@ -142,7 +181,7 @@ var maxEval,minEval,eval:integer;
 begin
     if depth=0 then //добавить проверку на ход
     begin
-       Exit(1);//оценка
+       Exit(GetEval(location));//оценка
     end;
 
     if maxPlayer then
