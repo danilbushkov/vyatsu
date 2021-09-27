@@ -136,6 +136,7 @@ var point:Tpoint;
     crd:tcrd;
     i:integer;
     a:boolean=false;
+
 begin
      //если ход-движение запрещено
       if (mainTimer.Enabled) or (player=2) then
@@ -172,7 +173,7 @@ begin
                 ClearActiveCells(ActiveCells);
                 ClearActiveCells(PathCells);
                 changePlayer;
-                moveBot();
+                //moveBot(maintimer);
             end;
             Inc(i);
          end;
@@ -354,7 +355,14 @@ begin
 
          if (mt.countPath=0) or (mt.i>=mt.countPath-1) then
          begin
+
                 MainTimer.Enabled:=false;
+                if player = 2 then
+                begin
+
+                     moveBot(maintimer);
+                     changePlayer;
+                end;
          end
          else
          begin
