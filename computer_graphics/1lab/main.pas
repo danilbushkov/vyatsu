@@ -70,7 +70,7 @@ end;
 procedure TForm1.BLineClick(Sender: TObject);
 begin
    getCor();
-    ushapes.uline(tx1,ty1,tx2,ty2,clwhite);
+    ushapes.line(tx1,ty1,tx2,ty2,clwhite);
 
 end;
 

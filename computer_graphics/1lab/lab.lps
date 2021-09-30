@@ -8,11 +8,10 @@
       <Unit0>
         <Filename Value="lab.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <WindowIndex Value="-1"/>
-        <TopLine Value="-1"/>
-        <CursorPos X="-1" Y="-1"/>
+        <EditorIndex Value="1"/>
+        <CursorPos X="41" Y="23"/>
         <UsageCount Value="24"/>
+        <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="main.pas"/>
@@ -20,8 +19,9 @@
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <TopLine Value="63"/>
-        <CursorPos X="6" Y="80"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="55"/>
+        <CursorPos X="13" Y="73"/>
         <UsageCount Value="24"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -29,16 +29,15 @@
       <Unit2>
         <Filename Value="ushapes.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="1"/>
-        <TopLine Value="7"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="8"/>
         <CursorPos X="39" Y="16"/>
         <UsageCount Value="24"/>
         <Loaded Value="True"/>
       </Unit2>
       <Unit3>
         <Filename Value="D:\Lazarus\lcl\include\rasterimage.inc"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="3"/>
         <TopLine Value="282"/>
         <CursorPos Y="299"/>
         <UsageCount Value="12"/>
@@ -48,123 +47,123 @@
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="main.pas"/>
-        <Caret Line="91" Column="3" TopLine="82"/>
+        <Caret Line="72" Column="3" TopLine="70"/>
       </Position1>
       <Position2>
         <Filename Value="main.pas"/>
-        <Caret Line="90" Column="3" TopLine="81"/>
+        <Caret Line="78" Column="3" TopLine="71"/>
       </Position2>
       <Position3>
         <Filename Value="main.pas"/>
-        <Caret Line="96" Column="3" TopLine="87"/>
+        <Caret Line="84" Column="3" TopLine="72"/>
       </Position3>
       <Position4>
         <Filename Value="main.pas"/>
-        <Caret Line="72" Column="3" TopLine="70"/>
+        <Caret Line="101" TopLine="73"/>
       </Position4>
       <Position5>
         <Filename Value="main.pas"/>
-        <Caret Line="78" Column="3" TopLine="71"/>
+        <Caret Line="95" Column="63" TopLine="73"/>
       </Position5>
       <Position6>
         <Filename Value="main.pas"/>
-        <Caret Line="84" Column="3" TopLine="72"/>
+        <Caret Line="115" Column="22" TopLine="98"/>
       </Position6>
       <Position7>
         <Filename Value="main.pas"/>
-        <Caret Line="101" TopLine="73"/>
+        <Caret Line="69" Column="32" TopLine="64"/>
       </Position7>
       <Position8>
         <Filename Value="main.pas"/>
-        <Caret Line="95" Column="63" TopLine="73"/>
+        <Caret Line="115" Column="22" TopLine="101"/>
       </Position8>
       <Position9>
         <Filename Value="main.pas"/>
-        <Caret Line="115" Column="22" TopLine="98"/>
+        <Caret Line="126" Column="37" TopLine="112"/>
       </Position9>
       <Position10>
         <Filename Value="main.pas"/>
-        <Caret Line="69" Column="32" TopLine="64"/>
+        <Caret Line="128" Column="23" TopLine="109"/>
       </Position10>
       <Position11>
         <Filename Value="main.pas"/>
-        <Caret Line="115" Column="22" TopLine="101"/>
+        <Caret Line="126" Column="11" TopLine="109"/>
       </Position11>
       <Position12>
         <Filename Value="main.pas"/>
-        <Caret Line="126" Column="37" TopLine="112"/>
+        <Caret Line="125" Column="26" TopLine="109"/>
       </Position12>
       <Position13>
-        <Filename Value="main.pas"/>
-        <Caret Line="128" Column="23" TopLine="109"/>
+        <Filename Value="ushapes.pas"/>
+        <Caret Line="254" Column="58" TopLine="240"/>
       </Position13>
       <Position14>
         <Filename Value="main.pas"/>
-        <Caret Line="126" Column="11" TopLine="109"/>
+        <Caret Line="141" Column="30" TopLine="118"/>
       </Position14>
       <Position15>
-        <Filename Value="main.pas"/>
-        <Caret Line="125" Column="26" TopLine="109"/>
+        <Filename Value="ushapes.pas"/>
+        <Caret Line="61" Column="35" TopLine="46"/>
       </Position15>
       <Position16>
         <Filename Value="ushapes.pas"/>
-        <Caret Line="254" Column="58" TopLine="240"/>
+        <Caret Line="32" Column="6" TopLine="13"/>
       </Position16>
       <Position17>
-        <Filename Value="main.pas"/>
-        <Caret Line="141" Column="30" TopLine="118"/>
+        <Filename Value="ushapes.pas"/>
+        <Caret Line="34" Column="53" TopLine="28"/>
       </Position17>
       <Position18>
         <Filename Value="ushapes.pas"/>
-        <Caret Line="61" Column="35" TopLine="46"/>
+        <Caret Line="266" Column="41" TopLine="240"/>
       </Position18>
       <Position19>
-        <Filename Value="ushapes.pas"/>
-        <Caret Line="32" Column="6" TopLine="13"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="102" Column="21" TopLine="96"/>
       </Position19>
       <Position20>
         <Filename Value="ushapes.pas"/>
-        <Caret Line="34" Column="53" TopLine="28"/>
+        <Caret Line="91" Column="54" TopLine="85"/>
       </Position20>
       <Position21>
-        <Filename Value="ushapes.pas"/>
-        <Caret Line="266" Column="41" TopLine="240"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="70" Column="14" TopLine="62"/>
       </Position21>
       <Position22>
-        <Filename Value="main.pas"/>
-        <Caret Line="102" Column="21" TopLine="96"/>
+        <Filename Value="ushapes.pas"/>
+        <Caret Line="85" Column="19" TopLine="73"/>
       </Position22>
       <Position23>
         <Filename Value="ushapes.pas"/>
-        <Caret Line="91" Column="54" TopLine="85"/>
+        <Caret Line="82" TopLine="73"/>
       </Position23>
       <Position24>
         <Filename Value="main.pas"/>
-        <Caret Line="70" Column="14" TopLine="62"/>
+        <Caret Line="104" Column="6" TopLine="93"/>
       </Position24>
       <Position25>
-        <Filename Value="ushapes.pas"/>
-        <Caret Line="85" Column="19" TopLine="73"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="111" Column="6" TopLine="100"/>
       </Position25>
       <Position26>
-        <Filename Value="ushapes.pas"/>
-        <Caret Line="82" TopLine="73"/>
+        <Filename Value="main.pas"/>
+        <Caret Line="79" Column="3" TopLine="77"/>
       </Position26>
       <Position27>
-        <Filename Value="main.pas"/>
-        <Caret Line="104" Column="6" TopLine="93"/>
+        <Filename Value="ushapes.pas"/>
+        <Caret Line="289" Column="29" TopLine="283"/>
       </Position27>
       <Position28>
         <Filename Value="main.pas"/>
-        <Caret Line="111" Column="6" TopLine="100"/>
+        <Caret Line="73" Column="13" TopLine="46"/>
       </Position28>
       <Position29>
-        <Filename Value="main.pas"/>
-        <Caret Line="79" Column="3" TopLine="77"/>
+        <Filename Value="lab.lpr"/>
+        <Caret Line="20" Column="20"/>
       </Position29>
       <Position30>
-        <Filename Value="ushapes.pas"/>
-        <Caret Line="289" Column="29" TopLine="283"/>
+        <Filename Value="lab.lpr"/>
+        <Caret Line="21" Column="4"/>
       </Position30>
     </JumpHistory>
     <RunParams>
