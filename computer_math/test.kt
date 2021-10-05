@@ -10,6 +10,9 @@ fun SecondDerivative(x: Double) : Double = -4/((2*x+1).pow(2))
 fun Hord(a:Double, b:Double, f: (Double)->Double):Double =
         b - f(b) * (b-a)/(f(b)-f(a))
 
+fun Canon(x: Double) : Double = 2 - ln(1+2*x)
+fun CanonDerivative(x: Double) : Double = -(2/(1+2*x))
+
 fun isolate(a:Double, _left:Double, _right:Double, func: (Double)->Double)
 : Array<Double>{
     var left: Double = _left
@@ -30,6 +33,35 @@ fun isolate(a:Double, _left:Double, _right:Double, func: (Double)->Double)
     return arr;
 }
 
+fun iter_m(
+    l:Double,
+    r:Double,
+    eps:Double,
+    Func: (Double)->Double,
+    D1: (Double)->Double
+          
+): MutableList<Array<Double>>
+{
+    var a:Double = l
+    var d:Double
+    var b:Double = 0.0
+    var k:Double
+    var arr = mutableListOf<Array<Double>>()
+    var q:Double
+
+    //k=-1/D1(a)
+
+    do{
+        b = a
+        a = Canon(a)//a + k*Func(a)
+        d = abs(a - b) 
+
+        arr.add(arrayOf(b,a,d))
+    //d>eps   
+    }while( d > eps)
+    return  arr
+}
+
 fun com_m(l:Double,
           r:Double,
           eps:Double,
@@ -42,8 +74,7 @@ fun com_m(l:Double,
     var a: Double
     var b: Double
     var d: Double
-    var i: Int = 0
-    var arr = mutableListOf<Array<Double>>();
+    var arr = mutableListOf<Array<Double>>()
     if(f){
         b=l
         a=r
@@ -52,8 +83,7 @@ fun com_m(l:Double,
         a=l
     }
     do{
-        i++
-        d=b-a
+        
         if(f){
             b = Hord(a,b,::Func)
             a = a - Func(a)/D1(a)
@@ -61,20 +91,54 @@ fun com_m(l:Double,
             a = Hord(a,b,::Func)
             b = b - Func(b)/D1(b)
         }
-        arr.add(arrayOf(a,b))
-
-    }while (abs(d)>eps)
+        d=abs(b-a)
+        arr.add(arrayOf(a,b,d))
+        
+    }while (d>eps)
     return  arr
 }
 
 fun main() {
-    var arr: Array<Double> = isolate(0.01,0.5,1.4, ::Func)
+    //var arr: Array<Double> = isolate(0.01,0.5,1.4, ::Func)
     //println("%.3f %.3f\n".format(arr[0],arr[1]));
-    var ml = com_m(0.5,1.4, 0.00001,::Func,::FirstDerivative,::SecondDerivative)
-    for(ar in ml){
+    var ml1 = com_m(0.5,1.4, 0.00001,::Func,::FirstDerivative,::SecondDerivative)
+    var ml = iter_m(0.5,1.4, 0.00001,::Func,::FirstDerivative)
+    var i:Int=0
+
+
+    println("Function: " + function)
+    println("[0,5; 1,4]")
+    print("Phi'(a) = " + FirstDerivative(0.5))
+    println(" Phi'(b) = " + FirstDerivative(1.4))
+    println("Canonical function: 2 - ln(1+2*x)")
+    if(CanonDerivative(0.5)<0.0){
+        println("Two-way convergence -> |xn+1 - xn| <= eps")
+    }else{
+        println("Monotonic convergence -> (1/(1-q))*|xn+1 - xn|")
+    }
+
+    println("Combined method:")
+    println("n       Xn      Xn+1       |Xn-Xn+1|")
+    for(ar in ml1){
+        print(i.toString() + " ")
         for(a in ar){
             print("%.6f ".format(a))
         }
-        println("\n")
+        println()
+        i++
     }
+    println()
+    i=0
+    
+    println("Iteration method:")
+    println("n       Xn      Xn+1       |Xn-Xn+1|")
+    for(ar in ml){
+        print(i.toString()+" ")
+        for(a in ar){
+            print("%.6f ".format(a))
+        }
+        println()
+        i++
+    }
+
 }
