@@ -20,12 +20,15 @@ uses
   Classes, SysUtils,checkerunit,ExtCtrls,math;
 
 type
-  btlocations=array of tlocation;
+  btlocations=record
+       arr: array of tlocation;
+       status: boolean;
+  end;
   btmoves=record
         ms:Tmoves;
         start:tcrd;
         ls:btlocations;
-        status:boolean;
+        status:array of boolean;
         move:integer;
     end;
 
@@ -49,7 +52,7 @@ function BGetLocationCapture(crd:tcrd;  //координаты
 
 function getSimpleLocation(crd:tcrd;var ls:btlocations;l:tlocation):boolean;
 function getSimpleMove(crd:tcrd;var ms:btmoves;l:tlocation):boolean;
-function checkMoveSimple(x,y:integer;var location:tlocation):boolean;
+function checkMoveSimple(x,y:integer;var location:tlocation;p:integer):boolean;
 function BGetLocation(x,y:integer;var l:tlocation):bTlocations;
 function BGetMove(x,y:integer;var l:tlocation):btmoves;
 function minimax(location:tlocation;depth:integer;alpha,beta:integer;maxPlayer:boolean):integer;
@@ -105,8 +108,9 @@ begin
              if checkPlayer(location[i,j],player) then
              begin
                //проверка рубки шашки
-               if checkMoveCapture(i,j,location) or checkMoveSimple(i,j,location) then
+               if checkMoveCapture(i,j,location) or checkMoveSimple(i,j,location,player) then
                begin
+                  tmpplayer:=player;
                   ms:=BGetMove(i,j,location);
 
                   if length(ms.ms)>0 then
@@ -115,13 +119,37 @@ begin
                      ms.start.celly:=j;
                      for a:=0 to length(ms.ms)-1 do
                      begin
-                          eval:=minimax(ms.ls[a],6,-1000000,1000000,false);
-                          if eval>maxEval then
+                          //
+                          if (not cap) then
                           begin
-                             maxEval:=eval;
-                             move:=ms;
-                             move.move:=a;
+                               if (not ms.status[a]) then
+                               begin
+                                  eval:=minimax(ms.ls.arr[a],3,-1000000,1000000,false);
+
+                                  if eval>maxEval then
+                                  begin
+                                     maxEval:=eval;
+                                     move:=ms;
+                                     move.move:=a;
+                                  end;
+                               end
+                               else begin
+                                   cap:=true;
+                                   maxEval:=-1000000
+                               end;
                           end;
+
+                          if (ms.status[a]) and (cap) then
+                          begin
+                               eval:=minimax(ms.ls.arr[a],3,-1000000,1000000,false);
+                                if eval>maxEval then
+                                begin
+                                   maxEval:=eval;
+                                   move:=ms;
+                                   move.move:=a;
+                                end;
+                          end;
+
                      end;
                       //move:=ms;
                      // move.move:=0;
@@ -132,6 +160,7 @@ begin
 
          end;
      end;
+
      Exit(move); //вернуть ход
 end;
 
@@ -151,26 +180,52 @@ begin
             if (l[i][j]>0) and (l[i][j]<=12) then
             begin
                 inc(g);
+                if (j=0) then
+                begin
+                   eval:=eval-100;
+                end;
+                if (j=1) then
+                begin
+                   eval:=eval-90;
+                end;
+                if (j=2) then
+                begin
+                   eval:=eval-70;
+                end;
+                if (j=7) then
+                begin
+                   //eval:=eval-10;
+                end;
             end
             else if (l[i][j]>12) then
             begin
                inc(b);
-               if (j=7) or (j=0) then
+               if (j=7) then
                begin
-                  eval:=eval+2;
+                  eval:=eval+100;
                end;
                if (j=6)then
                begin
-                  eval:=eval+1;
+                  eval:=eval+70;
                end;
+
+               if (j=3) or (j=4) then
+               begin
+                  eval:=eval+20;
+               end;
+
                if (j=1)then
                begin
-                  eval:=eval+1;
+                  eval:=eval+30;
+               end;
+               if (j=0) then
+               begin
+                  eval:=eval+80;
                end;
             end;
         end;
      end;
-     eval:=eval+b-g;
+     eval:=eval+(b-g)*10;
      exit(eval);
 end;
 
@@ -178,6 +233,7 @@ function minimax(location:tlocation;depth:integer;alpha,beta:integer;maxPlayer:b
 var maxEval,minEval,eval:integer;
     ls:btlocations;
     var i,j,a: Integer;
+
 begin
     if depth=0 then //добавить проверку на ход
     begin
@@ -196,14 +252,15 @@ begin
                if checkPlayer(location[i,j],tmpplayer) then
                begin
                  //проверка рубки шашки
-                 if checkMoveCapture(i,j,location) or checkMoveSimple(i,j,location) then
+                 if checkMoveCapture(i,j,location) or checkMoveSimple(i,j,location,tmpplayer) then
                  begin
                      ls:=bgetlocation(i,j,location);
-                     if length(ls) > 0 then
+
+                     if length(ls.arr) > 0 then
                      begin
-                        for a:=0 to length(ls)-1 do
+                        for a:=0 to length(ls.arr)-1 do
                         begin
-                            eval:=minimax(ls[a],depth-1,alpha,beta,false);
+                            eval:=minimax(ls.arr[a],depth-1,alpha,beta,false);
                             maxEval := max(maxEval,eval);
                             //alpha=max(alpha,eval);
                             //if beta<=alpha
@@ -233,14 +290,15 @@ begin
                if checkPlayer(location[i,j],tmpplayer) then
                begin
                  //проверка рубки шашки
-                 if checkMoveCapture(i,j,location) or checkMoveSimple(i,j,location) then
+                 if checkMoveCapture(i,j,location) or checkMoveSimple(i,j,location,tmpplayer) then
                  begin
                      ls:=bgetlocation(i,j,location);
-                     if length(ls) > 0 then
+
+                     if length(ls.arr) > 0 then
                      begin
-                        for a:=0 to length(ls)-1 do
+                        for a:=0 to length(ls.arr)-1 do
                         begin
-                            eval:=minimax(ls[a],depth-1,alpha,beta,true);
+                            eval:=minimax(ls.arr[a],depth-1,alpha,beta,true);
                             minEval := min(minEval,eval);
                             //alpha=max(alpha,eval);
                             //if beta<=alpha
@@ -263,12 +321,14 @@ var ls:btlocations;
     i:integer=0;
     crd:tcrd;
 begin
+     ls.status:=true;
      crd.cellx:=x;
      crd.celly:=y;
      BGetLocationCapture(crd,l,ls,0,i);
-     if(length(ls)=0) then
+     if(length(ls.arr)=0) then
      begin
          getSimpleLocation(crd,ls,l);
+         ls.status:=false;
      end;
      Exit(ls);
 end;
@@ -316,8 +376,8 @@ begin
        a:=BGetLocationCapture(crd,l,locations,depth+1,i);
        if(not a) then
        begin
-           setlength(locations,i+1);
-           locations[i]:=l;
+           setlength(locations.arr,i+1);
+           locations.arr[i]:=l;
 
            inc(i);
            //добавить локацию
@@ -431,10 +491,12 @@ begin
        if(not a) then
        begin
            setlength(moves.ms,i+1);
-           setlength(moves.ls,i+1);
+           setlength(moves.ls.arr,i+1);
+           setLength(moves.status,i+1);
+           moves.status[i]:=true;
            moves.ms[i]:=move;
-           moves.ls[i]:=l;
-           moves.status:=true;
+           moves.ls.arr[i]:=l;
+           moves.status[i]:=true;
            inc(i);
            //добавить локацию
        end;
@@ -468,7 +530,6 @@ begin
      a:=false;
      x:=crd.cellx;
      y:=crd.celly;
-     moves.status:=false;
      //левый верхний угол
      if( (x-2)>=0 ) and ( (y-2)>=0 ) then
      begin
@@ -587,8 +648,8 @@ begin
            tmpl[tmpCrd.cellx,tmpCrd.celly]:=l[x,y];
            tmpl[x,y]:=0;
 
-           setLength(ls,i+1);
-           ls[i]:=l;
+           setLength(ls.arr,i+1);
+           ls.arr[i]:=l;
            inc(i);
 
         end;
@@ -605,8 +666,8 @@ begin
            tmpl[tmpCrd.cellx,tmpCrd.celly]:=l[x,y];
            tmpl[x,y]:=0;
 
-           setLength(ls,i+1);
-           ls[i]:=l;
+           setLength(ls.arr,i+1);
+           ls.arr[i]:=l;
 
            inc(i);
         end;
@@ -649,10 +710,12 @@ begin
             tmpl[tmpCrd.cellx,tmpCrd.celly]:=l[x,y];
             tmpl[x,y]:=0;
 
-           setLength(ms.ls,i+1);
+           setLength(ms.ls.arr,i+1);
            setLength(ms.ms,i+1);
+           setLength(ms.status,i+1);
+           ms.status[i]:=false;
            setLength(ms.ms[i],1);
-           ms.ls[i]:=tmpl;
+           ms.ls.arr[i]:=tmpl;
            ms.ms[i][0]:=tmpCrd;
            inc(i);
 
@@ -670,10 +733,12 @@ begin
            tmpl[tmpCrd.cellx,tmpCrd.celly]:=l[x,y];
            tmpl[x,y]:=0;
 
-           setLength(ms.ls,i+1);
+           setLength(ms.ls.arr,i+1);
            setLength(ms.ms,i+1);
            setLength(ms.ms[i],1);
-           ms.ls[i]:=tmpl;
+           setLength(ms.status, i+1);
+           ms.status[i]:=false;
+           ms.ls.arr[i]:=tmpl;
            ms.ms[i][0]:=tmpCrd;
            inc(i);
         end;
@@ -688,13 +753,18 @@ begin
      end;
 end;
 
-function checkMoveSimple(x,y:integer;var location:tlocation):boolean;
+function checkMoveSimple(x,y:integer;var location:tlocation;p:integer):boolean;
+var d:integer=1;
 begin
+     if(p=1) then
+     begin
+        d:=-1;
+     end;
      //проверка шага
      //левый нижний угол
      if( (x-1)>=0 ) and ( (y+1)<8 ) then
      begin
-        if(location[x-1,y+1] = 0) then
+        if(location[x-1,y+d] = 0) then
         begin
              Exit(true);
         end;
@@ -702,7 +772,7 @@ begin
 
      if( (x+1)<8 ) and ( (y+1)<8 ) then
      begin
-        if(location[x+1,y+1] = 0) then
+        if(location[x+1,y+d] = 0) then
         begin
              Exit(true);
         end;
