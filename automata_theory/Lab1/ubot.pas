@@ -107,10 +107,13 @@ begin
              //проверка игрока
              if checkPlayer(location[i,j],player) then
              begin
+               tmpplayer:=player;
                //проверка рубки шашки
                if checkMoveCapture(i,j,location) or checkMoveSimple(i,j,location,player) then
                begin
-                  tmpplayer:=player;
+
+
+
                   ms:=BGetMove(i,j,location);
 
                   if length(ms.ms)>0 then
@@ -124,7 +127,7 @@ begin
                           begin
                                if (not ms.status[a]) then
                                begin
-                                  eval:=minimax(ms.ls.arr[a],3,-1000000,1000000,false);
+                                  eval:=minimax(ms.ls.arr[a],1,-1000000,1000000,false);
 
                                   if eval>maxEval then
                                   begin
@@ -141,7 +144,7 @@ begin
 
                           if (ms.status[a]) and (cap) then
                           begin
-                               eval:=minimax(ms.ls.arr[a],3,-1000000,1000000,false);
+                               eval:=minimax(ms.ls.arr[a],1,-1000000,1000000,false);
                                 if eval>maxEval then
                                 begin
                                    maxEval:=eval;
@@ -182,7 +185,7 @@ begin
                 inc(g);
                 if (j=0) then
                 begin
-                   eval:=eval-100;
+                   eval:=eval-1000;
                 end;
                 if (j=1) then
                 begin
@@ -691,7 +694,7 @@ var d:integer=1;
     var x,y:integer;
     var tmpl:tlocation;
 begin
-     if(tmpPlayer=1) then
+     if(Player=1) then
      begin
         d:=-1;
      end;
