@@ -127,7 +127,7 @@ begin
                           begin
                                if (not ms.status[a]) then
                                begin
-                                  eval:=minimax(ms.ls.arr[a],6,-1000000,1000000,false);
+                                  eval:=minimax(ms.ls.arr[a],1,-1000000,1000000,false);
 
                                   if eval>maxEval then
                                   begin
@@ -144,7 +144,7 @@ begin
 
                           if (ms.status[a]) and (cap) then
                           begin
-                               eval:=minimax(ms.ls.arr[a],6,-1000000,1000000,false);
+                               eval:=minimax(ms.ls.arr[a],1,-1000000,1000000,false);
                                 if eval>maxEval then
                                 begin
                                    maxEval:=eval;
@@ -169,6 +169,7 @@ end;
 
 function groupCheckers(var l:tlocation;i,j:integer):integer;
 var eval:integer=0;
+    b:boolean=false;
 begin
      if(j-1>=0) and (i+1<8) and (i-1>=0) then
      begin
@@ -183,6 +184,7 @@ begin
          if (l[i+1][j+1]>0) and (l[i+1][j+1]<=12) and (l[i-1,j-1]=0) then
          begin
             eval:=eval-50;
+            b:=true;
          end;
      end;
      if(j+1<8) and (i+1<8) and (j-1>=0) and (i-1>=0) then
@@ -190,6 +192,7 @@ begin
          if (l[i-1][j+1]>0) and (l[i-1][j+1]<=12) and (l[i+1,j-1]=0) then
          begin
             eval:=eval-50;
+            b:=true;
          end;
      end;
      if(j+1<8) and (i+1<8) and (j-1>=0) and (i-1>=0) then
@@ -197,6 +200,7 @@ begin
          if (l[i+1][j-1]>0) and (l[i+1][j-1]<=12) and (l[i-1,j+1]=0) then
          begin
             eval:=eval-50;
+            b:=true;
          end;
      end;
      if(j+1<8) and (i+1<8) and (j-1>=0) and (i-1>=0) then
@@ -204,9 +208,20 @@ begin
          if (l[i-1][j-1]>0) and (l[i-1][j-1]<=12) and (l[i+1,j+1]=0) then
          begin
             eval:=eval-50;
+            b:=true;
          end;
      end;
-
+     if b then
+     begin
+        if (j>4) then
+        begin
+             eval:=eval-150;
+        end;
+        if (j<3) then
+        begin
+             eval:=eval-200;
+        end;
+     end;
 
      Exit(eval);
 end;
@@ -229,7 +244,7 @@ begin
                 inc(g);
                 if (j=0) then
                 begin
-                   eval:=eval-1000;
+                   eval:=eval-10000;
                 end;
                 if (j=1) then
                 begin
@@ -241,7 +256,7 @@ begin
                 end;
                 if (j=7) then
                 begin
-                   eval:=eval-10;
+                   //eval:=eval-10;
                 end;
             end
             else if (l[i][j]>12) then
@@ -263,17 +278,17 @@ begin
 
                if (j=1)then
                begin
-                  eval:=eval+30;
+                  //eval:=eval+0;
                end;
                if (j=0) then
                begin
-                  eval:=eval+200;
+                  eval:=eval+400;
                end;
                eval:=eval+groupCheckers(l,i,j);
             end;
         end;
      end;
-     eval:=eval+(b-g)*5;
+     eval:=eval+(b-g)*7;
      exit(eval);
 end;
 
