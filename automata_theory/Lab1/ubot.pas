@@ -127,7 +127,7 @@ begin
                           begin
                                if (not ms.status[a]) then
                                begin
-                                  eval:=minimax(ms.ls.arr[a],1,-1000000,1000000,false);
+                                  eval:=minimax(ms.ls.arr[a],6,-1000000,1000000,false);
 
                                   if eval>maxEval then
                                   begin
@@ -144,7 +144,7 @@ begin
 
                           if (ms.status[a]) and (cap) then
                           begin
-                               eval:=minimax(ms.ls.arr[a],1,-1000000,1000000,false);
+                               eval:=minimax(ms.ls.arr[a],6,-1000000,1000000,false);
                                 if eval>maxEval then
                                 begin
                                    maxEval:=eval;
@@ -165,6 +165,50 @@ begin
      end;
 
      Exit(move); //вернуть ход
+end;
+
+function groupCheckers(var l:tlocation;i,j:integer):integer;
+var eval:integer=0;
+begin
+     if(j-1>=0) and (i+1<8) and (i-1>=0) then
+     begin
+         if (l[i+1,j-1]>12) and (l[i-1,j-1]>12)then
+         begin
+            eval:=eval+20;
+         end;
+     end;
+     //Проверка, что нет рубки
+     if(j+1<8) and (i+1<8) and (j-1>=0) and (i-1>=0) then
+     begin
+         if (l[i+1][j+1]>0) and (l[i+1][j+1]<=12) and (l[i-1,j-1]=0) then
+         begin
+            eval:=eval-50;
+         end;
+     end;
+     if(j+1<8) and (i+1<8) and (j-1>=0) and (i-1>=0) then
+     begin
+         if (l[i-1][j+1]>0) and (l[i-1][j+1]<=12) and (l[i+1,j-1]=0) then
+         begin
+            eval:=eval-50;
+         end;
+     end;
+     if(j+1<8) and (i+1<8) and (j-1>=0) and (i-1>=0) then
+     begin
+         if (l[i+1][j-1]>0) and (l[i+1][j-1]<=12) and (l[i-1,j+1]=0) then
+         begin
+            eval:=eval-50;
+         end;
+     end;
+     if(j+1<8) and (i+1<8) and (j-1>=0) and (i-1>=0) then
+     begin
+         if (l[i-1][j-1]>0) and (l[i-1][j-1]<=12) and (l[i+1,j+1]=0) then
+         begin
+            eval:=eval-50;
+         end;
+     end;
+
+
+     Exit(eval);
 end;
 
 
@@ -189,15 +233,15 @@ begin
                 end;
                 if (j=1) then
                 begin
-                   eval:=eval-90;
+                   eval:=eval-1000;
                 end;
                 if (j=2) then
                 begin
-                   eval:=eval-70;
+                   eval:=eval-800;
                 end;
                 if (j=7) then
                 begin
-                   //eval:=eval-10;
+                   eval:=eval-10;
                 end;
             end
             else if (l[i][j]>12) then
@@ -209,7 +253,7 @@ begin
                end;
                if (j=6)then
                begin
-                  eval:=eval+70;
+                 //eval:=eval+70;
                end;
 
                if (j=3) or (j=4) then
@@ -223,14 +267,33 @@ begin
                end;
                if (j=0) then
                begin
-                  eval:=eval+80;
+                  eval:=eval+200;
                end;
+               eval:=eval+groupCheckers(l,i,j);
             end;
         end;
      end;
-     eval:=eval+(b-g)*10;
+     eval:=eval+(b-g)*5;
      exit(eval);
 end;
+
+function isCaptureLocation(var l:tlocation):boolean;
+var i,j:integer;
+begin
+     for j:=0 to 7 do
+     begin
+        for i:=0 to 7 do
+        begin
+           if checkMoveCapture(i,j,l) then
+           begin
+              Exit(true);
+           end;
+        end;
+
+     end;
+     Exit(false);
+end;
+
 
 function minimax(location:tlocation;depth:integer;alpha,beta:integer;maxPlayer:boolean):integer;
 var maxEval,minEval,eval:integer;
@@ -254,9 +317,16 @@ begin
                //проверка игрока
                if checkPlayer(location[i,j],tmpplayer) then
                begin
-                 //проверка рубки шашки
+                 //проверка рубки шашки или хода
                  if checkMoveCapture(i,j,location) or checkMoveSimple(i,j,location,tmpplayer) then
                  begin
+                     //if isCaptureLocation(location) then
+                     //begin
+                     //     if not checkMoveCapture(i,j,location) then
+                     //     begin
+                     //         Continue;
+                     //     end;
+                     //end;
                      ls:=bgetlocation(i,j,location);
 
                      if length(ls.arr) > 0 then
@@ -295,6 +365,14 @@ begin
                  //проверка рубки шашки
                  if checkMoveCapture(i,j,location) or checkMoveSimple(i,j,location,tmpplayer) then
                  begin
+                     //if isCaptureLocation(location) then
+                     //begin
+                     //     if not checkMoveCapture(i,j,location) then
+                     //     begin
+                     //         Continue;
+                     //     end;
+                     //end;
+
                      ls:=bgetlocation(i,j,location);
 
                      if length(ls.arr) > 0 then

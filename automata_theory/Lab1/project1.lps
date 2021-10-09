@@ -10,7 +10,7 @@
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <CursorPos Y="16"/>
-        <UsageCount Value="124"/>
+        <UsageCount Value="127"/>
       </Unit0>
       <Unit1>
         <Filename Value="main.pas"/>
@@ -20,7 +20,7 @@
         <ResourceBaseClass Value="Form"/>
         <TopLine Value="331"/>
         <CursorPos X="72" Y="87"/>
-        <UsageCount Value="124"/>
+        <UsageCount Value="127"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -30,7 +30,7 @@
         <EditorIndex Value="4"/>
         <TopLine Value="50"/>
         <CursorPos X="16" Y="12"/>
-        <UsageCount Value="124"/>
+        <UsageCount Value="127"/>
         <Loaded Value="True"/>
       </Unit2>
       <Unit3>
@@ -39,7 +39,7 @@
         <EditorIndex Value="2"/>
         <TopLine Value="450"/>
         <CursorPos Y="485"/>
-        <UsageCount Value="119"/>
+        <UsageCount Value="122"/>
         <Loaded Value="True"/>
       </Unit3>
       <Unit4>
@@ -48,9 +48,9 @@
         <UnitName Value="UBot"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="82"/>
-        <CursorPos X="35" Y="110"/>
-        <UsageCount Value="54"/>
+        <TopLine Value="155"/>
+        <CursorPos X="6" Y="180"/>
+        <UsageCount Value="57"/>
         <Loaded Value="True"/>
       </Unit4>
       <Unit5>
@@ -59,7 +59,7 @@
         <UnitName Value="UTestBot"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="14"/>
-        <UsageCount Value="50"/>
+        <UsageCount Value="53"/>
       </Unit5>
       <Unit6>
         <Filename Value="D:\Lazarus\lcl\include\control.inc"/>
@@ -118,130 +118,130 @@
         <EditorIndex Value="1"/>
         <TopLine Value="155"/>
         <CursorPos Y="176"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="11"/>
         <Loaded Value="True"/>
       </Unit13>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="ubot.pas"/>
-        <Caret Line="120" TopLine="86"/>
+        <Caret Line="129" TopLine="95"/>
       </Position1>
       <Position2>
         <Filename Value="ubot.pas"/>
-        <Caret Line="121" TopLine="86"/>
+        <Caret Line="131" TopLine="97"/>
       </Position2>
       <Position3>
         <Filename Value="ubot.pas"/>
-        <Caret Line="122" TopLine="87"/>
+        <Caret Line="144" TopLine="123"/>
       </Position3>
       <Position4>
         <Filename Value="ubot.pas"/>
-        <Caret Line="125" TopLine="90"/>
+        <Caret Line="105" TopLine="83"/>
       </Position4>
       <Position5>
         <Filename Value="ubot.pas"/>
-        <Caret Line="127" TopLine="92"/>
+        <Caret Line="108" TopLine="83"/>
       </Position5>
       <Position6>
-        <Filename Value="ubot.pas"/>
-        <Caret Line="129" TopLine="95"/>
-      </Position6>
-      <Position7>
-        <Filename Value="ubot.pas"/>
-        <Caret Line="131" TopLine="97"/>
-      </Position7>
-      <Position8>
-        <Filename Value="ubot.pas"/>
-        <Caret Line="144" TopLine="123"/>
-      </Position8>
-      <Position9>
-        <Filename Value="ubot.pas"/>
-        <Caret Line="105" TopLine="83"/>
-      </Position9>
-      <Position10>
-        <Filename Value="ubot.pas"/>
-        <Caret Line="108" TopLine="83"/>
-      </Position10>
-      <Position11>
         <Filename Value="checkerunit.pas"/>
         <Caret Line="473" TopLine="450"/>
-      </Position11>
-      <Position12>
+      </Position6>
+      <Position7>
         <Filename Value="checkerunit.pas"/>
         <Caret Line="475" TopLine="450"/>
-      </Position12>
-      <Position13>
+      </Position7>
+      <Position8>
         <Filename Value="checkerunit.pas"/>
         <Caret Line="479" TopLine="450"/>
-      </Position13>
-      <Position14>
+      </Position8>
+      <Position9>
         <Filename Value="checkerunit.pas"/>
         <Caret Line="481" TopLine="450"/>
-      </Position14>
-      <Position15>
+      </Position9>
+      <Position10>
         <Filename Value="checkerunit.pas"/>
         <Caret Line="485" TopLine="450"/>
+      </Position10>
+      <Position11>
+        <Filename Value="ubot.pas"/>
+        <Caret Line="111" TopLine="83"/>
+      </Position11>
+      <Position12>
+        <Filename Value="ubot.pas"/>
+        <Caret Line="587" TopLine="572"/>
+      </Position12>
+      <Position13>
+        <Filename Value="ubot.pas"/>
+        <Caret Line="596" TopLine="572"/>
+      </Position13>
+      <Position14>
+        <Filename Value="ubot.pas"/>
+        <Caret Line="598" TopLine="572"/>
+      </Position14>
+      <Position15>
+        <Filename Value="ubot.pas"/>
+        <Caret Line="605" TopLine="572"/>
       </Position15>
       <Position16>
         <Filename Value="ubot.pas"/>
-        <Caret Line="111" TopLine="83"/>
+        <Caret Line="614" TopLine="579"/>
       </Position16>
       <Position17>
         <Filename Value="ubot.pas"/>
-        <Caret Line="587" TopLine="572"/>
+        <Caret Line="616" TopLine="581"/>
       </Position17>
       <Position18>
-        <Filename Value="ubot.pas"/>
-        <Caret Line="596" TopLine="572"/>
-      </Position18>
-      <Position19>
-        <Filename Value="ubot.pas"/>
-        <Caret Line="598" TopLine="572"/>
-      </Position19>
-      <Position20>
-        <Filename Value="ubot.pas"/>
-        <Caret Line="605" TopLine="572"/>
-      </Position20>
-      <Position21>
-        <Filename Value="ubot.pas"/>
-        <Caret Line="614" TopLine="579"/>
-      </Position21>
-      <Position22>
-        <Filename Value="ubot.pas"/>
-        <Caret Line="616" TopLine="581"/>
-      </Position22>
-      <Position23>
         <Filename Value="checkerunit.pas"/>
         <Caret Line="473" TopLine="450"/>
-      </Position23>
-      <Position24>
+      </Position18>
+      <Position19>
         <Filename Value="checkerunit.pas"/>
         <Caret Line="475" TopLine="450"/>
-      </Position24>
-      <Position25>
+      </Position19>
+      <Position20>
         <Filename Value="checkerunit.pas"/>
         <Caret Line="479" TopLine="450"/>
-      </Position25>
-      <Position26>
+      </Position20>
+      <Position21>
         <Filename Value="checkerunit.pas"/>
         <Caret Line="484" TopLine="450"/>
-      </Position26>
-      <Position27>
+      </Position21>
+      <Position22>
         <Filename Value="checkerunit.pas"/>
         <Caret Line="485" TopLine="450"/>
+      </Position22>
+      <Position23>
+        <Filename Value="ubot.pas"/>
+        <Caret Line="623" TopLine="589"/>
+      </Position23>
+      <Position24>
+        <Filename Value="ubot.pas"/>
+        <Caret Line="625" TopLine="591"/>
+      </Position24>
+      <Position25>
+        <Filename Value="ubot.pas"/>
+        <Caret Line="111" Column="35" TopLine="97"/>
+      </Position25>
+      <Position26>
+        <Filename Value="ubot.pas"/>
+        <Caret Line="147" Column="82" TopLine="121"/>
+      </Position26>
+      <Position27>
+        <Filename Value="ubot.pas"/>
+        <Caret Line="276" Column="32" TopLine="259"/>
       </Position27>
       <Position28>
         <Filename Value="ubot.pas"/>
-        <Caret Line="623" TopLine="589"/>
+        <Caret Line="258" Column="31" TopLine="240"/>
       </Position28>
       <Position29>
         <Filename Value="ubot.pas"/>
-        <Caret Line="625" TopLine="591"/>
+        <Caret Line="343" Column="42" TopLine="311"/>
       </Position29>
       <Position30>
         <Filename Value="ubot.pas"/>
-        <Caret Line="111" Column="35" TopLine="97"/>
+        <Caret Line="166" Column="17" TopLine="145"/>
       </Position30>
     </JumpHistory>
     <RunParams>
