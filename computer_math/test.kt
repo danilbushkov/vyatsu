@@ -164,10 +164,11 @@ fun main() {
     println("n       Xn      Xn+1       |Xn-Xn+1|")
     for(ar in ml){
         print(i.toString()+" ")
+		j=0
         for(a in ar){
             print("%.6f ".format(a))
             j++
-            if(j==4){
+            if(j==2){
                 res=a
             }
         }
