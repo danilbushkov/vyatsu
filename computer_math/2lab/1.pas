@@ -27,29 +27,33 @@ var
 
 function A13(x,y:double):double;
 begin
-    Exit( x-exp(y-1.5)+4.8 )
+    Exit(  tan(6*x)-cos(4*y)  );
 end;
 function A23(x,y:double):double;
 begin
-    Exit( y - sin(x) )
+    Exit( 2.5*y*y*y-x*x-4*x-3 );
 end;
 
 function A12(x,y:double):double;
 begin
-    Exit( -exp(y-1.5) )
+    Exit( 4*sin(4*y)  );
+    //Exit( 1  )
 end;
 function A21(x,y:double):double;
 begin
-    Exit( -cos(x) )
+    Exit( -2*x-4 )
 end;
 function A11(x,y:double):double;
 begin
-    Exit( 1 )
+    Exit( 6/(cos(6*x)*cos(6*x)) )
 end;
 function A22(x,y:double):double;
 begin
-    Exit( 1 )
+    Exit( 7.5*y*y )
 end;
+
+
+
 
 
 
@@ -67,15 +71,12 @@ begin
     matrix2[4,1]:=0.23 ;matrix2[4,2]:=-0.08 ;matrix2[4,3]:=0.55 ;matrix2[4,4]:=0.25;matrix2[4,5]:=0.65;
 
 
-    matrix3[1,1]:=1 ;matrix3[1,2]:=-2 ;matrix3[1,3]:=1 ;matrix3[1,4]:=0;matrix3[1,5]:=0;
-    matrix3[2,1]:=2 ;matrix3[2,2]:=2 ;matrix3[2,3]:=-1 ;matrix3[2,4]:=3;matrix3[2,5]:=3;
-    matrix3[3,1]:=4 ;matrix3[3,2]:=-1 ;matrix3[3,3]:=1 ;matrix3[3,4]:=5;matrix3[3,5]:=5;
-    matrix3[3,1]:=4 ;matrix3[3,2]:=-1 ;matrix3[3,3]:=1 ;matrix3[3,4]:=5;matrix3[3,5]:=5;
+    matrix3[1,1]:=9 ;matrix3[1,2]:=1 ;matrix3[1,3]:=4 ;matrix3[1,4]:=15;
+    matrix3[2,1]:=5 ;matrix3[2,2]:=2 ;matrix3[2,3]:=1 ;matrix3[2,4]:=10;
+    matrix3[3,1]:=3 ;matrix3[3,2]:=6 ;matrix3[3,3]:=2 ;matrix3[3,4]:=17;
+    
 
-    matrix4[1,1]:=1 ;matrix4[1,2]:=-2 ;matrix4[1,3]:=1 ;matrix4[1,4]:=0;matrix4[1,5]:=0;
-    matrix4[2,1]:=2 ;matrix4[2,2]:=2 ;matrix4[2,3]:=-1 ;matrix4[2,4]:=3;matrix4[2,5]:=3;
-    matrix4[3,1]:=4 ;matrix4[3,2]:=-1 ;matrix4[3,3]:=1 ;matrix4[3,4]:=5;matrix4[3,5]:=5;
-    matrix4[3,1]:=4 ;matrix4[3,2]:=-1 ;matrix4[3,3]:=1 ;matrix4[3,4]:=5;matrix4[3,5]:=5;
+    
     //единичная матрица
     for i:=1 to length(umatrix) do
     begin
@@ -93,7 +94,22 @@ begin
     end;
 end;
 
-procedure printTask1(m:TMatrix;len:integer);
+procedure PrintMatrix(matrix:TMatrix;len:integer);
+var i,j:integer;
+begin
+    for i:=1 to len do
+    begin
+        for j:=1 to len do
+        begin
+            write(matrix[i,j]:8:3);
+            write(' ');
+        end;
+        writeln();
+    end;
+end;
+
+
+procedure printTask1();
 begin
 
     writeln('The Gauss method:');
@@ -114,7 +130,7 @@ begin
 
 end;
 
-procedure printTask2(m:TMatrix;len:integer);
+procedure printTask2();
 begin
 
     writeln('Simple iteration method:');
@@ -123,6 +139,36 @@ begin
     writeln('x3=0,16*x1+0,24*x2-0,35*x4+1,21');
     writeln('x4=0,23*x1-0,08*x2+0,55*x3+0,25*x4+0,65');
     writeln('e=0.0001');
+
+   
+    writeln();
+end;
+
+procedure printTask3();
+begin
+
+    writeln('Inverse matrix method:');
+    writeln('9*x1+x2+4*x3=15');
+    writeln('5*x1+2*x2+x3=10');
+    writeln('3*x1+6*x2+2*x3=17');
+    writeln('e=0.001');
+
+   
+    writeln();
+end;
+
+procedure printTask4();
+begin
+
+    writeln('Newton method:');
+    writeln('tg(6*x)-cos(4*y)=0 ');
+    writeln('2,5*y^3-x^2-4*x-3=0');
+    writeln();
+    writeln('F1''x=6/cos^2(6x)');
+    writeln('F1''y=4sin(4y)');
+    writeln('F2''x=-2x-4');
+    writeln('F2''y=7.5y^2');
+    writeln('e=0.001');
 
    
     writeln();
@@ -190,14 +236,17 @@ begin
 end;
 
 
-procedure method1(var matrix:TMatrix; len: integer);
+procedure method1(var matrix:TMatrix;var result:TVector; len: integer; d:boolean);
 var i,j,a,b:integer;
 begin
     //прямой ход
     for i:=1 to len-1 do
     begin
-        printTable(matrix,4,i);
-        writeln();
+        if d then
+        begin
+            printTable(matrix,4,i);
+            writeln();
+        end;
         //вычисляем коэффициенты
         for j:=i+1 to len do
         begin
@@ -215,7 +264,8 @@ begin
         end;
 
     end;
-    printTable(matrix,4,4);
+    if d then
+        printTable(matrix,4,4);
     //обратный ход
     for i:=len downto 1 do
     begin
@@ -345,7 +395,7 @@ begin
 end;
 
 //метод обратной матрицы
-procedure method3(matrix: TMatrix; umatrix:TMatrix;var result:TVector; len:integer);
+procedure method3(matrix: TMatrix; umatrix:TMatrix;var result:TVector; len:integer;b:boolean);
 var t:double;
     i,j,k:integer;
 begin
@@ -383,7 +433,10 @@ begin
             end;
         end;
     end;
+    if b then
+        PrintMatrix(umatrix,3);
 
+    //умножение матриц
     for i:=1 to len do
     begin
         result[i]:=0;
@@ -400,51 +453,80 @@ procedure method4(var v:TVector);
 var matrix:TMatrix;
     x,y:double;
 begin
-    x:=0;
-    y:=0;
+    x:=1;
+    y:=1;
+    writeln();
+    write('x':10);
+    write('y':10);
+    write('dx':10);
+    write('dy':10);
+    write('max^2':10);
+    writeln();
     repeat
         matrix[1,1]:=A11(x,y); matrix[1,2]:=A12(x,y); matrix[1,3]:=-A13(x,y);
         matrix[2,1]:=A21(x,y); matrix[2,2]:=A22(x,y); matrix[2,3]:=-A23(x,y);
-        method3(matrix,umatrix,v,2);
+        method1(matrix,v,2,false);
         x:=x+v[1];
         y:=y+v[2];
+        write(x:10:4);
+        write(y:10:4);
+        write(v[1]:10:4);
+        write(v[2]:10:4);
+        write(max(v[1]*v[1],v[2]*v[2]):10:4);
+        writeln();
     until max(v[1]*v[1],v[2]*v[2]) < 0.001 ;
     v[1]:=x;
     v[2]:=y;
 end;
 
-procedure PrintMatrix(matrix:TMatrix);
-var i,j:integer;
-begin
-    for i:=1 to count do
-    begin
-        for j:=1 to length(matrix)+1 do
-        begin
-            write(matrix[i,j]:8:3);
-            write(' ');
-        end;
-        writeln();
-    end;
+
+
+procedure detM3(m:TMatrix);
+var a:double;
+begin   
+    a:=m[1,1]*m[2,2]*m[3,3]+
+        m[2,1]*m[3,2]*m[1,3]+
+        m[1,2]*m[2,3]*m[3,1]-
+        m[1,3]*m[2,2]*m[3,1]-
+        m[1,1]*m[3,2]*m[2,3]-
+        m[3,3]*m[2,1]*m[1,2];
+    write('det|A|=');
+    writeln(a:3:3);
 end;
-
-
 
 begin
     init();
-    printTask1(matrix1,4);
-    method1(matrix1,4);
+    printTask1();
+    method1(matrix1,result,4,true);
     //PrintMatrix();
     write('Result: ');
     PrintResult(result,4,3);
     writeln('==============================================================');
 
-    printTask2(matrix2,4);
+    printTask2();
     method2(matrix2,4);
     writeln();
     write('Result: ');
     PrintResult(result2,4,4);
     writeln('==============================================================');
-    //method3(matrix,umatrix,result3,3);
-    //method4(result4);
-    //PrintResult(result4);
+    
+    printTask3();
+    detM3(matrix3);
+    writeln('Matrix: ');
+    PrintMatrix(matrix3,3);
+    writeln();
+    writeln('Inverse Matrix: ');
+    method3(matrix3,umatrix,result3,3,true);
+    writeln();
+    write('Result: ');
+    PrintResult(result3,3,3);
+    writeln('==============================================================');
+    
+    printTask4();
+    method4(result4);
+    writeln();
+    write('Result: ');
+    PrintResult(result4,2,3);
+    
+    
 end.
