@@ -211,23 +211,31 @@ begin
     end;
     sum:=0;
     
+    
+    
+    writeln('                           --------------------');
+    for i:=1 to length(matrix)+1 do
+    begin
+        if(abs(matrix[s,i])>0.000001) then
+        begin
+            b:=matrix[s,i]/matrix[s,s];
+            write(b:10:3);
+            sum:=sum+b;
+        end
+        else
+        begin
+                write(' ':10);
+        end;
+    end;
     if(s<>length(matrix)) then
     begin
-        writeln('                           --------------------');
-        for i:=1 to length(matrix)+1 do
-        begin
-            if(abs(matrix[s,i])>0.000001) then
-            begin
-                b:=matrix[s,i]/matrix[s,s];
-                write(b:10:3);
-                sum:=sum+b;
-            end
-            else
-            begin
-                write(' ':10);
-            end;
-        end;
         write(sum:9:3);
+    end
+    else
+    begin
+        b:=(matrix[s,s]+matrix[s,s+1])/matrix[s,s];
+
+        write(b:9:3);
     end;
     writeln;
     
@@ -498,6 +506,7 @@ begin
     init();
     printTask1();
     method1(matrix1,result,4,true);
+    writeln();
     //PrintMatrix();
     write('Result: ');
     PrintResult(result,4,3);
