@@ -12,15 +12,27 @@ end;
 
 
 const 
+A:array[0..7] of TXYZ= (
+(x:0;y: 250;z:0),//0
+(x:0;y:0;z:0),//1
+(x: 200;y:0;z:0),//2
+(x: 200;y: 250;z:0),//3
+(x: 200;y: 250;z: 200),//4
+(x: 200;y:0;z: 200),//5
+(x:0;y:0;z: 200),//6
+(x:0;y: 250;z: 200) //7
+); 
+
+
 V:array[0..7] of TXYZ= (
-(x:-100;y: 150;z:-100),//0
-(x:-100;y:-150;z:-100),//1
-(x: 100;y:-150;z:-100),//2
-(x: 100;y: 150;z:-100),//3
-(x: 100;y: 150;z: 100),//4
-(x: 100;y:-150;z: 100),//5
-(x:-100;y:-150;z: 100),//6
-(x:-100;y: 150;z: 100) //7
+(x:0;y: 250;z:0),//0
+(x:0;y:0;z:0),//1
+(x: 200;y:0;z:0),//2
+(x: 200;y: 250;z:0),//3
+(x: 200;y: 250;z: 200),//4
+(x: 200;y:0;z: 200),//5
+(x:0;y:0;z: 200),//6
+(x:0;y: 250;z: 200) //7
 ); 
 Axis:array[0..3] of TXYZ= (
     (x:0;y: 0;z: 0),
@@ -134,7 +146,7 @@ begin
     end;
 end;
 
-procedure TurnAxisX(angle:integer);
+procedure rotationAxisX(angle:integer);
 var i:integer;
     r:real;
 begin
@@ -149,7 +161,7 @@ begin
     
 end;
 
-procedure TurnAxisY(angle:integer);
+procedure rotationAxisY(angle:integer);
 var i:integer;
     r:real;
 begin
@@ -164,7 +176,7 @@ begin
     
 end;
 
-procedure TurnAxisZ(angle:integer);
+procedure rotationAxisZ(angle:integer);
 var i:integer;
     r:real;
 begin
@@ -179,7 +191,7 @@ begin
     
 end;
 
-procedure TurnDiagonal(n1,n2,n3:real;angle:integer);
+procedure rotation(n1,n2,n3:real;angle:integer);
 var i:integer;
     r:real;
 begin
@@ -187,18 +199,34 @@ begin
     r:=angle*Pi/180;
     for i:=0 to 7 do
     begin
-        // v[i].x:=round(
-        //     n1*n1+(1-n1*n1)cos(r)+
-
-        // );
-        // v[i].y:=round(
-
-        // );
-        // v[i].z:=round(
-
-        // );
+        v[i].x:=round( 
+            b[i].x*(n1*n1+(1-n1*n1)*cos(r))+
+            b[i].y*( n1*n2*(1-cos(r))-n3*sin(r)) +
+            b[i].z*( n1*n3*(1-cos(r))+n2*sin(r)) 
+        );
+        v[i].y:=round(
+            b[i].x*(n1*n2*(1-cos(r))+n3*sin(r))+
+            b[i].y*( n2*n2+(1-n2*n2)*cos(r) ) +
+            b[i].z*( n2*n3*(1-cos(r))-n1*sin(r)) 
+        );
+        v[i].z:=round(
+            b[i].x*( n1*n3*(1-cos(r))-n2*sin(r)) +
+            b[i].y*( n2*n3*(1-cos(r))+n1*sin(r)) + 
+            b[i].z*( n3*n3+(1-n3*n3)*cos(r) )
+            
+        );
     end;
 
+end;
+
+procedure rotationDiagonal(n:integer;angle:integer);
+begin
+    rotation(
+                v[n].x/sqrt(sqr(v[n].x)+sqr(v[n].y)+sqr(v[n].z)),
+                v[n].y/sqrt(sqr(v[n].x)+sqr(v[n].y)+sqr(v[n].z)),
+                v[n].z/sqrt(sqr(v[n].x)+sqr(v[n].y)+sqr(v[n].z)),
+                angle
+            );
 end;
 
 
@@ -285,18 +313,33 @@ begin
             
         end;
         #52:begin
-            TurnAxisX(30);
+            rotationAxisX(30);
             Axonometric(q,w);
         end;
         #53:begin
-            TurnAxisY(30);
+            rotationAxisY(30);
             Axonometric(q,w);
         end;
         #54:begin
-            TurnAxisZ(30);
+            rotationAxisZ(30);
             Axonometric(q,w);
         end;
-
+        #55:begin
+            rotationDiagonal(6,30);
+            Axonometric(q,w);
+        end;
+        #56:begin
+            rotationDiagonal(3,30);
+            Axonometric(q,w);
+        end;
+        #57:begin
+            rotationDiagonal(4,30);
+            Axonometric(q,w);
+        end;
+        #18:begin
+            v:=a;
+            Axonometric(q,w);
+        end;
 
 
     end;
@@ -308,6 +351,7 @@ begin
     g := detect;
     initgraph(g,h,'');
     setcolor(11);
+    Axonometric(q,w);
     repeat
         ch:=ReadKey();
         Action(ch);
