@@ -80,6 +80,7 @@ object MainForm: TMainForm
       OnClick = SettingsMenuClick
       object ColorCheckers: TMenuItem
         Caption = 'Цвет...'
+        OnClick = ColorCheckersClick
       end
     end
     object About: TMenuItem

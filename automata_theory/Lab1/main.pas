@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Menus,
-  StdCtrls, ComCtrls, boardunit, checkerunit, ubot, UTestBot;
+  StdCtrls, ComCtrls, boardunit, checkerunit, ubot, UTestBot, FormColor;
 
 type
 
@@ -31,6 +31,7 @@ type
     MainTimer: TTimer;
     SpeedTrack: TTrackBar;
 
+    procedure ColorCheckersClick(Sender: TObject);
     procedure ExitProgramClick(Sender: TObject);
     procedure SettingsMenuClick(Sender: TObject);
     procedure FileMenuClick(Sender: TObject);
@@ -88,6 +89,8 @@ end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
+     sColor[0]:=cllime;
+     sColor[1]:=clred;
      resetActiveChecker();
      initboard(board);
      initCheckersAndCellsActive(checkers,viewActiveCells);
@@ -111,14 +114,14 @@ begin
        pause:=false;
        pauseButton.Caption:='Пауза';
        mainTimer.Interval:=101-SpeedTrack.Position;
-       ColorCheckers.Enabled:=true;
+
    end
    else
    begin
        pause:=true;
        pauseButton.Caption:='Продолжить';
        mainTimer.Interval:=0;
-       ColorCheckers.Enabled:=false;
+
    end;
 end;
 
@@ -154,6 +157,11 @@ begin
    end;
 end;
 
+procedure TMainForm.ColorCheckersClick(Sender: TObject);
+begin
+  FColor.ShowModal;
+end;
+
 procedure TMainForm.FormPaint(Sender: TObject);
 begin
 
@@ -167,7 +175,7 @@ var i,j,c:integer;
     CheckerColor:Tcolor;
 begin
    c:=0;
-   CheckerColor:=clRed;
+   CheckerColor:=sColor[0];
 
    for i:=7 downto 0 do begin
        for j:=0 to 7 do begin
@@ -182,7 +190,7 @@ begin
                   if ((i<3) or (i>4)) then
                   begin
                     if(c>11) then begin
-                        CheckerColor:=clGreen;
+                        CheckerColor:=sColor[1];
                     end;
                     initChecker(checkers[c],i*cellsize+5,j*cellsize+5,CheckerColor);
                     inc(c);
@@ -332,6 +340,8 @@ begin
     AnimMove;
 
 end;
+
+
 
 
 
@@ -529,17 +539,23 @@ begin
 
     if(stop)then
     begin
+        player:=pl;
          StartButton.Caption:='Cтоп';
          stop:=false;
+         ColorCheckers.Enabled:=false;
+         if(player=2)then
+         begin
 
-
+           moveBot(maintimer);
+           changePlayer;
+         end;
     end else
     begin
         MainTimer.Enabled:=false;
         initCheckersAndCellsActive(checkers,viewActiveCells);
         stop:=true;
         StartButton.Caption:='Старт';
-
+        ColorCheckers.Enabled:=true;
 
     end;
 end;
