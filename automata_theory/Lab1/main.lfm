@@ -1,23 +1,100 @@
 object MainForm: TMainForm
-  Left = 240
-  Height = 889
-  Top = 31
-  Width = 861
+  Left = 205
+  Height = 621
+  Top = 139
+  Width = 798
+  BorderStyle = bsSingle
   Caption = 'MainForm'
+  ClientHeight = 601
+  ClientWidth = 798
   Menu = MainMenu
   OnCreate = FormCreate
   OnPaint = FormPaint
   LCLVersion = '2.0.12.0'
+  object StartButton: TButton
+    Left = 640
+    Height = 40
+    Top = 88
+    Width = 115
+    Caption = 'Старт'
+    OnClick = StartButtonClick
+    TabOrder = 0
+  end
+  object PauseButton: TButton
+    Left = 640
+    Height = 41
+    Top = 160
+    Width = 115
+    Caption = 'Пауза'
+    OnClick = PauseButtonClick
+    TabOrder = 1
+  end
+  object ExitButton: TButton
+    Left = 640
+    Height = 43
+    Top = 224
+    Width = 115
+    Caption = 'Выход'
+    OnClick = ExitButtonClick
+    TabOrder = 2
+  end
+  object SpeedTrack: TTrackBar
+    Left = 592
+    Height = 25
+    Top = 352
+    Width = 192
+    Max = 100
+    OnChange = SpeedTrackChange
+    Position = 25
+    TabOrder = 3
+  end
+  object SpeedEdit: TEdit
+    Left = 600
+    Height = 23
+    Top = 304
+    Width = 80
+    OnChange = SpeedEditChange
+    OnKeyPress = SpeedEditKeyPress
+    TabOrder = 4
+    Text = '25'
+  end
   object MainMenu: TMainMenu
     Left = 712
     Top = 16
-    object MenuItem1: TMenuItem
-      Caption = 'MenuItem1'
+    object FileMenu: TMenuItem
+      Caption = 'Файл'
+      OnClick = FileMenuClick
+      object Open: TMenuItem
+        Caption = 'Открыть...'
+      end
+      object Save: TMenuItem
+        Caption = 'Сохранить...'
+      end
+      object ExitProgram: TMenuItem
+        Caption = 'Выход'
+        OnClick = ExitProgramClick
+      end
+    end
+    object SettingsMenu: TMenuItem
+      Caption = 'Настройки'
+      OnClick = SettingsMenuClick
+      object ColorCheckers: TMenuItem
+        Caption = 'Цвет...'
+      end
+    end
+    object About: TMenuItem
+      Caption = 'Справка'
+      object AboutProgram: TMenuItem
+        Caption = 'О программе'
+      end
+      object AboutAuthor: TMenuItem
+        Caption = 'Об авторе'
+      end
     end
   end
   object MainTimer: TTimer
     Enabled = False
-    Interval = 1
+    Interval = 10
     OnTimer = MainTimerTimer
     Left = 8
     Top = 8

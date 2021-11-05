@@ -6,18 +6,36 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Menus,
-  boardunit, checkerunit, ubot,UTestBot;
+  StdCtrls, ComCtrls, boardunit, checkerunit, ubot, UTestBot;
 
 type
 
   { TMainForm }
 
   TMainForm = class(TForm)
+    SettingsMenu: TMenuItem;
+    About: TMenuItem;
+    Open: TMenuItem;
+    Save: TMenuItem;
+    ExitProgram: TMenuItem;
+    ColorCheckers: TMenuItem;
+    AboutProgram: TMenuItem;
+    AboutAuthor: TMenuItem;
+    SpeedEdit: TEdit;
+    ExitButton: TButton;
+    PauseButton: TButton;
+    StartButton: TButton;
 
     MainMenu: TMainMenu;
-    MenuItem1: TMenuItem;
+    FileMenu: TMenuItem;
     MainTimer: TTimer;
+    SpeedTrack: TTrackBar;
 
+    procedure ExitProgramClick(Sender: TObject);
+    procedure SettingsMenuClick(Sender: TObject);
+    procedure FileMenuClick(Sender: TObject);
+    procedure ExitButtonClick(Sender: TObject);
+    procedure PauseButtonClick(Sender: TObject);
     procedure FormClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ClickOnBoard(Sender: TObject);
@@ -29,6 +47,11 @@ type
     procedure MainTimerTimer(Sender: TObject);
     procedure MoveCheckerTimer();
     procedure AnimMove();
+    procedure SpeedEditChange(Sender: TObject);
+
+    procedure SpeedEditKeyPress(Sender: TObject; var Key: char);
+    procedure SpeedTrackChange(Sender: TObject);
+    procedure StartButtonClick(Sender: TObject);
   private
 
   public
@@ -41,7 +64,8 @@ var
   MainForm: TMainForm;
   board:TBitmap;
   speed:integer=5;
-
+  stop:boolean=true;
+  pause:boolean=false;
 
 implementation
 
@@ -67,7 +91,7 @@ begin
      resetActiveChecker();
      initboard(board);
      initCheckersAndCellsActive(checkers,viewActiveCells);
-
+     mainTimer.Interval:=101-SpeedTrack.Position;
 end;
 
 
@@ -77,6 +101,56 @@ begin
    if not MainTimer.Enabled then
    begin
      ClickOnBoard(Sender);
+   end;
+end;
+
+procedure TMainForm.PauseButtonClick(Sender: TObject);
+begin
+   if pause then
+   begin
+       pause:=false;
+       pauseButton.Caption:='Пауза';
+       mainTimer.Interval:=101-SpeedTrack.Position;
+       ColorCheckers.Enabled:=true;
+   end
+   else
+   begin
+       pause:=true;
+       pauseButton.Caption:='Продолжить';
+       mainTimer.Interval:=0;
+       ColorCheckers.Enabled:=false;
+   end;
+end;
+
+procedure TMainForm.ExitButtonClick(Sender: TObject);
+var answer:longint;
+begin
+   answer:=QuestionDlg('Выход', 'Вы действительно хотите выйти?',mtCustom,
+                                [mrYes,'Да',mrNo,'Нет'],0);
+   if  answer = mrYes then
+   begin
+         Close();
+   end;
+end;
+
+procedure TMainForm.FileMenuClick(Sender: TObject);
+begin
+
+end;
+
+procedure TMainForm.SettingsMenuClick(Sender: TObject);
+begin
+
+end;
+
+procedure TMainForm.ExitProgramClick(Sender: TObject);
+var answer:longint;
+begin
+   answer:=QuestionDlg('Выход', 'Вы действительно хотите выйти?',mtCustom,
+                                [mrYes,'Да',mrNo,'Нет'],0);
+   if  answer = mrYes then
+   begin
+         Close();
    end;
 end;
 
@@ -139,7 +213,8 @@ var point:Tpoint;
 
 begin
      //если ход-движение запрещено
-      if (mainTimer.Enabled) or (player=2) then
+      if (mainTimer.Enabled) or (player=2) or (stop) or pause
+          then
       begin
         Exit();
       end;
@@ -213,8 +288,10 @@ end;
 
 procedure TMainForm.initChecker(var checker: TShape; t,l:integer; c:Tcolor);
 begin
-      checker:=TShape.Create(self);
-      checker.Parent := self;
+      if (stop) then begin
+           checker:=TShape.Create(self);
+           checker.Parent := self;
+      end;
       checker.Shape:= stCircle;
       checker.brush.Color := c;
       checker.Width := cellsize-10;
@@ -223,12 +300,16 @@ begin
       checker.left:=l;
       checker.OnClick:=@ClickOnBoard;
       checker.BringToFront;
+      checker.visible:=true;
 end;
 
 procedure TMainForm.initCellActive(var cellActive: TShape; t,l:integer; c:Tcolor);
 begin
-      cellActive:=TShape.Create(self);
-      cellActive.Parent := self;
+      if( stop) then begin
+                cellActive:=TShape.Create(self);
+                cellActive.Parent := self;
+
+      end;
       cellActive.Shape:= stRectangle;
       cellActive.brush.style := bsClear;
       cellActive.Width := cellsize-6;
@@ -252,6 +333,12 @@ begin
 
 end;
 
+
+
+
+
+
+
 //ход шашки
 procedure TMainForm.MoveCheckerTimer;
 var //i,j:integer;
@@ -262,47 +349,25 @@ begin
     if mt.countPath=0 then
     begin
         exchange(mt.Startpath,mt.EndPath);
-        //t.Enabled:=true;
+
         mt.anim:=true;
-        //AnimMove();
-        //sh.top:=crd.celly*cellsize+5;
-        //sh.left:=crd.cellx*cellsize+5;
-        //animMove(sh,crd);
+
     end
     else
     begin
-      //tmpcrd:=activeChecker;
-      //move:=getMove(crd);
-      //if i:=1 to length(move)-1 do
-      //begin
+
 
        if (mt.i<(mt.countPath)) and (not mt.anim) then
        begin
          a:=(mt.move[mt.i].cellx-mt.Startpath.cellx) div 2;
          b:=(mt.move[mt.i].celly-mt.Startpath.celly) div 2;
-         //caption:=inttostr(location[mt.move[mt.i].cellx-a][mt.move[mt.i].celly-b]);
+
          checkers[location[mt.move[mt.i].cellx-a][mt.move[mt.i].celly-b]-1].visible:=false;
          location[mt.move[mt.i].cellx-a][mt.move[mt.i].celly-b]:=0;
          exchange(mt.Startpath,mt.move[mt.i]);
          mt.EndPath:=mt.move[mt.i];
          mt.anim:=true;
-         //AnimMove();
-         //mt.Startpath:=mt.move[mt.i];
-         //inc(mt.i);
-         ////sh.top:=move[i].celly*cellsize+5;
-         ////sh.left:=move[i].cellx*cellsize+5;
-         ////animMove(sh,move[i]);
-         //startpath:=tmpcrd;
-         //endPath:=move[i];
-         //ash:=sh;
-         //t.Enabled:=true;
-         ////timerWork:=true;
-         //
-         ////
-         //exchange(move[i],tmpcrd);
-         //tmpcrd:=move[i];
 
-      //end;
        end;
 
     end;
@@ -370,10 +435,113 @@ begin
             inc(mt.i);
          end;
       end;
-      //ash.left:=endPath.cellx*cellsize+5;
-      //ash.top:=endPath.celly*cellsize+5;
+
 
    end;
+end;
+
+procedure TMainForm.SpeedEditChange(Sender: TObject);
+var e,a:integer;
+begin
+   val(speedEdit.text,a,e);
+   if( a>100 ) then
+   begin
+        ShowMessage('Числа от 0 до 100!');
+   end;
+   if(length(speedEdit.text)>0)then
+   begin
+        SpeedTrack.Position:=strtoint(speedEdit.text);
+   end
+   else
+   begin
+         SpeedTrack.Position:=0;
+   end;
+end;
+
+
+
+procedure TMainForm.SpeedEditKeyPress(Sender: TObject; var Key: char);
+begin
+   if not (key in ['0'..'9']) and (key<>#8) then
+   begin
+      ShowMessage('Вводить можно только цифры!');
+   end;
+   if (length(SpeedEdit.text)=0) then
+   begin
+        SpeedEdit.text:='0';
+   end;
+
+   if (key in ['0'..'9']) and (length(SpeedEdit.text)<3) then
+   begin
+
+       key:=key;
+       if (SpeedEdit.text='0') then
+       begin
+
+           if key='0' then
+           begin
+                key:=#0;
+           end;
+
+       end;
+
+   end
+   else if key=#8 then
+   begin
+       key:=key;
+       if (length(SpeedEdit.text)=1) then
+       begin
+            SpeedEdit.text:='0';
+            key:=#0;
+       end;
+   end
+   else begin
+      if (key in ['0'..'9']) and (length(SpeedEdit.text)=3) then
+      begin
+           ShowMessage('Числа от 0 до 100!');
+      end;
+      key:=#0
+
+   end;
+
+
+
+end;
+
+procedure TMainForm.SpeedTrackChange(Sender: TObject);
+begin
+   if SpeedTrack.position=0 then
+   begin
+        MainTimer.interval:=0;
+
+   end
+   else
+   begin
+
+        MainTimer.interval:=101-SpeedTrack.position;
+
+   end;
+   SpeedEdit.Caption:=IntToStr(SpeedTrack.position);
+end;
+
+procedure TMainForm.StartButtonClick(Sender: TObject);
+begin
+
+    if(stop)then
+    begin
+         StartButton.Caption:='Cтоп';
+         stop:=false;
+
+
+    end else
+    begin
+        MainTimer.Enabled:=false;
+        initCheckersAndCellsActive(checkers,viewActiveCells);
+        stop:=true;
+        StartButton.Caption:='Старт';
+
+
+    end;
 end;
 
 end.
