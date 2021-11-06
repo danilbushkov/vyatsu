@@ -9,6 +9,8 @@ object MainForm: TMainForm
   ClientWidth = 798
   Menu = MainMenu
   OnCreate = FormCreate
+  OnMouseDown = FormMouseDown
+  OnMouseMove = FormMouseMove
   OnPaint = FormPaint
   LCLVersion = '2.0.12.0'
   object StartButton: TButton
@@ -45,7 +47,7 @@ object MainForm: TMainForm
     Width = 192
     Max = 100
     OnChange = SpeedTrackChange
-    Position = 25
+    Position = 70
     TabOrder = 3
   end
   object SpeedEdit: TEdit
@@ -58,12 +60,22 @@ object MainForm: TMainForm
     TabOrder = 4
     Text = '25'
   end
+  object CheckBox: TCheckBox
+    Left = 600
+    Height = 19
+    Top = 408
+    Width = 77
+    Caption = 'Подсказка'
+    Checked = True
+    OnChange = CheckBoxChange
+    State = cbChecked
+    TabOrder = 5
+  end
   object MainMenu: TMainMenu
     Left = 712
     Top = 16
     object FileMenu: TMenuItem
       Caption = 'Файл'
-      OnClick = FileMenuClick
       object Open: TMenuItem
         Caption = 'Открыть...'
         OnClick = OpenClick
@@ -79,7 +91,6 @@ object MainForm: TMainForm
     end
     object SettingsMenu: TMenuItem
       Caption = 'Настройки'
-      OnClick = SettingsMenuClick
       object ColorCheckers: TMenuItem
         Caption = 'Цвет...'
         OnClick = ColorCheckersClick

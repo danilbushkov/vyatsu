@@ -13,11 +13,14 @@ type
   TSetting=record
     player:integer;
     colors: array [0..1] of Tcolor;
+    promptColor:Tcolor ;//clAqua
+    promptColor2:Tcolor;
   end;
 
   { TMainForm }
 
   TMainForm = class(TForm)
+    CheckBox: TCheckBox;
     OpenDialog: TOpenDialog;
     SaveDialog: TSaveDialog;
     SettingsMenu: TMenuItem;
@@ -40,30 +43,40 @@ type
 
     procedure AboutAuthorClick(Sender: TObject);
     procedure AboutProgramClick(Sender: TObject);
+    procedure CheckBoxChange(Sender: TObject);
     procedure ColorCheckersClick(Sender: TObject);
     procedure ExitProgramClick(Sender: TObject);
+    procedure FormMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+
+    procedure FormMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+
+
     procedure OpenClick(Sender: TObject);
     procedure SaveClick(Sender: TObject);
-    procedure SettingsMenuClick(Sender: TObject);
-    procedure FileMenuClick(Sender: TObject);
+
     procedure ExitButtonClick(Sender: TObject);
     procedure PauseButtonClick(Sender: TObject);
-    procedure FormClick(Sender: TObject);
+
     procedure FormCreate(Sender: TObject);
     procedure ClickOnBoard(Sender: TObject);
     procedure FormPaint(Sender: TObject);
     procedure initCheckersAndCellsActive(var checkers:Tcheckers;
       var cellsActive:TviewActiveCells);
-    procedure initChecker(var checker: TShape; t,l:integer;c:Tcolor);
+    procedure initChecker(var checker: TShape; t,l:integer;c:Tcolor;a:boolean);
     procedure initCellActive(var cellActive: TShape; t,l:integer; c:Tcolor);
     procedure MainTimerTimer(Sender: TObject);
     procedure MoveCheckerTimer();
     procedure AnimMove();
     procedure SpeedEditChange(Sender: TObject);
-
+    function CheckEnd():boolean;
     procedure SpeedEditKeyPress(Sender: TObject; var Key: char);
     procedure SpeedTrackChange(Sender: TObject);
     procedure StartButtonClick(Sender: TObject);
+    procedure ShowWarning(Sender:TObject);
+    function CheckActiveCells(x,y:integer):boolean;
+    procedure MoveChecker(Sender: TObject);
+    procedure ViewMoveChecker(Sender: TObject);
   private
 
   public
@@ -100,25 +113,149 @@ begin
 
 end;
 
+function TMainForm.CheckEnd():boolean;
+var i,j:integer;
+     c:integer;
+begin
+    for i:=0 to 7 do begin
+        if (location[i,0]>0) and (location[i,0]<13) then
+        begin
+           QuestionDlg('Итог', 'Вы победили!'
+                            ,mtCustom,
+                                [mrYes,'Ок'],0);
+           StartButtonClick(self);
+           exit(true);
+        end;
+
+        if (location[i,7]>12) and (location[i,7]<25) then
+        begin
+           QuestionDlg('Итог', 'Вы проиграли:('
+                            ,mtCustom,
+                                [mrYes,'Ок'],0);
+           StartButtonClick(self);
+           exit(true);
+        end;
+    end;
+    c:=0;
+    for i:=0 to 11 do
+    begin
+         if not checkers[i].visible then begin
+            inc(c);
+         end;
+    end;
+    if c=12 then
+    begin
+        QuestionDlg('Итог', 'Вы проиграли:('
+                            ,mtCustom,
+                                [mrYes,'Ок'],0);
+        StartButtonClick(self);
+        exit(true);
+    end;
+    c:=0;
+    for i:=12 to 23 do
+    begin
+         if not checkers[i].visible then begin
+            inc(c);
+         end;
+    end;
+    if c=12 then
+    begin
+        QuestionDlg('Итог', 'Вы победили!'
+                            ,mtCustom,
+                                [mrYes,'Ок'],0);
+        StartButtonClick(self);
+        exit(true);
+    end;
+    Exit(false);
+end;
+
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
+   promptColor:=clAqua ;//clAqua
+     promptColor2:=clTeal;//clTeal
      sColor[0]:=cllime;
      sColor[1]:=clred;
      resetActiveChecker();
      initboard(board);
      initCheckersAndCellsActive(checkers,viewActiveCells);
+     SpeedEdit.Text:=intTostr(SpeedTrack.Position);
      mainTimer.Interval:=101-SpeedTrack.Position;
+     self.Caption:='Шашки';
 end;
 
+procedure TMainForm.ShowWarning(Sender:TObject);
+var point:Tpoint;
+    cellx,celly:integer;
 
 
-procedure TMainForm.FormClick(Sender: TObject);
 begin
-   if not MainTimer.Enabled then
-   begin
-     ClickOnBoard(Sender);
-   end;
+     //если ход-движение запрещено
+      if (mainTimer.Enabled) or (player=2) or (stop) or pause
+          then
+      begin
+        Exit();
+      end;
+
+      //позиция
+      point:=self.ScreenToClient(Mouse.CursorPos);
+      cellx:=point.x div cellsize;
+      celly:=point.y div cellsize;
+
+      if ActiveCell then
+      begin
+      QuestionDlg('Предупреждение', 'Такой ход не возможен для данной шашки'
+                            ,mtCustom,
+                                [mrYes,'Ок'],0);
+      end;
+
 end;
+
+function TMainForm.CheckActiveCells(x,y:integer):boolean;
+var i:integer;
+begin
+    for i:=0 to activeCells.len-1 do
+    begin
+       if(activeCells.cells[i].cellx = x) and
+            (activeCells.cells[i].celly = y) then
+       begin
+          Exit(true);
+       end;
+    end;
+       Exit(false);
+end;
+
+
+
+procedure TMainForm.FormMouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+var
+    point:Tpoint;
+    cellx,celly:integer;
+begin
+     if (mainTimer.Enabled) or (player=2) or (stop) or pause
+          then
+      begin
+        Exit();
+      end;
+
+     cellx:=x div cellsize;
+     celly:=y div cellsize;
+
+     if(cellx>7) or (celly>7) then
+     begin
+       exit();
+     end;
+
+     if(ActiveCell and (checkplayer(location[cellx][celly],2) or
+     not checkActiveCells(x,y)) ) then
+     begin
+         QuestionDlg('Предупреждение', 'Такой ход не возможен для данной шашки'
+                            ,mtCustom,
+                                [mrYes,'Ок'],0);
+     end;
+end;
+
+
 
 procedure TMainForm.PauseButtonClick(Sender: TObject);
 begin
@@ -149,15 +286,7 @@ begin
    end;
 end;
 
-procedure TMainForm.FileMenuClick(Sender: TObject);
-begin
 
-end;
-
-procedure TMainForm.SettingsMenuClick(Sender: TObject);
-begin
-
-end;
 
 procedure TMainForm.ExitProgramClick(Sender: TObject);
 var answer:longint;
@@ -170,22 +299,68 @@ begin
    end;
 end;
 
+
+
+
+
+procedure TMainForm.FormMouseMove(Sender: TObject; Shift: TShiftState; X,
+  Y: Integer);
+begin
+
+end;
+
+procedure changeColorActiveCells();
+var i:integer;
+begin
+   for i:=0 to activeCells.len-1 do
+   begin
+      viewActiveCells[activeCells.cells[i].cellx,activeCells.cells[i].celly].pen.color:=
+      promptColor;
+   end;
+   for i:=0 to pathCells.len-1 do
+   begin
+      viewActiveCells[pathCells.cells[i].cellx,pathCells.cells[i].celly].pen.color:=
+      promptColor2;
+   end;
+     viewActiveCells[activeChecker.cellx,activeChecker.celly].pen.color:=
+      clTeal;
+end;
+
 procedure TMainForm.OpenClick(Sender: TObject);
 begin
-    if OpenDialog.Execute then begin
-        s.player:=pl;
-        s.colors:=sColor;
-        assignfile(f, SaveDialog.FileName);
-        reset(f);
-        read(f,s);
-        closefile(f);
 
-        pl:=s.player;
-        player:=pl;
-        sColor:=s.Colors;
-        Fcolor.SetColor(sColor[0],sColor[1]);
+      if OpenDialog.Execute then begin
+          s.player:=pl;
+          s.colors:=sColor;
+          s.promptColor:=promptColor;
+        s.promptColor2:=promptColor2;
+          assignfile(f, SaveDialog.FileName);
+          reset(f);
+          try
+          read(f,s);
+          finally
+           closefile(f);
+           end;
 
-    end;
+          //closefile(f);
+          promptColor:=s.promptColor;
+          promptColor2:=s.promptColor2;
+          pl:=s.player;
+          player:=pl;
+          sColor:=s.Colors;
+          Fcolor.SetColor(sColor[0],sColor[1]);
+          changeColorActiveCells();
+
+          if(promptColor=clblack) then
+          begin
+              checkbox.Checked:=false;
+          end else
+          begin
+              checkbox.Checked:=true;
+          end;
+      end;
+
+
 end;
 
 procedure TMainForm.SaveClick(Sender: TObject);
@@ -194,6 +369,7 @@ begin
     if SaveDialog.Execute then begin
         s.player:=pl;
         s.colors:=sColor;
+
         assignfile(f, SaveDialog.FileName);
         rewrite(f);
         write(f,s);
@@ -212,6 +388,25 @@ begin
   +'Чтобы выбрать шашку для хода - нажмите на неё. Игрок может играть лишь нижними шашками.'
                                ,mtCustom,
                                 [mrYes,'Ок'],0);
+end;
+
+
+
+procedure TMainForm.CheckBoxChange(Sender: TObject);
+begin
+  if (checkbox.Checked) then
+  begin
+
+     promptColor:=clAqua ;//clAqua
+     promptColor2:=clTeal;//clTeal
+     changeColorActiveCells()
+  end
+  else
+  begin
+     promptColor:=clblack ;//clAqua
+     promptColor2:=clblack;//clTeal
+     changeColorActiveCells()
+  end;
 end;
 
 procedure TMainForm.AboutAuthorClick(Sender: TObject);
@@ -235,26 +430,29 @@ procedure TMainForm.initCheckersAndCellsActive(var checkers:Tcheckers;
   var cellsActive:TviewActiveCells);
 var i,j,c:integer;
     CheckerColor:Tcolor;
+    a:boolean;
 begin
    c:=0;
    CheckerColor:=sColor[0];
+   a:=true;
 
    for i:=7 downto 0 do begin
        for j:=0 to 7 do begin
-            //location[j,i]:=0;
-            if (((i mod 2 <> 0) and (j mod 2 = 0)) or
-             ((i mod 2 = 0) and (j mod 2 <> 0))) then
-              begin
-                  initCellActive(cellsActive[j][i],
+             initCellActive(cellsActive[j][i],
                                                    i*cellsize+3,
                                                    j*cellsize+3,
                                                    clAqua);
+            if (((i mod 2 <> 0) and (j mod 2 = 0)) or
+             ((i mod 2 = 0) and (j mod 2 <> 0))) then
+              begin
+
                   if ((i<3) or (i>4)) then
                   begin
                     if(c>11) then begin
                         CheckerColor:=sColor[1];
+                        a:=false;
                     end;
-                    initChecker(checkers[c],i*cellsize+5,j*cellsize+5,CheckerColor);
+                    initChecker(checkers[c],i*cellsize+5,j*cellsize+5,CheckerColor,a);
                     inc(c);
                     location[j,i]:=c;
                   end
@@ -274,11 +472,19 @@ begin
 
 end;
 
+function CheckActiveCells(x,y:integer):boolean;
+var i:integer;
+begin
+   if(activeCells.cells[i].cellx = x) and
+            (activeCells.cells[i].celly = y) then Exit(True);
+   Exit(false);
+end;
+
 procedure TMainForm.ClickOnBoard(Sender:TObject);
 var point:Tpoint;
     cellx,celly:integer;
     crd:tcrd;
-    i:integer;
+    i,j:integer;
     a:boolean=false;
 
 begin
@@ -295,12 +501,26 @@ begin
       celly:=point.y div cellsize;
       crd.cellx:=cellx;
       crd.celly:=celly;
-      self.Caption:=inttostr(location[cellx][celly]);
-      //if (cellx<8) and (celly<8) and
-      //(((cellx mod 2 <>0) and (celly mod 2 = 0))
-      //or((cellx mod 2 = 0) and (celly mod 2 <> 0)))
-      //then
-      //begin
+
+
+      for i:=0 to 7 do
+      begin
+         for j:=0 to 7 do
+         begin
+            if viewActiveCells[j][i].Enabled and ActiveCell and
+            (j=cellx) and (i=celly) and not CheckActiveCells(j,i)
+            and (activeChecker.cellx<>cellx) and (activeChecker.celly<>celly)
+            then
+            begin
+                 QuestionDlg('Предупреждение', 'Есть рубка'
+                            ,mtCustom,
+                                [mrYes,'Ок'],0);
+                 Exit();
+            end;
+         end;
+      end;
+
+
       a := false;
       if ActiveCell then
       begin
@@ -313,31 +533,65 @@ begin
             (activeCells.cells[i].celly = celly) then
             begin
                 a:=true;
+
                 checkerMove(checkers[location[activeChecker.cellx]
                 [activeChecker.celly]-1],crd,maintimer);
                 ClearActiveCells(ActiveCells);
                 ClearActiveCells(PathCells);
                 changePlayer;
-                //moveBot(maintimer);
+
             end;
+
             Inc(i);
          end;
-         //if ((cellx <> activeChecker.cellx) and
-         //(celly<>activeChecker.celly)) then
+
+         //if not a then
          //begin
-         //    ClearActiveCalls();
-         //
+         //     QuestionDlg('Предупреждение', 'Такой ход не возможен для даннй шашки'
+         //                   ,mtCustom,
+         //                       [mrYes,'Ок'],0);
+         //     a:=true;
          //end;
-         //a:=false;
 
       end;
       //Возможные ходы
-      if (not a) and ((cellx <> activeChecker.cellx) or
-         (celly<>activeChecker.celly))  then
+      if (not a) then
       begin
+
+      end;
+
+      self.caption:=inttostr(cellx);
+
+
+end;
+
+procedure TMainForm.ViewMoveChecker(Sender: TObject);
+var point:Tpoint;
+    cellx,celly:integer;
+    crd:tcrd;
+    i,j:integer;
+    a:boolean=false;
+
+begin
+     //если ход-движение запрещено
+      if (mainTimer.Enabled) or (player=2) or (stop) or pause
+          then
+      begin
+        Exit();
+      end;
+
+      //позиция
+      point:=self.ScreenToClient(Mouse.CursorPos);
+      cellx:=point.x div cellsize;
+      celly:=point.y div cellsize;
+      crd.cellx:=cellx;
+      crd.celly:=celly;
+
+     capturePlayer:=checkCapturePlayer();
          DeleteMoves();
          ClearActiveCells(ActiveCells);
          ClearActiveCells(PathCells);
+
          if checkPlayer(location[cellx][celly],player) then
          begin
               ActiveCell:=true;
@@ -345,18 +599,78 @@ begin
 
 
          end;
+end;
+
+
+
+procedure TMainForm.MoveChecker(Sender: TObject);
+var point:Tpoint;
+    cellx,celly:integer;
+    crd:tcrd;
+    i,j:integer;
+    a:boolean=false;
+
+begin
+     //если ход-движение запрещено
+      if (mainTimer.Enabled) or (player=2) or (stop) or pause
+          then
+      begin
+        Exit();
+      end;
+
+      //позиция
+      point:=self.ScreenToClient(Mouse.CursorPos);
+      cellx:=point.x div cellsize;
+      celly:=point.y div cellsize;
+      crd.cellx:=cellx;
+      crd.celly:=celly;
+
+      for i:=0 to 7 do
+      begin
+         for j:=0 to 7 do
+         begin
+            if viewActiveCells[j][i].Enabled and ActiveCell and
+            (j=cellx) and (i=celly) and not CheckActiveCells(j,i)
+            and (activeChecker.cellx<>cellx) and (activeChecker.celly<>celly)
+            then
+            begin
+                 QuestionDlg('Предупреждение', 'Есть рубка.'
+                            ,mtCustom,
+                                [mrYes,'Ок'],0);
+                 Exit();
+            end;
+         end;
       end;
 
 
-      //checkers[5].visible:=false;
-      //board.
-      //MainForm.Canvas.Draw(0,0,board);
-      //mainForm.Canvas.Dr
-      //checkers[0].BringToFront;
+      a := false;
+      if ActiveCell then
+      begin
+         //ход, если нажали на активные
+         i:=0;
 
+         while((i<activeCells.len) and (not a)) do
+         begin
+            if(activeCells.cells[i].cellx = cellx) and
+            (activeCells.cells[i].celly = celly) then
+            begin
+                a:=true;
+
+                checkerMove(checkers[location[activeChecker.cellx]
+                [activeChecker.celly]-1],crd,maintimer);
+                ClearActiveCells(ActiveCells);
+                ClearActiveCells(PathCells);
+                changePlayer;
+
+            end;
+
+            Inc(i);
+         end;
+
+      end;
 end;
 
-procedure TMainForm.initChecker(var checker: TShape; t,l:integer; c:Tcolor);
+procedure TMainForm.initChecker(var checker: TShape; t,l:integer; c:Tcolor;a:boolean);
 begin
       if (stop) then begin
            checker:=TShape.Create(self);
@@ -368,7 +682,13 @@ begin
       checker.Height := checker.Width;
       checker.Top:=t;
       checker.left:=l;
-      checker.OnClick:=@ClickOnBoard;
+      if a then
+      begin
+        checker.OnClick:=@ViewMoveChecker;
+      end else
+      begin
+         checker.OnClick:=@ShowWarning;
+      end;
       checker.BringToFront;
       checker.visible:=true;
 end;
@@ -386,7 +706,7 @@ begin
       cellActive.Height := cellActive.Width;
       cellActive.Top:=t;
       cellActive.left:=l;
-      cellActive.OnClick:=@ClickOnBoard;
+      cellActive.OnClick:=@MoveChecker;
       cellActive.BringToFront;
       cellActive.pen.Color:=c;
       cellActive.pen.style:=psSolid;
@@ -405,12 +725,20 @@ end;
 
 
 
+
+
+
+
+
+
+
+
+
 //ход шашки
 procedure TMainForm.MoveCheckerTimer;
-var //i,j:integer;
+var
   a,b:integer;
-  //tmpcrd:tcrd;
-  //move:tmove;
+
 begin
     if mt.countPath=0 then
     begin
@@ -472,14 +800,13 @@ begin
       begin
          mt.sh.left:=mt.sh.left-pl*speed;
          mt.sh.top:=mt.sh.top-pt*speed;
-        // sleep(2);
+
 
       end
       else
       begin
          mt.sh.left:=mt.endPath.cellx*cellsize+5;
          mt.sh.top:=mt.endPath.celly*cellsize+5;
-         //MainTimer.Enabled:=false;
          mt.anim:=false;
 
 
@@ -488,7 +815,8 @@ begin
          begin
 
                 MainTimer.Enabled:=false;
-                if player = 2 then
+
+                if not CheckEnd() and (player = 2) then
                 begin
 
                      moveBot(maintimer);

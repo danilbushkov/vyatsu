@@ -44,20 +44,21 @@ var
   pathCells:TActiveCells;
   moves:Tmoves;
   player:integer=1;
-  //Startpath:tcrd;
-  //EndPath:Tcrd;
-  //Sh:Tshape;
-  //timerWork: boolean=false;
-  mt:TMoveTimer;//информация для перехода
 
+  mt:TMoveTimer;//информация для перехода
+  prompt:boolean=false;
+  promptColor:Tcolor=clAqua ;//clAqua
+  promptColor2:Tcolor=clTeal;//clTeal
+  capturePlayer:boolean=false;
 
 function checkPlayer(current:integer;Player:integer):boolean;
 procedure possibility(player:integer;crd:tcrd);
-procedure AddActiveCells(var activeCells:TactiveCells;cellx,celly:integer;c:Tcolor);
+procedure AddActiveCells(var activeCells:TactiveCells;cellx,celly:integer;c:Tcolor;A:boolean);
 Procedure ClearActiveCells(var ActiveCells:TActiveCells);
 procedure resetActiveChecker();
 procedure checkerMove(var sh:TShape;crd:Tcrd;var t:ttimer);
-//function checkCapture(crd:tcrd;dx,dy:integer):boolean;
+function checkMoveCapturePlayer(x,y:integer;var location:tlocation):boolean;
+function checkCapturePlayer():boolean;
 function compareCoordinates(crd,crd2:tcrd;cx,cy:integer):boolean;
 procedure DeleteMoves();
 function GetMove(crd:tcrd):tmove;
@@ -82,41 +83,28 @@ begin
 end;
 
 
-procedure AddActiveCells(var activeCells:TactiveCells;cellx,celly:integer;c:Tcolor);
+procedure AddActiveCells(var activeCells:TactiveCells;cellx,celly:integer;c:Tcolor;a:boolean);
 begin
+
     viewActiveCells[cellx][celly].pen.Color:=c;
+
     activeCells.len:=activeCells.len+1;
     setlength(activeCells.cells,activeCells.len);
     activeCells.cells[activeCells.len-1].cellx:=cellx;
     activeCells.cells[activeCells.len-1].celly:=celly;
-    viewActiveCells[cellx][celly].visible:=true;
-
+    //if a then begin
+       viewActiveCells[cellx][celly].visible:=true;
+    //end;
 end;
 
-//procedure ViewPath(cellx,celly:integer);
-//begin
-//    activeCells.len:=activeCells.len+1;
-//    viewActiveCells[cellx][celly].pen.Color:=clTeal;
-//    //cellActive.pen.Color:=clred;
-//    viewActiveCells[cellx][celly].visible:=true;
-//end;
+
 
 //анимация перехода
 procedure animMove(var sh:Tshape;crd:tcrd;var t:ttimer);
 var pl,pt:integer;
   i:integer;
 begin
-      //pl:=round(((sh.left / cellsize)-crd.cellx) / 2);
-      //pt:=round(((sh.top / cellsize)-crd.celly) / 2);
 
-      //for i:=0 to abs(sh.left-(crd.cellx*cellsize+5)) do
-      //begin
-         //sh.left:=sh.left+pl;
-         //sh.top:=sh.top+pt;
-        // sleep(2);
-      //end;
-      //sh.left:=crd.cellx*cellsize+5;
-      //sh.top:=crd.celly*cellsize+5;
 end;
 
 //ход шашки
@@ -138,70 +126,6 @@ begin
     end;
     t.enabled:=true;
 
-
-//var i,j:integer;
-//  a,b:integer;
-//  tmpcrd:tcrd;
-//  move:tmove;
-//begin
-//    if abs(crd.cellx - activeChecker.cellx) = 1 then
-//    begin
-//        j:=location[crd.cellx][crd.celly];
-//        location[crd.cellx][crd.celly]:=location[activeChecker.cellx][activeChecker.celly];
-//        location[activeChecker.cellx][activeChecker.celly]:=j;
-//        startpath:=activeChecker;
-//        endPath:=crd;
-//        ash:=sh;
-//        t.Enabled:=true;
-//
-//        //sh.top:=crd.celly*cellsize+5;
-//        //sh.left:=crd.cellx*cellsize+5;
-//        //animMove(sh,crd);
-//    end
-//    else
-//    begin
-//      tmpcrd:=activeChecker;
-//      move:=getMove(crd);
-//      for i:=1 to length(move)-1 do
-//      begin
-//
-//         a:=(move[i].cellx-tmpcrd.cellx) div 2;
-//         b:=(move[i].celly-tmpcrd.celly) div 2;
-//         checkers[location[move[i].cellx-a][move[i].celly-b]-1].visible:=false;
-//         location[move[i].cellx-a][move[i].celly-b]:=0;
-//         //sh.top:=move[i].celly*cellsize+5;
-//         //sh.left:=move[i].cellx*cellsize+5;
-//         //animMove(sh,move[i]);
-//         startpath:=tmpcrd;
-//         endPath:=move[i];
-//         ash:=sh;
-//         t.Enabled:=true;
-//         //timerWork:=true;
-//
-//         //
-//         j:=location[move[i].cellx][move[i].celly];
-//         location[move[i].cellx][move[i].celly]:=location[tmpcrd.cellx][tmpcrd.celly];
-//         location[tmpcrd.cellx][tmpcrd.celly]:=j;
-//         tmpcrd:=move[i];
-//
-//      end;
-//
-//    end;
-//
-//   //a:=(crd.cellx-activeChecker.cellx) div 2;
-//   //b:=(crd.celly-activeChecker.celly) div 2;
-//   //sh.top:=crd.celly*cellsize+5;
-//   //sh.left:=crd.cellx*cellsize+5;
-//   //if abs(crd.cellx - activeChecker.cellx) > 1 then
-//   //begin
-//   //  checkers[location[crd.cellx-a][crd.celly-b]-1].visible:=false;
-//   //  location[crd.cellx-a][crd.celly-b]:=0;
-//   //end;
-//   //i:=location[crd.cellx][crd.celly];
-//   //location[crd.cellx][crd.celly]:=location[activeChecker.cellx][activeChecker.celly];
-//   //location[activeChecker.cellx][activeChecker.celly]:=i;
-//
-//
 end;
 
 
@@ -256,17 +180,17 @@ begin
         move[depth+1]:=crd2;
         b:=possibleCapture(crd2,capture(l,crd,-1,1),move,depth+1,i);
 
-        AddActiveCells(pathCells,Crd.cellx-1,Crd.celly+1,clTeal);
+        AddActiveCells(pathCells,Crd.cellx-1,Crd.celly+1,promptColor2,true);
         if not b then
         begin
            move[0]:=crd2;
            inc(i);
            setLength(moves,i);
            moves[i-1]:=move;
-           AddActiveCells(ActiveCells,Crd.cellx-2,Crd.celly+2,clAqua);
+           AddActiveCells(ActiveCells,Crd.cellx-2,Crd.celly+2,promptColor,prompt);
         end else
         begin
-            AddActiveCells(pathCells,Crd.cellx-2,Crd.celly+2,clTeal);
+            AddActiveCells(pathCells,Crd.cellx-2,Crd.celly+2,promptColor2,prompt);
 
         end;
 
@@ -284,17 +208,17 @@ begin
 
         b:=possibleCapture(crd2,capture(l,crd,1,1),move,depth+1,i);
 
-        AddActiveCells(pathCells,Crd.cellx+1,Crd.celly+1,clTeal);
+        AddActiveCells(pathCells,Crd.cellx+1,Crd.celly+1,promptColor2,true);
         if not b then
         begin
             move[0]:=crd2;
             inc(i);
             setLength(moves,i);
             moves[i-1]:=move;
-            AddActiveCells(ActiveCells,Crd.cellx+2,Crd.celly+2,clAqua);
+            AddActiveCells(ActiveCells,Crd.cellx+2,Crd.celly+2,promptColor,prompt);
         end else
         begin
-            AddActiveCells(pathCells,Crd.cellx+2,Crd.celly+2,clTeal);
+            AddActiveCells(pathCells,Crd.cellx+2,Crd.celly+2,promptColor2,true);
 
         end;
         a:=true;
@@ -312,17 +236,17 @@ begin
 
         b:=possibleCapture(crd2,capture(l,crd,-1,-1),move,depth+1,i);
 
-        AddActiveCells(pathCells,Crd.cellx-1,Crd.celly-1,clTeal);
+        AddActiveCells(pathCells,Crd.cellx-1,Crd.celly-1,promptColor2,true);
         if not b then
         begin
             move[0]:=crd2;
             inc(i);
             setLength(moves,i);
             moves[i-1]:=move;
-            AddActiveCells(ActiveCells,Crd.cellx-2,Crd.celly-2,clAqua);
+            AddActiveCells(ActiveCells,Crd.cellx-2,Crd.celly-2,promptColor,prompt);
         end else
         begin
-            AddActiveCells(pathCells,Crd.cellx-2,Crd.celly-2,clTeal);
+            AddActiveCells(pathCells,Crd.cellx-2,Crd.celly-2,promptColor2,true);
 
         end;
         a:=true;
@@ -338,17 +262,17 @@ begin
 
         b:=possibleCapture(crd2,capture(l,crd,1,-1),move,depth+1,i);
 
-        AddActiveCells(pathCells,Crd.cellx+1,Crd.celly-1,clTeal);
+        AddActiveCells(pathCells,Crd.cellx+1,Crd.celly-1,promptColor2,true);
         if not b then
         begin
             move[0]:=crd2;
             inc(i);
             setLength(moves,i);
             moves[i-1]:=move;
-           AddActiveCells(ActiveCells,Crd.cellx+2,Crd.celly-2,clAqua);
+           AddActiveCells(ActiveCells,Crd.cellx+2,Crd.celly-2,promptColor,prompt);
         end else
         begin
-            AddActiveCells(pathCells,Crd.cellx+2,Crd.celly-2,clTeal);
+            AddActiveCells(pathCells,Crd.cellx+2,Crd.celly-2,promptColor2,true);
         end;
         a:=true;
     end;
@@ -367,80 +291,58 @@ begin
   begin
      direction:=-1;
   end;
-  //activeCells.len:=0;
-  //setlength(activeCells.cells,activeCells.len);
+
 
   activeChecker:=crd;
-  AddActiveCells(pathCells,Crd.cellx,Crd.celly,clTeal);
-  //viewActiveCells[Crd.cellx][Crd.celly].visible:=true;
+  AddActiveCells(pathCells,Crd.cellx,Crd.celly,clTeal,true);
+
 
   a:=true;
 
-  //проверка
-  //while a do
-  //begin
-  //  if checkCapture(crd.cellx,crd.celly,direction,1) then
-  //  begin
-  //
-  //  end else
-  //  begin
-  //      a:=false;
-  //  end;
-  //end;
-  //
+
     tmpcrd.cellx:=-1;
     tmpcrd.celly:=-1;
     i:=0;
     a:=possibleCapture(crd,location,move,0,i);
 
 
-    if not a then
+    if not a  then
     begin
+
       if (location[Crd.cellx+1][Crd.celly+direction]=0) and
       (Crd.cellx+1<8)
       then
       begin
-           AddActiveCells(ActiveCells,Crd.cellx+1,Crd.celly+direction,clAqua);
+        if(not capturePlayer) then
+        begin
+           AddActiveCells(ActiveCells,Crd.cellx+1,Crd.celly+direction,promptColor,prompt);
+        end
+        else
+        begin
+            AddActiveCells(pathCells,Crd.cellx+1,Crd.celly+direction,clblack,false);
+        end;
 
 
-           //viewActiveCells[Crd.cellx+1][Crd.celly+direction].visible:=true;
+
       end;
       if (location[Crd.cellx-1][Crd.celly+direction]=0)  and
       (Crd.cellx-1>=0)
       then
       begin
-           AddActiveCells(ActiveCells,Crd.cellx-1,Crd.celly+direction,clAqua);
-
-           //viewActiveCells[Crd.cellx-1][Crd.celly+direction].visible:=true;
+        if(not capturePlayer) then
+        begin
+           AddActiveCells(ActiveCells,Crd.cellx-1,Crd.celly+direction,promptColor,prompt);
+        end
+        else
+        begin
+           AddActiveCells(pathCells,Crd.cellx-1,Crd.celly+direction,clblack,false);
+        end;
 
       end;
 
     end;
 
-    //if checkCapture(crd,-1,direction)
-    //then
-    //begin
-    //    AddActiveCells(Crd.cellx-2,Crd.celly+2*direction);
-    //
-    //end;
-    //if checkCapture(crd,+1,direction)
-    //then
-    //begin
-    //     AddActiveCells(Crd.cellx+2,Crd.celly+2*direction);
-    //end;
-    //if checkCapture(crd,-1,-direction)
-    //then
-    //begin
-    //     AddActiveCells(Crd.cellx-2,Crd.celly-2*direction);
-    //end;
-    //if checkCapture(crd,+1,-direction)
-    //then
-    //begin
-    //     AddActiveCells(Crd.cellx+2,Crd.celly-2*direction);
-    //end;
 
-
- // end;
 
 
 
@@ -513,6 +415,78 @@ begin
        Inc(i);
    end;
 end;
+
+function checkCapturePlayer():boolean;
+var i,j:integer;
+begin
+    for i:=0 to 7 do
+    begin
+        for j:=0 to 7 do
+        begin
+            if(checkPlayer(location[j,i],1)) then
+            begin
+                 if(checkMoveCapturePlayer(j,i,location)) then
+                 begin
+                     Exit(true);
+                 end;
+
+            end;
+        end;
+    end;
+    exit(false);
+end;
+
+
+
+
+function checkMoveCapturePlayer(x,y:integer;var location:tlocation):boolean;
+begin
+     //проверить рубку
+
+     //левый верхний угол
+     if( (x-2)>=0 ) and ( (y-2)>=0 ) then
+     begin
+        if(location[x-2,y-2] = 0) and (checkPlayer(location[x-1,y-1],2)) then
+        begin
+             Exit(true);
+        end;
+     end;
+
+     //правый верхний угол
+     if( (x+2)<8 ) and ( (y-2)>=0 ) then
+     begin
+        if(location[x+2,y-2] = 0) and (checkPlayer(location[x+1,y-1],2)) then
+        begin
+             Exit(true);
+        end;
+     end;
+
+     //левый нижний угол
+     if( (x-2)>=0 ) and ( (y+2)<8 ) then
+     begin
+        if(location[x-2,y+2] = 0) and (checkPlayer(location[x-1,y+1],2)) then
+        begin
+             Exit(true);
+        end;
+     end;
+
+     //правый нижний угол
+     if( (x+2)<8 ) and ( (y+2)<8 ) then
+     begin
+        if(location[x+2,y+2] = 0) and (checkPlayer(location[x+1,y+1],2)) then
+        begin
+             Exit(true);
+        end;
+     end;
+
+
+     Exit(false);
+
+end;
+
+
+
+
 
 end.
 

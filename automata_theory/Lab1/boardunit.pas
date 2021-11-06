@@ -30,16 +30,6 @@ end;
 
 
 
-//procedure checker(cellx,celly:integer;var board:TBitMap;color:Tcolor);
-//var checkersize:integer;
-//begin
-//     checkersize:=(boardSize div 8);
-//     board.Canvas.Brush.Color:=color;
-//     board.canvas.Ellipse(cellx*checkersize+10,
-//                  celly*checkersize+10,
-//                  cellx*checkersize+checkersize-10,
-//                  celly*checkersize+checkersize-10);
-//end;
 
 
 procedure DrawBoard(var board:TBitMap);
@@ -59,12 +49,7 @@ begin
              ((i mod 2 = 0) and (j mod 2 <> 0)) then
              begin
                   cell(i,j,board,clblack);
-                  //if(j<3) then begin
-                  //   checker(i,j,board,clgreen);
-                  //end
-                  //else if(j>4) then begin
-                  //   checker(i,j,board,clred);
-                  //end;
+
              end;
         end;
 
