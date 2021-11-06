@@ -10,9 +10,16 @@ uses
 
 type
 
+  TSetting=record
+    player:integer;
+    colors: array [0..1] of Tcolor;
+  end;
+
   { TMainForm }
 
   TMainForm = class(TForm)
+    OpenDialog: TOpenDialog;
+    SaveDialog: TSaveDialog;
     SettingsMenu: TMenuItem;
     About: TMenuItem;
     Open: TMenuItem;
@@ -31,8 +38,12 @@ type
     MainTimer: TTimer;
     SpeedTrack: TTrackBar;
 
+    procedure AboutAuthorClick(Sender: TObject);
+    procedure AboutProgramClick(Sender: TObject);
     procedure ColorCheckersClick(Sender: TObject);
     procedure ExitProgramClick(Sender: TObject);
+    procedure OpenClick(Sender: TObject);
+    procedure SaveClick(Sender: TObject);
     procedure SettingsMenuClick(Sender: TObject);
     procedure FileMenuClick(Sender: TObject);
     procedure ExitButtonClick(Sender: TObject);
@@ -67,6 +78,8 @@ var
   speed:integer=5;
   stop:boolean=true;
   pause:boolean=false;
+  s:Tsetting;
+  f:file of Tsetting;
 
 implementation
 
@@ -157,9 +170,58 @@ begin
    end;
 end;
 
+procedure TMainForm.OpenClick(Sender: TObject);
+begin
+    if OpenDialog.Execute then begin
+        s.player:=pl;
+        s.colors:=sColor;
+        assignfile(f, SaveDialog.FileName);
+        reset(f);
+        read(f,s);
+        closefile(f);
+
+        pl:=s.player;
+        player:=pl;
+        sColor:=s.Colors;
+        Fcolor.SetColor(sColor[0],sColor[1]);
+
+    end;
+end;
+
+procedure TMainForm.SaveClick(Sender: TObject);
+begin
+
+    if SaveDialog.Execute then begin
+        s.player:=pl;
+        s.colors:=sColor;
+        assignfile(f, SaveDialog.FileName);
+        rewrite(f);
+        write(f,s);
+        closefile(f);
+    end;
+end;
+
 procedure TMainForm.ColorCheckersClick(Sender: TObject);
 begin
   FColor.ShowModal;
+end;
+
+procedure TMainForm.AboutProgramClick(Sender: TObject);
+begin
+  QuestionDlg('Об игре', 'Игра "Шашки". Игрок играет против бота. Для начала игры нажмите кнопку "Начать".'
+  +'Чтобы выбрать шашку для хода - нажмите на неё. Игрок может играть лишь нижними шашками.'
+                               ,mtCustom,
+                                [mrYes,'Ок'],0);
+end;
+
+procedure TMainForm.AboutAuthorClick(Sender: TObject);
+begin
+
+   QuestionDlg('Об авторе', 'Разработчик: Бушков Данил, '+
+                             'Студент группы ИВТб-2302 ВятГУ '+ #10 +
+                             'Github: https://github.com/danilbushkov'
+                            ,mtCustom,
+                                [mrYes,'Ок'],0);
 end;
 
 procedure TMainForm.FormPaint(Sender: TObject);
@@ -340,12 +402,6 @@ begin
     AnimMove;
 
 end;
-
-
-
-
-
-
 
 
 

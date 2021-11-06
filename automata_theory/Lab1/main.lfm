@@ -66,9 +66,11 @@ object MainForm: TMainForm
       OnClick = FileMenuClick
       object Open: TMenuItem
         Caption = 'Открыть...'
+        OnClick = OpenClick
       end
       object Save: TMenuItem
         Caption = 'Сохранить...'
+        OnClick = SaveClick
       end
       object ExitProgram: TMenuItem
         Caption = 'Выход'
@@ -87,9 +89,11 @@ object MainForm: TMainForm
       Caption = 'Справка'
       object AboutProgram: TMenuItem
         Caption = 'О программе'
+        OnClick = AboutProgramClick
       end
       object AboutAuthor: TMenuItem
         Caption = 'Об авторе'
+        OnClick = AboutAuthorClick
       end
     end
   end
@@ -99,5 +103,13 @@ object MainForm: TMainForm
     OnTimer = MainTimerTimer
     Left = 8
     Top = 8
+  end
+  object SaveDialog: TSaveDialog
+    Left = 626
+    Top = 24
+  end
+  object OpenDialog: TOpenDialog
+    Left = 560
+    Top = 24
   end
 end

@@ -65,6 +65,7 @@
         <Filename Value="formcolor.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="FColor"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="FormColor"/>
       </Unit6>
