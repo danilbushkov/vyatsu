@@ -212,11 +212,13 @@ begin
     for i:=0 to 11 do
     begin
       checkers[i].brush.Color:=c1;
+      checkers[i].pen.Color:=clblack;
     end;
     //бот
     for i:=12 to 23 do
     begin
       checkers[i].brush.Color:=c2;
+      checkers[i].pen.Color:=clblack;
     end;
 
 end;

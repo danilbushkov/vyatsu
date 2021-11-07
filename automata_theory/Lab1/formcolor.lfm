@@ -76,7 +76,7 @@ object FColor: TFColor
   end
   object ColorBox1: TColorBox
     Left = 136
-    Height = 24
+    Height = 22
     Top = 131
     Width = 100
     Selected = clRed
@@ -88,7 +88,7 @@ object FColor: TFColor
   end
   object ColorBox2: TColorBox
     Left = 136
-    Height = 24
+    Height = 22
     Top = 179
     Width = 100
     Style = []
@@ -98,7 +98,7 @@ object FColor: TFColor
   end
   object ColorBox3: TColorBox
     Left = 136
-    Height = 24
+    Height = 22
     Top = 227
     Width = 100
     Style = []
@@ -108,7 +108,7 @@ object FColor: TFColor
   end
   object ColorBox4: TColorBox
     Left = 136
-    Height = 24
+    Height = 22
     Top = 275
     Width = 100
     Style = []

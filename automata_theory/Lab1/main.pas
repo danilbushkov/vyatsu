@@ -92,7 +92,7 @@ var
   stop:boolean=true;
   pause:boolean=false;
   s:Tsetting;
-  f:file of Tsetting;
+  f:text;
 
 implementation
 
@@ -326,31 +326,38 @@ begin
       clTeal;
 end;
 
+
+
+
+
 procedure TMainForm.OpenClick(Sender: TObject);
+var s:string;
 begin
 
       if OpenDialog.Execute then begin
-          s.player:=pl;
-          s.colors:=sColor;
-          s.promptColor:=promptColor;
-        s.promptColor2:=promptColor2;
-          assignfile(f, SaveDialog.FileName);
+          assignfile(f, OpenDialog.FileName);
           reset(f);
-          try
-          read(f,s);
-          finally
-           closefile(f);
-           end;
+          //try
+                 readln(f,s);
+                 sColor[0]:=StringToColor(s);
+                 readln(f,s);
+                 sColor[1]:=StringToColor(s);
+                 readln(f,s);
+                 player:=strtoint(s);
+                 readln(f,s);
+                 promptColor:=StringToColor(s);
+                 readln(f,s);
+                 promptColor2:=StringToColor(s);
+
+         // finally
+                 closefile(f);
+          //end;
 
           //closefile(f);
-          promptColor:=s.promptColor;
-          promptColor2:=s.promptColor2;
-          pl:=s.player;
-          player:=pl;
-          sColor:=s.Colors;
-          Fcolor.SetColor(sColor[0],sColor[1]);
-          changeColorActiveCells();
 
+
+          changeColorActiveCells();
+          Fcolor.SetColor(sColor[0],sColor[1]);
           if(promptColor=clblack) then
           begin
               checkbox.Checked:=false;
@@ -372,7 +379,11 @@ begin
 
         assignfile(f, SaveDialog.FileName);
         rewrite(f);
-        write(f,s);
+        writeln(f,ColorToString(s.colors[0]));
+        writeln(f,ColorToString(s.colors[1]));
+        writeln(f,inttostr(s.player));
+        writeln(f,ColorToString(promptColor));
+        writeln(f,ColorToString(promptColor2));
         closefile(f);
     end;
 end;
@@ -472,13 +483,6 @@ begin
 
 end;
 
-function CheckActiveCells(x,y:integer):boolean;
-var i:integer;
-begin
-   if(activeCells.cells[i].cellx = x) and
-            (activeCells.cells[i].celly = y) then Exit(True);
-   Exit(false);
-end;
 
 procedure TMainForm.ClickOnBoard(Sender:TObject);
 var point:Tpoint;
@@ -927,6 +931,7 @@ begin
          StartButton.Caption:='Cтоп';
          stop:=false;
          ColorCheckers.Enabled:=false;
+         Open.Enabled:=false;
          if(player=2)then
          begin
 
@@ -940,7 +945,7 @@ begin
         stop:=true;
         StartButton.Caption:='Старт';
         ColorCheckers.Enabled:=true;
-
+        Open.Enabled:=true;
     end;
 end;
 

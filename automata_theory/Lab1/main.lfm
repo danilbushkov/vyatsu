@@ -116,10 +116,12 @@ object MainForm: TMainForm
     Top = 8
   end
   object SaveDialog: TSaveDialog
+    Title = 'Сохранить файл настроек'
     Left = 626
     Top = 24
   end
   object OpenDialog: TOpenDialog
+    Title = 'Открыть файл настроек'
     Left = 560
     Top = 24
   end
