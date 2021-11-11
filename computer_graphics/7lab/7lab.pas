@@ -230,6 +230,45 @@ begin
 end;
 
 
+procedure animation();
+var i:integer;
+    t:array[0..7] of TXYZ;
+begin
+     t:=v;
+    for i:=1 to 90 do
+    begin
+        rotationDiagonal(4,4);
+        Axonometric(q,w);
+        delay(1);
+    end;
+    
+    v:=t;
+    Axonometric(q,w);
+end;
+procedure animationScaling();
+var i:integer;
+    t:array[0..7] of TXYZ;
+begin
+    t:=v;
+    for i:=1 to 90 do
+    begin
+        if(i<45)then
+        begin
+            Scaling(0.95,0.95,0.95,v[1]);
+        end
+        else
+        begin
+           Scaling(1.05,1.05,1.05,v[1]); 
+        end;
+
+        Axonometric(q,w);
+        delay(1);
+    end;
+    v:=t;
+    Axonometric(q,w);
+end;
+
+
 
 procedure Action(ch:char);
 begin
@@ -340,8 +379,12 @@ begin
             v:=a;
             Axonometric(q,w);
         end;
-
-
+        #6:begin //animation Ctrl+F
+            animation()
+        end;
+        #7:begin
+            animationScaling();
+        end;
     end;
 end;
 
