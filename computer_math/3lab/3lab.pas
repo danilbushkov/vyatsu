@@ -5,6 +5,7 @@ uses math;
 const
     k=6;
     k2=10;
+    k3=10;
     step=0.005;
 var mx:array[1..k] of real;
     my:array[1..k] of real;
@@ -22,6 +23,8 @@ var mx:array[1..k] of real;
     p:real;
     x1,x2:real;
 
+    mx3,my3:array[1..k3] of real;
+    a,b:real;
 
 
 
@@ -70,6 +73,31 @@ begin
     my2[9]:=0.109571;
     my2[10]:=0.110008;
 
+end;
+
+procedure init3;
+begin
+    mx3[1]:=4.0;
+    mx3[2]:=4.1;
+    mx3[3]:=4.2;
+    mx3[4]:=4.3;
+    mx3[5]:=4.4;
+    mx3[6]:=4.5;
+    mx3[7]:=4.6;
+    mx3[8]:=4.7;
+    mx3[9]:=4.8;
+    mx3[10]:=4.9;
+
+    my3[1]:=128;
+    my3[2]:=147;
+    my3[3]:=169;
+    my3[4]:=194;
+    my3[5]:=223;
+    my3[6]:=256;
+    my3[7]:=294;
+    my3[8]:=338;
+    my3[9]:=388;
+    my3[10]:=446;
 end;
 
 
@@ -248,6 +276,78 @@ begin
 end;
 
 
+function findB():real;
+var i:integer;
+    sumxlny:real=0;
+    sumx:real=0;
+    sumlny:real=0;
+    sumx2:real=0;
+    b:real;
+begin
+
+    for i:=1 to k3 do
+    begin
+        sumxlny:=sumxlny+mx3[i]*ln(my3[i]);
+        sumx:=sumx+mx3[i];
+        sumlny:=sumlny+ln(my3[i]);
+        sumx2:=sumx2+mx3[i]*mx3[i];
+    end;
+
+    b:=exp( (k3*sumxlny-sumx*sumlny)/(k3*sumx2-sumx*sumx) );
+    Exit(b);
+end;
+
+function findA(b:real):real;
+var i:integer;
+    sumx:real=0;
+    sumlny:real=0;
+    a:real;
+begin
+
+    for i:=1 to k3 do
+    begin
+        sumx:=sumx+mx3[i];
+        sumlny:=sumlny+ln(my3[i]);
+    end;
+
+    a:=exp( 1/k3*sumlny-(ln(b)/k3)*sumx );
+    Exit(a);
+end;
+
+function Pokaz(a,b,x:real):real;
+begin
+    Exit( a*Power(b,x) );
+end;
+
+function Lin(a,b,x:real):real;
+begin
+    Exit( exp(ln(a)+ln(b)*x) );
+end;
+
+// function KK(a,b:real):real;
+// var i:integer;
+//     yt:real=0;
+//     sum1:real=0;
+//     sum2:real=0;
+//     r:real;
+// begin
+//     for i:=1 to k3 do
+//     begin
+//         yt:=yt+my3[i];
+        
+//     end;
+//     yt:=yt/k3;
+//     for i:=1 to k3 do
+//     begin
+//         sum1:=power( (my3[i]-Lin(a,b,mx3[i]) ),2);
+//         sum2:=power( (my3[i]-yt ),2);
+//     end;
+
+//     r:=sqrt(1-sum1/sum2);
+//     Exit(r);
+// end;
+
+function app
 
 procedure writeTable();
 var i,j:integer;
@@ -301,10 +401,16 @@ begin
     // writeln((s*sd):10:6);
 
     //2
-    init2();
-    methodN();
-    writeln(N1(x1):10:6);
-    writeln(N2(x2):10:6);
+    // init2();
+    // methodN();
+    // writeln(N1(x1):10:6);
+    // writeln(N2(x2):10:6);
     //writeTable2();
     // writeTableEl2();
+
+     init3;
+     b:=findB();
+     a:=findA(b);
+    writeln(a:10:6);
+   // writeln(KK(a,b):10:6);
 end.
