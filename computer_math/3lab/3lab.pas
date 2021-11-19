@@ -4,7 +4,7 @@ uses math;
 
 const
     k=6;
-    k2=10;
+    k2=12;
     k3=10;
     step=0.005;
 var mx:array[1..k] of real;
@@ -21,57 +21,63 @@ var mx:array[1..k] of real;
     el2:array[1..k2-1] of real;
     el3:array[1..k2-1] of real;
     p:real;
-    x1,x2:real;
+    x1,x2,x3,x4:real;
 
     mx3,my3:array[1..k3] of real;
     a,b:real;
-
+    res:real;
 
 
 procedure Init1;
 begin
-    x:=0.527;
-    mx[1]:=0.43;
-    mx[2]:=0.48;
-    mx[3]:=0.55;
-    mx[4]:=0.62;
-    mx[5]:=0.70;
-    mx[6]:=0.75;
+    x:=0.616;
+    mx[1]:=0.41;
+    mx[2]:=0.46;
+    mx[3]:=0.52;
+    mx[4]:=0.60;
+    mx[5]:=0.65;
+    mx[6]:=0.72;
 
-    my[1]:=1.63597;
-    my[2]:=1.73234;
-    my[3]:=1.87686;
-    my[4]:=2.03345;
-    my[5]:=2.22846;
-    my[6]:=2.83973;
+    my[1]:=2.57418;
+    my[2]:=2.32513;
+    my[3]:=2.09336;
+    my[4]:=1.86203;
+    my[5]:=1.74926;
+    my[6]:=1.62098;
 end;
 
 procedure init2;
 begin
-    x1:=1.217;
-    x2:=1.253;
+    x1:=0.1817;
+    x2:=0.2275;
+    x3:=0.175;
+    x4:=0.2375;
 
-    mx2[1]:=1.215;
-    mx2[2]:=1.220;
-    mx2[3]:=1.225;
-    mx2[4]:=1.230;
-    mx2[5]:=1.235;
-    mx2[6]:=1.240;
-    mx2[7]:=1.245;
-    mx2[8]:=1.250;
-    mx2[9]:=1.255;
-    mx2[10]:=1.260;
+    mx2[1]:=0.180;
+    mx2[2]:=0.185;
+    mx2[3]:=0.190;
+    mx2[4]:=0.195;
+    mx2[5]:=0.200;
+    mx2[6]:=0.205;
+    mx2[7]:=0.210;
+    mx2[8]:=0.215;
+    mx2[9]:=0.220;
+    mx2[10]:=0.225;
+    mx2[11]:=0.230;
+    mx2[12]:=0.235;
 
-    my2[1]:=0.106044;
-    my2[2]:=0.106491;
-    my2[3]:=0.106935;
-    my2[4]:=0.107377;
-    my2[5]:=0.107818;
-    my2[6]:=0.108257;
-    my2[7]:=0.108696;
-    my2[8]:=0.109134;
-    my2[9]:=0.109571;
-    my2[10]:=0.110008;
+    my2[1]:=5.61543;
+    my2[2]:=5.46698;
+    my2[3]:=5.32634;
+    my2[4]:=5.19304;
+    my2[5]:=5.06649;
+    my2[6]:=4.94619;
+    my2[7]:=4.83170;
+    my2[8]:=4.72261;
+    my2[9]:=4.61855;
+    my2[10]:=4.51912;
+    my2[11]:=4.42422;
+    my2[12]:=4.33337;
 
 end;
 
@@ -347,70 +353,306 @@ end;
 //     Exit(r);
 // end;
 
-function app
+//function app
+
+procedure writeTask1();
+var i,j:integer;
+begin
+    write('xi':10);writeln('yi':10);
+    for i:=1 to k do
+    begin
+        write(mx[i]:10:6); writeln(my[i]:10:6);
+    end;
+    writeln();
+end;
+
+procedure writeTask2();
+var i,j:integer;
+begin
+    write('xi':10);writeln('yi':10);
+    for i:=1 to k2 do
+    begin
+        write(mx2[i]:10:6); writeln(my2[i]:10:6);
+    end;
+    writeln();
+end;
+
+procedure writeTask3();
+var i,j:integer;
+begin
+    write('xi':10);writeln('yi':10);
+    for i:=1 to k3 do
+    begin
+        write(mx3[i]:10:3); writeln(my3[i]:10:3);
+    end;
+    writeln();
+end;
+
 
 procedure writeTable();
 var i,j:integer;
 begin
     for i:=1 to k do 
     begin
-        for j:=1 to k+2 do
+        for j:=1 to k do
         begin
-            writeln(r[i,j]:15:6);
+            write(r[i,j]:10:6);
         end;
         writeln(' ');
         
 
-        writeln();
+       // writeln();
     end;
+    writeln();
+    write('D, 10^-6':10); writeln('Yi/Di':10);
+    for i:=1 to k do
+    begin
+        write((r[i,k+1]*1000000):10:6);writeln(r[i,K+2]:17:6);
+    end;
+    writeln();
+    write('The product of the diagonal(10^-6): '); writeln((sd*1000000):10:6);
+    write('The amount Yi/Di: ');writeln((s):10:6);
 end;
 
 procedure writeTable2();
-var i,j:integer;
+var i,j,l:integer;
+    s:string;
 begin
-    for i:=1 to k2-1 do 
+    l:=0;
+    write('Y':10);
+    for i:=1 to k2-1 do
     begin
+        str(i,s);
+        write(('d'+s+'Y'):10);
+    end;
+    writeln();
+    for i:=1 to k2 do 
+    begin
+        
+        
+            write(my2[i]:10:6);
+            
+         
+         
         for j:=1 to k2-1 do
         begin
-            write(r2[i,j]:10:7);
+            if(i=0) then
+            begin
+               write(my2[i]:10:6); 
+            end;
+            if(j<k2-l) then
+            begin
+                write(r2[i,j]:10:6);
+            end
+            else
+            begin
+                write('':10);
+            end;
         end;
-        writeln(' ');
-        
+        //writeln(' ');
+        inc(l);
 
         writeln();
     end;
-
+    
 
 end;
 procedure writeTableEl2();
 var i:integer;
 begin
+    writeln('Members of the polynomial: ');
     for i:=1 to k2-1 do
     begin
-        writeln(el2[i]:8:7);
+        write(i);write(':');writeln(el2[i]:8:6);
+    end;
+end;
+procedure writeTableEl3();
+var i:integer;
+begin
+    writeln('Members of the polynomial: ');
+    for i:=1 to k2-1 do
+    begin
+        write(i);write(':');writeln(el3[i]:8:6);
     end;
 end;
 
-begin
-    // Init1();
-    // methodLag();
-    // writeTable();
-    // writeln(s);
-    // writeln(sd);
-    // write('Resultat: ');
-    // writeln((s*sd):10:6);
+procedure writeTable3();
+var sumxi,sumx2i,sumyi,sumyixi,sumYiT,sumD,sumD2,d,g:real;
+ i:integer;
+begin   
+    sumxi:=0;
+    sumx2i:=0;
+    sumyi:=0;
+    sumyixi:=0;
+    sumYiT:=0;
+    sumD:=0;
+    sumD2:=0;
+    write('Xi':12);
+        write('Xi^2':12);
+        write('Yi':12);
+        write('Yi*Xi':12);
+        write('Yi*T':12);
+        write('Del':12);
+        write('Del^2':12);
+        writeln();
+    for i:=1 to k3 do
+    begin
+        write(mx3[i]:12:6);
+        write((mx3[i]*mx3[i]):12:6);
+        write(my3[i]:12:6);
+        write((my3[i]*mx3[i]):12:6);
+        write(Lin(a,b,mx3[i]):12:6);
+        d:=my3[i]-Lin(a,b,mx3[i]);
+        write(d:12:6);
+        write(d*d:12:6);
 
+        sumxi:=sumxi+mx3[i];
+        sumx2i:=sumx2i+mx3[i]*mx3[i];
+        sumyi:=sumyi+my3[i];
+        sumyixi:=sumyixi+my3[i]*mx3[i];
+        sumYiT:=sumYiT+Lin(a,b,mx3[i]);
+        sumD:=sumD+d;
+        sumD2:=sumD2+d*d;
+        writeln();
+    end;
+    writeln('------------');
+     write(sumxi:12:6);
+        write(sumx2i:12:6);
+        write(sumyi:12:6);
+        write(sumyixi:12:6);
+        write(sumYiT:12:6);
+        write(sumD:12:6);
+        write(sumD2:12:6);
+        writeln();
+
+        g:=sqrt(sumD2)/k3;
+        write('standard deviation: ');
+        writeln(g:10:6);
+end;
+
+// procedure writeTableEl();
+// var i:integer;
+// begin
+//     writeln('The first interpolation formula:');
+//     writeln('q');
+//     for i:=1 to k2 do
+//     begin
+//         write(i); write(':');
+//         write('x-'); write(mx2[i]:7:6);write('=');
+//         write(el[i]:7:6);writeln();
+//     end;
+// end;
+// procedure writeTableEl();
+// var i:integer;
+// begin
+//     writeln('The first interpolation formula:');
+//     writeln('q');
+//     for i:=1 to k2 do
+//     begin
+//         write(i); write(':');
+//         write('x-'); write(mx2[i]:7:6);write('=');
+//         write(el[i]:7:6);writeln();
+//     end;
+// end;
+
+begin
+    Init1();
+    methodLag();
+    writeln('Lagrange method:');
+    writeln();
+    write('X = '); writeln(x:10:6);
+    writeln();
+    writeTask1();
+     
+     
+     writeTable();
+     //writeln(s);
+     //writeln(sd);
+     write('Result: L(0.616) = ');
+     writeln((s*sd):10:6);
+    writeln();
     //2
-    // init2();
-    // methodN();
+    writeln('-----------------------------------');
+    writeln('Newton ''s Interpolation:');
+    init2();
+    methodN();
+    write('X1 = '); writeln(x1:10:6);
+     write('X2 = '); writeln(x2:10:6);
+      write('X3 = '); writeln(x3:10:6);
+       write('X4 = '); writeln(x4:10:6);
+       
+    writeTask2();
+    writeln('Step=0.005');
     // writeln(N1(x1):10:6);
     // writeln(N2(x2):10:6);
-    //writeTable2();
+    writeTable2();
     // writeTableEl2();
+    Writeln();
 
+    writeln('The first interpolation formula:');
+    write('x1=');
+    writeln(0.1817:10:6);
+    write('q=');writeln(FindQ(x1):10:6);
+    res:=N1(x1);
+    writeTableEl2();
+    write('y0=');writeln(my2[1]:10:6);
+    writeln();
+    write('P(0.1817) = ');
+    writeln(res:10:6);
+    writeln();
+
+    writeln('The second interpolation formula:');
+    write('x2=');
+    writeln(0.2275:10:6);
+    write('q=');writeln(FindQEnd(x2):10:6);
+    res:=N2(x2);
+    writeTableEl3();
+    write('yn=');writeln(my2[k2]:10:6);
+    writeln();
+    write('P(0.2275) = ');
+    writeln(res:10:6);
+    writeln();
+
+    writeln('The first interpolation formula:');
+    write('x3=');
+    writeln(0.175:10:6);
+    write('q=');writeln(FindQ(x3):10:6);
+    res:=N1(x3);
+    writeTableEl2();
+    write('y0=');writeln(my2[1]:10:6);
+    writeln();
+    write('P(0.175) = ');
+    writeln(res:10:6);
+    writeln();
+
+    writeln('The second interpolation formula:');
+    write('x4=');
+    writeln(0.2375:10:6);
+    write('q=');writeln(FindQEnd(x4):10:6);
+    res:=N2(x4);
+    writeTableEl3();
+    write('yn=');writeln(my2[k2]:10:6);
+    writeln();
+    write('P(0.2375) = ');
+    writeln(res:10:6);
+    writeln();
+
+    writeln('------------------');
+    writeln('Least Squares:');
+    
+    
      init3;
+     writeTask3();
+     writeln('Type of empirical dependence: Exponential regression'); 
      b:=findB();
      a:=findA(b);
-    writeln(a:10:6);
+     write('a=');writeln(a:8:6);
+     write('b=');writeln(b:8:6);
+     write('The equation: y=');
+     write(a:8:6); write('+');write(b:8:6);writeln('^x');
+    writeln('lny=Y, lna=A, lnb=B');
+    write('linear view: Y=');write(ln(a):8:6); write('+');write(ln(b):8:6);writeln('x');
+     writeTable3();
+    // writeln(a:10:6);
    // writeln(KK(a,b):10:6);
 end.
