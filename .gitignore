@@ -10,3 +10,4 @@ backup
 programming/labs/app/lab9/lib
 programming/labs/viewer/lab9/lib
 lib
+*.dll
