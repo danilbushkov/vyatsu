@@ -8,12 +8,91 @@ const
 
 var 
     mapBot1,mapBot2:TMap;
+    shipsBot1,shipsBot2:Tships;
+    StatusBot1,StatusBot2:TshipsStatus;
     countSets:integer;
     i:integer;
     FirstPlayerSet:integer;
     correctMap:boolean;
     GameProgress:TGameProgress;
     ErrorPlayer:integer=0;
+    crd:TCoordinates;
+
+procedure GameSet(var GameProgress:TGameProgress;i:integer);
+var game:boolean=true;
+    player:integer;
+    n:integer;
+    status:integer;
+    win:integer;
+begin
+    player:=FirstPlayerSet;
+    setLength(GameProgress,i);
+    while (game) do
+    begin
+        if(player=1) then
+        begin
+            crd:=bot1.shoot();
+            bot2.onOpponentShot(crd);
+            n:=checkBungShip(StatusBot2,shipsBot2,crd);
+            if(n>=0)then
+            begin
+                if(checkKillShip(StatusBot2,n))then
+                begin
+                    status:=3;
+                end
+                else
+                begin
+                    status:=2;
+                end;
+            end
+            else
+            begin
+                status:=0;
+                player:=2;
+            end;
+            bot1.shotResult(status);
+            if(checkDefeat(StatusBot2)) then
+            begin
+                win:=1;
+                game:=false;
+            end;
+        end 
+        else
+        begin
+            crd:=bot2.shoot();
+            bot1.onOpponentShot(crd);
+            n:=checkBungShip(StatusBot1,shipsBot1,crd);
+            if(n>=0)then
+            begin
+                if(checkKillShip(StatusBot1,n))then
+                begin
+                    status:=3;
+                end
+                else
+                begin
+                    status:=2;
+                end;
+            end
+            else
+            begin
+                status:=0;
+                player:=1;
+            end;
+            bot2.shotResult(status);
+            if(checkDefeat(StatusBot1)) then
+            begin
+                win:=2;
+                game:=false;
+            end;
+        end;
+
+    end;
+    
+    GameProgress[i-1][1]:=i;
+    GameProgress[i-1][2]:=win;
+end;
+
+
 begin
     //Ввод сетов
     Write('Enter count sets: ');
@@ -24,6 +103,8 @@ begin
     bot1.onGameStart();
     bot2.onGameStart();
     
+    
+
     //Передаем количество сетов
     bot1.setParameters(countSets);
     bot2.setParameters(countSets);
@@ -34,6 +115,9 @@ begin
     //Сеты
     for i:=1 to countSets do
     begin
+        InitShipStatus(StatusBot1);
+        InitShipStatus(StatusBot2);
+
         //Инициализация сета
         bot1.onSetStart();
         bot2.onSetStart();
@@ -41,6 +125,10 @@ begin
         //Получить карты
         mapBot1:=bot1.getMap();
         mapBot2:=bot2.getMap();
+        //Сформировать массив кораблей
+        shipsBot1:= sortShips( GetShips( getCells(mapBot1) ));
+        shipsBot2:= sortShips( GetShips( getCells(mapBot2) ));
+
 
         //Проверка карт участников;
         correctMap:=checkMap(mapBot1);
@@ -57,7 +145,7 @@ begin
         end;
        
         //Сет
-        //GameSet(GameProgress,i);
+        GameSet(GameProgress,i);
 
         //Очистка сетов
         bot1.onSetEnd();
