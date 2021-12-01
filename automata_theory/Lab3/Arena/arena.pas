@@ -32,6 +32,7 @@ begin
         if(player=1) then
         begin
             crd:=bot1.shoot();
+            checkRepeatMove(player,mapBot2,crd);
             bot2.onOpponentShot(crd);
             n:=checkBungShip(StatusBot2,shipsBot2,crd);
             if(n>=0)then
@@ -60,6 +61,7 @@ begin
         else
         begin
             crd:=bot2.shoot();
+            checkRepeatMove(player,mapBot1,crd);
             bot1.onOpponentShot(crd);
             n:=checkBungShip(StatusBot1,shipsBot1,crd);
             if(n>=0)then
@@ -85,7 +87,7 @@ begin
                 game:=false;
             end;
         end;
-
+        
     end;
     
     GameProgress[i-1][1]:=i;
@@ -125,9 +127,7 @@ begin
         //Получить карты
         mapBot1:=bot1.getMap();
         mapBot2:=bot2.getMap();
-        //Сформировать массив кораблей
-        shipsBot1:= sortShips( GetShips( getCells(mapBot1) ));
-        shipsBot2:= sortShips( GetShips( getCells(mapBot2) ));
+       
 
 
         //Проверка карт участников;
@@ -143,6 +143,11 @@ begin
             ErrorPlayer:=2;
             break;
         end;
+         //Сформировать массив кораблей
+        shipsBot1:= sortShips( GetShips( getCells(mapBot1) ));
+        shipsBot2:= sortShips( GetShips( getCells(mapBot2) ));
+
+
        
         //Сет
         GameSet(GameProgress,i);

@@ -32,6 +32,7 @@ function checkKillShip(sh:TshipsStatus;n:integer):boolean;
 function checkDefeat(s:TshipsStatus):boolean;
 procedure InitShipStatus(var shipstatus:TshipsStatus);
 function checkBungShip(var shipstatus:TshipsStatus;ships:Tships;c:TCoordinates):integer;
+procedure checkRepeatMove(player:integer;var map:Tmap;crd:TCoordinates);
 
 
 function checkBadSituation(var m:Tmap;s:TBadSituation;i,j:integer):boolean;
@@ -62,6 +63,24 @@ const
                         (1,1));
 var 
     BadSituations:TBadSituations;
+
+procedure print(ships:Tships);
+var i:integer;
+begin
+    for i:=0 to 19 do
+    begin
+        write(ships[i].a:3);
+        
+    end;
+    writeln();
+    for i:=0 to 19 do
+    begin
+        write(ships[i].b:3);
+       
+    end;
+    writeln();
+end;
+
 
 
 function checkMap(m:Tmap):boolean;
@@ -207,16 +226,21 @@ var i,j,l,r,y:integer;
     M:Tships;
     k,d:integer;
     w:boolean;
+    err:integer;
+
 begin
+    err:=0;
     k:=1;
     d:=3;
     r:=0;
     i:=0;
+    //print(ships);
     while i<10 do
     begin
         j:=0;
         y:=0;
         w:=true;
+        
         while (j<20) and w do
         begin
             //writeln(ships[j].a);
@@ -237,7 +261,7 @@ begin
                     ships[l].b:=-1;
 
                 end;
-                //print(ships);
+                
                 if(y=k)then
                 begin
                     w:=false;
@@ -254,7 +278,7 @@ begin
                     M[r]:=ships[j];
                     inc(r);
                     inc(i);
-                    writeln(d);
+                    //writeln(d);
                 end;
                 if(r=20) then
                 begin
@@ -264,7 +288,12 @@ begin
             inc(j);
            
         end; 
-       
+        Inc(err);
+        if(err>10) then
+        begin
+            writeln('Incorrect ship placement');
+            Halt();
+        end;
     end;
     Exit(M);
 end;
@@ -385,6 +414,21 @@ begin
 
     Exit(true);
 end;
+
+procedure checkRepeatMove(player:integer;var map:Tmap;crd:TCoordinates);
+begin
+    if(map[crd[0],crd[1]]<>-1) then
+    begin
+        map[crd[0],crd[1]]:=-1;
+    end
+    else
+    begin
+        Write('Bot '); Write(player);
+        writeln(' fired twice at the same cell!');
+        Halt();
+    end;
+end;
+
 
 function checkDefeat(s:TshipsStatus):boolean;
 var i:integer;

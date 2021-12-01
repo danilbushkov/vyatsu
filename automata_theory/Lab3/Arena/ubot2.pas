@@ -122,6 +122,7 @@ function shoot(): TCoordinates;
 var result: TCoordinates;
 begin
     result := TCoordinates.Create(lastShotIdx div 10, lastShotIdx mod 10);
+    //result := TCoordinates.Create(random(10), random(10));
     lastShotIdx := lastShotIdx + 1;
     Exit(result);
 end;
