@@ -33,6 +33,8 @@ function checkDefeat(s:TshipsStatus):boolean;
 procedure InitShipStatus(var shipstatus:TshipsStatus);
 function checkBungShip(var shipstatus:TshipsStatus;ships:Tships;c:TCoordinates):integer;
 procedure checkRepeatMove(player:integer;var map:Tmap;crd:TCoordinates);
+procedure printStatus(status:TshipsStatus);
+procedure print(ships:Tships);
 
 
 function checkBadSituation(var m:Tmap;s:TBadSituation;i,j:integer):boolean;
@@ -79,6 +81,31 @@ begin
        
     end;
     writeln();
+end;
+
+procedure printMap(map:Tmap);
+var i,j:integer;
+begin
+    for i:=0 to 9 do
+    begin
+        for j:=0 to 9 do
+        begin
+            write(map[i,j]:3);
+            //write('  ');
+        end;
+        writeln();
+    end;
+end;
+
+procedure printStatus(status:TshipsStatus);
+var i:integer;
+begin
+    for i:=0 to 19 do
+    begin
+        write(status[i]:3);
+        
+    end;
+
 end;
 
 
@@ -425,6 +452,11 @@ begin
     begin
         Write('Bot '); Write(player);
         writeln(' fired twice at the same cell!');
+        write('Cell: ');
+        write(crd[0]);
+        write(' ');
+        writeln(crd[1]);
+        printMap(map);
         Halt();
     end;
 end;
