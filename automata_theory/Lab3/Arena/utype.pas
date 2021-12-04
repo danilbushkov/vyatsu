@@ -236,7 +236,7 @@ begin
     for i:=0 to d do
     begin
         if ((ships[j].a=ships[j+i].a-i) and (ships[j].b=ships[j+i].b))
-                then
+        then
         begin
             Inc(k);
         end
@@ -325,7 +325,124 @@ begin
     Exit(M);
 end;
 
+procedure checkShips(ships:Tships);
+var i,j,l,a,b:integer;
+    count:integer;
+    counta:integer;
+    countb:integer;
+    ship:integer;
+    size:integer;
+    countShips:integer;
+    
+begin
+    //print(ships);
+    count:=1;
+    
+    for i:=0 to 18 do
+    begin
+        if(ships[i].a+1=ships[i+1].a)
+        and (ships[i].b=ships[i+1].b) then 
+        begin
+            //writeln(count);
+            Inc(count);
+            
+        end
+        else
+        begin
+            if(count>4) then 
+            begin
+                writeln('The size of the ship is too large!');
+                //halt();
+            end;
+            count:=1;
+        end;
+    end;
+    count:=1;
+    for i:=0 to 18 do
+    begin
+        if(ships[i].a=ships[i+1].a)
+        and (ships[i].b+1=ships[i+1].b) then 
+        begin
+            Inc(count);
+            
+        end
+        else
+        begin
+            if(count>4) then 
+            begin
+                writeln('The size of the ship is too large!');
+                //halt();
+            end;
+            count:=1;
+        end;
+    end;
 
+    size:=4;
+    ship:=1;
+    for i:=1 to 3 do
+    begin
+        counta:=1;
+        countb:=1;
+        countShips:=0;
+        for j:=0 to 19 do
+        begin
+            if(ships[j].a=ships[j+1].a)
+            and (ships[j].b+1=ships[j+1].b) then 
+            begin
+                Inc(countb);
+            end
+            else
+            begin
+                if countb>=size then
+                begin
+                    inc(countShips);
+                    for l:= j-size+1 to j do
+                    begin
+                        ships[l].a:=-1;
+                        ships[l].b:=-1;
+                    end;
+                    
+                end;
+                countb:=1;
+            end;
+            if(ships[j].a+1=ships[j+1].a)
+            and (ships[j].b=ships[j+1].b) then 
+            begin
+                Inc(counta);
+            end
+            else
+            begin
+                if counta>=size then
+                begin
+                    inc(countShips);
+                    for l:= j-size+1 to j do
+                    begin
+                        ships[l].a:=-1;
+                        ships[l].b:=-1;
+                    end;
+                    
+                end;
+                counta:=1;
+            end;
+        end;
+        //print(ships);
+        //writeln();
+        if(countShips<>ship) then
+        begin
+            //print(ships);
+            writeln('The number of ships does not match!');
+            write('Size:');writeln(size:1);
+            write('Count:');writeln(countShips);
+            write('Right count:');writeln(ship);
+            halt();
+        end;
+        size:=size-1;
+        ship:=ship+1;
+    end;
+    
+
+
+end;
 
 function getShips(ships:Tships):Tships;
 var i,j,k:integer;
@@ -337,6 +454,9 @@ begin
     while i<20 do  
     begin
         
+
+
+
         if not (((ships[i].a = ships[i+1].a) and
             (ships[i].b = ships[i+1].b-1)) or
             ((ships[i].a = ships[i+1].a-1) and
@@ -346,11 +466,13 @@ begin
             w:=true;
             while (j<20)and w do
             begin
-                if ((ships[i].a = ships[j].a) and
-                (ships[i].b = ships[j].b-1)) or
+                if {((ships[i].a = ships[j].a) and
+                (ships[i].b = ships[j].b-1)) or}
                 ((ships[i].a = ships[j].a-1) and
-                (ships[i].b = ships[j].b)) then
+                (ships[i].b = ships[j].b)) 
+                then
                 begin
+                    
                     cell:=ships[j];
                     for k:=j downto i+1 do
                     begin
@@ -361,12 +483,17 @@ begin
                     
                 end;
                 inc(j);
+
+
             end;
             
         end;
         
         Inc(i);
     end;
+    
+    checkShips(ships);
+    
     Exit(ships);
 end;
 
