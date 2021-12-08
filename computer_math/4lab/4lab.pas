@@ -4,13 +4,16 @@ uses math;
 
 type
     TFunc=function(x:real):real; 
+    TDUFunc=function(x,y:real):real;
     TRange=array[0..1] of real;
     TGaussRow=array of real;
     TGaussArray=array of TGaussRow;
+
 const
     RangeT:TRange=(0.2,1.2);
     RangeS:TRange=(0.6,1.4);
     RangeG:TRange=(2.2,3.4);
+    RangeEC:TRange=(0,1);
 
 var result1:array of array[0..1] of  real;
     resultS:array of array[0..1] of real;
@@ -36,6 +39,17 @@ function FuncGauss(x:real):real;
 begin
     Exit( x*x/sqrt(x+1) );
 end;
+
+function FuncEulerCauchy(x,y:real):real;
+begin
+    Exit(2*x*x+3*y);
+end;
+
+function FuncEulerCauchy(x:real):real;
+begin
+    Exit(-0.148148 + 0.348148*exp(3*x) - 0.444444*x - 0.666667*x*x);
+end;
+
 
 procedure PrintResult1();
 var i,j:integer;
@@ -377,9 +391,115 @@ begin
 
 end;
 
+procedure printTableEC(table:TGaussArray);
+const d=12;
+var i,j:integer;
+    
+begin
+    write('i':4);
+    write('xi':d);
+    write('yi':d);
+    write('f(xi,yi)':d);
+    write('xi+h':d);
+    write('yi+hfi':d);
+    write('f(+h,+hfi)':d);
+    write('dyi':d);
+    write('eyi':d);
+    writeln('abs(eyi-yi)':d );
+    for i:=0 to length(table) do 
+    begin
+        write(i:4);
+        for j:=0 to 8 do begin
+            write(table[i][j]:d:5);
+        end;
+        writeln();
+    end;
+    writeln();
+end;
+
+
+procedure EulerCauchy(f:TDUFunc;a,b:real;h:real;y0:real);
+var i:integer;
+    n:integer;
+    table:TGaussArray;
+    y,x:real;dy:real;fh,fi:real;ey:real;
+    eps:real;xh:real;fkh:real;
+    yhf:real;
+begin
+    
+    n:=round((b-a)/h);
+    setlength(table,n);
+    y:=y0;
+    dy:=0;
+    for i:=0 to n do
+    begin
+        setlength(table[i],9);
+    end;
+
+    for i:=0 to n-1 do
+    begin
+        y:=y+dy;
+        x:=i*h;
+        table[i][0]:=x;
+        
+        table[i][1]:=y;
+        fi:=f(x,y);
+        table[i][2]:=fi;
+
+        xh:=x+h;
+        table[i][3]:=xh;
+
+        yhf:=y+h*fi;
+        table[i][4]:=yhf;
+
+        fh:=f(xh,yhf);
+        table[i][5]:=fh;
+
+        dy:=(h/2)*(fi+fh);
+        table[i][6]:=dy;
+
+        table[i][7]:=FuncEulerCauchy(x);
+        table[i][8]:=abs(table[i][7]-y);
+    end;
+    y:=y+dy;
+    x:=x+h;
+    table[n][0]:=x;
+        
+    table[n][1]:=y;
+    table[n][7]:=FuncEulerCauchy(x);
+    table[n][8]:=abs(table[n][7]-y);
+
+
+    printTableEC(table);
+    writeln();
+end;
+
+procedure EulerCauchyTask(f:TDUFunc;range:TRange;h:real);
+var n:integer;
+    a,b:real;
+begin
+    a:=range[0];
+    b:=range[1];
+    writeln('The Euler-Cauchy method of the 2nd order of accuracy:');
+    writeln(' y''=2*x^2+3*y');
+    writeln('a=1/2;  y(0)=0,2; h=0,1; 0<=x<=1');
+    writeln('y(x)=-0.148148 + 0.348148*e^(3 x) - 0.444444 x - 0.666667 x^2');
+    writeln();
+    writeln('Step: h=0.1:');
+    
+    EulerCauchy(f,a,b,h,0.2);
+
+    writeln('Step: h/2=',(h/2):4:2,':');
+
+    EulerCauchy(f,a,b,h/2,0.2);
+
+
+end;
+
 
 begin
     //Trapezoids(@FuncTrapezoid,@TrapezoidDerivarion,RangeT,0.0001);
     //SimpsonRunge(@SimpsonFunc,RangeS,0.0001);
-    GaussTask(@FuncGauss,RangeG);
+    //GaussTask(@FuncGauss,RangeG);
+    EulerCauchyTask(@FuncEulerCauchy,RangeEC,0.1);
 end.
