@@ -1,6 +1,6 @@
 program lab4;
 
-uses math;
+uses math;//,crt;
 
 type
     TFunc=function(x:real):real; 
@@ -16,9 +16,10 @@ const
     RangeEC:TRange=(0,1);
 
 var result1:array of array[0..1] of  real;
-    resultS:array of array[0..1] of real;
+    resultS:array of array[0..2] of real;
     pointsGauss1:TGaussArray;
     pointsGauss2:TGaussArray;
+    ch:integer;
 
 function TrapezoidDerivarion(x:real):real;
 begin
@@ -86,16 +87,14 @@ begin
     write('xi':8);
     
     write('f(x)':8);
-    writeln;
-    //writeln('k':4);
-    for i:=0 to length(resultS) do
+    //writeln;
+    writeln('k':4);
+    for i:=0 to length(resultS)-1 do
     begin
-        write(i:4);
-        for j:=0 to length(resultS[i])-1 do
-        begin
-            
-            write(resultS[i][j]:10:6);
-        end;
+        
+            write(resultS[i][0]:10:6);
+            write(resultS[i][1]:10:6);
+            write(resultS[i][2]:4:0);
         // if(i=0) or (i=length(result1))then
         // begin
         //     write('1/2':4);
@@ -125,7 +124,7 @@ begin
     //h:=(b-a)/n;
     h:=sqrt(eps);
     n:=round((b-a)/h);
-    setlength(result1,n);
+    setlength(result1,n+1);
     writeln('Trapezoids: ');
     writeln('f(x)=1/sqrt(x^2+1)  ');
     write('Range: ');writeln('[',a:5:4,',',b:5:4,']');
@@ -166,31 +165,35 @@ var sum:real;
     i:integer;
 begin
 
-    for i:=0 to n do
+        for i:=0 to n do
         begin
             resultS[i][0]:=a+h*i;
             resultS[i][1]:=func(a+h*i);
         end;
-        PrintResult2();
+        
         sum:=0;
         for i:=0 to n do
         begin
             if (i=0) or (i=n) then
             begin
                 sum:=sum+resultS[i][1];
+                resultS[i][2]:=1;
             end
             else
             begin
                 if( (i mod 2) = 0 ) then
                 begin
                     sum:=sum+2*resultS[i][1];
+                    resultS[i][2]:=2;
                 end
                 else
                 begin
                     sum:=sum+4*resultS[i][1];
+                    resultS[i][2]:=4;
                 end;
             end;
         end;
+        PrintResult2();
         Exit(sum);
 end;
 
@@ -210,7 +213,7 @@ begin
     b:=range[1];
     h:=sqrt(eps);
     n:=round((b-a)/h);
-    setlength(resultS,n);
+    setlength(resultS,n+1);
     
     writeln('Simpson: ');
         writeln('f(x)=cos(x)/(x+1)');
@@ -236,7 +239,7 @@ begin
         write('h/2 = ');writeln(h/2:5:4);
         
         n:=round((b-a)/(h/2));
-        setlength(resultS,n);
+        setlength(resultS,n+1);
         sum:=Simpson(Func,n,a,h/2);
         writeln();
         write('Sum: ');
@@ -387,7 +390,7 @@ begin
     
     r2:=Gauss(Func,a,b,pointsGauss2);
     writeln();
-    Writeln('Inaccuracy: ',abs(r2-r1):11:9);
+    Writeln('Difference: ',abs(r2-r1):11:9);
 
 end;
 
@@ -498,8 +501,51 @@ end;
 
 
 begin
+
+      repeat
+        
+    //      ch:=readkey();
+    //      ClrScr();
+          writeln('1 - Trapezoids');    
+          writeln('2 - Simpson');
+          writeln('3 - Gauss');
+          writeln('4 - The Euler-Cauchy method of the 2nd order of accuracy');
+          writeln('5 - Exit');
+          Write('Task: ');readln(ch);
+
+          if(ch<>5) then writeln('---------------------------------------------');
+
+         if(ch=1)then
+         begin
+             Trapezoids(@FuncTrapezoid,@TrapezoidDerivarion,RangeT,0.0001);
+         end;
+         if(ch=2)then
+         begin
+             SimpsonRunge(@SimpsonFunc,RangeS,0.0001);
+    
+         end;
+         if(ch=3)then
+         begin
+             GaussTask(@FuncGauss,RangeG);
+         end;
+         if(ch=4)then
+         begin
+             EulerCauchyTask(@FuncEulerCauchy,RangeEC,0.1);
+         end;
+         if(ch<>5) then writeln('---------------------------------------------');
+
+        if(ch<>5) then
+        begin
+            writeln('Press Enter');
+            readln();
+        end;
+
+      until (ch=5);
+
     //Trapezoids(@FuncTrapezoid,@TrapezoidDerivarion,RangeT,0.0001);
     //SimpsonRunge(@SimpsonFunc,RangeS,0.0001);
     //GaussTask(@FuncGauss,RangeG);
-    EulerCauchyTask(@FuncEulerCauchy,RangeEC,0.1);
+    //EulerCauchyTask(@FuncEulerCauchy,RangeEC,0.1);
+    
+
 end.
