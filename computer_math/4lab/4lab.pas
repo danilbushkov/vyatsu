@@ -84,25 +84,18 @@ procedure PrintResult2();
 var i,j:integer;
 begin
     write('i':4);
-    write('xi':8);
+    write('xi':10);
     
-    write('f(x)':8);
-    //writeln;
+    write('f(x)':10);
+    
     writeln('k':4);
     for i:=0 to length(resultS)-1 do
     begin
-        
+            write(i:4);
             write(resultS[i][0]:10:6);
             write(resultS[i][1]:10:6);
             write(resultS[i][2]:4:0);
-        // if(i=0) or (i=length(result1))then
-        // begin
-        //     write('1/2':4);
-        // end
-        // else
-        // begin
-        //     write('1':4);
-        // end;
+        
         writeln();
     end;
     
@@ -119,9 +112,6 @@ var i:integer;
 begin
     a:=range[0];
     b:=range[1];
-
-    //n:=abs( round(Derivation(b)*Power(b-a,3)/(12*eps) ));
-    //h:=(b-a)/n;
     h:=sqrt(eps);
     n:=round((b-a)/h);
     setlength(result1,n+1);
@@ -130,9 +120,6 @@ begin
     write('Range: ');writeln('[',a:5:4,',',b:5:4,']');
     write('e = ');writeln(eps:5:4);
     write('h = ');writeln(h:5:4);
-    //writeln(n:10);
-//     n = abs(round((b - a) ** 3 * derivation(a) / (12 * eps))) 
-//     h = (b - a) / n 
     for i:=0 to n do
     begin
         result1[i][0]:=a+h*i;
@@ -164,13 +151,11 @@ function Simpson(Func:TFunc;n:integer;a,h:real):real;
 var sum:real;
     i:integer;
 begin
-
         for i:=0 to n do
         begin
             resultS[i][0]:=a+h*i;
             resultS[i][1]:=func(a+h*i);
         end;
-        
         sum:=0;
         for i:=0 to n do
         begin
@@ -504,8 +489,6 @@ begin
 
       repeat
         
-    //      ch:=readkey();
-    //      ClrScr();
           writeln('1 - Trapezoids');    
           writeln('2 - Simpson');
           writeln('3 - Gauss');
@@ -542,10 +525,7 @@ begin
 
       until (ch=5);
 
-    //Trapezoids(@FuncTrapezoid,@TrapezoidDerivarion,RangeT,0.0001);
-    //SimpsonRunge(@SimpsonFunc,RangeS,0.0001);
-    //GaussTask(@FuncGauss,RangeG);
-    //EulerCauchyTask(@FuncEulerCauchy,RangeEC,0.1);
+    
     
 
 end.
