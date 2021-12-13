@@ -183,7 +183,7 @@ end;
 
 
 function randomPlayer():integer;
-var a:integer;
+var a:longint;
 begin
     randomize;
     a:=random(100000);

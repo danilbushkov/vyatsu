@@ -112,7 +112,10 @@ begin
     bot2.setParameters(countSets);
     
     //Выбор пергого игрока
-    FirstPlayerSet:=randomPlayer();
+    
+    FirstPlayerSet:=randomPlayer;
+    write('First player: ');
+    writeln(FirstPlayerSet);
 
     //Сеты
     for i:=1 to countSets do
