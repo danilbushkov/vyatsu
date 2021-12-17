@@ -11,7 +11,7 @@ class TasksService {
     }
 
     fun GetTestsTask(){
-        for(n in 1..10){
+        for(n in 0..9){
             tasks.add(Task(
                 id = n.toLong(),
                 title = "Title"+n.toString(),
@@ -32,6 +32,26 @@ class TasksService {
         return  tasks
     }
 
+    fun getPositionByID(id:Long):Long? {
+        var i = 0.toLong()
+        for (n in tasks){
+            if (n.id == id){
+                return i
+            }
 
+            i++
+        }
+        return null
+    }
+
+    fun getTaskByID(id:Long):Task? {
+        for (n in tasks){
+            if (n.id == id){
+                return n
+            }
+
+        }
+        return null
+    }
 
 }

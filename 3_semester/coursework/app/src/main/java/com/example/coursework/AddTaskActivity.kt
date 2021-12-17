@@ -19,14 +19,17 @@ class AddTaskActivity : AppCompatActivity() {
     fun addTask(view: View){
 
         val title = findViewById<EditText>(R.id.edit_add_title)
+        val text = findViewById<EditText>(R.id.edit_add_text)
+        val id = (applicationContext as App).tasksService.getTasks().size.toLong()
         if(title.text.toString() == "") {
             Toast.makeText(this, "Заполните поле названия задачи",Toast.LENGTH_SHORT)
                 .show()
 
         }else{
-            val task = Task(1,
-                title.text.toString()
-                ,"addedtext","111","111");
+            val task = Task(id+1,
+                title.text.toString(),
+                text.text.toString(),
+                "111","111");
             (applicationContext as App).tasksService.addTask(task);
 
 

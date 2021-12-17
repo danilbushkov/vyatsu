@@ -1,5 +1,6 @@
 package com.example.coursework
 
+import android.util.Log
 import android.view.LayoutInflater
 
 import android.view.View
@@ -13,21 +14,20 @@ import com.example.coursework.databinding.ItemTaskBinding
 
 
 interface TaskActionListener {
-
+    fun onTaskClick(task:Task,position: Int)
 }
 
 class TasksAdapter(
-    t: List<Task>
+    private val tasks: List<Task>,
+    private val actionListener: TaskActionListener
 ) : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>() {
 
-    var tasks: List<Task>
 
-    init {
-        tasks = t
-    }
+
 
 //    override fun onClick(v: View?) {
-//        TODO("Not yet implemented")
+//       onClickL
+//
 //    }
 
 
@@ -41,7 +41,7 @@ class TasksAdapter(
     }
 
     override fun onBindViewHolder(holder: TasksViewHolder, position: Int) {
-        //Log.d("asd",position.toString())
+        Log.d("asd",position.toString())
         //holder.binding.taskTextView.text="100"
         val task = tasks[position]
         with(holder.binding) {
@@ -51,6 +51,11 @@ class TasksAdapter(
             taskTextView.text = task.text
 
         }
+
+        holder.itemView.setOnClickListener {
+            actionListener.onTaskClick(task,position);
+        }
+
     }
 
 
