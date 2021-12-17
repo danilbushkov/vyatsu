@@ -16,16 +16,22 @@ class TasksService {
                 id = n.toLong(),
                 title = "Title"+n.toString(),
                 text = "Text"+n.toString(),
-                date_create = n.toLong(),
-                date_change = n.toLong()
+                date_create = n.toString(),
+                date_change = n.toString()
             ));
             //Log.d("asfdasdf,", tasks[n-1].id.toString())
         }
     }
 
+    fun addTask(task: Task){
+        tasks.add(0,task);
+    }
+
+
     fun getTasks(): List<Task>{
         return  tasks
     }
+
 
 
 }

@@ -1,19 +1,16 @@
 package com.example.coursework.ui.tasks
 
 
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
+
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.coursework.R
-import com.example.coursework.model.TasksService
+
+import com.example.coursework.App
+
 
 import com.example.coursework.TasksAdapter
 import com.example.coursework.databinding.FragmentTasksBinding
@@ -40,8 +37,7 @@ class TasksFragment : Fragment() {
         //var r = view.findViewById(R.id.recycler_tasks)
         var binding = FragmentTasksBinding.inflate(inflater,container,false)
 //        //val
-        var state = TasksService()
-            state.GetTestsTask()
+        var state = (activity?.applicationContext as App).tasksService
 //
         adapter = TasksAdapter(state.getTasks())
         //val layoutManager = LinearLayoutManager(this)

@@ -31,7 +31,7 @@ class TasksAdapter(
 //    }
 
 
-    override fun getItemCount(): Int = 100
+    override fun getItemCount(): Int = tasks.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TasksViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -42,15 +42,15 @@ class TasksAdapter(
 
     override fun onBindViewHolder(holder: TasksViewHolder, position: Int) {
         //Log.d("asd",position.toString())
-        holder.binding.taskTextView.text="100"
-        //val task = tasks[position]
-//        with(holder.binding) {
-//            holder.itemView.tag = task
-//
-//            taskTitleView.text = "100"//task.title
-//            taskTextView.text = task.text
-//
-//        }
+        //holder.binding.taskTextView.text="100"
+        val task = tasks[position]
+        with(holder.binding) {
+            holder.itemView.tag = task
+
+            taskTitleView.text = task.title//task.title
+            taskTextView.text = task.text
+
+        }
     }
 
 
