@@ -29,7 +29,7 @@ class AddTaskActivity : AppCompatActivity() {
             val task = Task(id+1,
                 title.text.toString(),
                 text.text.toString(),
-                "111","111");
+                "111","111","111","111",false);
             (applicationContext as App).tasksService.addTask(task);
 
 

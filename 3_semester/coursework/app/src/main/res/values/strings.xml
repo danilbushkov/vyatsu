@@ -6,6 +6,9 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="action_delete">Удалить</string>
+    <string name="done">Выполено</string>
+    <string name="not_done">Не выполнено</string>
 
     <string name="menu_tasks">Задачи</string>
     <string name="menu_home">Home</string>

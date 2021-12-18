@@ -31,6 +31,6 @@
         android:layout_marginBottom="16dp"
         android:backgroundTint="#00BCD4"
         app:rippleColor="#F44336"
-        app:srcCompat="@android:drawable/ic_menu_add" />
+        app:srcCompat="@drawable/ic_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

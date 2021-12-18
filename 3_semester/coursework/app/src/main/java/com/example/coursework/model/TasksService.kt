@@ -1,10 +1,14 @@
 package com.example.coursework.model
 
 import android.util.Log
+import java.text.FieldPosition
+
+typealias TasksListener = (tasks: List<Task>) -> Unit
 
 class TasksService {
 
     private var tasks = mutableListOf<Task>()
+    private val listeners = mutableSetOf<TasksListener>()
 
     init{
         GetTestsTask()
@@ -17,7 +21,9 @@ class TasksService {
                 title = "Title"+n.toString(),
                 text = "Text"+n.toString(),
                 date_create = n.toString(),
-                date_change = n.toString()
+                date_change = n.toString(),
+                "asdf",  "1111",
+                false
             ));
             //Log.d("asfdasdf,", tasks[n-1].id.toString())
         }
@@ -25,6 +31,7 @@ class TasksService {
 
     fun addTask(task: Task){
         tasks.add(0,task);
+        notifyChanges()
     }
 
 
@@ -52,6 +59,36 @@ class TasksService {
 
         }
         return null
+    }
+    fun deleteTaskByPosition(position: Int) {
+        tasks.removeAt(position)
+        notifyChanges()
+    }
+    fun doneTask(task: Task){
+        task.done = true
+        notifyChanges()
+    }
+    fun notDoneTask(task: Task){
+        task.done = false
+        notifyChanges()
+    }
+
+    fun doneTaskByPosition(position: Int) {
+        tasks.get(position).done=true
+
+    }
+
+    fun addListener(listener: TasksListener){
+        listeners.add(listener)
+        listener.invoke(tasks)
+    }
+
+    fun removeListener(listener: TasksListener){
+        listeners.remove(listener)
+    }
+
+    private fun notifyChanges(){
+        listeners.forEach{it.invoke(tasks)}
     }
 
 }

@@ -16,6 +16,7 @@
         android:layout_marginTop="4dp"
         android:ellipsize="end"
         android:lines="1"
+        android:maxLength="24"
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,25 +27,37 @@
         android:id="@+id/taskTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
         android:ellipsize="end"
         android:lines="1"
+        android:maxLines="24"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/taskTitleView"
         tools:text="test" />
 
     <View
+        android:id="@+id/task_line"
         android:layout_width="wrap_content"
         android:layout_height="1dp"
         android:layout_marginTop="1dp"
         android:layout_marginBottom="1dp"
-        android:background="@android:color/darker_gray"
+        android:background="@color/main"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/taskTextView" />
+
+    <ImageView
+        android:id="@+id/more_task"
+        android:layout_width="46dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/ic_more"
+        app:layout_constraintBottom_toTopOf="@+id/task_line"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="?attr/selectableItemBackgroundBorderless" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
