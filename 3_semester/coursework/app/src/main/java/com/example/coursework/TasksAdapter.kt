@@ -27,7 +27,8 @@ interface TaskActionListener {
 }
 
 class TasksAdapter(
-    val colorLine: Int,
+    val colorLineDone: Int,
+    val colorLineMain: Int,
     private val actionListener: TaskActionListener
 ) : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>(),View.OnClickListener {
 
@@ -77,9 +78,15 @@ class TasksAdapter(
 
             taskTitleView.text = task.title//task.title
             taskTextView.text = task.text
+            //Log.d("asd",task.id.toString()+" "+task.done.toString())
 
             if(task.done) {
-                taskLine.setBackgroundColor(colorLine)
+                taskLine.setBackgroundColor(colorLineDone)
+                //Log.d("asd",taskLine.toString())
+                //taskTextView.setBackgroundColor(  colorLineDone  )
+            }else{
+                //taskTextView.setBackgroundColor(  colorLineMain  )
+                taskLine.setBackgroundColor(colorLineMain)
             }
         }
 

@@ -13,6 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.example.coursework.databinding.ActivityMainBinding
+import com.example.coursework.db.DatabaseHelper
 
 
 class MainActivity : AppCompatActivity() {
@@ -22,6 +23,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //applicationContext.deleteDatabase("tasks")
+        (applicationContext as App).db = DatabaseHelper(applicationContext).readableDatabase
+        (applicationContext as App).tasksService.GetTasksFromDB()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -57,5 +62,13 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if ((applicationContext as App).db != null){
+            (applicationContext as App).db!!.close()
+        }
+
     }
 }

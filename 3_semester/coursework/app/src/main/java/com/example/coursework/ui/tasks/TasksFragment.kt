@@ -42,7 +42,8 @@ class TasksFragment : Fragment() {
         var binding = FragmentTasksBinding.inflate(inflater,container,false)
 
         val color = resources.getColor(R.color.green)
-        adapter = TasksAdapter(color,object:  TaskActionListener{
+        val colorMain = resources.getColor(R.color.main)
+        adapter = TasksAdapter(color,colorMain,object:  TaskActionListener{
             override fun onTaskClick(task: Task, position: Int){
                 val intent = Intent(activity,EditTaskActivity::class.java)
                 intent.putExtra("taskId",task.id)

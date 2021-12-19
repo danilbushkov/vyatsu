@@ -63,8 +63,11 @@ class EditTaskActivity : AppCompatActivity() {
                 .show()
 
         } else {
-            task.text = text.text.toString()
+            val tasksService = (this?.applicationContext as App).tasksService
             task.title = title.text.toString()
+            task.text = text.text.toString()
+            tasksService.updateTask(task)
+
 
 
             intent = Intent(this, MainActivity::class.java)

@@ -1,17 +1,72 @@
 package com.example.coursework.model
 
+import android.content.ContentValues
+import android.database.sqlite.SQLiteDatabase
+import android.provider.ContactsContract
 import android.util.Log
-import java.text.FieldPosition
+import com.example.coursework.db.DatabaseHelper
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 typealias TasksListener = (tasks: List<Task>) -> Unit
 
-class TasksService {
+class TasksService() {
 
     private var tasks = mutableListOf<Task>()
     private val listeners = mutableSetOf<TasksListener>()
+    var db: SQLiteDatabase?=null
+        set(value){
+            field = value
+
+        }
 
     init{
-        GetTestsTask()
+        //GetTasksFromDB()
+    }
+
+    fun GetTasksFromDB(){
+        if (db == null){
+            return
+        }
+        val projection = arrayOf(
+            DatabaseHelper.COLUMN_ID,
+            DatabaseHelper.COLUMN_TITLE,
+            DatabaseHelper.COLUMN_TEXT
+        )
+
+        tasks = mutableListOf<Task>()
+        val cursor = db!!.query(
+            DatabaseHelper.TABLE,
+            projection,
+            null,
+            null,
+            null,
+            null,
+            null
+        )
+        with(cursor){
+            while(moveToNext()) {
+                val id  = getLong(getColumnIndexOrThrow(DatabaseHelper.COLUMN_ID))
+                val title = getString(getColumnIndexOrThrow(DatabaseHelper.COLUMN_TITLE))
+                val text = getString(getColumnIndexOrThrow(DatabaseHelper.COLUMN_TEXT))
+                tasks.add(
+                    Task(
+                        id = id,
+                        title = title,
+                        text = text,
+                        date_create = "",
+                        date_change = "",
+                        "",
+                        "",
+                        false
+                    )
+                )
+            }
+        }
+
+
+        cursor.close()
     }
 
     fun GetTestsTask(){
@@ -30,7 +85,17 @@ class TasksService {
     }
 
     fun addTask(task: Task){
+
         tasks.add(0,task);
+        val sdf = SimpleDateFormat("yyyy-M-dd hh:mm:ss")
+        val time = sdf.format(Date())
+        Log.d("T",time)
+        val values = ContentValues().apply {
+            put(DatabaseHelper.COLUMN_TITLE,task.title)
+            put(DatabaseHelper.COLUMN_TEXT,task.text)
+            put(DatabaseHelper.COLUMN_DATE_CREATE,time)
+        }
+        db?.insert(DatabaseHelper.TABLE, null, values)
         notifyChanges()
     }
 
@@ -61,6 +126,13 @@ class TasksService {
         return null
     }
     fun deleteTaskByPosition(position: Int) {
+        val task = tasks.get(position)
+        db!!.delete(
+            DatabaseHelper.TABLE,
+            "${DatabaseHelper.COLUMN_ID} LIKE ?",
+            arrayOf(task.id.toString())
+        )
+
         tasks.removeAt(position)
         notifyChanges()
     }
@@ -89,6 +161,19 @@ class TasksService {
 
     private fun notifyChanges(){
         listeners.forEach{it.invoke(tasks)}
+    }
+
+    fun updateTask(task: Task) {
+        val values = ContentValues().apply {
+            put(DatabaseHelper.COLUMN_TITLE,task.title)
+            put(DatabaseHelper.COLUMN_TEXT,task.text)
+        }
+        db!!.update(
+            DatabaseHelper.TABLE,
+            values,
+            "${DatabaseHelper.COLUMN_ID} LIKE ?",
+            arrayOf(task.id.toString())
+        )
     }
 
 }
