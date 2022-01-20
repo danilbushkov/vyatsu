@@ -12,3 +12,4 @@ programming/labs/viewer/lab9/lib
 lib
 *.dll
 *.a
+*.sum
