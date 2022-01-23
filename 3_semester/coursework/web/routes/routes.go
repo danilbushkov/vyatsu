@@ -23,4 +23,18 @@ func GetRoutes(r *gin.Engine) {
 		})
 	})
 
+	r.POST("/registration", func(c *gin.Context) {
+
+		user := model.User{
+			Login:    c.DefaultPostForm("login", ""),
+			Password: c.DefaultPostForm("password", ""),
+		}
+
+		result := user.Registration()
+
+		c.JSON(200, gin.H{
+			"status": result,
+		})
+	})
+
 }
