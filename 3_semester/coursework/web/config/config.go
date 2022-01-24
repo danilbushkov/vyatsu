@@ -12,7 +12,8 @@ const fileConfig = "config.json"
 var Config *TConfig
 
 type TConfig struct {
-	DB DBconfig `json:"db"`
+	DB    DBconfig    `json:"db"`
+	Redis RedisConfig `json:"redis"`
 }
 
 type DBconfig struct {
@@ -20,6 +21,12 @@ type DBconfig struct {
 	Password string `json:"password"`
 	Port     string `json:"port"`
 	DBname   string `json:"dbname"`
+	Host     string `json:"host"`
+}
+
+type RedisConfig struct {
+	Password string `json:"password"`
+	Port     string `json:"port"`
 	Host     string `json:"host"`
 }
 

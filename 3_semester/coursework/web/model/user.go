@@ -112,6 +112,6 @@ func (u *User) checkDB() int {
 			log.Fatal(err)
 		}
 	}
-	//log.Println(id)
+
 	return id
 }
