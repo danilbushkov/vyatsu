@@ -13,10 +13,11 @@
 ---
 
 Используемые библиотеки:
-+	github.com/gin-gonic/gin 
-+   github.com/dgrijalva/jwt-go
-+   github.com/lib/pq 
-+   github.com/gomodule/redigo
+
++	[github.com/gin-gonic/gin](https://github.com/gin-gonic/gin) 
++   [github.com/dgrijalva/jwt-go](https://github.com/dgrijalva/jwt-go) 
++   [github.com/lib/pq](https://github.com/lib/pq) 
++   [github.com/gomodule/redigo](https://github.com/gomodule/redigo) 
 
 
 Документация
