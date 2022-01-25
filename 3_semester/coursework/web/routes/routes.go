@@ -57,7 +57,7 @@ func GetRoutes(r *gin.Engine) {
 			result = 0
 		} else {
 			c.JSON(http.StatusUnauthorized, gin.H{
-				"status": 10,
+				"status": 9,
 			})
 			return
 		}
