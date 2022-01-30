@@ -42,10 +42,10 @@ fun main() {
         val response = Auth(client,
                             User("testt","123456"))
         
-        val response2 = GetUserId(client,response.token)
+        val response2 = AddTask(client,response.token)
         
 
-        println(response2.id)
+        println(response2)
         
     }
 

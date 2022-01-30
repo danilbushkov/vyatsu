@@ -12,21 +12,28 @@ import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.forms.*
 
 
-// @Serializable
-// data class AuthStatus(val status:Int,val token:String)
+@Serializable
+data class TaskJSON(
+    val title:String,
+    val text:String,
+    val deadline: String,
+    val status: Int
+    )
+
+@Serializable
+data class CreateTaskStatus(val status:Int)
 // data class User(val login:String, val password:String)
 
 
 
 
-// suspend fun GetTasks(c:HttpClient,user:User):AuthStatus{
-//     val response: AuthStatus = c.submitForm(
-//             url = "http://localhost:8080/auth",
-//             formParameters = Parameters.build {
-//                 append("login", user.login)
-//                 append("password", user.password)
-//             },
-//             encodeInQuery = false
-//         )
-//     return response
-// }
+suspend fun AddTask(c:HttpClient,token:String):CreateTaskStatus{
+    val response: CreateTaskStatus = c.post("http://localhost:8080/task/add") {
+        contentType(ContentType.Application.Json)
+        body = TaskJSON("test","test","2006-01-02T15:04:05",0)
+        headers {
+            append("Authorization", "Bearer "+token)
+        }
+    }
+    return response
+}

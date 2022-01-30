@@ -8,8 +8,9 @@ import (
 )
 
 type StatusAuth struct {
-	Token string
-	Auth  bool
+	UserId int
+	Token  string
+	Auth   bool
 }
 
 func MiddlewareToken(c *gin.Context) {
@@ -38,11 +39,16 @@ func MiddlewareToken(c *gin.Context) {
 	}
 	token := headerParts[1]
 	if model.CheckToken(token) {
-		c.Set("StatusAuth", StatusAuth{
-			Token: token,
-			Auth:  true,
-		})
-		return
+		userId, err := model.GetUserId(token)
+		if err == nil {
+			c.Set("StatusAuth", StatusAuth{
+				UserId: userId,
+				Token:  token,
+				Auth:   true,
+			})
+			return
+		}
+
 	}
 	c.Set("StatusAuth", StatusAuth{
 		Auth: false,

@@ -10,7 +10,7 @@ import (
 )
 
 func UserRoutes(r *gin.Engine) {
-	r.POST("/auth", func(c *gin.Context) {
+	r.POST("/user/auth", func(c *gin.Context) {
 
 		user := model.User{
 			Login:    c.DefaultPostForm("login", ""),
@@ -29,7 +29,7 @@ func UserRoutes(r *gin.Engine) {
 		})
 	})
 
-	r.POST("/registration", func(c *gin.Context) {
+	r.POST("/user/registration", func(c *gin.Context) {
 
 		user := model.User{
 			Login:    c.DefaultPostForm("login", ""),
@@ -43,7 +43,7 @@ func UserRoutes(r *gin.Engine) {
 		})
 	})
 
-	r.GET("/logout", func(c *gin.Context) {
+	r.GET("/user/logout", func(c *gin.Context) {
 		var result int
 		value, exists := c.Get("StatusAuth")
 		if !exists {
@@ -66,29 +66,29 @@ func UserRoutes(r *gin.Engine) {
 		})
 	})
 
-	r.GET("/user/id/get", func(c *gin.Context) {
-		var result int = 9
-		var code int = 401
-		var id int = 0
+	// r.GET("/user/id/get", func(c *gin.Context) {
+	// 	var result int = 9
+	// 	var code int = 401
+	// 	var id int = 0
 
-		v, exists := c.Get("StatusAuth")
-		if !exists {
-			log.Fatal("The key does not exist")
-		}
+	// 	v, exists := c.Get("StatusAuth")
+	// 	if !exists {
+	// 		log.Fatal("The key does not exist")
+	// 	}
 
-		if v.(middleware.StatusAuth).Auth {
-			userId, err := model.GetUserId(v.(middleware.StatusAuth).Token)
-			if err == nil {
-				id = userId
-				result = 0
-				code = 200
-			}
+	// 	if v.(middleware.StatusAuth).Auth {
+	// 		userId, err := model.GetUserId(v.(middleware.StatusAuth).Token)
+	// 		if err == nil {
+	// 			id = userId
+	// 			result = 0
+	// 			code = 200
+	// 		}
 
-		}
+	// 	}
 
-		c.JSON(code, gin.H{
-			"status": result,
-			"id":     id,
-		})
-	})
+	// 	c.JSON(code, gin.H{
+	// 		"status": result,
+	// 		"id":     id,
+	// 	})
+	// })
 }

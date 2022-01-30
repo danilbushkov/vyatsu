@@ -21,7 +21,7 @@ data class User(val login:String, val password:String)
 
 suspend fun Auth(c:HttpClient,user:User):AuthStatus{
     val response: AuthStatus = c.submitForm(
-            url = "http://localhost:8080/auth",
+            url = "http://localhost:8080/user/auth",
             formParameters = Parameters.build {
                 append("login", user.login)
                 append("password", user.password)
@@ -31,12 +31,12 @@ suspend fun Auth(c:HttpClient,user:User):AuthStatus{
     return response
 }
 
-suspend fun GetUserId(c:HttpClient,token:String):GetIdStatus{
-    val response: GetIdStatus = c.get("http://127.0.0.1:8080/user/id/get") {
-        headers {
-            append("Authorization", "Bearer "+token)
-        }
+// suspend fun GetUserId(c:HttpClient,token:String):GetIdStatus{
+//     val response: GetIdStatus = c.get("http://127.0.0.1:8080/user/id/get") {
+//         headers {
+//             append("Authorization", "Bearer "+token)
+//         }
         
-    }
-    return response
-}
+//     }
+//     return response
+// }
