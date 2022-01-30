@@ -13,6 +13,7 @@ import kotlinx.coroutines.*
 import kotlinx.serialization.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
+import io.ktor.client.request.forms.*
 
 class App {
     val greeting: String
@@ -27,8 +28,9 @@ suspend fun test(){
     
     
 }
-@Serializable
-data class AuthStatus(val status:Int,val token:String)
+
+
+
 
 fun main() {
     val client = HttpClient(CIO){
@@ -37,13 +39,19 @@ fun main() {
         }
     }
     GlobalScope.launch(Dispatchers.IO) {
-        val response: AuthStatus = client.post("http://localhost:8080/auth") {
+        val response = Auth(client,
+                            User("testt","123456"))
         
-        }
+        val response2 = GetUserId(client,response.token)
         
-        println(response.toString())
+
+        println(response2.id)
         
     }
-    Thread.sleep(2000L)
+
+    
+    while(true){
+       
+    }
     println()
 }

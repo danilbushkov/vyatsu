@@ -66,3 +66,16 @@ func RemoveToken(token string) {
 		log.Fatal(err)
 	}
 }
+
+func GetUserId(t string) (int, error) {
+	token, err := jwt.ParseWithClaims(t, &claims{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte(Key), nil
+	})
+
+	if claims, ok := token.Claims.(*claims); ok && token.Valid {
+		return claims.Id, nil
+	} else {
+		return 0, err
+	}
+
+}
