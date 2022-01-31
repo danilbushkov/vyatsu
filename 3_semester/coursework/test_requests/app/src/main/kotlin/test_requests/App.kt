@@ -43,8 +43,8 @@ fun main() {
                             User("testt","123456"))
         
         val response2 = AddTask(client,response.token)
-        
-
+        val response3 = UpdateTask(client,response.token)
+        val response4 = DeleteTask(client,response.token)
         println(response2)
         
     }
