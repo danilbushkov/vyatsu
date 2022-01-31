@@ -32,3 +32,10 @@ INSERT INTO task_archive (
 UPDATE task
 SET last_update = $1
 WHERE task_id = $2;
+
+SELECT task.task_id, task.date_create, 
+        task.last_update, task_archive.title, task_archive.task_text,task_archive.status
+FROM task
+JOIN task_archive ON task.task_id = task_archive.task_id 
+AND task.last_update = task_archive.date_create
+WHERE user_id=$1;

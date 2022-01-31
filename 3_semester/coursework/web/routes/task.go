@@ -14,6 +14,21 @@ func TaskRoutes(r *gin.Engine) {
 	r.POST("/task/add", CheckAuthWrapper(AddTask))
 	r.POST("/task/update", CheckAuthWrapper(UpdateTask))
 	r.GET("/task/delete", CheckAuthWrapper(DeleteTask))
+	r.GET("/tasks/get/all", CheckAuthWrapper(GetAllTask))
+}
+
+func GetAllTask(c *gin.Context) {
+	v, exists := c.Get("StatusAuth")
+	if !exists {
+		log.Fatal("The key does not exist")
+	}
+	result, status := model.GetAllTasks(v.(middleware.StatusAuth).UserId)
+	if status != 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"status": status, "tasks": []model.Task{}})
+	} else {
+		c.JSON(200, gin.H{"status": status, "tasks": result})
+	}
+
 }
 
 func DeleteTask(c *gin.Context) {
@@ -21,6 +36,7 @@ func DeleteTask(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"status": 15})
+		return
 	}
 	v, exists := c.Get("StatusAuth")
 	if !exists {

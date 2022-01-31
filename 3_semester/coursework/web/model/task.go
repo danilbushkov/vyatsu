@@ -7,14 +7,14 @@ import (
 	"github.com/danilbushkov/university/3_semester/coursework/web/database"
 )
 
-type Task struct {
+type TaskDB struct {
 	TaskId     int    `json:"task_id"`
 	UserId     int    `json:"user_id"`
 	DateCreate string `json:"date_create"`
 	LastUpdate string `json:"last_update"`
 }
 
-type TaskArchive struct {
+type TaskArchiveDB struct {
 	TaskArchiveId int    `json:"task_archive_id"`
 	TaskId        int    `json:"task_id"`
 	Title         string `json:"title"`
@@ -23,11 +23,47 @@ type TaskArchive struct {
 	DateCreate    string `json:"date_create"`
 }
 
+type Task struct {
+	TaskId     int    `json:"task_id"`
+	DateCreate string `json:"date_create"`
+	LastUpdate string `json:"last_update"`
+	Title      string `json:"title"`
+	Text       string `json:"text"`
+	Status     bool   `json:"status"`
+}
+
 type TaskJSON struct {
 	Id     int    `json:"task_id"`
 	Title  string `json:"title"`
 	Text   string `json:"text"`
-	Status int    `json:"status"`
+	Status bool   `json:"status"`
+}
+
+func GetAllTasks(user_id int) ([]Task, int) {
+	rows, err := database.DB.Query(`SELECT task.task_id, task.date_create, 
+	task.last_update, task_archive.title, task_archive.task_text,task_archive.status
+FROM task
+JOIN task_archive ON task.task_id = task_archive.task_id 
+AND task.last_update = task_archive.date_create
+WHERE user_id=$1`, user_id)
+	if err != nil {
+		log.Print(err)
+		return nil, 17
+	}
+	defer rows.Close()
+	tasks := []Task{}
+
+	for rows.Next() {
+		t := Task{}
+		err := rows.Scan(&t.TaskId, &t.DateCreate, &t.LastUpdate,
+			&t.Title, &t.Text, &t.Status)
+		if err != nil {
+			log.Print(err)
+			return nil, 17
+		}
+		tasks = append(tasks, t)
+	}
+	return tasks, 0
 }
 
 func (t *TaskJSON) UpdateTask(user_id int) int {

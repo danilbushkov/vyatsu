@@ -17,8 +17,19 @@ data class TaskJSON(
     val task_id:Int,
     val title:String,
     val text:String,
-    val status: Int
+    val status: Boolean
     )
+
+@Serializable    
+data class Task(
+    
+	val task_id:Int,
+	val date_create:String,
+	val last_update:String,
+	val title:String,
+	val text:String,
+	val status:Boolean,
+)
 
 @Serializable
 data class CreateTaskStatus(val status:Int,val id:Int)
@@ -27,6 +38,8 @@ data class CreateTaskStatus(val status:Int,val id:Int)
 data class UpdateTaskStatus(val status:Int)
 @Serializable
 data class DeleteTaskStatus(val status:Int)
+@Serializable
+data class GetAllTaskStatus(val status:Int,val tasks:MutableList<Task>)
 // data class User(val login:String, val password:String)
 
 
@@ -35,7 +48,7 @@ data class DeleteTaskStatus(val status:Int)
 suspend fun AddTask(c:HttpClient,token:String):CreateTaskStatus{
     val response: CreateTaskStatus = c.post("http://localhost:8080/task/add") {
         contentType(ContentType.Application.Json)
-        body = TaskJSON(0,"test","test",0)
+        body = TaskJSON(0,"test","test",false)
         headers {
             append("Authorization", "Bearer "+token)
         }
@@ -46,7 +59,7 @@ suspend fun AddTask(c:HttpClient,token:String):CreateTaskStatus{
 suspend fun UpdateTask(c:HttpClient,token:String):UpdateTaskStatus{
     val response: UpdateTaskStatus = c.post("http://localhost:8080/task/update") {
         contentType(ContentType.Application.Json)
-        body = TaskJSON(1,"test-update","test-update",0)
+        body = TaskJSON(1,"test-update","test-update",false)
         headers {
             append("Authorization", "Bearer "+token)
         }
@@ -56,6 +69,16 @@ suspend fun UpdateTask(c:HttpClient,token:String):UpdateTaskStatus{
 suspend fun DeleteTask(c:HttpClient,token:String):DeleteTaskStatus{
     val response: DeleteTaskStatus = c.get("http://localhost:8080/task/delete") {
         parameter("id", 0)
+        headers {
+            append("Authorization", "Bearer "+token)
+        }
+    }
+    return response
+}
+
+suspend fun GetAllTask(c:HttpClient,token:String):GetAllTaskStatus{
+    val response: GetAllTaskStatus = c.get("http://localhost:8080/tasks/get/all") {
+        //parameter("id", 0)
         headers {
             append("Authorization", "Bearer "+token)
         }
