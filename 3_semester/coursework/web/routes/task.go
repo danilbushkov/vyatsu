@@ -3,6 +3,7 @@ package routes
 import (
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/danilbushkov/university/3_semester/coursework/web/middleware"
 	"github.com/danilbushkov/university/3_semester/coursework/web/model"
@@ -11,21 +12,58 @@ import (
 
 func TaskRoutes(r *gin.Engine) {
 	r.POST("/task/add", CheckAuthWrapper(AddTask))
+	r.POST("/task/update", CheckAuthWrapper(UpdateTask))
+	r.GET("/task/delete", CheckAuthWrapper(DeleteTask))
+}
 
+func DeleteTask(c *gin.Context) {
+	id, err := strconv.Atoi(c.Query("id"))
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": 15})
+	}
+	v, exists := c.Get("StatusAuth")
+	if !exists {
+		log.Fatal("The key does not exist")
+	}
+	result := model.DeleteDB(v.(middleware.StatusAuth).UserId, id)
+	if result == 0 {
+		c.JSON(200, gin.H{"status": result})
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{"status": result})
+	}
 }
 
 func AddTask(c *gin.Context) {
 	var task model.TaskJSON
 	if err := c.ShouldBindJSON(&task); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"status": 10})
+		c.JSON(http.StatusBadRequest, gin.H{"status": 10, "id": 0})
 		return
 	}
 	v, exists := c.Get("StatusAuth")
 	if !exists {
 		log.Fatal("The key does not exist")
 	}
+	var id int
+	result := task.AddDB(v.(middleware.StatusAuth).UserId, &id)
+	if result == 0 {
+		c.JSON(200, gin.H{"status": result, "id": id})
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{"status": result, "id": 0})
+	}
+}
 
-	result := task.AddDB(v.(middleware.StatusAuth).UserId)
+func UpdateTask(c *gin.Context) {
+	var task model.TaskJSON
+	if err := c.ShouldBindJSON(&task); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": 14})
+		return
+	}
+	v, exists := c.Get("StatusAuth")
+	if !exists {
+		log.Fatal("The key does not exist")
+	}
+	result := task.UpdateTask(v.(middleware.StatusAuth).UserId)
 	if result == 0 {
 		c.JSON(200, gin.H{"status": result})
 	} else {
