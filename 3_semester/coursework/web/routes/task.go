@@ -15,6 +15,7 @@ func TaskRoutes(r *gin.Engine) {
 	r.POST("/task/update", CheckAuthWrapper(UpdateTask))
 	r.GET("/task/delete", CheckAuthWrapper(DeleteTask))
 	r.GET("/tasks/get/all", CheckAuthWrapper(GetAllTask))
+	r.GET("/check", CheckAuthWrapper(Check))
 }
 
 func GetAllTask(c *gin.Context) {
@@ -102,4 +103,10 @@ func CheckAuthWrapper(f func(c *gin.Context)) func(c *gin.Context) {
 
 		f(c)
 	}
+}
+
+func Check(c *gin.Context) {
+
+	c.JSON(200, gin.H{"status": 0})
+
 }
