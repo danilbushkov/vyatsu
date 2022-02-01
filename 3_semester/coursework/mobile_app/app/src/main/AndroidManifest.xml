@@ -21,9 +21,6 @@
             android:name=".AccountActivity"
             android:exported="true" />
         <activity
-            android:name=".HistoryTaskActivity"
-            android:exported="true" />
-        <activity
             android:name=".EditTaskActivity"
             android:exported="true" />
         <activity

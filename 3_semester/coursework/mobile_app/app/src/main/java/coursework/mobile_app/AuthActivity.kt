@@ -21,7 +21,9 @@ class AuthActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auth)
 
-        checkAuth()
+        if(app!!.auth){
+            this.finish()
+        }
     }
 
 
@@ -34,9 +36,12 @@ class AuthActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun checkAuth(){
-        if(app!!.auth){
-            this.finish()
-        }
-    }
+
+//    override fun onPause() {
+//        super.onPause()
+//        if(!app!!.auth){
+//            finishAndRemoveTask()
+//        }
+//    }
+
 }
