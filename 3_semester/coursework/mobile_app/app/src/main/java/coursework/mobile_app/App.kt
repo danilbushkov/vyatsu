@@ -5,6 +5,6 @@ import coursework.mobile_app.model.Settings
 
 class App:Application() {
     val settings: Settings = Settings()
-    val auth: Boolean = false
+    val auth: Boolean = true
     val token: String = ""
 }

@@ -6,19 +6,23 @@ import android.view.View
 import android.widget.EditText
 
 class AppSettingsActivity : AppCompatActivity() {
-    val app:App = (this?.applicationContext as App)
-    val editPort = findViewById<EditText>(R.id.editPort)
-    val editHost = findViewById<EditText>(R.id.editHost)
+    var app:App? = null
+    var editPort: EditText? = null
+    var editHost: EditText?  = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         title="Настройки"
+        this.app = (this?.applicationContext as App)
+        this.editPort = findViewById<EditText>(R.id.editPort)
+        this.editHost = findViewById<EditText>(R.id.editHost)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_app_settings)
     }
 
     fun clickButtonApply(view: View){
-        app.settings.host = editHost.text.toString()
-        app.settings.port = editPort.text.toString()
+        app!!.settings.host = editHost?.text.toString()
+        app!!.settings.port = editPort?.text.toString()
 
     }
 }

@@ -4,11 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/layout/activity_account.xml" value="0.4" />
-        <entry key="app/src/main/res/layout/activity_add_task.xml" value="0.23369565217391305" />
+        <entry key="app/src/main/res/layout/activity_add_task.xml" value="0.264" />
         <entry key="app/src/main/res/layout/activity_app_settings.xml" value="0.23369565217391305" />
+        <entry key="app/src/main/res/layout/activity_auth.xml" value="0.264" />
         <entry key="app/src/main/res/layout/activity_edit_task.xml" value="0.23369565217391305" />
         <entry key="app/src/main/res/layout/activity_history_task.xml" value="0.23369565217391305" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.4" />
+        <entry key="app/src/main/res/layout/activity_registration.xml" value="0.23369565217391305" />
         <entry key="app/src/main/res/menu/main_menu.xml" value="0.32135416666666666" />
       </map>
     </option>
