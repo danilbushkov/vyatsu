@@ -1,15 +1,22 @@
 package coursework.mobile_app
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import coursework.mobile_app.databinding.ActivityMainBinding
 import coursework.mobile_app.model.Task
 import coursework.mobile_app.model.TasksListener
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,12 +24,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: TasksAdapter
     private lateinit var binding: ActivityMainBinding
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         title="Задачи"
         app =  (this?.applicationContext as App)
+        app!!.storage=getSharedPreferences(App.NAME_STORAGE, MODE_PRIVATE)
 
-        checkAuth()
+        //checkAuth()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -45,6 +54,8 @@ class MainActivity : AppCompatActivity() {
         })
         binding.recyclerTasks.adapter = adapter
         app!!.tasksService.addListener(tasksListener)
+
+        checkConnect()
     }
 
 
@@ -90,5 +101,33 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         app?.tasksService?.removeListener(tasksListener)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun checkConnect(){
+        if(!app!!.httpClientService.isOnline(this)){
+            var toast = Toast.makeText(this,"Нет подключения к интернету",Toast.LENGTH_SHORT)
+            toast.show()
+        }else{
+            var toast = Toast.makeText(this,"Нет авторизован",Toast.LENGTH_SHORT)
+            var intent1 = Intent(this, AppSettingsActivity::class.java)
+            var intent2= Intent(this,AuthActivity::class.java)
+            GlobalScope.launch(Dispatchers.IO){
+                var status = app!!.httpClientService.CheckConnection()
+
+                if(status == 20){
+
+                    startActivity(intent1)
+                    finish()
+                }else if(status == 9){
+                    toast.show()
+                    startActivity(intent2)
+                }
+
+            }
+        }
+
+
+
     }
 }
