@@ -26,7 +26,18 @@ class TasksService {
         return tasks.first { it.task_id == id }
     }
 
-
+    fun done(task:Task){
+        task.status=true
+        notifyChanges()
+    }
+    fun  notDone(task: Task){
+        task.status=false
+        notifyChanges()
+    }
+    fun deleteTask(task:Task){
+        tasks.remove(task)
+        notifyChanges()
+    }
 
     fun addListener(listener: TasksListener){
         listeners.add(listener)

@@ -33,6 +33,15 @@ class MainActivity : AppCompatActivity() {
                 intent.putExtra("taskId",task.task_id)
                 startActivity(intent)
             }
+
+            override fun onTaskDone(task: Task) {
+                app!!.tasksService.done(task)
+            }
+
+            override fun onTaskNotDone(task: Task) {
+                app!!.tasksService.notDone(task)
+            }
+
         })
         binding.recyclerTasks.adapter = adapter
         app!!.tasksService.addListener(tasksListener)

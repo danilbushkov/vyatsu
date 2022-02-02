@@ -1,6 +1,8 @@
 package coursework.mobile_app
 
 
+import android.graphics.Color
+import android.graphics.Color.*
 import android.view.LayoutInflater
 import android.view.Menu
 
@@ -16,8 +18,8 @@ import coursework.mobile_app.databinding.ItemTaskBinding
 
 interface TaskActionListener {
     fun onTaskClick(task: Task, position: Int)
-    //fun onTaskDone(task: Task)
-    //fun onTaskNotDone(task: Task)
+    fun onTaskDone(task: Task)
+    fun onTaskNotDone(task: Task)
 }
 
 class TasksAdapter(
@@ -73,9 +75,9 @@ class TasksAdapter(
 
 
             if(task.status) {
-
+                completedLabel.setBackgroundColor(GREEN)
             }else{
-
+                completedLabel.setBackgroundColor(WHITE)
             }
         }
 
@@ -102,10 +104,10 @@ class TasksAdapter(
         popupMenu.setOnMenuItemClickListener {
             when(it.itemId){
                 ID_DONE -> {
-                    //actionListener.onTaskDone(task)
+                    actionListener.onTaskDone(task)
                 }
                 ID_NOT_DONE -> {
-                    //actionListener.onTaskNotDone(task)
+                    actionListener.onTaskNotDone(task)
                 }else -> {
 
             }
