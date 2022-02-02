@@ -121,14 +121,14 @@ func DeleteDB(user_id int, task_id int) int {
 	return 0
 }
 
-func (t *TaskJSON) AddDB(user_id int, task_id *int) int {
+func (t *TaskJSON) AddDB(user_id int, task_id *int, date *string) int {
 	if t.Title == "" {
 		return 11
 	}
 
 	var id int
 	timeNow := time.Now().Format("2006-01-02T15:04:05")
-
+	*date = timeNow
 	database.DB.QueryRow("INSERT INTO task (user_id,date_create,last_update) VALUES ($1,$2,$3) RETURNING task_id",
 		user_id,
 		timeNow,

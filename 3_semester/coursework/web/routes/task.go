@@ -62,11 +62,12 @@ func AddTask(c *gin.Context) {
 		log.Fatal("The key does not exist")
 	}
 	var id int
-	result := task.AddDB(v.(middleware.StatusAuth).UserId, &id)
+	var date string
+	result := task.AddDB(v.(middleware.StatusAuth).UserId, &id, &date)
 	if result == 0 {
-		c.JSON(200, gin.H{"status": result, "id": id})
+		c.JSON(200, gin.H{"status": result, "id": id, "date_create": date})
 	} else {
-		c.JSON(http.StatusBadRequest, gin.H{"status": result, "id": 0})
+		c.JSON(http.StatusBadRequest, gin.H{"status": result, "id": 0, "date_create": ""})
 	}
 }
 
