@@ -38,9 +38,9 @@ class TasksAdapter(
                 showPopupMenu(v)
             }
             else -> {
-                //val task = v.tag as Task
-                //val position = tasks.indexOfFirst { it.task_id == task.task_id }
-                //actionListener.onTaskClick(task, position);
+                val task = v.tag as Task
+                val position = tasks.indexOfFirst { it.task_id == task.task_id }
+                actionListener.onTaskClick(task, position);
             }
         }
 
@@ -86,32 +86,35 @@ class TasksAdapter(
 
 
     private fun showPopupMenu(view: View){
-        //val popupMenu = PopupMenu(view.context, view)
+        val popupMenu = PopupMenu(view.context, view)
         val context = view.context
         val task = view.tag as Task
         val position = tasks.indexOfFirst { it.task_id == task.task_id }
 
+
+
         if(!task.status) {
 
+            popupMenu.menu.add(0, ID_DONE, Menu.NONE,"Выполнено")
         }else{
-
+            popupMenu.menu.add(0, ID_NOT_DONE, Menu.NONE,"Не выполнено")
         }
-//        popupMenu.setOnMenuItemClickListener {
-//            when(it.itemId){
-//                ID_DONE -> {
-//                    //actionListener.onTaskDone(task)
-//                }
-//                ID_NOT_DONE -> {
-//                    //actionListener.onTaskNotDone(task)
-//                }else -> {
-//
-//            }
-//            }
-//            return@setOnMenuItemClickListener true
-       // }
+        popupMenu.setOnMenuItemClickListener {
+            when(it.itemId){
+                ID_DONE -> {
+                    //actionListener.onTaskDone(task)
+                }
+                ID_NOT_DONE -> {
+                    //actionListener.onTaskNotDone(task)
+                }else -> {
+
+            }
+            }
+            return@setOnMenuItemClickListener true
+        }
 
 
-        //popupMenu.show()
+        popupMenu.show()
 
 
 

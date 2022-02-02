@@ -11,12 +11,13 @@ class AppSettingsActivity : AppCompatActivity() {
     var editHost: EditText?  = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         title="Настройки"
         this.app = (this?.applicationContext as App)
         this.editPort = findViewById<EditText>(R.id.editPort)
         this.editHost = findViewById<EditText>(R.id.editHost)
 
-        super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_app_settings)
     }
 

@@ -10,35 +10,23 @@ class TasksService {
     private val listeners = mutableSetOf<TasksListener>()
 
     init{
-        //tasks=getTestTasks().toMutableList()
-        tasks = (1..20).map{
-            Task(
-                task_id=it.toInt(),
-                date_create = "test",
-                last_update ="test",
-                title="title "+it.toString(),
-                text="text "+it.toString(),
-                status=false,
-            )
-        }.toMutableList()
+        tasks=getTestTasks().toMutableList()
+
     }
     fun getTasks():List<Task>{
         return tasks
     }
-    private fun getTestTasks():List<Task>{
-        var tasks = mutableListOf<Task>()
-        tasks = (1..20).map{
-            Task(
-                task_id=it.toInt(),
-            date_create = "test",
-            last_update ="test",
-            title="title "+it.toString(),
-            text="text "+it.toString(),
-            status=false,
-            )
-        }.toMutableList()
-        return  tasks
+
+    fun addTasks(task:Task){
+        tasks.add(task)
+        notifyChanges()
     }
+
+    fun getTaskById(id: Int):Task{
+        return tasks.first { it.task_id == id }
+    }
+
+
 
     fun addListener(listener: TasksListener){
         listeners.add(listener)
@@ -53,4 +41,20 @@ class TasksService {
         listeners.forEach{it.invoke(tasks)}
     }
 
+
+
+    private fun getTestTasks():List<Task>{
+        var tasks = mutableListOf<Task>()
+        tasks = (1..10).map{
+            Task(
+                task_id=it.toInt(),
+                date_create = "test",
+                last_update ="test",
+                title="title "+it.toString(),
+                text="text "+it.toString(),
+                status=false,
+            )
+        }.toMutableList()
+        return  tasks
+    }
 }

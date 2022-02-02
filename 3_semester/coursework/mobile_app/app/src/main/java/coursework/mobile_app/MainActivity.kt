@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import coursework.mobile_app.databinding.ActivityMainBinding
 import coursework.mobile_app.model.Task
 import coursework.mobile_app.model.TasksListener
@@ -17,16 +18,20 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         title="Задачи"
         app =  (this?.applicationContext as App)
-        super.onCreate(savedInstanceState)
+
         checkAuth()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+        val intent = Intent(this,EditTaskActivity::class.java)
         adapter = TasksAdapter(object: TaskActionListener{
             override fun onTaskClick(task: Task, position: Int) {
-                TODO("Not yet implemented")
+                intent.putExtra("taskId",task.task_id)
+                startActivity(intent)
             }
         })
         binding.recyclerTasks.adapter = adapter
@@ -71,5 +76,10 @@ class MainActivity : AppCompatActivity() {
     }
     private val tasksListener: TasksListener={
         adapter.tasks = it
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        app?.tasksService?.removeListener(tasksListener)
     }
 }

@@ -13,12 +13,13 @@ class AuthActivity : AppCompatActivity() {
     var app: App? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         title = "Авторизация"
         editAuthLogin = findViewById<EditText>(R.id.editAuthLogin)
         editAuthPassword = findViewById<EditText>(R.id.editAuthPassword)
         app = this.applicationContext as App
 
-        super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_auth)
 
         if(app!!.auth){

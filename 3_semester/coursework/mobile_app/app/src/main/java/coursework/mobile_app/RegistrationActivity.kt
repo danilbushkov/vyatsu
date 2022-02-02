@@ -13,11 +13,12 @@ class RegistrationActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         title="Регистрация"
         editLogin = findViewById(R.id.editRegistrationLogin)
         editPassword = findViewById(R.id.editRegistrationPassword)
 
-        super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_registration)
 
         supportActionBar?.setHomeButtonEnabled(true)

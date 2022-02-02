@@ -14,12 +14,13 @@ class AccountActivity : AppCompatActivity() {
     private var app: App? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         title = "Аккаунт"
         this.levelText = findViewById(R.id.levelText)
         this.completedTasksText= findViewById(R.id.completedTasksText)
         app = this.applicationContext as App
 
-        super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_account)
 
         checkAuth()
@@ -42,7 +43,7 @@ class AccountActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.edit_menu, menu)
+        menuInflater.inflate(R.menu.account_menu, menu)
         return true
     }
 
