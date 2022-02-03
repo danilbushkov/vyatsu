@@ -14,7 +14,7 @@ type claims struct {
 }
 
 const Key = "Test"
-const ActivityInterval = 300
+const ActivityInterval = 6000
 
 func GetToken(id int) string {
 

@@ -39,13 +39,37 @@ type TaskJSON struct {
 	Status bool   `json:"status"`
 }
 
+func GetDatesUpdate(user_id, task_id int) ([]string, int) {
+	if !checkExistsTask(user_id, task_id) {
+		return nil, 12
+	}
+	rows, err := database.DB.Query(`SELECT date_create FROM task_archive 
+	where task_id=$1 ORDER BY date_create DESC`, task_id)
+	if err != nil {
+		log.Print(err)
+		return nil, 22
+	}
+	defer rows.Close()
+	var dates []string
+	var s string
+	for rows.Next() {
+		err := rows.Scan(&s)
+		if err != nil {
+			log.Print(err)
+			return nil, 22
+		}
+		dates = append(dates, s)
+	}
+	return dates, 0
+}
+
 func GetAllTasks(user_id int) ([]Task, int) {
 	rows, err := database.DB.Query(`SELECT task.task_id, task.date_create, 
 	task.last_update, task_archive.title, task_archive.task_text,task_archive.status
 FROM task
 JOIN task_archive ON task.task_id = task_archive.task_id 
 AND task.last_update = task_archive.date_create
-WHERE user_id=$1`, user_id)
+WHERE user_id=$1 ORDER BY task.last_update DESC`, user_id)
 	if err != nil {
 		log.Print(err)
 		return nil, 17
@@ -66,7 +90,7 @@ WHERE user_id=$1`, user_id)
 	return tasks, 0
 }
 
-func (t *TaskJSON) UpdateTask(user_id int) int {
+func (t *TaskJSON) UpdateTask(user_id int, date *string) int {
 	if t.Id == 0 {
 		return 14
 	}
@@ -78,7 +102,7 @@ func (t *TaskJSON) UpdateTask(user_id int) int {
 	}
 
 	timeNow := time.Now().Format("2006-01-02T15:04:05")
-
+	*date = timeNow
 	_, err := database.DB.Exec(`UPDATE task
 		SET last_update = $1
 		WHERE task_id = $2`, timeNow, t.Id)
@@ -145,12 +169,13 @@ func (t *TaskJSON) AddDB(user_id int, task_id *int, date *string) int {
 		t.Title,
 		t.Text,
 		timeNow,
-		false,
+		t.Status,
 	)
 	if err != nil {
 		log.Print(err)
 		return 13
 	}
+	*task_id = id
 	return 0
 }
 

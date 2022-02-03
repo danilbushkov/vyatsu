@@ -15,8 +15,6 @@ CREATE TABLE IF NOT EXISTS task_archive (
 	task_id integer NOT NULL,
     title VARCHAR(100) NOT NULL,
     task_text TEXT,
-    date_completion timestamp,
-    deadline timestamp,
 	date_create timestamp NOT NULL,
 	status boolean
 );
@@ -35,8 +33,6 @@ INSERT INTO task_archive (
     task_id,
     title,
     task_text,
-    date_completion,
-    deadline,
     date_create,
     status) VALUES 
-($1,$2,$3,$4,$5,$6,$7);
+($1,$2,$3,$4,$5);

@@ -16,6 +16,26 @@ func TaskRoutes(r *gin.Engine) {
 	r.GET("/task/delete", CheckAuthWrapper(DeleteTask))
 	r.GET("/tasks/get/all", CheckAuthWrapper(GetAllTask))
 	r.GET("/check", CheckAuthWrapper(Check))
+	r.GET("/task/dates", CheckAuthWrapper(GetDates))
+}
+
+func GetDates(c *gin.Context) {
+	id, err := strconv.Atoi(c.Query("id"))
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": 22})
+		return
+	}
+	v, exists := c.Get("StatusAuth")
+	if !exists {
+		log.Fatal("The key does not exist")
+	}
+	result, status := model.GetDatesUpdate(v.(middleware.StatusAuth).UserId, id)
+	if status != 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"status": status})
+	} else {
+		c.JSON(200, gin.H{"status": status, "dates": result})
+	}
 }
 
 func GetAllTask(c *gin.Context) {
@@ -25,7 +45,7 @@ func GetAllTask(c *gin.Context) {
 	}
 	result, status := model.GetAllTasks(v.(middleware.StatusAuth).UserId)
 	if status != 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"status": status, "tasks": []model.Task{}})
+		c.JSON(http.StatusBadRequest, gin.H{"status": status})
 	} else {
 		c.JSON(200, gin.H{"status": status, "tasks": result})
 	}
@@ -54,7 +74,7 @@ func DeleteTask(c *gin.Context) {
 func AddTask(c *gin.Context) {
 	var task model.TaskJSON
 	if err := c.ShouldBindJSON(&task); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"status": 10, "id": 0})
+		c.JSON(http.StatusBadRequest, gin.H{"status": 10})
 		return
 	}
 	v, exists := c.Get("StatusAuth")
@@ -67,7 +87,7 @@ func AddTask(c *gin.Context) {
 	if result == 0 {
 		c.JSON(200, gin.H{"status": result, "id": id, "date_create": date})
 	} else {
-		c.JSON(http.StatusBadRequest, gin.H{"status": result, "id": 0, "date_create": ""})
+		c.JSON(http.StatusBadRequest, gin.H{"status": result})
 	}
 }
 
@@ -81,9 +101,10 @@ func UpdateTask(c *gin.Context) {
 	if !exists {
 		log.Fatal("The key does not exist")
 	}
-	result := task.UpdateTask(v.(middleware.StatusAuth).UserId)
+	var date string
+	result := task.UpdateTask(v.(middleware.StatusAuth).UserId, &date)
 	if result == 0 {
-		c.JSON(200, gin.H{"status": result})
+		c.JSON(200, gin.H{"status": result, "date_update": date})
 	} else {
 		c.JSON(http.StatusBadRequest, gin.H{"status": result})
 	}
