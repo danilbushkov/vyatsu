@@ -17,9 +17,9 @@ class TasksService {
         return tasks
     }
 
-    fun addTasks(task:Task){
+    fun addTask(task:Task){
         tasks.add(task)
-        notifyChanges()
+
     }
 
     fun getTaskById(id: Int):Task{

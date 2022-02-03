@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this,EditTaskActivity::class.java)
         adapter = TasksAdapter(object: TaskActionListener{
             override fun onTaskClick(task: Task, position: Int) {
+                Log.v("Task",task.toString())
                 intent.putExtra("taskId",task.task_id)
                 startActivity(intent)
             }

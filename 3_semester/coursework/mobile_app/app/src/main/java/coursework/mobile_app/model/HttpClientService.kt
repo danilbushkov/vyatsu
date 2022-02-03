@@ -54,6 +54,57 @@ class HttpClientService(val httpSettings: HttpSettings) {
         editor.apply()
     }
 
+    suspend fun editTask(task:Task):EditTaskStatus{
+        val response:EditTaskStatus = client.post(path+"/task/update"){
+            contentType(ContentType.Application.Json)
+            body = TaskJSON(
+                0,
+                task.title,
+                task.text,
+                task.status,
+            )
+            headers {
+                append("Authorization", "Bearer "+token)
+            }
+        }
+        task.date_create=response.date_create
+        task.last_update=response.date_create
+
+        return response
+    }
+
+
+    suspend fun addTask(task:Task):AddTaskStatus{
+        val response:AddTaskStatus = client.post(path+"/task/add"){
+            contentType(ContentType.Application.Json)
+            body = TaskJSON(
+                0,
+                task.title,
+                task.text,
+                task.status,
+            )
+            headers {
+                append("Authorization", "Bearer "+token)
+            }
+        }
+        task.task_id=response.id
+        task.date_create=response.date_create
+        task.last_update=response.date_create
+
+        return response
+    }
+
+    suspend fun Registration(user:User):Status{
+        val response:Status = client.submitForm(
+            url=path+"/user/registration",
+            formParameters = Parameters.build {
+                append("login",user.login)
+                append("password",user.password)
+            },
+            encodeInQuery = false
+        )
+        return response
+    }
 
     suspend fun Auth(user:User):AuthStatus{
         val response:AuthStatus = client.submitForm(
@@ -116,6 +167,7 @@ class HttpClientService(val httpSettings: HttpSettings) {
                     return status.status.toInt()
                 }
                 else -> {
+                    Log.v("Error: ",c.toString())
                     21
                 }
             }

@@ -8,7 +8,12 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.Toast
+import coursework.mobile_app.model.Errors
 import coursework.mobile_app.model.Task
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class EditTaskActivity : AppCompatActivity() {
 
@@ -20,8 +25,9 @@ class EditTaskActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        app = applicationContext as App
         setContentView(R.layout.activity_edit_task)
+        app = applicationContext as App
+
         title="Редактирование"
 
         editTitle=findViewById(R.id.editEditTitle)
@@ -80,13 +86,54 @@ class EditTaskActivity : AppCompatActivity() {
         return true
     }
 
-    fun onClickEditTask(view: View){
-        task.title = editTitle.text.toString()
-        task.text = editText.text.toString()
-        task.status = completed.isChecked
-        var intent = Intent(this,MainActivity::class.java)
+    fun onClickEditTask(view: View) {
+        view.isClickable = false
+        var taskHttp = Task(
+            task.task_id,
+            "",
+            "",
+            editTitle.text.toString(),
+            editTitle.text.toString(),
+            completed.isChecked
+        )
+        val toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
+        //val context =this
+        var intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        startActivity(intent)
+        GlobalScope.launch(Dispatchers.IO) {
+            var status = app.httpClientService.StandardWrapper {
+                val value = app.httpClientService.editTask(task)
+
+                value.status
+            }
+
+            when (status) {
+                11 -> {
+                    toast.setText(Errors.getError(status))
+                    toast.show()
+
+                }
+                0 -> {
+
+                    task.title = editTitle.text.toString()
+                    task.text = editText.text.toString()
+                    task.last_update = taskHttp.last_update
+                    task.status = completed.isChecked
+                    toast.setText("Запись изменена")
+                    toast.show()
+
+                    startActivity(intent)
+
+
+                }
+                else -> {
+                    toast.setText("Ошибка")
+                    toast.show()
+                }
+            }
+            view.isClickable = true
+
+        }
     }
 
 }

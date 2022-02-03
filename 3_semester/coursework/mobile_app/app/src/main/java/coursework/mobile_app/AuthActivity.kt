@@ -43,6 +43,7 @@ class AuthActivity : AppCompatActivity() {
         val password = editAuthPassword!!.text.toString()
         var toast = Toast.makeText(this, "",Toast.LENGTH_SHORT)
         var token = ""
+        val context = this
         GlobalScope.launch(Dispatchers.IO) {
             var status = app!!.httpClientService.StandardWrapper {
                 val user = User(
@@ -61,6 +62,11 @@ class AuthActivity : AppCompatActivity() {
                 }
                 0-> {
                     app!!.httpClientService.saveToken(app!!.storage!!,token)
+                    toast.setText("Вы вошли")
+                    toast.show()
+                    val intent = Intent(context,MainActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    startActivity(intent)
                 }
             }
 
