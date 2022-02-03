@@ -29,7 +29,7 @@
         android:layout_marginTop="4dp"
         android:ellipsize="end"
         android:lines="1"
-        android:maxLines="24"
+        android:maxLength="24"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/taskTitleView"

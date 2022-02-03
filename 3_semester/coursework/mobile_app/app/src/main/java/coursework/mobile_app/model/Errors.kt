@@ -1,5 +1,15 @@
 package coursework.mobile_app.model
 
+import android.content.Intent
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
+import coursework.mobile_app.AppSettingsActivity
+import coursework.mobile_app.AuthActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+
 class Errors {
     companion object{
         fun getError(code:Int):String {
@@ -18,5 +28,7 @@ class Errors {
                 else -> ""
             }
         }
+
     }
+
 }

@@ -54,6 +54,16 @@ class HttpClientService(val httpSettings: HttpSettings) {
         editor.apply()
     }
 
+    suspend fun getDates(task_id:Int):DatesTaskStatus{
+        var response: DatesTaskStatus = client.get(path + "/task/dates") {
+            parameter("id",task_id)
+            headers{
+                append("Authorization","Bearer "+token)
+            }
+        }
+        return response
+    }
+
     suspend fun editTask(task:Task):EditTaskStatus{
         Log.v("HttpInfo:",task.status.toString())
         val response:EditTaskStatus = client.post(path+"/task/update"){

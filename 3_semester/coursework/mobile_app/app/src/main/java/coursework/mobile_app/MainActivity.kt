@@ -131,6 +131,13 @@ class MainActivity : AppCompatActivity() {
                     toast.setText(Errors.getError(status))
                     toast.show()
                 }
+                9 ->{
+                    toast.setText(Errors.getError(status))
+                    toast.show()
+                    app!!.auth=false
+                    startActivity(intent)
+
+                }
                 0 -> {
                     tasks = t
                 }

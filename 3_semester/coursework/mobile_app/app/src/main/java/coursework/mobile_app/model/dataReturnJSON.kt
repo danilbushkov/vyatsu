@@ -26,3 +26,6 @@ data class EditTaskStatus(val status: Int,val date_update:String)
 
 @Serializable
 data class GetAllTaskStatus(val status: Int,val tasks:MutableList<Task>)
+
+@Serializable
+data class DatesTaskStatus(val status: Int,val dates:MutableList<String>)

@@ -6,9 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import coursework.mobile_app.model.Errors
 import coursework.mobile_app.model.Task
 import kotlinx.coroutines.Dispatchers
@@ -20,12 +18,18 @@ class EditTaskActivity : AppCompatActivity() {
     private lateinit var editTitle: EditText
     private lateinit var editText: EditText
     private lateinit var completed: CheckBox
+    private lateinit var spinner: Spinner
     private lateinit var  app: App
     private lateinit var task: Task
     private var listenerTask: Task?=null
     set(value){
         //app.tasksService.deleteTask(value!!)
         field = value
+    }
+    private var datesListener:MutableList<String>?=null
+    set(value){
+        setSpinnerDates(value!!)
+        field=value
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,11 +42,12 @@ class EditTaskActivity : AppCompatActivity() {
         editTitle=findViewById(R.id.editEditTitle)
         editText=findViewById(R.id.editEditText)
         completed=findViewById(R.id.checkBoxEditCompleted)
+        spinner=findViewById(R.id.spinner)
 
 
 
         viewTask()
-
+        getDates()
 
 
 
@@ -51,6 +56,41 @@ class EditTaskActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
+    private fun setSpinnerDates(dates:MutableList<String>){
+        val adapter = ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,dates)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter=adapter
+    }
+
+    private fun getDates(){
+        val toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
+        var dates = mutableListOf<String>()
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        GlobalScope.launch(Dispatchers.IO) {
+            var status = app.httpClientService.StandardWrapper {
+                val value = app.httpClientService.getDates(task.task_id)
+                dates = value.dates
+                value.status
+            }
+            when (status) {
+                9 -> {
+                    app.auth=false
+                    toast.setText("Не авторизован")
+                    toast.show()
+
+                }
+                0 -> {
+                    datesListener=dates
+                }
+                else -> {
+                    toast.setText("Ошибка")
+                    toast.show()
+                }
+            }
+
+        }
+    }
 
     private fun viewTask(){
         val arg = intent.extras
