@@ -50,11 +50,14 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onTaskDone(task: Task) {
+
                 app!!.tasksService.done(task)
+                editTask(task)
             }
 
             override fun onTaskNotDone(task: Task) {
                 app!!.tasksService.notDone(task)
+                editTask(task)
             }
 
         })
@@ -175,7 +178,36 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    }
 
+    fun editTask(task:Task){
 
+        val toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        GlobalScope.launch(Dispatchers.IO) {
+            var status = app!!.httpClientService.StandardWrapper {
+                val value = app!!.httpClientService.editTask(task)
+
+                value.status
+            }
+
+            when (status) {
+                11 -> {
+                    toast.setText(Errors.getError(status))
+                    toast.show()
+
+                }
+                0 -> {
+                    toast.setText("Запись изменена")
+                    toast.show()
+                }
+                else -> {
+                    toast.setText("Ошибка")
+                    toast.show()
+                }
+            }
+
+        }
     }
 }

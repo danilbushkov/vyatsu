@@ -130,7 +130,7 @@ class EditTaskActivity : AppCompatActivity() {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         GlobalScope.launch(Dispatchers.IO) {
             var status = app.httpClientService.StandardWrapper {
-                val value = app.httpClientService.editTask(task)
+                val value = app.httpClientService.editTask(taskHttp)
 
                 value.status
             }

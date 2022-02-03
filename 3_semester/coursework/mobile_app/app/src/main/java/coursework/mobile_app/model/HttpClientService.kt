@@ -55,6 +55,7 @@ class HttpClientService(val httpSettings: HttpSettings) {
     }
 
     suspend fun editTask(task:Task):EditTaskStatus{
+        Log.v("HttpInfo:",task.status.toString())
         val response:EditTaskStatus = client.post(path+"/task/update"){
             contentType(ContentType.Application.Json)
             body = TaskJSON(
