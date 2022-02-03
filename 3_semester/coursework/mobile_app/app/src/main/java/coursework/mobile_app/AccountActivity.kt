@@ -6,6 +6,10 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
+import android.widget.Toast
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class AccountActivity : AppCompatActivity() {
 
@@ -51,7 +55,7 @@ class AccountActivity : AppCompatActivity() {
 
         when(item.itemId){
             R.id.menu_account_exit->{
-
+                logout()
                 return true
             }
 
@@ -59,6 +63,31 @@ class AccountActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
 
 
+    }
+    fun logout(){
+        val toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
+        var intent = Intent(this, AuthActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        GlobalScope.launch(Dispatchers.IO) {
+            var status = app!!.httpClientService.StandardWrapper {
+                val value = app!!.httpClientService.logout()
+                value.status
+            }
+            when (status) {
+
+                0 -> {
+                    toast.setText("Вы разлогинились")
+                    toast.show()
+                    app!!.auth=false
+                    startActivity(intent)
+                }
+                else -> {
+                    toast.setText("Ошибка")
+                    toast.show()
+                }
+            }
+
+        }
     }
 
 }

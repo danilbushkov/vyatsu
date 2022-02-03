@@ -8,7 +8,7 @@ import coursework.mobile_app.model.TasksService
 
 class App:Application() {
     val httpClientService:HttpClientService = HttpClientService(HttpSettings())
-    val auth: Boolean = false
+    var auth: Boolean = false
     val tasksService = TasksService()
     var storage: SharedPreferences? = null
         set(value){

@@ -58,7 +58,7 @@ class HttpClientService(val httpSettings: HttpSettings) {
         val response:EditTaskStatus = client.post(path+"/task/update"){
             contentType(ContentType.Application.Json)
             body = TaskJSON(
-                0,
+                task.task_id,
                 task.title,
                 task.text,
                 task.status,
@@ -67,8 +67,8 @@ class HttpClientService(val httpSettings: HttpSettings) {
                 append("Authorization", "Bearer "+token)
             }
         }
-        task.date_create=response.date_create
-        task.last_update=response.date_create
+        task.date_create=response.date_update
+        task.last_update=response.date_update
 
         return response
     }
@@ -91,6 +91,34 @@ class HttpClientService(val httpSettings: HttpSettings) {
         task.date_create=response.date_create
         task.last_update=response.date_create
 
+        return response
+    }
+
+    suspend fun getAllTask():GetAllTaskStatus{
+        var response: GetAllTaskStatus = client.get(path + "/tasks/get/all") {
+            headers{
+                append("Authorization","Bearer "+token)
+            }
+        }
+        return response
+    }
+
+    suspend fun logout():Status{
+        var response: Status = client.get(path + "/user/logout") {
+            headers{
+                append("Authorization","Bearer "+token)
+            }
+        }
+        return response
+    }
+
+    suspend fun deleteTask(task:Task):Status{
+        var response: Status = client.get(path + "/task/delete") {
+            parameter("id",task.task_id)
+            headers{
+                append("Authorization","Bearer "+token)
+            }
+        }
         return response
     }
 

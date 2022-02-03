@@ -22,6 +22,11 @@ class EditTaskActivity : AppCompatActivity() {
     private lateinit var completed: CheckBox
     private lateinit var  app: App
     private lateinit var task: Task
+    private var listenerTask: Task?=null
+    set(value){
+        //app.tasksService.deleteTask(value!!)
+        field = value
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,16 +74,39 @@ class EditTaskActivity : AppCompatActivity() {
                 return true
             }
             R.id.menu_edit_delete ->{
-                app.tasksService.deleteTask(task)
-                intent = Intent(this,MainActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                startActivity(intent)
+                deleteTask()
                 return true
             }
         }
         return super.onOptionsItemSelected(item)
 
 
+    }
+
+    fun deleteTask(){
+
+        val toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
+        var intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        GlobalScope.launch(Dispatchers.IO) {
+            var status = app.httpClientService.StandardWrapper {
+                val value = app.httpClientService.deleteTask(task)
+                value.status
+            }
+            when (status) {
+
+                0 -> {
+                    toast.setText("Запись удалена")
+                    toast.show()
+                    startActivity(intent)
+                }
+                else -> {
+                    toast.setText("Ошибка")
+                    toast.show()
+                }
+            }
+
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

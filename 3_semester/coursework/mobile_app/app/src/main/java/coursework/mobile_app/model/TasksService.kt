@@ -10,11 +10,15 @@ class TasksService {
     private val listeners = mutableSetOf<TasksListener>()
 
     init{
-        tasks=getTestTasks().toMutableList()
+        //tasks=getTestTasks().toMutableList()
 
     }
     fun getTasks():List<Task>{
         return tasks
+    }
+    fun setTasks(tasks: MutableList<Task>){
+        this.tasks = tasks
+        notifyChanges()
     }
 
     fun addTask(task:Task){

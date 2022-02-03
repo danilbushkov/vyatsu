@@ -12,6 +12,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import coursework.mobile_app.databinding.ActivityMainBinding
+import coursework.mobile_app.model.Errors
 import coursework.mobile_app.model.Task
 import coursework.mobile_app.model.TasksListener
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +24,10 @@ class MainActivity : AppCompatActivity() {
     private var app:App? = null
     private lateinit var adapter: TasksAdapter
     private lateinit var binding: ActivityMainBinding
+    private var tasks:MutableList<Task> = mutableListOf<Task>()
+    set(value){
+        app!!.tasksService.setTasks(value)
+    }
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,10 +58,12 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+
         binding.recyclerTasks.adapter = adapter
         app!!.tasksService.addListener(tasksListener)
 
         checkConnect()
+        getTaskHttp()
     }
 
 
@@ -104,6 +111,42 @@ class MainActivity : AppCompatActivity() {
         app?.tasksService?.removeListener(tasksListener)
     }
 
+    fun getTaskHttp(){
+        val toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
+        var t = mutableListOf<Task>()
+        var intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        GlobalScope.launch(Dispatchers.Main) {
+            var status = app!!.httpClientService.StandardWrapper {
+                val value = app!!.httpClientService.getAllTask()
+                t=value.tasks
+                value.status
+            }
+
+            when (status) {
+                17 -> {
+                    toast.setText(Errors.getError(status))
+                    toast.show()
+                }
+                0 -> {
+                    tasks = t
+                }
+
+                else -> {
+                    toast.setText("Ошибка")
+                    toast.show()
+                }
+            }
+
+        }
+
+    }
+
+
+
+
+
+
     @RequiresApi(Build.VERSION_CODES.M)
     fun checkConnect(){
         if(!app!!.httpClientService.isOnline(this)){
@@ -113,6 +156,7 @@ class MainActivity : AppCompatActivity() {
             var toast = Toast.makeText(this,"Нет авторизован",Toast.LENGTH_SHORT)
             var intent1 = Intent(this, AppSettingsActivity::class.java)
             var intent2= Intent(this,AuthActivity::class.java)
+
             GlobalScope.launch(Dispatchers.IO){
                 var status = app!!.httpClientService.CheckConnection()
 
@@ -123,8 +167,11 @@ class MainActivity : AppCompatActivity() {
                 }else if(status == 9){
                     toast.show()
                     startActivity(intent2)
-                }
+                    app!!.auth=false
 
+                }else {
+                    app!!.auth = true
+                }
             }
         }
 

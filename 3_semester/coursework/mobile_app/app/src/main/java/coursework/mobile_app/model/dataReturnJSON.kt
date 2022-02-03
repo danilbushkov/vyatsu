@@ -22,4 +22,7 @@ data class TaskJSON(
 data class AddTaskStatus(val status: Int,val id:Int,val date_create:String)
 
 @Serializable
-data class EditTaskStatus(val status: Int,val date_create:String)
+data class EditTaskStatus(val status: Int,val date_update:String)
+
+@Serializable
+data class GetAllTaskStatus(val status: Int,val tasks:MutableList<Task>)

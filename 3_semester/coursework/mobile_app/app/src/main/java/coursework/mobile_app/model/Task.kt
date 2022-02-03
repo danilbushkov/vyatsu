@@ -1,5 +1,9 @@
 package coursework.mobile_app.model
 
+import kotlinx.serialization.Serializable
+
+
+@Serializable
 data class Task(
 
     var task_id:Int,
