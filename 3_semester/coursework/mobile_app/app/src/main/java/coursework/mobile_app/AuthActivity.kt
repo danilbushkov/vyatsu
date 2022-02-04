@@ -68,6 +68,12 @@ class AuthActivity : AppCompatActivity() {
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     startActivity(intent)
                 }
+                in 20..21->{
+                    val intent = Intent(context,AppSettingsActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    startActivity(intent)
+                }
+
             }
 
             Log.e("Status", status.toString())

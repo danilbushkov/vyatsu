@@ -117,7 +117,7 @@ class MainActivity : AppCompatActivity() {
     fun getTaskHttp(){
         val toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
         var t = mutableListOf<Task>()
-        var intent = Intent(this, MainActivity::class.java)
+        var intent = Intent(this, AuthActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         GlobalScope.launch(Dispatchers.Main) {
             var status = app!!.httpClientService.StandardWrapper {
@@ -166,7 +166,7 @@ class MainActivity : AppCompatActivity() {
             var toast = Toast.makeText(this,"Нет авторизован",Toast.LENGTH_SHORT)
             var intent1 = Intent(this, AppSettingsActivity::class.java)
             var intent2= Intent(this,AuthActivity::class.java)
-
+            var context = this
             GlobalScope.launch(Dispatchers.IO){
                 var status = app!!.httpClientService.CheckConnection()
 
@@ -178,7 +178,7 @@ class MainActivity : AppCompatActivity() {
                     toast.show()
                     startActivity(intent2)
                     app!!.auth=false
-
+                    context.finish()
                 }else {
                     app!!.auth = true
                 }
@@ -192,6 +192,7 @@ class MainActivity : AppCompatActivity() {
         val toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
         GlobalScope.launch(Dispatchers.IO) {
             var status = app!!.httpClientService.StandardWrapper {
                 val value = app!!.httpClientService.editTask(task)

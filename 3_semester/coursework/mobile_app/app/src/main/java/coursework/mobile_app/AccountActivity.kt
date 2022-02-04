@@ -104,6 +104,7 @@ class AccountActivity : AppCompatActivity() {
         val toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
         var intent = Intent(this, AuthActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        var context = this
         GlobalScope.launch(Dispatchers.Main) {
             var status = app!!.httpClientService.StandardWrapper {
                 val value = app!!.httpClientService.logout()
@@ -115,12 +116,20 @@ class AccountActivity : AppCompatActivity() {
                     toast.show()
                     app!!.auth=false
                     startActivity(intent)
+                    context.finish()
+                }
+                in 20..21 ->{
+                    var intent = Intent(context, MainActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    startActivity(intent)
+                    context.finish()
                 }
                 0 -> {
                     toast.setText("Вы разлогинились")
                     toast.show()
                     app!!.auth=false
                     startActivity(intent)
+                    context.finish()
                 }
                 else -> {
                     toast.setText("Ошибка")

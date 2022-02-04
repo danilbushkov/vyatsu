@@ -26,8 +26,8 @@ class AppSettingsActivity : AppCompatActivity() {
         this.editPort = findViewById<EditText>(R.id.editPort)
         this.editHost = findViewById<EditText>(R.id.editHost)
 
-
-
+        this.editHost!!.setText(app!!.httpClientService.httpSettings.host)
+        this.editPort!!.setText( app!!.httpClientService.httpSettings.port)
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -50,7 +50,8 @@ class AppSettingsActivity : AppCompatActivity() {
         }else{
             var intent = Intent(this,AuthActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            GlobalScope.launch(Dispatchers.IO){
+            var context = this
+            GlobalScope.launch(Dispatchers.Main){
                 var status = app!!.httpClientService.CheckConnection()
                 if(status == 20){
                     toast.setText("Ошибка подключения")
@@ -66,6 +67,9 @@ class AppSettingsActivity : AppCompatActivity() {
                     toast.show()
                 }else{
                     Log.e("Internet",status.toString())
+                    var intent = Intent(context,AuthActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    startActivity(intent)
                 }
             }
         }

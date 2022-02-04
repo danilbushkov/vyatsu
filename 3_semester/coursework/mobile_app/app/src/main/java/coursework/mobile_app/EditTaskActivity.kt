@@ -74,7 +74,7 @@ class EditTaskActivity : AppCompatActivity() {
         val adapter = ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,dates)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter=adapter
-
+        var context = this
         val itemSelectedListener = object: OnItemSelectedListener{
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -94,11 +94,21 @@ class EditTaskActivity : AppCompatActivity() {
                     Log.e("Http",status.toString())
                     var taskJSON = t
                     when (status) {
-                        9 -> {
+                        9 ->{
                             app.auth=false
-                            toast.setText("Не авторизован")
+                            toast.setText("Вы не авторизованы")
                             toast.show()
+                            var intent = Intent(context, AuthActivity::class.java)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                            startActivity(intent)
+                            context.finish()
 
+                        }
+                        in 20..21 ->{
+                            var intent = Intent(context, MainActivity::class.java)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                            startActivity(intent)
+                            context.finish()
                         }
                         0 -> {
                             task!!.title=taskJSON!!.title
@@ -130,7 +140,8 @@ class EditTaskActivity : AppCompatActivity() {
     private fun getDates(){
         val toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
         var dates = mutableListOf<String>()
-
+        var context = this
+        var intent = Intent(context, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         GlobalScope.launch(Dispatchers.IO) {
             var status = app.httpClientService.StandardWrapper {
@@ -139,11 +150,19 @@ class EditTaskActivity : AppCompatActivity() {
                 value.status
             }
             when (status) {
-                9 -> {
+                9 ->{
                     app.auth=false
-                    toast.setText("Не авторизован")
+                    toast.setText("Вы не авторизованы")
                     toast.show()
+                    var intent = Intent(context, AuthActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    startActivity(intent)
+                    context.finish()
 
+                }
+                in 20..21 ->{
+                    startActivity(intent)
+                    context.finish()
                 }
                 0 -> {
                     datesListener=dates
@@ -185,6 +204,7 @@ class EditTaskActivity : AppCompatActivity() {
         val toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
         var intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        var context = this
         GlobalScope.launch(Dispatchers.IO) {
             var status = app.httpClientService.StandardWrapper {
                 val value = app.httpClientService.deleteTask(task!!)
@@ -196,6 +216,20 @@ class EditTaskActivity : AppCompatActivity() {
                     toast.setText("Запись удалена")
                     toast.show()
                     startActivity(intent)
+                }
+                9 ->{
+                    app.auth=false
+                    toast.setText("Вы не авторизованы")
+                    toast.show()
+                    var intent = Intent(context, AuthActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    startActivity(intent)
+                    context.finish()
+
+                }
+                in 20..21 ->{
+                    startActivity(intent)
+                    context.finish()
                 }
                 else -> {
                     toast.setText("Ошибка")
@@ -222,7 +256,7 @@ class EditTaskActivity : AppCompatActivity() {
             completed.isChecked
         )
         val toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
-        //val context =this
+        val context =this
         var intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         GlobalScope.launch(Dispatchers.IO) {
@@ -237,6 +271,19 @@ class EditTaskActivity : AppCompatActivity() {
                     toast.setText(Errors.getError(status))
                     toast.show()
 
+                }
+                9 ->{
+                    app.auth=false
+                    toast.setText("Вы не авторизованы")
+                    toast.show()
+                    var intent = Intent(context, AuthActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    startActivity(intent)
+                    context.finish()
+                }
+                in 20..21 ->{
+                    startActivity(intent)
+                    context.finish()
                 }
                 0 -> {
 

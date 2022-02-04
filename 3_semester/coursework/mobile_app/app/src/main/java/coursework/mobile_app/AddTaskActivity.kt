@@ -53,7 +53,8 @@ class AddTaskActivity : AppCompatActivity() {
         //val context =this
         var intent = Intent(this,MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        GlobalScope.launch(Dispatchers.IO) {
+        var context = this
+        GlobalScope.launch(Dispatchers.Main) {
             var status = app.httpClientService.StandardWrapper {
                 val value = app.httpClientService.addTask(task)
 
@@ -75,6 +76,22 @@ class AddTaskActivity : AppCompatActivity() {
                     startActivity(intent)
 
 
+                }
+                9 ->{
+                    app.auth=false
+                    toast.setText("Вы не авторизованы")
+                    toast.show()
+                    var intent = Intent(context, AuthActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    startActivity(intent)
+                    context.finish()
+
+                }
+                in 20..21 ->{
+                    var intent = Intent(context, MainActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    startActivity(intent)
+                    context.finish()
                 }
                 else->
                 {

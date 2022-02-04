@@ -1,5 +1,6 @@
 package coursework.mobile_app
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -61,6 +62,11 @@ class RegistrationActivity : AppCompatActivity() {
                     toast.setText("Вы зарегистрировались")
                     toast.show()
                     context.finish()
+                }
+                in 20..21 ->{
+                    var intent = Intent(context,MainActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    startActivity(intent)
                 }
             }
 
