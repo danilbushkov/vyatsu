@@ -170,10 +170,6 @@ class EditTaskActivity : AppCompatActivity() {
                 this.finish()
                 return true
             }
-            R.id.menu_edit_info->{
-
-                return true
-            }
             R.id.menu_edit_delete ->{
                 deleteTask()
                 return true

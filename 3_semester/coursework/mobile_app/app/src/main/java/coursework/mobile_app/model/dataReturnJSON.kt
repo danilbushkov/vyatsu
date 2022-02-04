@@ -32,3 +32,6 @@ data class DatesTaskStatus(val status: Int,val dates:MutableList<String>)
 
 @Serializable
 data class HistoryTaskStatus(val status: Int, val task: TaskJSON)
+
+@Serializable
+data class ProgressStatus(val status: Int, val count: Int, val level:Int)

@@ -55,6 +55,16 @@ class HttpClientService(val httpSettings: HttpSettings) {
         editor.apply()
     }
 
+    suspend fun progress():ProgressStatus{
+        var response: ProgressStatus = client.get(path + "/progress") {
+            headers{
+                append("Authorization","Bearer "+token)
+            }
+        }
+        return response
+
+    }
+
     suspend fun getHistory(task_id:Int, date: String):HistoryTaskStatus{
         var response: HistoryTaskStatus = client.get(path + "/task/history/get") {
             parameter("id",task_id)
