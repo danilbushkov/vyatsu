@@ -17,6 +17,45 @@ func TaskRoutes(r *gin.Engine) {
 	r.GET("/tasks/get/all", CheckAuthWrapper(GetAllTask))
 	r.GET("/check", CheckAuthWrapper(Check))
 	r.GET("/task/dates", CheckAuthWrapper(GetDates))
+	r.GET("/task/history/get", CheckAuthWrapper(GetHistory))
+	r.GET("/progress", CheckAuthWrapper(GetProgress))
+}
+
+func GetProgress(c *gin.Context) {
+	v, exists := c.Get("StatusAuth")
+	if !exists {
+		log.Fatal("The key does not exist")
+	}
+	result, status := model.GetProgress(v.(middleware.StatusAuth).UserId)
+	if status != 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"status": status})
+	} else {
+		c.JSON(200, gin.H{"status": status, "count": result.Count, "level": result.Level})
+	}
+}
+
+func GetHistory(c *gin.Context) {
+	id, err := strconv.Atoi(c.Query("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": 23})
+		return
+	}
+	date := c.Query("date")
+	if date == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"status": 23})
+		return
+	}
+	v, exists := c.Get("StatusAuth")
+	if !exists {
+		log.Fatal("The key does not exist")
+	}
+	result, status := model.GetArchiveTask(v.(middleware.StatusAuth).UserId, id, date)
+	if status != 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"status": status})
+	} else {
+		c.JSON(200, gin.H{"status": status, "task": *result})
+	}
+
 }
 
 func GetDates(c *gin.Context) {

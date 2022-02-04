@@ -39,6 +39,50 @@ type TaskJSON struct {
 	Status bool   `json:"status"`
 }
 
+type Progress struct {
+	Count int
+	Level int
+}
+
+func GetProgress(user_id int) (*Progress, int) {
+	var progress *Progress
+	row := database.DB.QueryRow(`
+	SELECT count(id)
+FROM task
+JOIN task_archive ON task.task_id = task_archive.task_id 
+AND task.last_update = task_archive.date_create
+WHERE user_id=$1 and status = true
+	`, user_id)
+	err := row.Scan(&progress.Count)
+
+	if err != nil {
+		return nil, 23
+	}
+	progress.Level = getLevel(progress.Count)
+	return progress, 0
+}
+
+func GetArchiveTask(user_id, task_id int, date string) (*TaskJSON, int) {
+	if !checkExistsTask(user_id, task_id) {
+		return nil, 12
+	}
+
+	var task *TaskJSON
+	task.Id = task_id
+
+	row := database.DB.QueryRow(`
+		SELECT title, task_text, status FROM task_archive WHERE  
+		task_id = $1 and date_create = $2
+	`, task_id, date)
+	err := row.Scan(&task.Title, &task.Text, &task.Status)
+
+	if err != nil {
+		return nil, 23
+	}
+	return task, 0
+
+}
+
 func GetDatesUpdate(user_id, task_id int) ([]string, int) {
 	if !checkExistsTask(user_id, task_id) {
 		return nil, 12
@@ -211,4 +255,15 @@ func CheckTime(format, date string) bool {
 		return false
 	}
 	return t.Format(format) == date
+}
+
+func getLevel(taskCount int) int {
+	if taskCount < 10 {
+		return 1
+	} else if taskCount < 100 {
+		return 2
+	} else if taskCount < 200 {
+		return 3
+	}
+	return 4
 }
