@@ -44,10 +44,10 @@ type Progress struct {
 	Level int
 }
 
-func GetProgress(user_id int) (*Progress, int) {
-	var progress *Progress
+func GetProgress(user_id int) (Progress, int) {
+	var progress Progress
 	row := database.DB.QueryRow(`
-	SELECT count(id)
+	SELECT count(*)
 FROM task
 JOIN task_archive ON task.task_id = task_archive.task_id 
 AND task.last_update = task_archive.date_create
@@ -56,18 +56,18 @@ WHERE user_id=$1 and status = true
 	err := row.Scan(&progress.Count)
 
 	if err != nil {
-		return nil, 23
+		return progress, 23
 	}
 	progress.Level = getLevel(progress.Count)
 	return progress, 0
 }
 
-func GetArchiveTask(user_id, task_id int, date string) (*TaskJSON, int) {
+func GetArchiveTask(user_id, task_id int, date string) (TaskJSON, int) {
+	var task TaskJSON
 	if !checkExistsTask(user_id, task_id) {
-		return nil, 12
+		return task, 12
 	}
 
-	var task *TaskJSON
 	task.Id = task_id
 
 	row := database.DB.QueryRow(`
@@ -77,7 +77,7 @@ func GetArchiveTask(user_id, task_id int, date string) (*TaskJSON, int) {
 	err := row.Scan(&task.Title, &task.Text, &task.Status)
 
 	if err != nil {
-		return nil, 23
+		return task, 23
 	}
 	return task, 0
 

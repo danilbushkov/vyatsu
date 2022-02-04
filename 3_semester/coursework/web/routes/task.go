@@ -53,7 +53,7 @@ func GetHistory(c *gin.Context) {
 	if status != 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"status": status})
 	} else {
-		c.JSON(200, gin.H{"status": status, "task": *result})
+		c.JSON(200, gin.H{"status": status, "task": result})
 	}
 
 }
