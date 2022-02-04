@@ -31,6 +31,7 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import org.json.JSONObject
 import java.net.ConnectException
+import java.util.*
 import javax.sql.StatementEvent
 
 class HttpClientService(val httpSettings: HttpSettings) {
@@ -53,6 +54,18 @@ class HttpClientService(val httpSettings: HttpSettings) {
 
         editor.apply()
     }
+
+    suspend fun getHistory(task_id:Int, date: String):HistoryTaskStatus{
+        var response: HistoryTaskStatus = client.get(path + "/task/history/get") {
+            parameter("id",task_id)
+            parameter("date", date)
+            headers{
+                append("Authorization","Bearer "+token)
+            }
+        }
+        return response
+    }
+
 
     suspend fun getDates(task_id:Int):DatesTaskStatus{
         var response: DatesTaskStatus = client.get(path + "/task/dates") {

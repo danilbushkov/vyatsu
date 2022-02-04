@@ -48,6 +48,8 @@ class AppSettingsActivity : AppCompatActivity() {
             toast.setText("Нет подключения к интернету")
             toast.show()
         }else{
+            var intent = Intent(this,AuthActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             GlobalScope.launch(Dispatchers.IO){
                 var status = app!!.httpClientService.CheckConnection()
                 if(status == 20){
@@ -55,6 +57,8 @@ class AppSettingsActivity : AppCompatActivity() {
                     toast.show()
 
                 }else if (status == 9){
+                    startActivity(intent)
+                    app!!.auth = false
                     toast.setText("Не авторизован")
                     toast.show()
                 }else if (status == 0){

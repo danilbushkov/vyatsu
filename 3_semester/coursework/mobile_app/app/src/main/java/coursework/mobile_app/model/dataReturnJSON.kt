@@ -12,10 +12,10 @@ data class AuthStatus(val status: Int,val token:String)
 //task
 @Serializable
 data class TaskJSON(
-    val task_id:Int,
-    val title:String,
-    val text:String,
-    val status: Boolean,
+    var task_id:Int,
+    var title:String,
+    var text:String,
+    var status: Boolean,
 )
 
 @Serializable
@@ -29,3 +29,6 @@ data class GetAllTaskStatus(val status: Int,val tasks:MutableList<Task>)
 
 @Serializable
 data class DatesTaskStatus(val status: Int,val dates:MutableList<String>)
+
+@Serializable
+data class HistoryTaskStatus(val status: Int, val task: TaskJSON)
