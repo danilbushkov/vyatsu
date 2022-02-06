@@ -46,7 +46,7 @@ class AddTaskActivity : AppCompatActivity() {
             "",
             "",
             editTitle!!.text.toString(),
-            editTitle!!.text.toString(),
+            editText!!.text.toString(),
             completed!!.isChecked
         )
         val toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
