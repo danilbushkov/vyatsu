@@ -50,36 +50,7 @@ Position getPos(const wchar_t* str,int a,int b){
     p.wt=maxC;
     return p;
 }
-// Position getPosOne(const wchar_t* str){
-//     int len=lenStr(str,L'\0');
-//     int pos=-1;
-//     int maxC=0;
-//     int tempC=0;
-//     int w=1;
-//     Position p;
-//     for(int i=len-1;i>=0;i--){
 
-//         w=1;
-//         tempC=0;
-//         for(int l=i,r=i; (l>=0)&&(r<len)&& w ;l--,r++){
-//             if(str[r]==str[l]){
-//                 tempC++;
-//                 if((l==0)||(r==len-1)){
-//                     if(tempC>maxC){
-//                         maxC=tempC;
-//                         pos=i;
-//                     }
-//                 }
-//             }else{
-//                 w=0;
-//             }
-//         }
-//     }
-    
-//     p.pos=pos;
-//     p.wt=maxC;
-//     return p;
-// }
 
 void offset(wchar_t* str,int c){
     int len = lenStr(str,L'\0');
@@ -90,7 +61,7 @@ void offset(wchar_t* str,int c){
 
 
 void getPalindrome(wchar_t *str,int a, int pos){
-    //int len = lenStr(str,L'\0');
+    
     for(int i=pos+1, j=pos-a; j>=0; i++,j--){
                  str[i]=str[j];
     }
@@ -100,11 +71,11 @@ void getPalindromeBegin(wchar_t *str,int pos,int s){
     int len = lenStr(str,L'\0');
     int shift = len-1-pos*2-s;
     offset(str,shift);
-    std::wcout<<str<<'\n';
+    //std::wcout<<str<<'\n';
     for(int i=pos*2+1+shift+s, j=shift-1; j>=0; i++,j--){
             str[j]=str[i];
     }
-    //str[pos*2+1+shift]=L'\0';
+   
 }
 
 
@@ -115,14 +86,13 @@ void Task(wchar_t *str){
     Position posTwo = getPos(str,2,1);
     Position posOne = getPos(str,1,0);
     Position pos;
-    //std::wcout<<pos<<L'\n';
+    
 
     if(posTwo.wt>=posOne.wt){
         if(posTwo.pos>=(len/2)){
             getPalindrome(str,2,posTwo.pos+1);
         }else{
-            //offset(str,2);
-            //std::wcout<<str;
+            
             getPalindromeBegin(str,posTwo.pos,1);
         }
         
@@ -130,44 +100,13 @@ void Task(wchar_t *str){
         if(posOne.pos>=(len/2)){
             getPalindrome(str,1,posOne.pos);
         }else{
-            //offset(str,len-posOne.pos*2-1);
-            //std::wcout<<str;
+            
             getPalindromeBegin(str,posOne.pos,0);
         }
         
     }    
 
-    //     if(posTwo.pos>=(len/2)){
-    //         //std::wcout<<len/2<<L'\n';
-    //         for(int i=posTwo.pos+1, j=posTwo.pos-2; j>=0; i++,j--){
-    //             str[i]=str[j];
-    //         }
-    //         str[posTwo.pos*2+1]=L'\0';
-    //     }else{
-
-    //     }
-    // }else{
-    //     if(posOne.pos>=(len/2)){
-    //         //std::wcout<<len/2<<L'\n';
-    //         for(int i=posOne.pos+1, j=posOne.pos-1; j>=0; i++,j--){
-    //             str[i]=str[j];
-    //         }
-    //         str[posOne.pos*2+1]=L'\0';
-    //     }else{
-            
-    //     }
-    // }
     
-    // std::wcout<<pos<<L'\n';
-    // if(pos>=(len/2)){
-    //     std::wcout<<len/2<<L'\n';
-    //     for(int i=pos, j=pos; j>=0; i++,j--){
-    //         str[i]=str[j];
-    //     }
-    //     str[pos*2+1]=L'\0';
-    // }
-
-    //std::wcout<<pos<<L'\n';
 
     
 
@@ -327,28 +266,26 @@ void TaskVectorModule(){
     
     Vector v = getVector(str);
 
-    //std::wcout<<v.arr;
-    //std::wcout<<v.len;
+    
     double result = Task(v.arr,v.len);
-    //std::wcout << std::setprecision(10);
-    //std::wcout<<L"Модуль вектора равен "<<Task(v.arr,v.len)<<L'\n'; 
+    
     delete[] v.arr;
 
     printResult(result,L"Модуль вектора равен: ");
     
-    //std::wcin.ignore(32767,'\n');
+    
 }
 
 void choose(int code){
     switch (code)
     {
     case 1:
-        //std::wcout<<L"1 пункт.\n";
+        
         TaskVectorModule();
         break;
     case 2:
         TaskPalindrome();
-        //std::wcout<<L"2 пункт\n";
+        
         break;
     case 3:
         std::wcout<<L"Выход.\n";
@@ -589,25 +526,3 @@ int test(){
 
     return 0;
 }
-
-
-// wchar_t* inputString(){
-//     wchar_t *str=new wchar_t[LEN_STR];
-//     int len=0;
-//     wchar_t c;
-//     std::wcin>>c;
-//     while(c!=L'\n')
-//     {
-//         str[len++]=c;
-//         std::wcin>>c;
-//         //std::wcout<<str[len];
-        
-//     } 
-//     str[len]=L'\0';
-
-//     return str;
-// }
-
-
-
-
