@@ -3,6 +3,11 @@
 #include "node.h"
 
 
+Deque::~Deque(){
+    Clear();
+}
+
+
 void Deque::PushFront(data d){
     node *tmp = (node*)malloc(sizeof(node));
     tmp->content = d;

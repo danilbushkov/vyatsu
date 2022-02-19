@@ -1,19 +1,19 @@
 #ifndef STR_H
 #define STR_H
  
-#include "dec.h"
 
 class Str{
     private:
-
-        Dec dec;
+        wchar_t *str;
+        int lenStr;
+        
         
     
     public:
 
+        Str(wchar_t*);
 
 
-        Str(const char *str);
 };
  
 #endif

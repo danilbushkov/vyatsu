@@ -13,3 +13,5 @@ lib
 *.dll
 *.a
 *.sum
+bin
+.vscode

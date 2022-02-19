@@ -10,7 +10,10 @@ class Deque{
         node *last=nullptr;
 
         void deleteNode(node*);
+    
     public:
+        ~Deque();
+
         void PushFront(data);
         void PushBack(data);
         bool PopFront(data&);
