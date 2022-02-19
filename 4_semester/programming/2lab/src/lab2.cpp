@@ -3,13 +3,13 @@
 using namespace std;
 
 
-#include "dec.h"
+#include "deque.h"
 
 
 
 
 int main(){
-    Dec dec;
+    Deque dec;
     wcout<<L"test"<<endl;
     return 0;
 }
