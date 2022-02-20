@@ -9,8 +9,8 @@ CFLAGS=-c -Wall -I$(INCLUDE_PATH)
 
 all: lab2
 
-lab2: ./obj/lab2.o ./obj/deque.o ./obj/str.o
-	$(COMPILER) ./obj/lab2.o ./obj/deque.o ./obj/str.o -o ./bin/lab2 
+lab2: ./obj/lab2.o ./obj/deque.o ./obj/str.o ./obj/shell.o
+	$(COMPILER) ./obj/lab2.o ./obj/deque.o ./obj/str.o ./obj/shell.o -o ./bin/lab2 
 
 ./obj/lab2.o: ./src/lab2.cpp
 	$(COMPILER) $(CFLAGS) -c ./src/lab2.cpp -o ./obj/lab2.o
@@ -21,6 +21,8 @@ lab2: ./obj/lab2.o ./obj/deque.o ./obj/str.o
 ./obj/str.o: ./src/str.cpp
 	$(COMPILER) $(CFLAGS) -c ./src/str.cpp -o ./obj/str.o
 
+./obj/shell.o: ./src/shell.cpp
+	$(COMPILER) $(CFLAGS) -c ./src/shell.cpp -o ./obj/shell.o
 
 clean:
 	rm -rf ./obj/*.o

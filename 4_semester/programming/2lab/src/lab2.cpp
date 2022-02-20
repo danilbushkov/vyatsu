@@ -1,15 +1,19 @@
 #include <iostream>
 
+#include "deque.h"
+#include "shell.h"
+
+
 using namespace std;
 
 
-#include "deque.h"
-
-
-
-
 int main(){
-    Deque dec;
-    wcout<<L"test"<<endl;
+    setlocale(LC_ALL, "Russian_Russia.866");
+    Deque deque;
+    Shell shell(&deque);
+
+    shell.Run();
+
+    
     return 0;
 }
