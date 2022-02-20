@@ -1,7 +1,7 @@
 #include <iostream>
 #include "shell.h"
 #include "deque.h"
-#include "str.h"
+
 
 using namespace std;
 
@@ -11,30 +11,48 @@ Shell::Shell(Deque *d){
 
 
 void Shell::Run(){
-    wchar_t s[Str::MAX_LEN];
     do{
         wcout<<L"# ";
-        wcin.getline(s, Str::MAX_LEN);
-        cmd = s;
-        SelectCmd();
+        wcin.getline(cmd, Str::MAX_LEN);
+        Str::DelSpacesFrontAndBack(cmd);
+        //wcout<<cmd<<L"|\n";
+        getCmdAndArg();
 
-    }while(!Str::Equal(s,L"exit"));
+        
+
+    }while(selectCmd());
     
 
 
 }
 
-void Shell::SelectCmd(){
-    if(Str::Equal(cmd,L"help")) Help();
+
+bool Shell::selectCmd(){
+    if(Str::Equal(cmd,L"help")) help();
     else if(Str::Equal(cmd,L"clear")) system("cls");
     else if(Str::Equal(cmd,L"pushback")) wcout<<L"pushb\n";
     
-
-
+    else if(Str::Equal(cmd,L""));
+    else if(Str::Equal(cmd,L"exit")) return 0;
     else wcout<<L"Такой команды нет\n";
+
+    return 1;
 }
 
-void Shell::Help(){
+void Shell::getCmdAndArg(){
+    int lenCmd=0;
+    int lenArg=0;
+    for(lenCmd = 0;(cmd[lenCmd]!=L' ') && (cmd[lenCmd]!=L'\0');lenCmd++);
+    for(int i=lenCmd;cmd[i]!=L'\0';i++){
+        if(cmd[i]!=L' '){
+            arg[lenArg++]=cmd[i];
+        }
+    }
+    arg[lenArg]=L'\0';
+    cmd[lenCmd]=L'\0';
+}
+
+void Shell::help(){
 
     wcout<<L"\nhelp - посмотреть команды\n";
     wcout<<L"clear - очистить консоль\n";

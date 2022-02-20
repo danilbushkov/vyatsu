@@ -17,6 +17,8 @@ class Str{
         static void DelSpacesFront(wchar_t*);
         static int Len(const wchar_t*);
         static bool Equal(const wchar_t*, const wchar_t*);
+        static void DelSpacesBack(wchar_t*);
+        static void DelSpacesFrontAndBack(wchar_t*);
 };
  
 #endif
