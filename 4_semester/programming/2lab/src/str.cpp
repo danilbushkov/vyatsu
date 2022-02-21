@@ -88,7 +88,7 @@ bool Str::checkOverflow(const wchar_t *str){
 
 bool Str::IsInt(const wchar_t *str){
     if(isDigit(str,[](const wchar_t c)->int{return( (c!=L' ')&&(c!=L'-') );} )){
-        if(checkOverflow(str)){
+        if(!checkOverflow(str)){
             return 1;
         }
     }
@@ -100,6 +100,6 @@ void Str::copyStr(const wchar_t *str,wchar_t *newStr){
     for(;str[i]!=L'\0';i++){
         newStr[i]=str[i];
     }
-    newStr[++i]=L'\0';
+    newStr[i]=L'\0';
     
 }

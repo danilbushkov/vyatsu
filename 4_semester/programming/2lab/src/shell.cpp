@@ -143,7 +143,10 @@ bool Shell::EmptyArg(){
 
 
 void Shell::help(){
-
+    if(!EmptyArg()){
+        wcout<<L"Аргумент не нужен\n";
+        return;
+    }
     wcout<<L"\nhelp - посмотреть команды\n";
     wcout<<L"clear - очистить консоль\n";
     wcout<<L"pushback <string or int> - добавить элемент в конец Дека\n";
