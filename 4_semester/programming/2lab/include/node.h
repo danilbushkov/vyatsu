@@ -3,7 +3,7 @@
  
 struct data{
     int number;
-    wchar_t* str;
+    wchar_t *str = nullptr;
 };
 
 

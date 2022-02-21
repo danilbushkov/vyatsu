@@ -38,26 +38,26 @@ void Deque::PushBack(data d){
 }
 
 bool Deque::PopFront(data &d){
-    if(IsEmply()){
+    if(IsEmpty()){
         return 0;
     }
     d = first->content;
-    deleteNode(first);
+    deleteNode(first, false);
 
     return 1;
 }
 bool Deque::PopBack(data &d){
-    if(IsEmply()){
+    if(IsEmpty()){
         return 0;
     }
     d = last->content;
-    deleteNode(last);
+    deleteNode(last, false);
 
 
 
     return 1;
 }
-bool Deque::IsEmply(){
+bool Deque::IsEmpty(){
     if(first == nullptr){
         return 1;
     }
@@ -70,7 +70,7 @@ void Deque::Clear(){
         tmp = first;
     }
 }
-void Deque::deleteNode(node *current){
+void Deque::deleteNode(node *current,bool delStr){
     if(current!=nullptr){
         if(current->prev==nullptr){
             first = current->next;
@@ -84,6 +84,11 @@ void Deque::deleteNode(node *current){
             current->next->prev = current->prev;
         }
 
+        if(delStr){
+            if(current->content.str!=nullptr){
+                free(current->content.str);
+            }
+        }
 
         free(current);
         current = nullptr;

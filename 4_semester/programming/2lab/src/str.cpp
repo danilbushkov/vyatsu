@@ -36,12 +36,17 @@ void Str::DelSpacesFront(wchar_t *s){
     
 }
 void Str::DelSpacesBack(wchar_t *s){
-    int l = Len(s);
+    int l = Len(s)-1;
     if(l>0){
-        while((s[l-1]==L' ') && (l>0)){
+        while((s[l]==L' ') && (l>0)){
             --l;
         }
-        s[l]=L'\0';
+        if((l==0)&&(s[l]==L' ')){
+            s[l]=L'\0';
+        }else{
+            s[++l]=L'\0';
+        }
+        
     }
     
 }
@@ -55,4 +60,46 @@ int Str::countSpacesFront(const wchar_t *s){
     int len = 0;
     for(;(s[len]==L' ') && (s[len]==L'\0');len++);
     return len;
+}
+
+
+bool Str::isDigit(const wchar_t *str,int f(const wchar_t)){
+    int len;
+    for(len=0;str[len]!='\0';len++){
+        if((!iswdigit(str[len])) && f(str[len])){
+            return 0;
+        }
+    }
+    return 1;
+}
+
+bool Str::checkOverflow(const wchar_t *str){
+    long int v;
+    if((str[0]!='0') && (str[0]!='\0')){
+        v=wcstol(str,NULL,10);
+        
+        if((errno == ERANGE) || (v>INT_MAX) || (v<INT_MIN)){
+            errno=0;
+            return 1;
+        }
+    }
+    return 0;
+}
+
+bool Str::IsInt(const wchar_t *str){
+    if(isDigit(str,[](const wchar_t c)->int{return( (c!=L' ')&&(c!=L'-') );} )){
+        if(checkOverflow(str)){
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void Str::copyStr(const wchar_t *str,wchar_t *newStr){
+    int i=0;
+    for(;str[i]!=L'\0';i++){
+        newStr[i]=str[i];
+    }
+    newStr[++i]=L'\0';
+    
 }

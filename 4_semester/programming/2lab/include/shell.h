@@ -3,6 +3,7 @@
  
 #include "deque.h"
 #include "str.h"
+#include "node.h"
 
 class Shell{
     private:
@@ -13,6 +14,17 @@ class Shell{
         void getCmdAndArg();
         void help();
         bool selectCmd();
+
+        void PushFront();
+        void PushBack();
+        void PopFront();
+        void PopBack();
+        void IsEmpty();
+        void ClearDeque();
+        bool EmptyArg();
+        void printData(data&);
+
+
     public:
 
         Shell(Deque *);

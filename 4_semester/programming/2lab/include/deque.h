@@ -9,7 +9,7 @@ class Deque{
         node *first=nullptr;
         node *last=nullptr;
 
-        void deleteNode(node*);
+        void deleteNode(node*,bool=true);
     
     public:
         ~Deque();
@@ -18,7 +18,7 @@ class Deque{
         void PushBack(data);
         bool PopFront(data&);
         bool PopBack(data&);
-        bool IsEmply();
+        bool IsEmpty();
         void Clear();
         
 };
