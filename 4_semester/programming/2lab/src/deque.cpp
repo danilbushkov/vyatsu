@@ -95,3 +95,7 @@ void Deque::deleteNode(node *current,bool delStr){
 
     }
 }
+
+node* Deque::getFirst(){
+    return first;
+}

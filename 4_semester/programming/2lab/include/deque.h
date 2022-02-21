@@ -20,6 +20,8 @@ class Deque{
         bool PopBack(data&);
         bool IsEmpty();
         void Clear();
+        node* getFirst();
+        void PrintDeque();
         
 };
  

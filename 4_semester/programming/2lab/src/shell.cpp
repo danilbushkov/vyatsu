@@ -36,7 +36,7 @@ bool Shell::selectCmd(){
     else if(Str::Equal(cmd,L"popFront")) PopFront();
     else if(Str::Equal(cmd,L"isEmpty")) IsEmpty();
     else if(Str::Equal(cmd,L"clearDeque")) ClearDeque();
-    
+    else if(Str::Equal(cmd,L"print")) PrintDeque();
     else if(Str::Equal(cmd,L""));
     else if(Str::Equal(cmd,L"exit")) return 0;
     else wcout<<L"Такой команды нет\n";
@@ -161,5 +161,22 @@ void Shell::printData(data &d){
         wcout<< d.number <<L'\n';
     }else{
         wcout<< d.str <<L'\n';
+    }
+}
+
+
+void Shell::PrintDeque(){
+    if(!EmptyArg()){
+        wcout<<L"Аргумент не нужен\n";
+        return;
+    }
+    if(deque->IsEmpty()){
+        wcout<<L"Дек пуст\n";
+        return;
+    }
+    node *n = deque->getFirst();
+    for(;n != nullptr;){
+        printData(n->content);
+        n=n->next;
     }
 }

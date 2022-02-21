@@ -23,6 +23,7 @@ class Shell{
         void ClearDeque();
         bool EmptyArg();
         void printData(data&);
+        void PrintDeque();
 
 
     public:
