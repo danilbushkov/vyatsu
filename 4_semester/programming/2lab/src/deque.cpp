@@ -3,13 +3,26 @@
 #include "node.h"
 
 
+Deque::Deque(){
+    first = nullptr;
+    last = nullptr;
+}
+
 Deque::~Deque(){
     Clear();
 }
 
 
-void Deque::PushFront(data d){
+void Deque::PushFront(dataBuf df){
     node *tmp = (node*)malloc(sizeof(node));
+
+    data d;
+
+    d.str = (wchar_t*) malloc((Str::Len(df.str)+1)*sizeof(wchar_t));
+    Str::copyStr(df.str,d.str);
+    d.number = df.number;
+
+
     tmp->content = d;
     tmp->next = first;
     tmp->prev = nullptr;
@@ -23,8 +36,15 @@ void Deque::PushFront(data d){
     first = tmp;
 }
 
-void Deque::PushBack(data d){
+void Deque::PushBack(dataBuf df){
     node *tmp = (node*)malloc(sizeof(node));
+
+    data d;
+
+    d.str = (wchar_t*) malloc((Str::Len(df.str)+1)*sizeof(wchar_t));
+    Str::copyStr(df.str,d.str);
+    d.number = df.number;
+
     tmp->content = d;
     tmp->prev = last;
     tmp->next = nullptr;
@@ -37,23 +57,26 @@ void Deque::PushBack(data d){
     last = tmp;
 }
 
-bool Deque::PopFront(data &d){
+bool Deque::PopFront(dataBuf &df){
     if(IsEmpty()){
         return 0;
     }
-    d = first->content;
-    deleteNode(first, false);
+    df.number=first->content.number;
+    Str::copyStr(first->content.str,df.str);
+
+
+    deleteNode(first);
 
     return 1;
 }
-bool Deque::PopBack(data &d){
+bool Deque::PopBack(dataBuf &df){
     if(IsEmpty()){
         return 0;
     }
-    d = last->content;
-    deleteNode(last, false);
+    df.number=last->content.number;
+    Str::copyStr(last->content.str,df.str);
 
-
+    deleteNode(last);
 
     return 1;
 }
@@ -70,7 +93,7 @@ void Deque::Clear(){
         tmp = first;
     }
 }
-void Deque::deleteNode(node *current,bool delStr){
+void Deque::deleteNode(node *current){
     if(current!=nullptr){
         if(current->prev==nullptr){
             first = current->next;
@@ -84,12 +107,12 @@ void Deque::deleteNode(node *current,bool delStr){
             current->next->prev = current->prev;
         }
 
-        if(delStr){
-            if(current->content.str!=nullptr){
-                free(current->content.str);
-            }
+        
+        if(current->content.str!=nullptr){
+            free(current->content.str);
         }
-
+       
+        
         free(current);
         current = nullptr;
 

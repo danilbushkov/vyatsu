@@ -4,6 +4,7 @@
 #include "deque.h"
 #include "str.h"
 #include "node.h"
+#include <iostream>
 
 class Shell{
     private:
@@ -22,8 +23,11 @@ class Shell{
         void IsEmpty();
         void ClearDeque();
         bool EmptyArg();
-        void printData(data&);
+        void printData(dataBuf&);
+		void printData(data&);
         void PrintDeque();
+		void PrintAdress();
+		dataBuf ReadData();
 
 
     public:

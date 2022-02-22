@@ -2,22 +2,23 @@
 #define DEQUE_H
  
 #include "node.h"
-
+#include <iostream>
 
 class Deque{
     private:
-        node *first=nullptr;
-        node *last=nullptr;
+        node *first;
+        node *last;
 
-        void deleteNode(node*,bool=true);
+        void deleteNode(node*);
     
     public:
+		Deque();
         ~Deque();
 
-        void PushFront(data);
-        void PushBack(data);
-        bool PopFront(data&);
-        bool PopBack(data&);
+        void PushFront(dataBuf);
+        void PushBack(dataBuf);
+        bool PopFront(dataBuf&);
+        bool PopBack(dataBuf&);
         bool IsEmpty();
         void Clear();
         node* getFirst();

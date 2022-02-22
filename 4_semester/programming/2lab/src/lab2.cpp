@@ -3,13 +3,9 @@
 #include "deque.h"
 #include "shell.h"
 
-
-using namespace std;
-
-
 int main(){
-    setlocale(LC_ALL, "Russian_Russia.866");
-    Deque deque;
+	setlocale(LC_ALL, "Russian_Russia.866");
+    Deque deque = Deque();
     Shell shell(&deque);
 
     shell.Run();
@@ -17,3 +13,4 @@ int main(){
     
     return 0;
 }
+

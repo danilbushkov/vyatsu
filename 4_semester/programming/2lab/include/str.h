@@ -3,6 +3,7 @@
  
 #include <limits.h>
 #include <iomanip>
+#include <iostream>
 
 class Str{
     private:

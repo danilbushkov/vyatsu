@@ -37,12 +37,29 @@ bool Shell::selectCmd(){
     else if(Str::Equal(cmd,L"isEmpty")) IsEmpty();
     else if(Str::Equal(cmd,L"clearDeque")) ClearDeque();
     else if(Str::Equal(cmd,L"print")) PrintDeque();
+    else if(Str::Equal(cmd,L"address")) PrintAdress();
     else if(Str::Equal(cmd,L""));
     else if(Str::Equal(cmd,L"exit")) return 0;
     else wcout<<L"Такой команды нет\n";
 
     return 1;
 }
+
+
+void Shell::PrintAdress(){
+    if(!EmptyArg()){
+        wcout<<L"Аргумент не нужен\n";
+        return;
+    }
+    if(deque->IsEmpty()){
+        wcout<<L"Дек пуст\n";
+        return;
+    }
+    wcout<<deque->getFirst()<<L'\n';
+}
+
+
+
 
 void Shell::getCmdAndArg(){
     int lenCmd=0;
@@ -58,36 +75,25 @@ void Shell::getCmdAndArg(){
 }
 
 
+
+
+
 void Shell::PushBack(){
-    if(EmptyArg()){
-        wcout<<L"Аргумент пуст\n";
+    if(!EmptyArg()){
+        wcout<<L"Аргумент не нужен\n";
         return;
     }
 
-    data d;
-
-    if(Str::IsInt(arg)){
-        d.number=_wtoi(arg);
-    }else{
-        d.str=(wchar_t*) malloc((Str::Len(arg)+1)*sizeof(wchar_t));
-        Str::copyStr(arg,d.str);
-    }
+    dataBuf d = ReadData();
     deque->PushBack(d);
 }
 void Shell::PushFront(){
-    if(EmptyArg()){
-        wcout<<L"Аргумент пуст\n";
+    if(!EmptyArg()){
+        wcout<<L"Аргумент не нужен\n";
         return;
     }
 
-    data d;
-
-    if(Str::IsInt(arg)){
-        d.number=_wtoi(arg);
-    }else{
-        d.str=(wchar_t*) malloc((Str::Len(arg)+1)*sizeof(wchar_t));
-        Str::copyStr(arg,d.str);
-    }
+    dataBuf d = ReadData();
     deque->PushFront(d);
 
 }
@@ -96,26 +102,30 @@ void Shell::PopBack(){
         wcout<<L"Аргумент не нужен\n";
         return;
     }
-    data d;
-
-    deque->PopBack(d);
-    printData(d);
-    if(d.str!=nullptr){
-        free(d.str);
+    dataBuf d;
+    int code = deque->PopBack(d);
+    if(code){
+        printData(d);
+    }else{
+        wcout<<L"Дек пуст\n";
     }
+   
+    
 }
 void Shell::PopFront(){
     if(!EmptyArg()){
         wcout<<L"Аргумент не нужен\n";
         return;
     }
-    data d;
-
-    deque->PopFront(d);
-    printData(d);
-    if(d.str!=nullptr){
-        free(d.str);
+    dataBuf d;
+    
+    int code = deque->PopFront(d);
+    if(code){
+        printData(d);
+    }else{
+        wcout<<L"Дек пуст\n";
     }
+    
 }
 void Shell::IsEmpty(){
     if(!EmptyArg()){
@@ -147,24 +157,29 @@ void Shell::help(){
         wcout<<L"Аргумент не нужен\n";
         return;
     }
+
     wcout<<L"\nhelp - посмотреть команды\n";
     wcout<<L"clear - очистить консоль\n";
-    wcout<<L"pushback <string or int> - добавить элемент в конец Дека\n";
-    wcout<<L"pushfront <string or int> - добавить элемент в начало Дека\n";
-    wcout<<L"popback - взять и удалить элемент с конца Дека\n";
-    wcout<<L"popfront - взять и удалить элемент с начала Дека\n";
-    wcout<<L"isempty - проверить, пуст ли Дек\n";
-    wcout<<L"cleardeque - очистить Дек\n";
+    wcout<<L"pushBack <string or int> - добавить элемент в конец Дека\n";
+    wcout<<L"pushFront <string or int> - добавить элемент в начало Дека\n";
+    wcout<<L"popBack - взять и удалить элемент с конца Дека\n";
+    wcout<<L"popFront - взять и удалить элемент с начала Дека\n";
+    wcout<<L"isEmpty - проверить, пуст ли Дек\n";
+    wcout<<L"clearDeque - очистить Дек\n";
     wcout<<L"exit - выйти\n";
 
 }
 
+void Shell::printData(dataBuf &d){
+    wcout<<L"Элемент:\n";
+    wcout<<L"Строка: "<<d.str<<'\n';
+    wcout<<L"Число: "<<d.number<<"\n\n";
+}
+
 void Shell::printData(data &d){
-    if(d.str==nullptr){
-        wcout<< d.number <<L'\n';
-    }else{
-        wcout<< d.str <<L'\n';
-    }
+    wcout<<L"Элемент:\n";
+    wcout<<L"Строка: "<<d.str<<'\n';
+    wcout<<L"Число: "<<d.number<<"\n\n";
 }
 
 
@@ -182,4 +197,32 @@ void Shell::PrintDeque(){
         printData(n->content);
         n=n->next;
     }
+}
+
+
+dataBuf Shell::ReadData(){
+    dataBuf d;
+    wchar_t str[Str::MAX_LEN];
+    bool w = true;
+
+    wcout<<L"Введите строку: ";
+    wcin.getline(str, Str::MAX_LEN);
+    Str::DelSpacesFrontAndBack(str);
+    Str::copyStr(str,d.str);
+
+
+    do{
+
+        wcout<<L"Введите число: ";
+        wcin.getline(str, Str::MAX_LEN);
+        Str::DelSpacesFrontAndBack(str);
+        if(Str::IsInt(str)){
+            d.number=_wtoi(str);
+            w = false;
+        }else{
+            wcout<<L"Введено не число или число слишком большое: \n";
+        }
+
+    }while(w);
+    return d;
 }
