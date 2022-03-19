@@ -17,6 +17,7 @@ int RegisterWindow(const wchar_t *className, WNDPROC wProc,HINSTANCE hInstance){
     wc.lpszMenuName = 0;
     wc.lpszClassName = className; 
     
+    
     if(!RegisterClassEx(&wc)){
         MessageBoxExW(0,L"Ошибка регистрации!",L"Сообщение", 0, 0);
         return 0;
