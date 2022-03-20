@@ -7,8 +7,9 @@ SRC_PATH = src
 CFLAGS = -c -Wall -I$(INCLUDE_PATH)
 
 SRC_FILES = main.cpp \
-			test.cpp \
-			a.cpp
+			MainWindow.cpp \
+			Window.cpp \
+
 OBJ_FILES = $(SRC_FILES:%.cpp=$(OBJ_PATH)/%.o)
 
 
