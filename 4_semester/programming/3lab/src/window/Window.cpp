@@ -29,7 +29,7 @@ void Window::initWindow(){
         CW_USEDEFAULT,         
         CW_USEDEFAULT,         
         600,                     
-        600,                     
+        700,                     
         phwnd,            
         NULL,                      
         hInstance,                            

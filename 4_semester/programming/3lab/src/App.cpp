@@ -2,12 +2,16 @@
 #include "window.h"
 #include "wMainProc.h"
 #include "wInputProc.h"
+#include "wResultProc.h"
 #include "wProc.h"
 #include "App.h"
 
 
 Window App::mainWindow;
 Window App::inputWindow;
+Window App::resultWindow;
+int App::Matrix[25][25];
+int App::matrixLen;
 
 
 int App::registration(HINSTANCE hInstance, int nCmdShow){
@@ -21,10 +25,18 @@ int App::registration(HINSTANCE hInstance, int nCmdShow){
                                        hInstance, 
                                        (WNDPROC)&WInputProc::wProc,
                                        nCmdShow);
+    resultWindow = Window(L"resultWindow",
+                                       L"Проверить связности",
+                                       hInstance, 
+                                       (WNDPROC)&WResultProc::wProc,
+                                       nCmdShow);                                  
     if(!mainWindow.registration()){
         return 0;
     }
     if(!inputWindow.registration()){
+        return 0;
+    }
+    if(!resultWindow.registration()){
         return 0;
     }
     return 1;
@@ -36,4 +48,18 @@ void App::startInputWindow(){
     WInputProc::window = inputWindow.hwnd;
     WInputProc::parentHwnd = mainWindow.hwnd;
     inputWindow.startWindow();
+}
+
+void App::startResultWindow(){
+    for(int i = 0;i<25;i++){
+        for(int j = 0;j<25;j++){
+            WResultProc::matrix[i][j] = Matrix[i][j];
+        }
+    }
+    
+
+    WResultProc::matrixLen = matrixLen;
+    WResultProc::window = resultWindow.hwnd;
+    WResultProc::parentHwnd = mainWindow.hwnd;
+    resultWindow.startWindow();
 }

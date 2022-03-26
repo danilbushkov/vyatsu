@@ -69,8 +69,17 @@ LRESULT CALLBACK WMainProc::wProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
         } else if(lParam==(int)hwndButtonInput){
             if(HIWORD(wParam)==BN_CLICKED){
                 
-                //InputMatrix((HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE),hWnd);
+                
                 App::startInputWindow();
+
+
+                
+            }
+        } else if(lParam==(int)hwndButtonResult){
+            if(HIWORD(wParam)==BN_CLICKED){
+                
+                
+                App::startResultWindow();
 
 
                 
