@@ -1,9 +1,6 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include "libs.h"
-
-
 class Window{
 
     public:
@@ -11,6 +8,7 @@ class Window{
 
         HINSTANCE hInstance;
         int nCmdShow;
+        HWND phwnd;
         HWND hwnd;
         MSG msg;
         wchar_t className[100];
@@ -18,15 +16,13 @@ class Window{
         WNDPROC wProc;
 
 
-
+        Window(){}
         Window(const wchar_t*, const wchar_t*, HINSTANCE ,WNDPROC ,int);
         virtual int registration();
         virtual MSG startWindow();
         virtual void initWindow();
         
 };
-
-LRESULT CALLBACK wProc( HWND, UINT, WPARAM, LPARAM);
 
 
 #endif

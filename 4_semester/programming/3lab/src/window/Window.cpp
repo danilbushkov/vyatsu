@@ -1,4 +1,5 @@
 
+#include "libs.h"
 #include "Window.h"
 
 
@@ -11,6 +12,7 @@ Window::Window(const wchar_t *className,const wchar_t *title,HINSTANCE hInstance
     this->wProc = wProc;
     wcscpy(this->title,title);
     wcscpy(this->className, className);
+    this->phwnd = NULL;
 }
 
 
@@ -26,9 +28,9 @@ void Window::initWindow(){
                 
         CW_USEDEFAULT,         
         CW_USEDEFAULT,         
-        500,                     
-        400,                     
-        NULL,            
+        600,                     
+        600,                     
+        phwnd,            
         NULL,                      
         hInstance,                            
         NULL);   

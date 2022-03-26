@@ -1,7 +1,7 @@
 
-
 #include "libs.h"
-#include "MainWindow.h"
+#include "Window.h"
+#include "App.h"
 
 int CALLBACK WinMain(
     HINSTANCE hInstance,
@@ -11,17 +11,11 @@ int CALLBACK WinMain(
 )
 {
 
-    MainWindow mainWindow = MainWindow(L"mainWindow",
-                                       L"Главное окно",
-                                       hInstance, 
-                                       (WNDPROC)&wMainProc,
-                                       nCmdShow);
-    
-
-    if(!mainWindow.registration()){
+    if(!App::registration(hInstance,nCmdShow)){
         return 0;
     }
-    MSG msg = mainWindow.startWindow();
+    
+    MSG msg = App::run();
 
 
 

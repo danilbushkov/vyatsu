@@ -1,6 +1,9 @@
 COMPILER = g++
-INCLUDE_PATH = ./include \
-			   ./include/window
+INCLUDE_PATH = \
+			./include \
+			./include/wndproc \
+			./include/window \
+			
 OBJ_PATH = obj
 BIN_PATH = bin
 SRC_PATH = src
@@ -29,5 +32,7 @@ $(OBJ_PATH)/%.o: %.cpp
 	$(COMPILER) $(CFLAGS) -c $< -o $@
 
 
+
 clean:
 	rm -rf ./obj/*.o
+

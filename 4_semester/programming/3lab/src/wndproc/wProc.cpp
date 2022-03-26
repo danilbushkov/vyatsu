@@ -1,8 +1,8 @@
-
-
 #include "libs.h"
+#include "wProc.h"
 
-LRESULT CALLBACK wProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+
+LRESULT CALLBACK WProc::wProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     switch ( uMsg ) {
     case WM_CREATE:

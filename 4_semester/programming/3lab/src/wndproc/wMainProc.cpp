@@ -1,13 +1,16 @@
-
-
 #include "libs.h"
+#include "Window.h"
+#include "wMainProc.h"
+#include "App.h"
 
-HWND hwndButtonResult;
-HWND hwndButtonInput;
-HWND hwndButtonAbout;
 
 
-LRESULT CALLBACK wMainProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+HWND WMainProc::hwndButtonAbout;
+HWND WMainProc::hwndButtonInput;
+HWND WMainProc::hwndButtonResult;
+
+
+LRESULT CALLBACK WMainProc::wProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     int w,hb;
     
@@ -61,20 +64,19 @@ LRESULT CALLBACK wMainProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 MessageBoxExW(hWnd, L"Программа для построения матрицы смежности \
 и проверки связности двух вершин", L"О программе", 0, MB_APPLMODAL);
                 
-                //UpdateWindow(hWnd);
+                
             }
         } else if(lParam==(int)hwndButtonInput){
             if(HIWORD(wParam)==BN_CLICKED){
                 
                 //InputMatrix((HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE),hWnd);
-                
+                App::startInputWindow();
 
 
                 
-                //UpdateWindow(hWnd);
             }
         }
-        break;
+         break;
     case WM_SHOWWINDOW:
         
         break;
