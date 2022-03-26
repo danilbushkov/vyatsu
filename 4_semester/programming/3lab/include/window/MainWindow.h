@@ -5,17 +5,14 @@
 
 class MainWindow : public Window{
     public:
-        HWND hwndButtonInput;
-        HWND hwndButtonResult;
-        HWND hwndButtonAbout;
 
         MainWindow(const wchar_t *className,
                    const wchar_t *title,
                    HINSTANCE hInstance, 
-                   int nCmdShow) : Window(className,title,hInstance,nCmdShow){}
-        
-        LRESULT CALLBACK wProc( HWND, UINT, WPARAM, LPARAM);
+                   WNDPROC wProc,
+                   int nCmdShow) : Window(className,title,hInstance,wProc,nCmdShow){}
 };
 
+LRESULT CALLBACK wMainProc( HWND, UINT, WPARAM, LPARAM);
 
 #endif

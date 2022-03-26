@@ -1,12 +1,14 @@
 
 #include "Window.h"
 
-LRESULT CALLBACK wProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 
-Window::Window(const wchar_t *className,const wchar_t *title,HINSTANCE hInstance, int nCmdShow){
+
+
+Window::Window(const wchar_t *className,const wchar_t *title,HINSTANCE hInstance, WNDPROC wProc, int nCmdShow){
     this->hInstance = hInstance;
     this->nCmdShow = nCmdShow;
+    this->wProc = wProc;
     wcscpy(this->title,title);
     wcscpy(this->className, className);
 }
@@ -53,7 +55,7 @@ int Window::registration(){
     wc.cbSize = sizeof(WNDCLASSEX);
     wc.hIconSm = 0;
     wc.style = CS_HREDRAW|CS_VREDRAW;
-    wc.lpfnWndProc = (WNDPROC)&wProc;
+    wc.lpfnWndProc = wProc;
     wc.cbClsExtra = 0;
     wc.cbWndExtra = 0;
     wc.hInstance = hInstance;
@@ -69,26 +71,4 @@ int Window::registration(){
         return 0;
     };
     return 1;
-}
-
-
-LRESULT CALLBACK wProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-    switch ( uMsg ) {
-    case WM_CREATE:
-    
-    break;
-    case WM_SHOWWINDOW:
-    
-    break;
-    case WM_CLOSE:
-    
-    break;
-    case WM_DESTROY:
-    
-    PostQuitMessage(0);
-    break;
-    }
-    return DefWindowProc( hWnd, uMsg, wParam, lParam );
-
 }
