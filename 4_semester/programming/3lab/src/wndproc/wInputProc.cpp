@@ -93,9 +93,9 @@ LRESULT CALLBACK WInputProc::wProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
                 }
                 SetWindowTextW(tmp,bf1);
                 SendMessage(tmp,EM_SETSEL,b,b);
-            }else{
-            flag=0;
             }
+        }else{
+            flag=0;
         }
 
 
@@ -157,7 +157,7 @@ LRESULT CALLBACK WInputProc::wProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
                     buttonApply = CreateWindowExW(0,L"button", L"Принять",
                     WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 
                     w/2-hb/2, 
-                    150, 
+                    550, 
                     hb, 
                     30, 
                     hWnd, 

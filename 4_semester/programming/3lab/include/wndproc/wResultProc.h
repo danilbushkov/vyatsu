@@ -6,11 +6,11 @@ class WResultProc{
     public:
         static HWND parentHwnd;
         static HWND window;
-        static HWND inputSize;
         static HWND label;
         static HWND button;
         static int flag;
-        static HWND buttonApply;
+        static HWND input[2];
+        static wchar_t buffer[2][100];
         static int matrix[25][25];
         static int matrixLen;
         static HWND matrixResult[25][25];
