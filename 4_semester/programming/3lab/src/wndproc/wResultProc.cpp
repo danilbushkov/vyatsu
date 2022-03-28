@@ -2,6 +2,7 @@
 
 #include "Window.h"
 #include "wResultProc.h"
+#include "graph.h"
 
 HWND WResultProc::parentHwnd;
 HWND WResultProc::window;
@@ -27,7 +28,7 @@ LRESULT CALLBACK WResultProc::wProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
     hb = 250;
     switch ( uMsg ) {
     case WM_CREATE:
-        
+        EnableWindow(parentHwnd, false);
         for(int i = 0; i<matrixLen; i++){
                         for(int j = 0; j<matrixLen; j++){
 
@@ -93,16 +94,16 @@ LRESULT CALLBACK WResultProc::wProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
                 GetWindowTextW(tmp, bf, 99 ); 
                 j=0;
                 if(wcslen(bf)>2){
-                    MessageBoxExW(hWnd, 
-                            L"Число не может быть больше 25!",
-                            L"Ошибка", 0, MB_APPLMODAL);
+                    // MessageBoxExW(hWnd, 
+                    //         L"Число не может быть больше 25!",
+                    //         L"Ошибка", 0, MB_APPLMODAL);
                     
                 }else{
                     for(i=0; i < wcslen(bf); i++){
                         if(bf[i]<L'0'||bf[i]>L'9'){
-                            MessageBoxExW(hWnd, 
-                            L"Можно вводить только цифры",
-                            L"Ошибка", 0, MB_APPLMODAL);
+                            // MessageBoxExW(hWnd, 
+                            // L"Можно вводить только цифры",
+                            // L"Ошибка", 0, MB_APPLMODAL);
                             continue;
                         }
                         bf1[j]=bf[i]; 
@@ -110,15 +111,15 @@ LRESULT CALLBACK WResultProc::wProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
                     }
                     bf1[j]=L'\0';
                     if((!_wtoi(bf1) && wcslen(bf1)!=0) || bf1[0]=='0'){
-                    MessageBoxExW(hWnd, 
-                            L"Число должно быть от 2 до 25",
-                            L"Ошибка", 0, MB_APPLMODAL);
+                    // MessageBoxExW(hWnd, 
+                    //         L"Число должно быть от 2 до 25",
+                    //         L"Ошибка", 0, MB_APPLMODAL);
                     }else{
                         int d = _wtoi(bf1);
-                        if(d>25){
-                            MessageBoxExW(hWnd, 
-                                L"Число должно быть от 2 до 25",
-                                L"Ошибка", 0, MB_APPLMODAL);
+                        if(d>matrixLen){
+                            // MessageBoxExW(hWnd, 
+                            //     L"Число должно быть от 2 до 25",
+                            //     L"Ошибка", 0, MB_APPLMODAL);
                         }else{
                             wcscpy(buffer[a],bf1);
                         }
@@ -134,7 +135,23 @@ LRESULT CALLBACK WResultProc::wProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
         }
         if(lParam==(int)button){
             if(HIWORD(wParam)==BN_CLICKED){
-                
+                if(buffer[0][0]!='\0' && _wtoi(buffer[0])<matrixLen &&
+                   buffer[1][0]!='\0' && _wtoi(buffer[1])<matrixLen ){
+                    Graph g=Graph(matrix,matrixLen);
+                    if(g.checkPathGraph(_wtoi(buffer[0]),_wtoi(buffer[1]))){
+                        MessageBoxExW(hWnd, 
+                                L"Вершины связаны",
+                                L"Результат", 0, MB_APPLMODAL);
+                    }else{
+                        MessageBoxExW(hWnd, 
+                                L"Вершины не связаны!",
+                                L"Результат", 0, MB_APPLMODAL);
+                    }
+                }else{
+                    MessageBoxExW(hWnd, 
+                                L"Аргументы введены не корректно",
+                                L"Ошибка", 0, MB_APPLMODAL);
+                }
             }
         }
         break;

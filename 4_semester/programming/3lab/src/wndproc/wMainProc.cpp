@@ -78,8 +78,12 @@ LRESULT CALLBACK WMainProc::wProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
         } else if(lParam==(int)hwndButtonResult){
             if(HIWORD(wParam)==BN_CLICKED){
                 
+                if(App::matrixLen>1){
+                    App::startResultWindow();
+                }else{
+                    MessageBoxExW(hWnd, L"Не введена матрица", L"Ошибка", 0, MB_APPLMODAL);
+                }
                 
-                App::startResultWindow();
 
 
                 

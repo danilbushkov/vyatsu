@@ -51,3 +51,5 @@ $(OBJ_PATH)/%.o: %.cpp
 clean:
 	rm -rf ./obj/*.o
 
+run:
+	bin/lab3

@@ -94,12 +94,7 @@ LRESULT CALLBACK WInputProc::wProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
                 SetWindowTextW(tmp,bf1);
                 SendMessage(tmp,EM_SETSEL,b,b);
             }
-        }else{
-            flag=0;
-        }
-
-
-        if(lParam == (int)inputSize && flag==0){
+        } else if(lParam == (int)inputSize && flag==0){
 
             if(HIWORD(wParam)==EN_UPDATE){
                 flag=1; 
@@ -151,7 +146,7 @@ LRESULT CALLBACK WInputProc::wProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
                 int d = _wtoi(buffer);
 
                 int x=20,y=50;
-                if(d>2 && d<26){
+                if(d>1 && d<26){
                     ShowWindow(button,0);
                     ShowWindow(inputSize,0);
                     buttonApply = CreateWindowExW(0,L"button", L"Принять",
@@ -177,10 +172,12 @@ LRESULT CALLBACK WInputProc::wProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
                         x=20;
                         y+=20;
                     }
-
+                    
                     
                 }else{
-                    //ошибка
+                    MessageBoxExW(hWnd, 
+                            L"Некорректный ввод",
+                            L"Ошибка", 0, MB_APPLMODAL);
                 }
                 
                 
