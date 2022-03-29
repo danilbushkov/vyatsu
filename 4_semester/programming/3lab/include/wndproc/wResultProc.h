@@ -10,6 +10,7 @@ class WResultProc{
         static HWND button;
         static int flag;
         static HWND input[2];
+        static HWND labelInput[2];
         static wchar_t buffer[2][100];
         static int matrix[25][25];
         static int matrixLen;

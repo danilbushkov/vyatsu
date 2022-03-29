@@ -7,6 +7,7 @@
 HWND WResultProc::parentHwnd;
 HWND WResultProc::window;
 HWND WResultProc::label;
+HWND WResultProc::labelInput[2];
 HWND WResultProc::button;
 int WResultProc::flag;
 HWND WResultProc::stateH[25];
@@ -76,7 +77,7 @@ x, y, h, h, hWnd, 0, (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
         button = CreateWindowExW(0,L"button", L"Проверить",
             WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 
             200, 
-            550, 
+            560, 
             hb, 
             30, 
             hWnd, 
@@ -84,13 +85,21 @@ x, y, h, h, hWnd, 0, (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
             (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), 
             NULL);
 
+        labelInput[0]=CreateWindow(L"STATIC",L"Из",
+WS_CHILD | WS_VISIBLE,
+20, 560, 30, 20, hWnd, 0, (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
+
+        labelInput[1]=CreateWindow(L"STATIC",L"В",
+WS_CHILD | WS_VISIBLE,
+80, 560, 30, 20, hWnd, 0, (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
+
         input[0] = CreateWindowExW(0,L"Edit", L"",
         WS_CHILD | WS_VISIBLE |WS_TABSTOP | ES_AUTOHSCROLL | WS_BORDER,
-        20, 550, 30, 20, hWnd, 0, (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
+        40, 560, 30, 20, hWnd, 0, (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
 
         input[1] = CreateWindowExW(0,L"Edit", L"",
         WS_CHILD | WS_VISIBLE |WS_TABSTOP | ES_AUTOHSCROLL | WS_BORDER,
-        70, 550, 30, 20, hWnd, 0, (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
+        90, 560, 30, 20, hWnd, 0, (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
 
         break;
     case WM_COMMAND:
@@ -134,13 +143,13 @@ x, y, h, h, hWnd, 0, (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
                         j++;
                     }
                     bf1[j]=L'\0';
-                    if((!_wtoi(bf1) && wcslen(bf1)!=0) || bf1[0]=='0'){
+                    if((bf1[0]==L'0' && wcslen(bf1)>1)){
                     // MessageBoxExW(hWnd, 
                     //         L"Число должно быть от 2 до 25",
                     //         L"Ошибка", 0, MB_APPLMODAL);
                     }else{
                         int d = _wtoi(bf1);
-                        if(d>matrixLen){
+                        if(d>=matrixLen){
                             // MessageBoxExW(hWnd, 
                             //     L"Число должно быть от 2 до 25",
                             //     L"Ошибка", 0, MB_APPLMODAL);

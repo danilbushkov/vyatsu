@@ -39,7 +39,7 @@ void Graph::SetGraph(int mass[25][25], int size){
 
 int Graph::checkPathGraph(int a, int b){
     visitedGraphNull();
-    if(a == b){
+    if((a == b) && (mass[a][b]==1) ){
         return 1;
     }
     int c = DFS(a, b);
