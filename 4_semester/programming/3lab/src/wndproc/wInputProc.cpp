@@ -170,35 +170,38 @@ LRESULT CALLBACK WInputProc::wProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
                     (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), 
                     NULL);
 
-                    int w = 20, h = 20;
+                    int hb = 20, h = 20;y=50;
                     SetWindowTextW(label,L"Введите матрицу смежности:");
+                    x=w/2-(d)*20/2;
                     for(int i = 0; i<d; i++){
+                        
                         for(int j = 0; j<d; j++){
+                            
                             matrixInput[i][j] = CreateWindowExW(0,L"Edit", L"",
         WS_CHILD | WS_VISIBLE |WS_TABSTOP | ES_AUTOHSCROLL | WS_BORDER,
-        x, y, w, h, hWnd, 0, (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
+        x, y, hb, h, hWnd, 0, (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
                             x+=20;
                         }
-                        x=40;
+                        x=w/2-(d)*20/2;
                         y+=20;
                     }
                    wchar_t a[50];
-                    w=20,h=20;
-                    x=20;y=50;
+                    h=20;
+                    x=w/2-(d)*20/2-20;y=50;
                     
                     for(int i = 0; i<d; i++){
                         _itow(i, a, 10);
                         stateV[i] = CreateWindow(L"STATIC",a,
         WS_CHILD | WS_VISIBLE,
-        x, y, w, h, hWnd, 0, (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
+        x, y, hb, h, hWnd, 0, (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
                         y+=20;
                     }
-                    x=40;y=30;
+                    x=w/2-(d)*20/2,h=20;y=30;
                     for(int i = 0; i<d; i++){
                         _itow(i, a, 10);
                         stateH[i] = CreateWindow(L"STATIC",a,
         WS_CHILD | WS_VISIBLE,
-        x, y, w, h, hWnd, 0, (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
+        x, y, hb, h, hWnd, 0, (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
                         x+=20;
                     }
                     

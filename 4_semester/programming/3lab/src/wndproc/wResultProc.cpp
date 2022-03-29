@@ -20,13 +20,13 @@ HWND WResultProc::matrixResult[25][25];
 LRESULT CALLBACK WResultProc::wProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     
-    int w = 20, h = 20;
+    int w, h = 20;
     HWND tmp;
     int x=40,y=50;
     RECT rect;
     GetWindowRect(hWnd, &rect);
     int hb;
-    //wb = rect.right - rect.left;
+    w = rect.right - rect.left;
     hb = 250;
     switch ( uMsg ) {
     case WM_CREATE:
@@ -34,38 +34,38 @@ LRESULT CALLBACK WResultProc::wProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
         
         EnableWindow(parentHwnd, false);
          wchar_t aa[50];
-        w=20,h=20;
-        x=20;y=50;
-        
+        h=20;
+        x=w/2-matrixLen*h/2-h;
+        y=50;
         for(int i = 0; i<matrixLen; i++){
             _itow(i, aa, 10);
             stateV[i] = CreateWindow(L"STATIC",aa,
 WS_CHILD | WS_VISIBLE,
-x, y, w, h, hWnd, 0, (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
+x, y, h, h, hWnd, 0, (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
             y+=20;
         }
-        x=40;y=30;
+        x=w/2-matrixLen*h/2;y=30;
         for(int i = 0; i<matrixLen; i++){
             _itow(i, aa, 10);
             stateH[i] = CreateWindow(L"STATIC",aa,
 WS_CHILD | WS_VISIBLE,
-x, y, w, h, hWnd, 0, (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
+x, y, h, h, hWnd, 0, (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
             x+=20;
         }
-        x=40,y=50;
+        x=w/2-matrixLen*h/2,y=50;
         for(int i = 0; i<matrixLen; i++){
                         for(int j = 0; j<matrixLen; j++){
 
 
                             matrixResult[i][j] = CreateWindow(L"Static", L"",
         WS_CHILD | WS_VISIBLE | WS_BORDER,
-        x, y, w, h, hWnd, 0, (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE),NULL);
+        x, y, h, h, hWnd, 0, (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE),NULL);
                             if(matrix[i][j]==1){
                                 SetWindowTextW(matrixResult[i][j],L"1");
                             }
                             x+=20;
                         }
-                        x=40;
+                        x=w/2-matrixLen*h/2;
                         y+=20;
                         
                     }
