@@ -1,8 +1,11 @@
+//#include <iostream>
 #include "libs.h"
 
 #include "Window.h"
 #include "wInputProc.h"
 #include "App.h"
+//#include <string>
+
 
 HWND WInputProc::window;
 HWND WInputProc::parentHwnd;
@@ -10,10 +13,17 @@ HWND WInputProc::inputSize;
 HWND WInputProc::buttonApply;
 HWND WInputProc::button;
 HWND WInputProc::label;
+HWND WInputProc::stateH[25];
+HWND WInputProc::stateV[25];
 int WInputProc::flag;
 int WInputProc::matrix[25][25];
 HWND WInputProc::matrixInput[25][25];
 wchar_t WInputProc::buffer[100] = L"";
+
+
+
+
+
 
 LRESULT CALLBACK WInputProc::wProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -84,7 +94,7 @@ LRESULT CALLBACK WInputProc::wProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
                 }
                 bf1[j]=L'\0';
                 if(wcslen(bf1)>1){
-                    bf1[1] = '\0';
+                    bf1[1] = L'\0';
                 }
                 if(bf1[0]==L'1'){
                     matrix[y][x]=1;
@@ -145,7 +155,7 @@ LRESULT CALLBACK WInputProc::wProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
             if(HIWORD(wParam)==BN_CLICKED){
                 int d = _wtoi(buffer);
 
-                int x=20,y=50;
+                int x=40,y=50;
                 if(d>1 && d<26){
                     ShowWindow(button,0);
                     ShowWindow(inputSize,0);
@@ -169,8 +179,27 @@ LRESULT CALLBACK WInputProc::wProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
         x, y, w, h, hWnd, 0, (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
                             x+=20;
                         }
-                        x=20;
+                        x=40;
                         y+=20;
+                    }
+                   wchar_t a[50];
+                    w=20,h=20;
+                    x=20;y=50;
+                    
+                    for(int i = 0; i<d; i++){
+                        _itow(i, a, 10);
+                        stateV[i] = CreateWindow(L"STATIC",a,
+        WS_CHILD | WS_VISIBLE,
+        x, y, w, h, hWnd, 0, (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
+                        y+=20;
+                    }
+                    x=40;y=30;
+                    for(int i = 0; i<d; i++){
+                        _itow(i, a, 10);
+                        stateH[i] = CreateWindow(L"STATIC",a,
+        WS_CHILD | WS_VISIBLE,
+        x, y, w, h, hWnd, 0, (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
+                        x+=20;
                     }
                     
                     

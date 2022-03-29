@@ -9,6 +9,8 @@ HWND WResultProc::window;
 HWND WResultProc::label;
 HWND WResultProc::button;
 int WResultProc::flag;
+HWND WResultProc::stateH[25];
+HWND WResultProc::stateV[25];
 wchar_t WResultProc::buffer[2][100];
 HWND WResultProc::input[2];
 int WResultProc::matrix[25][25];
@@ -17,18 +19,40 @@ HWND WResultProc::matrixResult[25][25];
 
 LRESULT CALLBACK WResultProc::wProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-    int x=20,y=50;
+    
     int w = 20, h = 20;
     HWND tmp;
-
+    int x=40,y=50;
     RECT rect;
     GetWindowRect(hWnd, &rect);
-    int wb,hb;
-    wb = rect.right - rect.left;
+    int hb;
+    //wb = rect.right - rect.left;
     hb = 250;
     switch ( uMsg ) {
     case WM_CREATE:
+
+        
         EnableWindow(parentHwnd, false);
+         wchar_t aa[50];
+        w=20,h=20;
+        x=20;y=50;
+        
+        for(int i = 0; i<matrixLen; i++){
+            _itow(i, aa, 10);
+            stateV[i] = CreateWindow(L"STATIC",aa,
+WS_CHILD | WS_VISIBLE,
+x, y, w, h, hWnd, 0, (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
+            y+=20;
+        }
+        x=40;y=30;
+        for(int i = 0; i<matrixLen; i++){
+            _itow(i, aa, 10);
+            stateH[i] = CreateWindow(L"STATIC",aa,
+WS_CHILD | WS_VISIBLE,
+x, y, w, h, hWnd, 0, (HINSTANCE)GetWindowLongPtr(hWnd, GWLP_HINSTANCE), NULL);
+            x+=20;
+        }
+        x=40,y=50;
         for(int i = 0; i<matrixLen; i++){
                         for(int j = 0; j<matrixLen; j++){
 
@@ -41,7 +65,7 @@ LRESULT CALLBACK WResultProc::wProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
                             }
                             x+=20;
                         }
-                        x=20;
+                        x=40;
                         y+=20;
                         
                     }
@@ -71,7 +95,7 @@ LRESULT CALLBACK WResultProc::wProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
         break;
     case WM_COMMAND:
         size_t i;
-        int j, b ,e ,x,y;
+        int j, b ,e;
         int a;
         for(int i=0; i<2 && flag==0; i++){
             
