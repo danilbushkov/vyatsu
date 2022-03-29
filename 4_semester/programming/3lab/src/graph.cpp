@@ -48,15 +48,16 @@ int Graph::checkPathGraph(int a, int b){
 }
 
 int Graph::DFS(int a, int b){
-    int r;
     visitedGraph[a]=1;
     for(int i = 0;i<size;i++){
-        if(i!=a && mass[a][i]==1 && visitedGraph[i]==0){
+        if(mass[a][i]==1){
             if(i == b){
                 return 1;
             }else{
-                if(DFS(i,b)){
-                    return 1;
+                if(visitedGraph[i]==0){
+                    if(DFS(i,b)){
+                        return 1;
+                    }
                 }
             }
         }
