@@ -8,36 +8,42 @@ OBJ_PATH = obj
 BIN_PATH = bin
 SRC_PATH = src
 
-CFLAGS = -c -Wall $(INCLUDE_PATH:%=-I%)
+CFLAGS = -Wall $(INCLUDE_PATH:%=-I%)
 
 ADD_DIRS = window\
 		  wndproc\
+		  app \
+		  asm \
 
 
 TEST_FILES = test/graph_test.cpp \
 
 TEST_DIRS = $(dir $(TEST_FILES))
 
-SRC_DIRS = $(SRC_PATH)  $(ADD_DIRS:%=$(SRC_PATH)/%)
-SRC_FILES = $(wildcard $(addsuffix /*.cpp, $(SRC_DIRS)))
+DLL_DIRS = $(ADD_DIRS:%=$(SRC_PATH)/%)
+SRC_FILES = $(wildcard $(addsuffix /*.cpp, $(DLL_DIRS)))
 OBJ_FILES = $(patsubst %,$(OBJ_PATH)/%,$(notdir $(SRC_FILES:%.cpp=%.o)))
 
 SRC_FILES_TEST = $(wildcard $(TEST_FILES))
 OBJ_FILES_TEST = $(patsubst %,$(OBJ_PATH)/%,$(notdir $(SRC_FILES_TEST:%.cpp=%.o)))
 
-all: $(BIN_PATH)/lab5
+all: $(BIN_PATH)/app.dll $(BIN_PATH)/lab5.exe $(BIN_PATH)/graph.dll
 
-$(BIN_PATH)/lab5: $(OBJ_FILES) obj/graph.o obj/graph.obj
-	$(COMPILER) $^ -o $(BIN_PATH)/lab5
+$(BIN_PATH)/lab5.exe:
+	$(COMPILER) $(CFLAGS) $(BIN_PATH)/app.dll  src/main.cpp -o $(BIN_PATH)/lab5.exe 
 
-vpath %.cpp $(SRC_DIRS)
+
+$(BIN_PATH)/app.dll: $(OBJ_FILES) obj/graph.o
+	$(COMPILER) $^ -o $(BIN_PATH)/app.dll -shared
+
+vpath %.cpp $(DLL_DIRS)
 
 $(OBJ_PATH)/%.o: %.cpp 
-	$(COMPILER) $(CFLAGS) -c $< -o $@
+	$(COMPILER) $(CFLAGS) -c -DBUILD_DLL $< -o $@
 
-obj/graph.o: 
+$(BIN_PATH)/graph.dll: 
 	nasm -fwin32 src/asm/graph.asm -o obj/graph.obj
-	$(COMPILER) $(CFLAGS) src/asm/graph.cpp obj/graph.obj -o obj/graph.o
+	$(COMPILER) obj/graph.obj -o $(BIN_PATH)/graph.dll -shared
 
 test: $(BIN_PATH)/test
 	$(BIN_PATH)/test
@@ -47,11 +53,9 @@ $(BIN_PATH)/test: $(OBJ_FILES_TEST) obj/graph.o obj/graph.obj
 
 vpath %.cpp $(TEST_DIRS)
 
-$(OBJ_PATH)/%.o: %.cpp
-	$(COMPILER) $(CFLAGS) -c $< -o $@
 
 clean:
 	rm -rf ./obj/*.o
 
 run:
-	bin/lab4
+	bin/lab5.exe

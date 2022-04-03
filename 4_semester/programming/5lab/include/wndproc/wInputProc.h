@@ -2,6 +2,7 @@
 #define INPUT_PROC_H
 
 
+
 class WInputProc{
     public:
         static HWND parentHwnd;

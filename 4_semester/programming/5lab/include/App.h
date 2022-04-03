@@ -2,6 +2,23 @@
 #define APP_H
 
 
+
+
+#ifdef BUILD_DLL
+#define DLL extern "C" __declspec(dllexport)
+#else
+#define DLL extern "C" __declspec(dllimport)
+#endif
+
+
+
+
+DLL int registration(HINSTANCE hInstance, int nCmdShow);
+DLL MSG run();
+
+
+
+
 class App{
     public:
         static Window mainWindow;

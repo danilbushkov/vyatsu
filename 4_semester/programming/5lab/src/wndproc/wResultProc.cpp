@@ -171,14 +171,19 @@ WS_CHILD | WS_VISIBLE,
                 if(buffer[0][0]!='\0' && _wtoi(buffer[0])<matrixLen &&
                    buffer[1][0]!='\0' && _wtoi(buffer[1])<matrixLen ){
                     Graph g=Graph(matrix,matrixLen);
-                    if(g.checkPathGraph(_wtoi(buffer[0]),_wtoi(buffer[1]))){
+                    int result = g.checkPathGraph(_wtoi(buffer[0]),_wtoi(buffer[1]));
+                    if(result==1){
                         MessageBoxExW(hWnd, 
                                 L"Вершины связаны",
                                 L"Результат", 0, MB_APPLMODAL);
-                    }else{
+                    }else if(result==0){
                         MessageBoxExW(hWnd, 
                                 L"Вершины не связаны!",
                                 L"Результат", 0, MB_APPLMODAL);
+                    }else{
+                        EnableWindow(parentHwnd, true);
+                        SetActiveWindow(parentHwnd);
+                        DestroyWindow(hWnd);
                     }
                 }else{
                     MessageBoxExW(hWnd, 
@@ -194,6 +199,7 @@ WS_CHILD | WS_VISIBLE,
         break;
     case WM_CLOSE:
         EnableWindow(parentHwnd, true);
+        SetActiveWindow(parentHwnd);
         DestroyWindow(hWnd);
         break;
     case WM_DESTROY:

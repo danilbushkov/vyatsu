@@ -2,6 +2,7 @@
 #define RESULT_PROC_H
 
 
+
 class WResultProc{
     public:
         static HWND parentHwnd;

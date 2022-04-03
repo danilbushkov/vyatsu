@@ -3,6 +3,7 @@
 #include "Window.h"
 #include "App.h"
 
+
 int CALLBACK WinMain(
     HINSTANCE hInstance,
     HINSTANCE hPrevInstance,
@@ -11,11 +12,11 @@ int CALLBACK WinMain(
 )
 {
 
-    if(!App::registration(hInstance,nCmdShow)){
+    if(!registration(hInstance,nCmdShow)){
         return 0;
     }
     
-    MSG msg = App::run();
+    MSG msg = run();
 
 
 

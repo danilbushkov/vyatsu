@@ -7,6 +7,21 @@
 #include "App.h"
 
 
+
+
+int registration(HINSTANCE hInstance, int nCmdShow){
+    if(!App::registration(hInstance,nCmdShow)){
+        return 0;
+    }
+    return 1;
+}
+
+MSG run(){
+    return App::run();
+}
+
+
+
 Window App::mainWindow;
 Window App::inputWindow;
 Window App::resultWindow;

@@ -1,10 +1,27 @@
+#include <windows.h>
 #include "graph.h"
 
-extern "C" int DFS(int,int,int[25][25],int);
-
+using FUNC = int(*)(int,int,int[25][25],int) ;
 
 int Graph::checkPathGraph(int a, int b){
-    return DFS(a,b,mass,size);
+    HINSTANCE hDLL;
+    FUNC func;
+    int res = 0;
+    hDLL = LoadLibrary("graph.dll");
+    if(hDLL != NULL){
+        func = (FUNC)GetProcAddress(hDLL,"DFS"); 
+        if(func!= NULL) 
+        {      
+            res=(*func)(a,b,mass,size);
+        }  
+        FreeLibrary(hDLL);
+    }else{
+        MessageBoxExW(0, L"Не найдена библиотека graph.dll", L"Ошибка", 0, MB_APPLMODAL);
+        return 2;
+    }
+
+    return res;
+
 }
 
 
