@@ -27,7 +27,4 @@ lab2: ./obj/lab2.o ./obj/deque.o ./obj/str.o ./obj/shell.o
 clean:
 	rm -rf ./obj/*.o
 
-cleanwin:
-	del ./obj/*.o
-
 
