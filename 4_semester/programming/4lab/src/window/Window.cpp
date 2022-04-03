@@ -6,13 +6,15 @@
 
 
 
-Window::Window(const wchar_t *className,const wchar_t *title,HINSTANCE hInstance, WNDPROC wProc, int nCmdShow){
+Window::Window(const wchar_t *className,const wchar_t *title,HINSTANCE hInstance, WNDPROC wProc, int nCmdShow,
+    DWORD wStyle){
     this->hInstance = hInstance;
     this->nCmdShow = nCmdShow;
     this->wProc = wProc;
     wcscpy(this->title,title);
     wcscpy(this->className, className);
     this->phwnd = NULL;
+    this->wStyle = wStyle;
 }
 
 
@@ -22,10 +24,7 @@ void Window::initWindow(){
         0,                            
         className,                             
         title,                          
-        WS_OVERLAPPED | WS_CAPTION |           
-                WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX,
-                
-                
+        wStyle,
         CW_USEDEFAULT,         
         CW_USEDEFAULT,         
         600,                     

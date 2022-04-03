@@ -15,3 +15,4 @@ lib
 *.sum
 bin
 .vscode
+.obj
