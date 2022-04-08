@@ -3,7 +3,8 @@ OBJ_PATH = obj
 
 ADD_DIRS = game \
 			game/settings \
-			game/game_objects
+			game/game_objects \
+			game/list
 
 SRC_DIRS = $(ADD_DIRS:%=$(SRC_PATH)/%) $(SRC_PATH)
 
@@ -23,7 +24,7 @@ INCLUDE_FILES = $(wildcard $(addsuffix /*.h, $(SRC_DIRS)))
 all: bin/game.exe
 
 bin/game.exe: $(INCLUDE_FILES) $(SRC_FILES)
-	g++ $(CFLAGS) $(SRC_FILES) $(DLL_FILES) -o bin/game.exe
+	g++ $(CFLAGS) $(SRC_FILES) $(DLL_FILES) -o bin/game.exe 
 	bin\game.exe
 
 
