@@ -10,8 +10,8 @@ class Player : public MovingObject {
             delay = 0;
         };
         virtual int move() override;
-        virtual void shot(List<MovingObject>*) override;
-        virtual int collision() override;
+        virtual void action(List<MovingObject>*, List<MovingObject>*) override;
+        //virtual int collision() override;
 
         
     private:
