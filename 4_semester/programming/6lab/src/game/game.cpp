@@ -1,3 +1,9 @@
+#include <SFML/Graphics.hpp>
+#include "settings.h"
+#include "object.h"
+#include "movingObject.h"
+#include "player.h"
+#include "list.h"
 #include "game.h"
 
 Game::Game(){
@@ -24,7 +30,7 @@ void Game::run(){
 
 
 void Game::moveObjects(){
-    Node *node;
+    Node<MovingObject> *node;
     node = listObj.begin;
     while(node!=nullptr){
         node->obj->move();
@@ -34,7 +40,7 @@ void Game::moveObjects(){
 
 
 void Game::drawObjects(){
-    Node *node;
+    Node<MovingObject> *node;
     node = listObj.begin;
     while(node!=nullptr){
         window.draw(node->obj->sprite);

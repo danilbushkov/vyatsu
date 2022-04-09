@@ -1,18 +1,12 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <SFML/Graphics.hpp>
-#include "settings.h"
-#include "object.h"
-#include "player.h"
-#include "list.h"
-
 
 class Game{
     public:
         sf::RenderWindow window;
         Object background;
-        List listObj;
+        List<MovingObject> listObj;
 
         Game();
         Game(Settings*);

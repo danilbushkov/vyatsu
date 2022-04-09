@@ -1,10 +1,10 @@
+#include <SFML/Graphics.hpp>
+#include "object.h"
+#include "movingObject.h"
+#include "list.h"
 #include "player.h"
 
-
-
-
 void Player::move(){
-    test();
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
         sf::FloatRect r = sprite.getGlobalBounds();
@@ -36,11 +36,13 @@ void Player::move(){
     }
 }
 
-void Player::shot(){
-    
+void Player::shot(List<MovingObject> *list){
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+    {
+        
+
+    }
 }
 
-void Player::test(){
-
-}
+void Player::collision(){}
 
