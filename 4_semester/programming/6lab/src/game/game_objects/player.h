@@ -8,15 +8,19 @@ class Player : public MovingObject {
     public:
         Player(int lives, float speed):MovingObject(lives,speed){
             delay = 0;
+            score = 0;
         };
         virtual int move() override;
-        virtual void action(List<MovingObject>*, List<MovingObject>*) override;
+        virtual int action(List<MovingObject>*, List<MovingObject>*) override;
         //virtual int collision() override;
 
-        
+        int getScore(){ return score; }
+        void addScore(int score){ this->score+=score; }
     private:
         const int DELAY = Settings::delayPlayer;
         int delay;
+        int score;
+        
 
 };
 

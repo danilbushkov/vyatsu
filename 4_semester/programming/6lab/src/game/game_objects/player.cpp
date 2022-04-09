@@ -39,7 +39,7 @@ int Player::move(){
     return Settings::NOTHING;
 }
 
-void Player::action(List<MovingObject> *listPlayer, List<MovingObject> *listEnemy){
+int Player::action(List<MovingObject> *listPlayer, List<MovingObject> *listEnemy){
 
     if(delay>0){
         delay--;
@@ -60,6 +60,7 @@ void Player::action(List<MovingObject> *listPlayer, List<MovingObject> *listEnem
         listPlayer->AddNode(obj);
         delay=DELAY;
     }
+    return Settings::NOTHING;
 }
 
 // int Player::collision(){

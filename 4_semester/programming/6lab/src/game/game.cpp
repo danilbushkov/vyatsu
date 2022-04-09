@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <cstdlib>
 #include <ctime>
+#include <sstream>
 #include "settings.h"
 #include "object.h"
 #include "list.h"
@@ -20,6 +21,7 @@ Game::Game(){
 void Game::run(){
      while (window.isOpen())
      {
+        //todo: checkLives;
         generateEnemy();
         eventHandling();
         actionObjects(&listPlayer);
@@ -33,6 +35,18 @@ void Game::run(){
         drawObjects(&listEnemy);
         drawObjects(&listPlayer);
 
+
+        wostringstream ws;
+        ws << player->lives;
+        wstring s = L"Жизни: "+ws.str();
+        textLives.setString(s);
+        ws.str(L"");
+        ws << player->getScore();
+        s = L"Очки: "+ws.str();
+        textScore.setString(s);
+
+        window.draw(textLives);
+        window.draw(textScore);
         window.display();
     }
 }
@@ -43,18 +57,23 @@ void Game::actionObjects(List<MovingObject>* list){
     Node<MovingObject> *node;
     Node<MovingObject> *tmpNode;
 
-    int codeMove;
+    int code;
 
     node = list->begin;
     while(node!=nullptr){
         tmpNode = node;
         node = node->next;
         
-        codeMove=tmpNode->obj->move();
-        tmpNode->obj->action(&listPlayer,&listPlayer);
-        if(codeMove == Settings::BORDER || tmpNode->obj->lives <= 0){
+        code = tmpNode->obj->action(&listPlayer,&listEnemy);
+        if(code == Settings::KILL_ENEMY){
+            player->addScore(1);
+        }
+        code = tmpNode->obj->move();
+        if(code == Settings::BORDER || tmpNode->obj->lives <= 0){
             list->DeleteNode(tmpNode);
         }
+        
+        
 
 
     }
@@ -93,7 +112,7 @@ void Game::generateEnemy(){
 
 
 int Game::initObjects(){
-    window.create(sf::VideoMode(800, 600), "Game",sf::Style::Close);
+    window.create(sf::VideoMode(800, 600), L"Игра",sf::Style::Close);
     window.setFramerateLimit(60);
 
     
@@ -111,6 +130,21 @@ int Game::initObjects(){
     }
     MovingObject *obj = player;
     listPlayer.AddNode(obj);
+
+    if(!font.loadFromFile(Settings::fontPath)){
+        return 0;
+    }
+    textLives.setFont(font); 
+    textLives.setCharacterSize(24); 
+    textLives.setFillColor(sf::Color::Red);
+    textLives.setPosition(10.f,10.f);
+
+
+    textScore.setFont(font); 
+    textScore.setCharacterSize(24); 
+    textScore.setFillColor(sf::Color::Red);
+    textScore.setPosition(640.f,10.f);
+    
 
 
     return 1;

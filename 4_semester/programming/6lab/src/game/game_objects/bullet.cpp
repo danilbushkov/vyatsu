@@ -13,8 +13,9 @@ int Bullet::move(){
     }
     return Settings::NOTHING;
 }
-void Bullet::action(List<MovingObject>* Player,List<MovingObject>* listEnemy){
+int Bullet::action(List<MovingObject>* Player,List<MovingObject>* listEnemy){
     
+    return Settings::NOTHING;
 }
 
 

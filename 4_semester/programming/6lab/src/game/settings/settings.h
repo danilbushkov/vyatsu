@@ -9,6 +9,7 @@ class Settings{
         static const int NOTHING = 0;
         static const int DAMAGE = 1;
         static const int BORDER = 2;
+        static const int KILL_ENEMY = 3;
 
         static std::string backgroundImage;
 
@@ -36,7 +37,11 @@ class Settings{
         static int livesEnemy;
         static int damageEnemy;
 
+        static std::string fontPath;
+
         static void getSettings();
+
+        
 };
 
 

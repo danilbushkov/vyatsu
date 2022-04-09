@@ -10,7 +10,7 @@ class Enemy : public MovingObject {
             delay = 0;
         };
         virtual int move() override;
-        virtual void action(List<MovingObject>*,List<MovingObject>*) override;
+        virtual int action(List<MovingObject>*,List<MovingObject>*) override;
         //virtual int collision() override;
         void setPosition(float x);
         void setImage(std::string,
@@ -18,7 +18,7 @@ class Enemy : public MovingObject {
         
         
     protected:
-        void collision(List<MovingObject>*);
+        int collision(List<MovingObject>*);
         const int DELAY = Settings::delayEnemy;
         int delay;
         int damage = Settings::damageEnemy;

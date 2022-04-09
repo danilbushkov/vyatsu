@@ -5,7 +5,7 @@
 class MovingObject : public Object{
     public:
         virtual int move() = 0;
-        virtual void action(List<MovingObject>*,List<MovingObject>*) = 0;
+        virtual int action(List<MovingObject>*,List<MovingObject>*) = 0;
         void getDamage(int damage){
             lives -= damage;
         };

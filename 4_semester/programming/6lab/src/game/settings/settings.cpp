@@ -22,6 +22,7 @@ std::string Settings::enemyImage;
 sf::Vector2f Settings::enemyScale;
 int Settings::damageEnemy;
 
+std::string Settings::fontPath;
 
 void Settings::getSettings(){
     std::string basePath = "bin/";
@@ -49,5 +50,6 @@ void Settings::getSettings(){
     speedEnemy = 1.f;
     damageEnemy = 2;
     
+    fontPath = basePath + "font/Arial.ttf";
 
 }

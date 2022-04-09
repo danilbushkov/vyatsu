@@ -14,12 +14,13 @@ int Enemy::move(){
     }
     return Settings::NOTHING;
 }
-void Enemy::action(List<MovingObject>* listPlayer, 
+int Enemy::action(List<MovingObject>* listPlayer, 
                    List<MovingObject>* listEnemy){
-    collision(listPlayer);
+    int code = collision(listPlayer);
+    return code;
 }
 
-void Enemy::collision(List<MovingObject>* listPlayer){
+int Enemy::collision(List<MovingObject>* listPlayer){
     sf::FloatRect rectPlayer = listPlayer->begin->obj->sprite.getGlobalBounds();
     sf::FloatRect rectEnemy = sprite.getGlobalBounds();
     if( ((rectEnemy.left+rectEnemy.width-rectEnemy.width/6) > rectPlayer.left ) &&
@@ -29,6 +30,7 @@ void Enemy::collision(List<MovingObject>* listPlayer){
        ){
         listPlayer->begin->obj->getDamage(damage);
         lives = 0;
+        return Settings::KILL_ENEMY;
     }
 
 
@@ -38,6 +40,7 @@ void Enemy::collision(List<MovingObject>* listPlayer){
         
         node = node->next;
     }
+    return Settings::NOTHING;
 }
 
 void Enemy::setImage(std::string image, sf::Vector2f scale){

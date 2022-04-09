@@ -4,11 +4,11 @@
 
 class Bullet : public MovingObject {
     public:
-        Bullet(float speed, int damage):MovingObject(0,speed){
+        Bullet(float speed, int damage):MovingObject(1,speed){
             this->damage = damage;
         };
         virtual int move() override;
-        virtual void action(List<MovingObject>*,List<MovingObject>*) override;
+        virtual int action(List<MovingObject>*,List<MovingObject>*) override;
         //virtual int collision() override;
         void setImage(std::string,
                       sf::Vector2f,

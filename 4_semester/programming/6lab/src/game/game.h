@@ -15,6 +15,9 @@ class Game{
 
         
     private:
+        sf::Font font;
+        sf::Text textLives;
+        sf::Text textScore;
         Player *player;
         void drawObjects(List<MovingObject>*);
         void eventHandling();
