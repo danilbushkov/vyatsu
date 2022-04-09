@@ -13,14 +13,10 @@ int Bullet::move(){
     }
     return Settings::NOTHING;
 }
-void Bullet::shot(List<MovingObject>*){
+void Bullet::action(List<MovingObject>* Player,List<MovingObject>* listEnemy){
     
 }
-int Bullet::collision(){
 
-
-    return Settings::NOTHING;
-}
 
 
 void Bullet::setImage(std::string imagePath,

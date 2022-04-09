@@ -4,6 +4,7 @@
 #include "object.h"
 #include "list.h"
 #include "movingObject.h"
+#include "player.h"
 #include "game.h"
 
 

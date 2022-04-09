@@ -27,6 +27,15 @@ class Settings{
         static float BulletPlayerSpeed;
         static int BulletPlayerDamage;
 
+
+        //Enemy
+        static int delayEnemy;
+        static float speedEnemy;
+        static std::string enemyImage;
+        static sf::Vector2f enemyScale;
+        static int livesEnemy;
+        static int damageEnemy;
+
         static void getSettings();
 };
 

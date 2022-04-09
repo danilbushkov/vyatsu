@@ -1,51 +1,60 @@
 #include <SFML/Graphics.hpp>
+#include <cstdlib>
+#include <ctime>
 #include "settings.h"
 #include "object.h"
 #include "list.h"
 #include "movingObject.h"
 #include "player.h"
+#include "enemy.h"
 #include "game.h"
 
+using namespace std;
+
+
 Game::Game(){
+    srand(time(NULL));
 }
 
 
 void Game::run(){
      while (window.isOpen())
      {
+        generateEnemy();
         eventHandling();
-        actionObjects();
+        actionObjects(&listPlayer);
+        actionObjects(&listEnemy);
         
 
         window.clear();
         window.draw(background.sprite);
-        drawObjects();
+        
+        
+        drawObjects(&listEnemy);
+        drawObjects(&listPlayer);
 
         window.display();
     }
 }
 
 
-void Game::actionObjects(){
+void Game::actionObjects(List<MovingObject>* list){
     
     Node<MovingObject> *node;
     Node<MovingObject> *tmpNode;
 
     int codeMove;
 
-    node = listObj.begin;
+    node = list->begin;
     while(node!=nullptr){
         tmpNode = node;
         node = node->next;
         
-
-        
         codeMove=tmpNode->obj->move();
-        tmpNode->obj->shot(&listObj);
-        if(codeMove == Settings::BORDER){
-            listObj.DeleteNode(tmpNode);
+        tmpNode->obj->action(&listPlayer,&listPlayer);
+        if(codeMove == Settings::BORDER || tmpNode->obj->lives <= 0){
+            list->DeleteNode(tmpNode);
         }
-        
 
 
     }
@@ -54,13 +63,31 @@ void Game::actionObjects(){
 
 
 
-void Game::drawObjects(){
+void Game::drawObjects(List<MovingObject>* list){
     Node<MovingObject> *node;
-    node = listObj.begin;
+    node = list->begin;
     while(node!=nullptr){
         window.draw(node->obj->sprite);
         node = node->next;
     }
+}
+
+
+void Game::generateEnemy(){
+    
+    int probabilityCreate = rand() % 1001; //0..1000
+    if(probabilityCreate > 990){
+        int x = 25 + rand() % 651;
+        Enemy *enemy = new Enemy(Settings::livesEnemy,Settings::speedEnemy);
+        enemy->setImage(
+            Settings::enemyImage,
+            Settings::enemyScale
+        );
+        enemy->setPosition(x);
+        MovingObject *obj = enemy;
+        listEnemy.AddNode(obj);
+    }
+
 }
 
 
@@ -75,14 +102,15 @@ int Game::initObjects(){
         return 0;
     }
 
-    Player *player = new Player(Settings::livesPlayer, 
+    player = new Player(Settings::livesPlayer, 
                                 Settings::speedPlayer);
     if(!player->setImage(Settings::playerImage,
                         Settings::playerScale,
                         Settings::playerPosition)){
         return 0;
     }
-    listObj.AddNode(player);
+    MovingObject *obj = player;
+    listPlayer.AddNode(obj);
 
 
     return 1;

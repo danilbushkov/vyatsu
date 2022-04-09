@@ -39,7 +39,7 @@ int Player::move(){
     return Settings::NOTHING;
 }
 
-void Player::shot(List<MovingObject> *list){
+void Player::action(List<MovingObject> *listPlayer, List<MovingObject> *listEnemy){
 
     if(delay>0){
         delay--;
@@ -57,13 +57,13 @@ void Player::shot(List<MovingObject> *list){
         );
 
         MovingObject *obj = bullet;
-        list->AddNode(obj);
+        listPlayer->AddNode(obj);
         delay=DELAY;
     }
 }
 
-int Player::collision(){
+// int Player::collision(){
 
-    return Settings::NOTHING;
-}
+//     return Settings::NOTHING;
+// }
 

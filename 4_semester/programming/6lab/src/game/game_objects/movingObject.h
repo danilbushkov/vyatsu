@@ -5,8 +5,11 @@
 class MovingObject : public Object{
     public:
         virtual int move() = 0;
-        virtual void shot(List<MovingObject>*) = 0;
-        virtual int collision() = 0;
+        virtual void action(List<MovingObject>*,List<MovingObject>*) = 0;
+        void getDamage(int damage){
+            lives -= damage;
+        };
+        //virtual int collision() = 0;
 
 
         MovingObject(int lives = 1, float speed = 0.f){
@@ -14,9 +17,10 @@ class MovingObject : public Object{
             this->lives = lives;
         };
         virtual ~MovingObject(){};
+        int lives;
     protected:
         float speed;
-        int lives;
+        
 };
 
 

@@ -8,8 +8,8 @@ class Bullet : public MovingObject {
             this->damage = damage;
         };
         virtual int move() override;
-        virtual void shot(List<MovingObject>*) override;
-        virtual int collision() override;
+        virtual void action(List<MovingObject>*,List<MovingObject>*) override;
+        //virtual int collision() override;
         void setImage(std::string,
                       sf::Vector2f,
                       sf::FloatRect);

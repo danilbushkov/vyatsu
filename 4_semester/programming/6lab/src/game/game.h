@@ -2,14 +2,12 @@
 #define GAME_H
 
 
-
-
-
 class Game{
     public:
         sf::RenderWindow window;
         Object background;
-        List<MovingObject> listObj;
+        List<MovingObject> listEnemy;
+        List<MovingObject> listPlayer;
 
         Game();
         int initObjects();
@@ -17,10 +15,11 @@ class Game{
 
         
     private:
-        void drawObjects();
+        Player *player;
+        void drawObjects(List<MovingObject>*);
         void eventHandling();
-        void actionObjects();
-        void shotObjects();
+        void actionObjects(List<MovingObject>*);
+        void generateEnemy();
 };
 
 
