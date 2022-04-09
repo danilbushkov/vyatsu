@@ -1,23 +1,20 @@
 #include <SFML/Graphics.hpp>
 #include "settings.h"
 #include "object.h"
+#include "list.h"
 #include "movingObject.h"
 #include "player.h"
-#include "list.h"
 #include "game.h"
 
 Game::Game(){
 }
 
-Game::Game(Settings *settings){
-    this->settings = settings;
-}
 
 void Game::run(){
      while (window.isOpen())
      {
         eventHandling();
-        moveObjects();
+        actionObjects();
         
 
         window.clear();
@@ -29,14 +26,32 @@ void Game::run(){
 }
 
 
-void Game::moveObjects(){
+void Game::actionObjects(){
+    
     Node<MovingObject> *node;
+    Node<MovingObject> *tmpNode;
+
+    int codeMove;
+
     node = listObj.begin;
     while(node!=nullptr){
-        node->obj->move();
+        tmpNode = node;
         node = node->next;
+        
+
+        
+        codeMove=tmpNode->obj->move();
+        tmpNode->obj->shot(&listObj);
+        if(codeMove == Settings::BORDER){
+            listObj.DeleteNode(tmpNode);
+        }
+        
+
+
     }
-}
+}   
+
+
 
 
 void Game::drawObjects(){
@@ -56,15 +71,15 @@ int Game::initObjects(){
 
     
 
-    if(!background.setImage(settings->backgroundImage)){
+    if(!background.setImage(Settings::backgroundImage)){
         return 0;
     }
 
-    Player *player = new Player(settings->livesPlayer, 
-                                settings->speedPlayer);
-    if(!player->setImage(settings->playerImage,
-                        settings->playerScale,
-                        settings->playerPosition)){
+    Player *player = new Player(Settings::livesPlayer, 
+                                Settings::speedPlayer);
+    if(!player->setImage(Settings::playerImage,
+                        Settings::playerScale,
+                        Settings::playerPosition)){
         return 0;
     }
     listObj.AddNode(player);

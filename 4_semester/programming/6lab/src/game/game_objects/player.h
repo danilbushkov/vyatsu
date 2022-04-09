@@ -6,13 +6,18 @@
 
 class Player : public MovingObject {
     public:
-        Player(int lives, float speed):MovingObject(lives,speed){};
-        virtual void move() override;
+        Player(int lives, float speed):MovingObject(lives,speed){
+            delay = 0;
+        };
+        virtual int move() override;
         virtual void shot(List<MovingObject>*) override;
-        virtual void collision() override;
+        virtual int collision() override;
 
         
     private:
+        const int DELAY = Settings::delayPlayer;
+        int delay;
+
 };
 
 

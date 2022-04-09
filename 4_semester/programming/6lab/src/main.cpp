@@ -1,14 +1,17 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
-#include "game.h"
 #include "settings.h"
+#include "object.h"
+#include "list.h"
+#include "movingObject.h"
+#include "game.h"
+
 
 int main()
 {
-    Settings settings;
-    settings.getSettings();
+    Settings::getSettings();
 
-    Game game(&settings);
+    Game game;
 
     if(!game.initObjects()){
         std::cout<<"Error init"<<std::endl;

@@ -2,6 +2,9 @@
 #define GAME_H
 
 
+
+
+
 class Game{
     public:
         sf::RenderWindow window;
@@ -9,16 +12,15 @@ class Game{
         List<MovingObject> listObj;
 
         Game();
-        Game(Settings*);
         int initObjects();
         void run();
 
         
     private:
-        Settings *settings;
         void drawObjects();
         void eventHandling();
-        void moveObjects();
+        void actionObjects();
+        void shotObjects();
 };
 
 
