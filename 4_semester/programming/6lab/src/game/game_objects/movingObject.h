@@ -9,8 +9,17 @@ class MovingObject : public Object{
     public:
         virtual void move() = 0;
         virtual void shot() = 0;
+
+
+
+
+        
+        MovingObject(int lives = 1, float speed = 0.f){
+            this->speed = speed;
+            this->lives = lives;
+        };
         virtual ~MovingObject(){};
-    private:
+    protected:
         float speed;
         int lives;
 };

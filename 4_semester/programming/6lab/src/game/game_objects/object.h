@@ -10,7 +10,7 @@ class Object{
                      sf::Vector2f = sf::Vector2f(1.f,1.f),
                      sf::Vector2f = sf::Vector2f(0.f,0.f));
         sf::Sprite sprite;
-        
+        virtual ~Object(){};
     protected:
         sf::Texture texture;
 };

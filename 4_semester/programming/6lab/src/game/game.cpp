@@ -54,7 +54,8 @@ int Game::initObjects(){
         return 0;
     }
 
-    Player *player = new Player();
+    Player *player = new Player(settings->livesPlayer, 
+                                settings->speedPlayer);
     if(!player->setImage(settings->playerImage,
                         settings->playerScale,
                         settings->playerPosition)){

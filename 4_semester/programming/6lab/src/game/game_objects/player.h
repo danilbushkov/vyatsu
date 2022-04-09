@@ -7,8 +7,9 @@
 
 class Player : public MovingObject {
     public:
-        void move() override;
-        void shot() override;
+        Player(int lives, float speed):MovingObject(lives,speed){};
+        virtual void move() override;
+        virtual void shot() override;
         void test();
 };
 

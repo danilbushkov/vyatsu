@@ -6,10 +6,16 @@
 
 class Settings{
     public:
+        static const int NOTHING = 0;
+        static const int DAMAGE = 1;
+
+
         std::string backgroundImage;
         std::string playerImage;
         sf::Vector2f playerScale;
         sf::Vector2f playerPosition;
+        float speedPlayer;
+        int livesPlayer;
 
         void getSettings();
 };
