@@ -10,6 +10,7 @@ class Settings{
         static const int DAMAGE = 1;
         static const int BORDER = 2;
         static const int KILL_ENEMY = 3;
+        static const int INJURY = 4;
 
         static std::string backgroundImage;
 

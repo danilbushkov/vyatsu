@@ -8,6 +8,7 @@
 #include "movingObject.h"
 #include "player.h"
 #include "enemy.h"
+#include "magicianEnemy.h"
 #include "game.h"
 
 using namespace std;
@@ -95,20 +96,41 @@ void Game::drawObjects(List<MovingObject>* list){
 void Game::generateEnemy(){
     
     int probabilityCreate = rand() % 1001; //0..1000
-    if(probabilityCreate > 990){
-        int x = 25 + rand() % 651;
-        Enemy *enemy = new Enemy(Settings::livesEnemy,
-            Settings::speedEnemy,
-            Settings::damageEnemy);
-        enemy->setImage(
-            Settings::enemyImage,
-            Settings::enemyScale
-        );
-        enemy->setPosition(x);
-        MovingObject *obj = enemy;
-        listEnemy.AddNode(obj);
+    if(probabilityCreate < 5){
+        createEnemy();
+    }else if(probabilityCreate >= 20 && probabilityCreate <=22){
+        createMagicainEnemy();
     }
 
+}
+
+void Game::createMagicainEnemy(){
+    int x = 25 + rand() % 651;
+    MagicianEnemy *enemy = new MagicianEnemy(
+        Settings::livesMagicainEnemy,
+        Settings::speedMagicainEnemy,
+        Settings::damageMagicainEnemy);
+    enemy->setImage(
+        Settings::magicainEnemyImage,
+        Settings::magicainEnemyScale
+    );
+    enemy->setPosition(x);
+    MovingObject *obj = enemy;
+    listEnemy.AddNode(obj);
+}
+
+void Game::createEnemy(){
+    int x = 25 + rand() % 651;
+    Enemy *enemy = new Enemy(Settings::livesEnemy,
+        Settings::speedEnemy,
+        Settings::damageEnemy);
+    enemy->setImage(
+        Settings::enemyImage,
+        Settings::enemyScale
+    );
+    enemy->setPosition(x);
+    MovingObject *obj = enemy;
+    listEnemy.AddNode(obj);
 }
 
 

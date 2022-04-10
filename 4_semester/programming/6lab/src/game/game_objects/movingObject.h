@@ -10,7 +10,7 @@ class MovingObject : public Object{
             lives -= damage;
         };
         int checkKill(){
-            return lives==0;
+            return lives<=0;
         }
         int getLives(){
             return lives;

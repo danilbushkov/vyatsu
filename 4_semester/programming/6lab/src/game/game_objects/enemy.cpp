@@ -53,6 +53,7 @@ void Enemy::shot(List<MovingObject>* listEnemy){
 
 
 int Enemy::collision(List<MovingObject>* listPlayer){
+    int code = Settings::NOTHING;
     sf::FloatRect rectPlayer = listPlayer->begin->obj->sprite.getGlobalBounds();
     sf::FloatRect rectEnemy = sprite.getGlobalBounds();
     if(checkCollision(rectPlayer,rectEnemy)){
@@ -63,21 +64,27 @@ int Enemy::collision(List<MovingObject>* listPlayer){
 
 
     Node<MovingObject> *node;
+    Node<MovingObject> *tmpNode;
     node = listPlayer->begin->next;
     sf::FloatRect bulletRect; 
+
     while(node!=nullptr){
-        bulletRect = node->obj->sprite.getGlobalBounds();
+        tmpNode = node;
+        node = node->next;
+
+        bulletRect = tmpNode->obj->sprite.getGlobalBounds();
         if(checkCollision(rectEnemy,bulletRect)){
             injury(1);
-            listPlayer->DeleteNode(node);
+            code = Settings::INJURY;
+            listPlayer->DeleteNode(tmpNode);
             if(checkKill()){
                 return Settings::KILL_ENEMY;
             }
         }
         
-        node = node->next;
+        
     }
-    return Settings::NOTHING;
+    return code;
 }
 
 

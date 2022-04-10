@@ -23,6 +23,8 @@ class Game{
         void eventHandling();
         void actionObjects(List<MovingObject>*);
         void generateEnemy();
+        void createEnemy();
+        void createMagicainEnemy();
 };
 
 

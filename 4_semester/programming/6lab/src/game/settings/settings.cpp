@@ -69,9 +69,9 @@ void Settings::getSettings(){
     damageEnemy = 2;
 
     magicainEnemyImage = basePath + "image/fox.png";
-    magicainEnemyScale = sf::Vector2f(0.15f,0.15f);
+    magicainEnemyScale = sf::Vector2f(0.12f,0.12f);
     delayMagicainEnemy = 150;
-    livesMagicainEnemy = 2;
+    livesMagicainEnemy = 3;
     speedMagicainEnemy = 1.f;
     damageMagicainEnemy = 2;
 
