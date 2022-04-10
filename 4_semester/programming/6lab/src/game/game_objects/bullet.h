@@ -9,14 +9,13 @@ class Bullet : public MovingObject {
         };
         virtual int move() override;
         virtual int action(List<MovingObject>*,List<MovingObject>*) override;
-        //virtual int collision() override;
+        
         void setImage(std::string,
-                      sf::Vector2f,
-                      sf::FloatRect);
+                      sf::Vector2f);
+        void setPosition(sf::FloatRect parentRect);
         
     protected:
-        int damage;
-
+        
         
 };
 

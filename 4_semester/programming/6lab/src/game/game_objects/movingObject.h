@@ -21,9 +21,16 @@ class MovingObject : public Object{
             this->speed = speed;
             this->lives = lives;
         };
+        int checkCollision(sf::FloatRect bigRect, sf::FloatRect smallRect){
+            return ((smallRect.left+smallRect.width-smallRect.width/6) > bigRect.left ) &&
+            (smallRect.left+smallRect.width/6 < (bigRect.left + bigRect.width)) &&
+            (smallRect.top+smallRect.height) > bigRect.top &&
+            (smallRect.top+smallRect.height/2) < bigRect.top+bigRect.height;
+        }
     protected:
         int lives;
         float speed;
+        int damage;
         
 };
 

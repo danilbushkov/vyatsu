@@ -36,6 +36,11 @@ class Settings{
         static sf::Vector2f enemyScale;
         static int livesEnemy;
         static int damageEnemy;
+        //EnemyBullet
+        static std::string enemyBulletImage;
+        static sf::Vector2f enemyBulletScale;
+        static float enemyBulletSpeed;
+        static int enemyBulletDamage;
 
         static std::string fontPath;
 

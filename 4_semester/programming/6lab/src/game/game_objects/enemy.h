@@ -8,21 +8,19 @@ class Enemy : public MovingObject {
     public:
         Enemy(int lives, float speed):MovingObject(lives,speed){
             delay = 0;
+            damage = Settings::damageEnemy;
         };
         virtual int move() override;
         virtual int action(List<MovingObject>*,List<MovingObject>*) override;
-        //virtual int collision() override;
         void setPosition(float x);
         void setImage(std::string,
                       sf::Vector2f);
-        
+        void shot(List<MovingObject>* listEnemy);
         
     protected:
         int collision(List<MovingObject>*);
         const int DELAY = Settings::delayEnemy;
         int delay;
-        int damage = Settings::damageEnemy;
-        int checkCollision(sf::FloatRect bigRect, sf::FloatRect smallRect);
 
 };
 

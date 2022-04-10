@@ -52,9 +52,9 @@ int Player::action(List<MovingObject> *listPlayer, List<MovingObject> *listEnemy
         );
         bullet->setImage(
             Settings::playerBulletImage,
-            Settings::playerBulletScale,
-            rect
+            Settings::playerBulletScale
         );
+        bullet->setPosition(rect);
 
         MovingObject *obj = bullet;
         listPlayer->AddNode(obj);

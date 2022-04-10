@@ -22,6 +22,11 @@ std::string Settings::enemyImage;
 sf::Vector2f Settings::enemyScale;
 int Settings::damageEnemy;
 
+std::string Settings::enemyBulletImage;
+sf::Vector2f Settings::enemyBulletScale;
+float Settings::enemyBulletSpeed;
+int Settings::enemyBulletDamage;
+
 std::string Settings::fontPath;
 
 void Settings::getSettings(){
@@ -45,10 +50,16 @@ void Settings::getSettings(){
 
     enemyImage = basePath + "image/nlo.png";
     enemyScale = sf::Vector2f(0.15f,0.15f);
-    delayEnemy = 15;
+    delayEnemy = 150;
     livesEnemy = 1;
     speedEnemy = 1.f;
     damageEnemy = 2;
+
+    enemyBulletImage = basePath + "image/enemyBullet.png";
+    enemyBulletScale = sf::Vector2f(0.05f,0.05f);
+    enemyBulletSpeed = 3.f;
+    enemyBulletDamage = 1;
+
     
     fontPath = basePath + "font/Arial.ttf";
 

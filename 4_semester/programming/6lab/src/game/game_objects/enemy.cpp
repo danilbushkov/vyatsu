@@ -3,6 +3,8 @@
 #include "list.h"
 #include "movingObject.h"
 #include "enemy.h"
+#include "bullet.h"
+#include "bulletEnemy.h"
 
 
 
@@ -14,11 +16,40 @@ int Enemy::move(){
     }
     return Settings::NOTHING;
 }
+
+
+
 int Enemy::action(List<MovingObject>* listPlayer, 
                    List<MovingObject>* listEnemy){
+    shot(listEnemy);
     int code = collision(listPlayer);
     return code;
 }
+
+
+void Enemy::shot(List<MovingObject>* listEnemy){
+    if(!delay){
+        sf::FloatRect rect = sprite.getGlobalBounds();
+        
+        BulletEnemy *bullet = new BulletEnemy(
+            Settings::enemyBulletSpeed,
+            Settings::enemyBulletDamage
+        );
+        bullet->setImage(
+            Settings::enemyBulletImage,
+            Settings::enemyBulletScale
+        );
+        bullet->setPosition(rect);
+
+        MovingObject *obj = bullet;
+        listEnemy->AddNode(obj);
+        delay=DELAY;
+    }else{
+        delay--;
+    }
+    
+}
+
 
 int Enemy::collision(List<MovingObject>* listPlayer){
     sf::FloatRect rectPlayer = listPlayer->begin->obj->sprite.getGlobalBounds();
@@ -48,12 +79,6 @@ int Enemy::collision(List<MovingObject>* listPlayer){
     return Settings::NOTHING;
 }
 
-int Enemy::checkCollision(sf::FloatRect bigRect, sf::FloatRect smallRect){
-    return ((smallRect.left+smallRect.width-smallRect.width/6) > bigRect.left ) &&
-        (smallRect.left+smallRect.width/6 < (bigRect.left + bigRect.width)) &&
-        (smallRect.top+smallRect.height) > bigRect.top &&
-        (smallRect.top+smallRect.height/2) < bigRect.top+bigRect.height;
-}
 
 
 void Enemy::setImage(std::string image, sf::Vector2f scale){
