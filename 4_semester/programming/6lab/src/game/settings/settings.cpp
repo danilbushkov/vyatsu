@@ -27,6 +27,19 @@ sf::Vector2f Settings::enemyBulletScale;
 float Settings::enemyBulletSpeed;
 int Settings::enemyBulletDamage;
 
+std::string Settings::magicainEnemyImage;
+sf::Vector2f Settings::magicainEnemyScale;
+int Settings::delayMagicainEnemy;
+int Settings::livesMagicainEnemy;
+float Settings::speedMagicainEnemy;
+int Settings::damageMagicainEnemy;
+
+
+std::string Settings::roundBulletImage;
+sf::Vector2f Settings::roundBulletScale;
+float Settings::roundBulletSpeed;
+int Settings::roundBulletDamage;
+
 std::string Settings::fontPath;
 
 void Settings::getSettings(){
@@ -48,18 +61,29 @@ void Settings::getSettings(){
     BulletPlayerDamage = 1;
 
 
-    enemyImage = basePath + "image/nlo.png";
+    enemyImage = basePath + "image/pizza.png";
     enemyScale = sf::Vector2f(0.15f,0.15f);
     delayEnemy = 150;
     livesEnemy = 1;
     speedEnemy = 1.f;
     damageEnemy = 2;
 
+    magicainEnemyImage = basePath + "image/fox.png";
+    magicainEnemyScale = sf::Vector2f(0.15f,0.15f);
+    delayMagicainEnemy = 150;
+    livesMagicainEnemy = 2;
+    speedMagicainEnemy = 1.f;
+    damageMagicainEnemy = 2;
+
     enemyBulletImage = basePath + "image/enemyBullet.png";
     enemyBulletScale = sf::Vector2f(0.05f,0.05f);
     enemyBulletSpeed = 3.f;
     enemyBulletDamage = 1;
 
+    roundBulletImage = basePath + "image/roundBullet.png";
+    roundBulletScale = sf::Vector2f(0.05f,0.05f);
+    roundBulletSpeed = 3.f;
+    roundBulletDamage = 1;
     
     fontPath = basePath + "font/Arial.ttf";
 

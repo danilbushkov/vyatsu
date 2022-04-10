@@ -36,11 +36,24 @@ class Settings{
         static sf::Vector2f enemyScale;
         static int livesEnemy;
         static int damageEnemy;
+
         //EnemyBullet
         static std::string enemyBulletImage;
         static sf::Vector2f enemyBulletScale;
         static float enemyBulletSpeed;
         static int enemyBulletDamage;
+
+        static std::string magicainEnemyImage;
+        static sf::Vector2f magicainEnemyScale;
+        static int delayMagicainEnemy;
+        static int livesMagicainEnemy;
+        static float speedMagicainEnemy;
+        static int damageMagicainEnemy;
+
+        static std::string roundBulletImage;
+        static sf::Vector2f roundBulletScale;
+        static float roundBulletSpeed;
+        static int roundBulletDamage;
 
         static std::string fontPath;
 

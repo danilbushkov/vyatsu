@@ -97,7 +97,9 @@ void Game::generateEnemy(){
     int probabilityCreate = rand() % 1001; //0..1000
     if(probabilityCreate > 990){
         int x = 25 + rand() % 651;
-        Enemy *enemy = new Enemy(Settings::livesEnemy,Settings::speedEnemy);
+        Enemy *enemy = new Enemy(Settings::livesEnemy,
+            Settings::speedEnemy,
+            Settings::damageEnemy);
         enemy->setImage(
             Settings::enemyImage,
             Settings::enemyScale

@@ -7,7 +7,7 @@
 
 int BulletEnemy::move(){
     
-    sprite.move(sf::Vector2f(0.f,speed));
+    sprite.move(direction);
     sf::FloatRect rect = sprite.getGlobalBounds();
     if(rect.top>=600.f){
         return Settings::BORDER;

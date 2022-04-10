@@ -6,9 +6,9 @@
 
 class Enemy : public MovingObject {
     public:
-        Enemy(int lives, float speed):MovingObject(lives,speed){
+        Enemy(int lives, float speed, int damage):MovingObject(lives,speed){
             delay = 0;
-            damage = Settings::damageEnemy;
+            this->damage = damage;
         };
         virtual int move() override;
         virtual int action(List<MovingObject>*,List<MovingObject>*) override;
