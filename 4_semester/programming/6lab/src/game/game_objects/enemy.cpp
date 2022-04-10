@@ -32,8 +32,7 @@ void Enemy::shot(List<MovingObject>* listEnemy){
         sf::FloatRect rect = sprite.getGlobalBounds();
         
         BulletEnemy *bullet = new BulletEnemy(
-            0.f,
-            Settings::enemyBulletSpeed,
+            sf::Vector2f(0.f,Settings::enemyBulletSpeed),
             Settings::enemyBulletDamage
         );
         bullet->setImage(

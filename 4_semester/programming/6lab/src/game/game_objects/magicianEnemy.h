@@ -15,7 +15,10 @@ class MagicianEnemy : public Enemy {
         
     protected:
         sf::Vector2f teleportation();
-        void shot(List<MovingObject>* listEnemy){};
+        sf::Vector2f getTrajectory(sf::FloatRect playerRect, 
+                                   sf::FloatRect enemyRect);
+        void shot(MovingObject *player,
+                  List<MovingObject>* listEnemy);
         const int DELAY = Settings::delayMagicainEnemy;
         int expectation;
         int movement;

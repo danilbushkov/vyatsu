@@ -81,8 +81,8 @@ void Settings::getSettings(){
     enemyBulletDamage = 1;
 
     roundBulletImage = basePath + "image/roundBullet.png";
-    roundBulletScale = sf::Vector2f(0.05f,0.05f);
-    roundBulletSpeed = 3.f;
+    roundBulletScale = sf::Vector2f(0.15f,0.15f);
+    roundBulletSpeed = 2.f;
     roundBulletDamage = 1;
     
     fontPath = basePath + "font/Arial.ttf";

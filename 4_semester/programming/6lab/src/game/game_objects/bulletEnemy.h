@@ -4,8 +4,8 @@
 
 class BulletEnemy : public Bullet {
     public:
-        BulletEnemy(float speedX,float speedY, int damage):Bullet(speedY, damage){
-            this->direction = sf::Vector2f(speedX, speedY);
+        BulletEnemy(sf::Vector2f direction, int damage):Bullet(direction.y, damage){
+            this->direction = direction;
         };
         virtual int move() override;
         virtual int action(List<MovingObject>*,List<MovingObject>*) override;
