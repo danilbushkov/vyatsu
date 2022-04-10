@@ -37,7 +37,7 @@ void Game::run(){
 
 
         wostringstream ws;
-        ws << player->lives;
+        ws << player->getLives();
         wstring s = L"Жизни: "+ws.str();
         textLives.setString(s);
         ws.str(L"");
@@ -69,7 +69,7 @@ void Game::actionObjects(List<MovingObject>* list){
             player->addScore(1);
         }
         code = tmpNode->obj->move();
-        if(code == Settings::BORDER || tmpNode->obj->lives <= 0){
+        if(code == Settings::BORDER || tmpNode->obj->getLives() <= 0){
             list->DeleteNode(tmpNode);
         }
         

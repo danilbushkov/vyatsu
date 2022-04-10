@@ -12,7 +12,7 @@ class Player : public MovingObject {
         };
         virtual int move() override;
         virtual int action(List<MovingObject>*, List<MovingObject>*) override;
-        //virtual int collision() override;
+        
 
         int getScore(){ return score; }
         void addScore(int score){ this->score+=score; }

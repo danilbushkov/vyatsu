@@ -22,6 +22,7 @@ class Enemy : public MovingObject {
         const int DELAY = Settings::delayEnemy;
         int delay;
         int damage = Settings::damageEnemy;
+        int checkCollision(sf::FloatRect bigRect, sf::FloatRect smallRect);
 
 };
 

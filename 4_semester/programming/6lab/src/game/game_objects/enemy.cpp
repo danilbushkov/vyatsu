@@ -23,12 +23,8 @@ int Enemy::action(List<MovingObject>* listPlayer,
 int Enemy::collision(List<MovingObject>* listPlayer){
     sf::FloatRect rectPlayer = listPlayer->begin->obj->sprite.getGlobalBounds();
     sf::FloatRect rectEnemy = sprite.getGlobalBounds();
-    if( ((rectEnemy.left+rectEnemy.width-rectEnemy.width/6) > rectPlayer.left ) &&
-        (rectEnemy.left+rectEnemy.width/6 < (rectPlayer.left + rectPlayer.width)) &&
-        (rectEnemy.top+rectEnemy.height) > rectPlayer.top &&
-        (rectEnemy.top+rectEnemy.height/2) < rectPlayer.top+rectPlayer.height
-       ){
-        listPlayer->begin->obj->getDamage(damage);
+    if(checkCollision(rectPlayer,rectEnemy)){
+        listPlayer->begin->obj->injury(damage);
         lives = 0;
         return Settings::KILL_ENEMY;
     }
@@ -36,12 +32,29 @@ int Enemy::collision(List<MovingObject>* listPlayer){
 
     Node<MovingObject> *node;
     node = listPlayer->begin->next;
+    sf::FloatRect bulletRect; 
     while(node!=nullptr){
+        bulletRect = node->obj->sprite.getGlobalBounds();
+        if(checkCollision(rectEnemy,bulletRect)){
+            injury(1);
+            listPlayer->DeleteNode(node);
+            if(checkKill()){
+                return Settings::KILL_ENEMY;
+            }
+        }
         
         node = node->next;
     }
     return Settings::NOTHING;
 }
+
+int Enemy::checkCollision(sf::FloatRect bigRect, sf::FloatRect smallRect){
+    return ((smallRect.left+smallRect.width-smallRect.width/6) > bigRect.left ) &&
+        (smallRect.left+smallRect.width/6 < (bigRect.left + bigRect.width)) &&
+        (smallRect.top+smallRect.height) > bigRect.top &&
+        (smallRect.top+smallRect.height/2) < bigRect.top+bigRect.height;
+}
+
 
 void Enemy::setImage(std::string image, sf::Vector2f scale){
 
