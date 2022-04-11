@@ -48,6 +48,8 @@ int Settings::roundBulletDamage;
 
 std::string Settings::fontPath;
 
+sf::Vector2f Settings::cleverEnemyBulletScale;
+
 void Settings::getSettings(){
     std::string basePath = "bin/";
     backgroundImage = basePath + "image/fon.jpg";
@@ -57,7 +59,7 @@ void Settings::getSettings(){
     playerScale = sf::Vector2f(0.2f,0.2f);
     playerPosition = sf::Vector2f(350.f,500.f);
     speedPlayer = 7.f;
-    livesPlayer = 1000;
+    livesPlayer = 30;
     delayPlayer = 10;
 
 
@@ -99,6 +101,8 @@ void Settings::getSettings(){
     roundBulletSpeed = 2.f;
     roundBulletDamage = 1;
     
+    cleverEnemyBulletScale = sf::Vector2f(0.08f,0.08f);
+
     fontPath = basePath + "font/Arial.ttf";
 
 }

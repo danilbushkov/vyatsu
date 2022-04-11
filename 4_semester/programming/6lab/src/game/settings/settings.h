@@ -66,6 +66,8 @@ class Settings{
 
         static std::string fontPath;
 
+        static sf::Vector2f cleverEnemyBulletScale;
+
         static void getSettings();
 
         

@@ -86,8 +86,8 @@ void CleverEnemy::shot(List<MovingObject>* listEnemy){
             damage
         );
         bullet->setImage(
-            Settings::roundBulletImage,
-            Settings::roundBulletScale
+            Settings::enemyBulletImage,
+            Settings::cleverEnemyBulletScale
         );
         bullet->setPosition(rect);
 

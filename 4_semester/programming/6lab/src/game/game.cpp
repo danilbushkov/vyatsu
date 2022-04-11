@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <sstream>
+#include <string>
 #include "settings.h"
 #include "object.h"
 #include "list.h"
@@ -17,13 +18,44 @@ using namespace std;
 
 Game::Game(){
     srand(time(NULL));
+    start = 1;
+    end = 0;
 }
 
 
 void Game::run(){
      while (window.isOpen())
      {
-        //todo: checkLives;
+        
+        if(start){
+            waitingStart(textStart);
+        }else if(end){
+            textEnd.setString(getEndText());
+            waitingStart(textEnd);
+        }else{
+            game();
+        }
+    }
+}
+
+void Game::waitingStart(sf::Text text){
+    eventHandling();
+    window.clear();
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+    {
+        start=0;
+        end=0;
+        player->setLives(Settings::livesPlayer);
+        player->nullScore();
+    }
+    window.draw(text);
+    
+    window.display();
+}
+
+void Game::game(){
+    if(player->getLives()>0){
         generateEnemy();
         eventHandling();
         actionObjects(&listPlayer);
@@ -38,19 +70,17 @@ void Game::run(){
         drawObjects(&listPlayer);
 
 
-        wostringstream ws;
-        ws << player->getLives();
-        wstring s = L"Жизни: "+ws.str();
-        textLives.setString(s);
-        ws.str(L"");
-        ws << player->getScore();
-        s = L"Очки: "+ws.str();
-        textScore.setString(s);
+        viewText();
 
         window.draw(textLives);
         window.draw(textScore);
         window.display();
+    }else{
+        listEnemy.Clear();
+        listPlayer.ClearExceptFirst();
+        end=1;
     }
+    
 }
 
 
@@ -71,10 +101,11 @@ void Game::actionObjects(List<MovingObject>* list){
             player->addScore(1);
         }
         code = tmpNode->obj->move();
-        if(code == Settings::BORDER || tmpNode->obj->getLives() <= 0){
-            list->DeleteNode(tmpNode);
+        if(tmpNode->obj!=player){
+            if(code == Settings::BORDER || tmpNode->obj->getLives() <= 0 ){
+                list->DeleteNode(tmpNode);
+            }
         }
-        
         
 
 
@@ -188,8 +219,23 @@ int Game::initObjects(){
     textScore.setFillColor(sf::Color::Red);
     textScore.setPosition(640.f,10.f);
     
+    textStart.setFont(font);
+    textStart.setCharacterSize(24);
+    textStart.setFillColor(sf::Color::Red);
+    textStart.setString(L"Нажмите Enter, чтобы начать.\n\n\
+Управление - стрелки, z - стрельба");
+    sf::FloatRect rect = textStart.getGlobalBounds();
+    textStart.setPosition(800.f/2-rect.width/2,
+                          600.f/2-rect.height/2);
 
-
+    textEnd.setFont(font);
+    textEnd.setCharacterSize(24);
+    textEnd.setFillColor(sf::Color::Red);
+    textEnd.setString(L"Конец игры!\n\n\
+Нажмите Enter, чтобы начать сначала");
+    rect = textEnd.getGlobalBounds();
+    textEnd.setPosition(800.f/2-rect.width/2,
+                        600.f/2-rect.height/2);
     return 1;
 }
 
@@ -200,4 +246,23 @@ void Game::eventHandling(){
         if (event.type == sf::Event::Closed)
             window.close();
     }
+}
+
+void Game::viewText(){
+    wostringstream ws;
+    ws << player->getLives();
+    wstring s = L"Жизни: "+ws.str();
+    textLives.setString(s);
+    ws.str(L"");
+    ws << player->getScore();
+    s = L"Очки: "+ws.str();
+    textScore.setString(s);
+}
+
+wstring Game::getEndText(){
+    wostringstream ws;
+    ws << player->getScore();
+    wstring text = L"Конец игры!\n\n\
+Нажмите Enter, чтобы начать сначала\n\nОчки: "+ws.str();
+    return text;
 }

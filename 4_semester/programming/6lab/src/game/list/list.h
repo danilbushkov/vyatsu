@@ -18,6 +18,7 @@ class List{
         void DeleteNode(Node<T> *);
         void AddNode(T*);
         void Clear();
+        void ClearExceptFirst();
         List();
         ~List();
 };
@@ -27,6 +28,15 @@ List<T>::List(){
     begin = nullptr;
     end = nullptr;
 }
+
+template <class T>
+void List<T>::ClearExceptFirst(){
+    Node<T> *node = begin->next;
+    while(node != nullptr){
+        DeleteNode(node);
+        node = begin->next;
+    }
+} 
 
 template <class T>
 void List<T>::DeleteNode(Node<T> *node){
