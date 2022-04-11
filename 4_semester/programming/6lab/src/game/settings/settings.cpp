@@ -34,6 +34,12 @@ int Settings::livesMagicainEnemy;
 float Settings::speedMagicainEnemy;
 int Settings::damageMagicainEnemy;
 
+std::string Settings::cleverEnemyImage;
+sf::Vector2f Settings::cleverEnemyScale;
+int Settings::delayCleverEnemy;
+int Settings::livesCleverEnemy;
+float Settings::speedCleverEnemy;
+int Settings::damageCleverEnemy;
 
 std::string Settings::roundBulletImage;
 sf::Vector2f Settings::roundBulletScale;
@@ -74,6 +80,14 @@ void Settings::getSettings(){
     livesMagicainEnemy = 3;
     speedMagicainEnemy = 1.f;
     damageMagicainEnemy = 2;
+
+    cleverEnemyImage = basePath + "image/nlo.png";
+    cleverEnemyScale = sf::Vector2f(0.17f,0.17f);
+    delayCleverEnemy = 100;
+    livesCleverEnemy = 3;
+    speedCleverEnemy = 1.5f;
+    damageCleverEnemy = 2;
+
 
     enemyBulletImage = basePath + "image/enemyBullet.png";
     enemyBulletScale = sf::Vector2f(0.05f,0.05f);

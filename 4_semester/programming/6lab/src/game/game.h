@@ -25,6 +25,7 @@ class Game{
         void generateEnemy();
         void createEnemy();
         void createMagicainEnemy();
+        void createCleverEnemy();
 };
 
 

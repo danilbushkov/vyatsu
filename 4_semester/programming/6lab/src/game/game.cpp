@@ -9,6 +9,7 @@
 #include "player.h"
 #include "enemy.h"
 #include "magicianEnemy.h"
+#include "cleverEnemy.h"
 #include "game.h"
 
 using namespace std;
@@ -100,8 +101,26 @@ void Game::generateEnemy(){
         createEnemy();
     }else if(probabilityCreate >= 20 && probabilityCreate <=22){
         createMagicainEnemy();
+    }else if(probabilityCreate >= 23 && probabilityCreate <=24){
+        createCleverEnemy();
     }
 
+}
+
+
+void Game::createCleverEnemy(){
+    int x = 25 + rand() % 651;
+    CleverEnemy *enemy = new CleverEnemy(
+        Settings::livesCleverEnemy,
+        Settings::speedCleverEnemy,
+        Settings::damageCleverEnemy);
+    enemy->setImage(
+        Settings::cleverEnemyImage,
+        Settings::cleverEnemyScale
+    );
+    enemy->setPosition(x);
+    MovingObject *obj = enemy;
+    listEnemy.AddNode(obj);
 }
 
 void Game::createMagicainEnemy(){

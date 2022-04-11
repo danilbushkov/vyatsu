@@ -51,6 +51,14 @@ class Settings{
         static float speedMagicainEnemy;
         static int damageMagicainEnemy;
 
+
+        static std::string cleverEnemyImage;
+        static sf::Vector2f cleverEnemyScale;
+        static int delayCleverEnemy;
+        static int livesCleverEnemy;
+        static float speedCleverEnemy;
+        static int damageCleverEnemy;
+
         static std::string roundBulletImage;
         static sf::Vector2f roundBulletScale;
         static float roundBulletSpeed;
