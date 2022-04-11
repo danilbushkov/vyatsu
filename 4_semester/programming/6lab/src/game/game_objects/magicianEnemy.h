@@ -8,6 +8,7 @@ class MagicianEnemy : public Enemy {
     public:
         MagicianEnemy(int lives, float speed,int damage):Enemy(lives, speed, damage){
             movement = 1;
+            expectation = 0;
         };
         virtual int move() override;
         virtual int action(List<MovingObject>*,List<MovingObject>*) override;

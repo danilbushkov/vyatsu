@@ -17,7 +17,12 @@ int MagicianEnemy::move(){
             movement = 0;
         }
     }else{
-
+        if(expectation>0){
+            expectation--;
+        }else{
+            sprite.setPosition(teleportation());
+            expectation = 150 + rand() % 25;
+        }
     }
     
     return Settings::NOTHING;
@@ -31,7 +36,7 @@ int MagicianEnemy::action(List<MovingObject>* listPlayer,
     shot(listPlayer->begin->obj, listEnemy);
     int code = collision(listPlayer);
     if(code == Settings::INJURY){
-        teleportation();
+        sprite.setPosition(teleportation());
     }
 
     return code;
