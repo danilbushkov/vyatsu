@@ -7,9 +7,10 @@
 class CleverEnemy : public Enemy {
     public:
         CleverEnemy(int lives, float speed,int damage):Enemy(lives, speed, damage){
-            waitingTurn=0;
+            fuel=0;
+            refill=0;
             movement = sf::Vector2f(0.f,speed);
-            appearance=1;
+            newlyCreated=1;
         };
         virtual int move() override;
         virtual int action(List<MovingObject>*,List<MovingObject>*) override;
@@ -19,12 +20,12 @@ class CleverEnemy : public Enemy {
         void turn();
         void calculationTrajectory(float x, float y);
         void expectationRotation();
-        void shot(MovingObject *player,
-                  List<MovingObject>* listEnemy);
+        void shot(List<MovingObject>* listEnemy);
         const int DELAY = Settings::delayCleverEnemy;
-        int waitingTurn;
+        int fuel;
         sf::Vector2f movement;
-        int appearance;
+        int newlyCreated;
+        int refill;
 };
 
 

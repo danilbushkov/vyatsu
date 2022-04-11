@@ -10,14 +10,17 @@
 
 
 int CleverEnemy::move(){
-    if(waitingTurn>0){
+    if(fuel>0 || newlyCreated){
 
         sprite.move(movement);
-        waitingTurn--;
+        fuel--;
         
+    }else if(refill>0){
+        refill--;
     }else{
-        waitingTurn = 100 + rand() % 50;
-
+        turn();
+        fuel = 100 + rand() % 51;
+        refill = 20;
     }
     
     expectationRotation();
@@ -26,37 +29,57 @@ int CleverEnemy::move(){
 
 void CleverEnemy::expectationRotation(){
     sf::FloatRect rect = sprite.getGlobalBounds();
-    if((rect.top + rect.height) > 375.f ||
-        (rect.top < 0 && !appearance)  ){
-        movement = sf::Vector2f(movement.x,-movement.y);
-        appearance = 0;
+    if(newlyCreated){
+        if(rect.top>0){
+            newlyCreated=0;
+        }
+    }else{
+        if((rect.top + rect.height) > 375.f ||
+        (rect.top < 0 && !newlyCreated)  ){
+            movement = sf::Vector2f(movement.x,-movement.y);
+        }
     }
     
+    
+    if((rect.left) <= 0.f ||
+        rect.left+rect.width >=800){
+        movement = sf::Vector2f(-movement.x,movement.y);
+    }
 }
 
 
 
 int CleverEnemy::action(List<MovingObject>* listPlayer, 
                    List<MovingObject>* listEnemy){
-    shot(listPlayer->begin->obj, listEnemy);
+    shot(listEnemy);
     int code = collision(listPlayer);
     if(code == Settings::INJURY){
-        
+        refill=0;
     }
 
     return code;
 }
 
 
+void CleverEnemy::turn(){
+    int sign[2]={1,-1};
+    int indexX = rand() % 2;
+    int indexY = rand() % 2;
+    int a = rand() % 315; //0..314 
+    float tg = a/100;
+
+    float speedX=cos(atan(tg))*speed*sign[indexX];
+    float speedY=sin(atan(tg))*speed*sign[indexY];
+    
+
+    movement = sf::Vector2f(speedX,speedY);
+}
 
 
 
-
-void CleverEnemy::shot(MovingObject *player,
-                         List<MovingObject>* listEnemy){
+void CleverEnemy::shot(List<MovingObject>* listEnemy){
     if(!delay){
         sf::FloatRect rect = sprite.getGlobalBounds();
-        sf::FloatRect PlayerRect = player->sprite.getGlobalBounds();
         
         BulletEnemy *bullet = new BulletEnemy(
             sf::Vector2f(0.f,Settings::roundBulletSpeed),
