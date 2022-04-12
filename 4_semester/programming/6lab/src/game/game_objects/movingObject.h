@@ -27,7 +27,20 @@ class MovingObject : public Object{
             (smallRect.top+smallRect.height) > bigRect.top &&
             (smallRect.top+smallRect.height/2) < bigRect.top+bigRect.height;
         }
-    protected:
+        int getDamage(){
+            return damage;
+        }
+        int getSpeed(){
+            return speed;
+        }
+        void setLives(int lives){
+            this->lives=lives;
+        }
+        void setDamage(int damage){
+            this->damage=damage;
+        }
+        
+    private:
         int lives;
         float speed;
         int damage;

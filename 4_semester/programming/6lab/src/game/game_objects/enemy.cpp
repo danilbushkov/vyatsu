@@ -9,8 +9,8 @@
 
 
 int Enemy::move(){
-    sprite.move(sf::Vector2f(0.f,speed));
-    sf::FloatRect rect = sprite.getGlobalBounds();
+    getSprite()->move(sf::Vector2f(0.f,getSpeed()));
+    sf::FloatRect rect = getSprite()->getGlobalBounds();
     if(rect.top>=600.f){
         return Settings::BORDER;
     }
@@ -29,7 +29,7 @@ int Enemy::action(List<MovingObject>* listPlayer,
 
 void Enemy::shot(List<MovingObject>* listEnemy){
     if(!delay){
-        sf::FloatRect rect = sprite.getGlobalBounds();
+        sf::FloatRect rect = getSprite()->getGlobalBounds();
         
         BulletEnemy *bullet = new BulletEnemy(
             sf::Vector2f(0.f,Settings::enemyBulletSpeed),
@@ -53,11 +53,11 @@ void Enemy::shot(List<MovingObject>* listEnemy){
 
 int Enemy::collision(List<MovingObject>* listPlayer){
     int code = Settings::NOTHING;
-    sf::FloatRect rectPlayer = listPlayer->begin->obj->sprite.getGlobalBounds();
-    sf::FloatRect rectEnemy = sprite.getGlobalBounds();
+    sf::FloatRect rectPlayer = listPlayer->begin->obj->getSprite()->getGlobalBounds();
+    sf::FloatRect rectEnemy = getSprite()->getGlobalBounds();
     if(checkCollision(rectPlayer,rectEnemy)){
-        listPlayer->begin->obj->injury(damage);
-        lives = 0;
+        listPlayer->begin->obj->injury(getDamage());
+        setLives(0);
         return Settings::KILL_ENEMY;
     }
 
@@ -71,7 +71,7 @@ int Enemy::collision(List<MovingObject>* listPlayer){
         tmpNode = node;
         node = node->next;
 
-        bulletRect = tmpNode->obj->sprite.getGlobalBounds();
+        bulletRect = tmpNode->obj->getSprite()->getGlobalBounds();
         if(checkCollision(rectEnemy,bulletRect)){
             injury(1);
             code = Settings::INJURY;
@@ -90,11 +90,11 @@ int Enemy::collision(List<MovingObject>* listPlayer){
 
 void Enemy::setImage(std::string image, sf::Vector2f scale){
 
-    texture.loadFromFile(image);
-    sprite.setTexture(texture);
-    sprite.scale(scale);
+    getTexture()->loadFromFile(image);
+    getSprite()->setTexture(*getTexture());
+    getSprite()->scale(scale);
 }
 void Enemy::setPosition(float x){
-    sf::FloatRect rect = sprite.getGlobalBounds();
-    sprite.setPosition(sf::Vector2f(x,-rect.height));
+    sf::FloatRect rect = getSprite()->getGlobalBounds();
+    getSprite()->setPosition(sf::Vector2f(x,-rect.height));
 }

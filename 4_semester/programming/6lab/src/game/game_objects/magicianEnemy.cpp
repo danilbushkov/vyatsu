@@ -11,8 +11,8 @@
 
 int MagicianEnemy::move(){
     if(movement){
-        sprite.move(sf::Vector2f(0.f,speed));
-        sf::FloatRect rect = sprite.getGlobalBounds();
+        getSprite()->move(sf::Vector2f(0.f,getSpeed()));
+        sf::FloatRect rect = getSprite()->getGlobalBounds();
         if(rect.top>=300.f){
             movement = 0;
         }
@@ -20,7 +20,7 @@ int MagicianEnemy::move(){
         if(expectation>0){
             expectation--;
         }else{
-            sprite.setPosition(teleportation());
+            getSprite()->setPosition(teleportation());
             expectation = 150 + rand() % 25;
         }
     }
@@ -36,7 +36,7 @@ int MagicianEnemy::action(List<MovingObject>* listPlayer,
     shot(listPlayer->begin->obj, listEnemy);
     int code = collision(listPlayer);
     if(code == Settings::INJURY){
-        sprite.setPosition(teleportation());
+        getSprite()->setPosition(teleportation());
     }
 
     return code;
@@ -74,13 +74,13 @@ sf::Vector2f MagicianEnemy::getTrajectory(sf::FloatRect playerRect,
 void MagicianEnemy::shot(MovingObject *player,
                          List<MovingObject>* listEnemy){
 
-    if(!delay){
-        sf::FloatRect rect = sprite.getGlobalBounds();
-        sf::FloatRect PlayerRect = player->sprite.getGlobalBounds();
+    if(!getDelay()){
+        sf::FloatRect rect = getSprite()->getGlobalBounds();
+        sf::FloatRect PlayerRect = player->getSprite()->getGlobalBounds();
         
         BulletEnemy *bullet = new BulletEnemy(
             getTrajectory(PlayerRect,rect),
-            damage
+            getDamage()
         );
         bullet->setImage(
             Settings::roundBulletImage,
@@ -90,9 +90,9 @@ void MagicianEnemy::shot(MovingObject *player,
 
         MovingObject *obj = bullet;
         listEnemy->AddNode(obj);
-        delay=DELAY;
+        setDelay(DELAY);
     }else{
-        delay--;
+        delayMinus();
     }
     
 }

@@ -20,6 +20,7 @@ class MagicianEnemy : public Enemy {
                                    sf::FloatRect enemyRect);
         void shot(MovingObject *player,
                   List<MovingObject>* listEnemy);
+    private:
         const int DELAY = Settings::delayMagicainEnemy;
         int expectation;
         int movement;

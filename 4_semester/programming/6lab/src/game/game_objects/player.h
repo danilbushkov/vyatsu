@@ -15,9 +15,6 @@ class Player : public MovingObject {
         
         void nullScore(){score=0;}
         int getScore(){ return score; }
-        void setLives(int lives){
-            this->lives=lives;
-        }
         void addScore(int score){ this->score+=score; }
     private:
         const int DELAY = Settings::delayPlayer;

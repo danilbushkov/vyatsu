@@ -7,8 +7,8 @@
 
 int BulletEnemy::move(){
     
-    sprite.move(direction);
-    sf::FloatRect rect = sprite.getGlobalBounds();
+    getSprite()->move(direction);
+    sf::FloatRect rect = getSprite()->getGlobalBounds();
     if(rect.top>=600.f){
         return Settings::BORDER;
     }
@@ -18,11 +18,11 @@ int BulletEnemy::move(){
 int BulletEnemy::action(List<MovingObject>* listPlayer,List<MovingObject>* listEnemy){
     
     MovingObject *player = listPlayer->begin->obj;
-    sf::FloatRect rectPlayer = player->sprite.getGlobalBounds();
-    sf::FloatRect rectBullet = sprite.getGlobalBounds();
+    sf::FloatRect rectPlayer = player->getSprite()->getGlobalBounds();
+    sf::FloatRect rectBullet = getSprite()->getGlobalBounds();
     if(checkCollision(rectPlayer, rectBullet)){
-        player->injury(damage);
-        lives = 0;
+        player->injury(getDamage());
+        setLives(0);
     }
 
 
@@ -33,12 +33,12 @@ int BulletEnemy::action(List<MovingObject>* listPlayer,List<MovingObject>* listE
 
 
 void BulletEnemy::setPosition(sf::FloatRect parentRect){
-    sf::FloatRect rect = sprite.getGlobalBounds();
+    sf::FloatRect rect = getSprite()->getGlobalBounds();
 
     float x = parentRect.left + parentRect.width/2 - rect.width/2;
     float y = parentRect.top + parentRect.height;
 
 
-    sprite.setPosition(sf::Vector2f(x,y));
+    getSprite()->setPosition(sf::Vector2f(x,y));
 
 }

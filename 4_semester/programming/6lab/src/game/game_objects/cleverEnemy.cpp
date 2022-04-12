@@ -12,7 +12,7 @@
 int CleverEnemy::move(){
     if(fuel>0 || newlyCreated){
 
-        sprite.move(movement);
+        getSprite()->move(movement);
         fuel--;
         
     }else if(refill>0){
@@ -28,7 +28,7 @@ int CleverEnemy::move(){
 }
 
 void CleverEnemy::expectationRotation(){
-    sf::FloatRect rect = sprite.getGlobalBounds();
+    sf::FloatRect rect = getSprite()->getGlobalBounds();
     if(newlyCreated){
         if(rect.top>0){
             newlyCreated=0;
@@ -68,8 +68,8 @@ void CleverEnemy::turn(){
     int a = rand() % 315; //0..314 
     float tg = a/100;
 
-    float speedX=cos(atan(tg))*speed*sign[indexX];
-    float speedY=sin(atan(tg))*speed*sign[indexY];
+    float speedX=cos(atan(tg))*getSpeed()*sign[indexX];
+    float speedY=sin(atan(tg))*getSpeed()*sign[indexY];
     
 
     movement = sf::Vector2f(speedX,speedY);
@@ -78,12 +78,12 @@ void CleverEnemy::turn(){
 
 
 void CleverEnemy::shot(List<MovingObject>* listEnemy){
-    if(!delay){
-        sf::FloatRect rect = sprite.getGlobalBounds();
+    if(!getDelay()){
+        sf::FloatRect rect = getSprite()->getGlobalBounds();
         
         BulletEnemy *bullet = new BulletEnemy(
             sf::Vector2f(0.f,Settings::roundBulletSpeed),
-            damage
+            getDamage()
         );
         bullet->setImage(
             Settings::enemyBulletImage,
@@ -93,9 +93,9 @@ void CleverEnemy::shot(List<MovingObject>* listEnemy){
 
         MovingObject *obj = bullet;
         listEnemy->AddNode(obj);
-        delay=DELAY;
+        setDelay(DELAY);
     }else{
-        delay--;
+        delayMinus();
     }
     
 }

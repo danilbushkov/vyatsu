@@ -13,7 +13,7 @@ class BulletEnemy : public Bullet {
         
         void setPosition(sf::FloatRect);
         
-    protected:
+    private:
         sf::Vector2f direction;
         
 };

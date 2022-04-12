@@ -21,6 +21,8 @@ class CleverEnemy : public Enemy {
         void calculationTrajectory(float x, float y);
         void expectationRotation();
         void shot(List<MovingObject>* listEnemy);
+
+    private:
         const int DELAY = Settings::delayCleverEnemy;
         int fuel;
         sf::Vector2f movement;

@@ -51,7 +51,7 @@ std::string Settings::fontPath;
 sf::Vector2f Settings::cleverEnemyBulletScale;
 
 void Settings::getSettings(){
-    std::string basePath = "bin/";
+    std::string basePath = "";
     backgroundImage = basePath + "image/fon.jpg";
     
     //player

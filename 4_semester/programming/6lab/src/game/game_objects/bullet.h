@@ -5,7 +5,7 @@
 class Bullet : public MovingObject {
     public:
         Bullet(float speed, int damage):MovingObject(1,speed){
-            this->damage = damage;
+            this->setDamage(damage);
         };
         virtual int move() override;
         virtual int action(List<MovingObject>*,List<MovingObject>*) override;
@@ -14,7 +14,7 @@ class Bullet : public MovingObject {
                       sf::Vector2f);
         void setPosition(sf::FloatRect parentRect);
         
-    protected:
+   
         
         
 };

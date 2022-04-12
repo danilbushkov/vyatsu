@@ -63,7 +63,7 @@ void Game::game(){
         
 
         window.clear();
-        window.draw(background.sprite);
+        window.draw(*background.getSprite());
         
         
         drawObjects(&listEnemy);
@@ -119,7 +119,7 @@ void Game::drawObjects(List<MovingObject>* list){
     Node<MovingObject> *node;
     node = list->begin;
     while(node!=nullptr){
-        window.draw(node->obj->sprite);
+        window.draw(*node->obj->getSprite());
         node = node->next;
     }
 }
