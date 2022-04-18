@@ -181,6 +181,8 @@ void Table::printCountDinner(){
     cout <<"\n";
 }
 
+
+
 void Table::dinner(){
     
     initTable();
