@@ -2,8 +2,6 @@
 #include <boost/thread/thread.hpp>
 #include <boost/interprocess/sync/interprocess_semaphore.hpp>
 #include <boost/chrono.hpp>
-#include <cstdlib>
-#include <ctime>
 #include <string>
 
 
@@ -25,6 +23,7 @@ class Philosopher{
     Philosopher(){
         action = HUNGRY;
         countDinner = 0;
+        b=0;
     }
     Philosopher(int number){
       action = HUNGRY;
@@ -61,10 +60,20 @@ class Philosopher{
     int getCountDinner(){
         return countDinner;
     }
+    void block(){
+        this->b = 1;
+    }
+    void unblock(){
+        this->b = 0;
+    }
+    int checkBlock(){
+        return b;
+    }
   private:
     int action;
     int number;
     int countDinner;
+    int b;
 };
 
 
@@ -109,38 +118,39 @@ boost::interprocess::interprocess_semaphore Table::semaphores[NUMBER_PHILOSOPHER
     };
 
 void Table::action(Philosopher *philosopher){
-    while(count<100000){
-        //cout<<philosopher->getNumber()<<'\n';
-        if(philosopher->getAction()==HUNGRY){
-            tableSemaphore.wait();
+    while(count<100){
+        //if(!philosopher->checkBlock()){
             eat(philosopher);
-            tableSemaphore.post();
-        }else{
             think(philosopher);
-        }
+        //}
+        
     }
 }
 void Table::eat(Philosopher *philosopher){
     int number=philosopher->getNumber();
-        if(philosophers[number+1].getAction()!=EAT &&
-            philosophers[number-1].getAction()!=EAT){
-            semaphores[number].wait();
-            semaphores[(number+1)%NUMBER_PHILOSOPHERS].wait();
 
-            philosopher->setAction(EAT);
-            printActionPhilosophers(philosopher);
-            //int n = rand() % 5;
-            //boost::this_thread::sleep_for(boost::chrono::milliseconds(100));  
-            philosopher->setAction(THINK);
+    tableSemaphore.wait();
+    semaphores[number].wait();
+    semaphores[(number+1)%NUMBER_PHILOSOPHERS].wait();
+    tableSemaphore.post();
 
-            semaphores[number].post();
-            semaphores[(number+1)%NUMBER_PHILOSOPHERS].post();
-    }
+    philosopher->setAction(EAT);
+    
+    printActionPhilosophers(philosopher);
+    
+    boost::this_thread::sleep_for(boost::chrono::milliseconds(200));  
+    philosopher->setAction(THINK);
+
+    semaphores[number].post();
+    semaphores[(number+1)%NUMBER_PHILOSOPHERS].post();
+
+    // philosopher->block();
+    // philosophers[(number+1)%NUMBER_PHILOSOPHERS].unblock();
+    // philosophers[(number-1)%NUMBER_PHILOSOPHERS].unblock();
 }
 
 
 void Table::think(Philosopher *philosopher){
-    //int n = rand() % 5;
     boost::this_thread::sleep_for(boost::chrono::milliseconds(200));  
     philosopher->setAction(HUNGRY);
 }   
@@ -150,7 +160,7 @@ void Table::printActionPhilosophers(Philosopher *philosopher){
     printSemaphore.wait();
     cout << philosopher->getNumber() <<": "; 
     for(int i=0; i<NUMBER_PHILOSOPHERS; i++){
-        if(i==philosopher->getNumber()){
+        if(philosophers[i].getPrintAction()=='E'){
             string s(1,philosophers[i].getPrintAction());
             cout << "\033[1;31m"+s+"\033[0m ";
         }else{
@@ -204,7 +214,6 @@ void Table::dinner(){
 
 int main()
 {
-    srand(time(NULL));
     Table::initTable();
     Table::dinner();
     Table::printCountDinner();
