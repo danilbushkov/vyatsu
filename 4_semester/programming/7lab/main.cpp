@@ -119,10 +119,10 @@ boost::interprocess::interprocess_semaphore Table::semaphores[NUMBER_PHILOSOPHER
 
 void Table::action(Philosopher *philosopher){
     while(count<100){
-        //if(!philosopher->checkBlock()){
+        if(!philosopher->checkBlock()){
             eat(philosopher);
             think(philosopher);
-        //}
+        }
         
     }
 }
@@ -138,20 +138,20 @@ void Table::eat(Philosopher *philosopher){
     
     printActionPhilosophers(philosopher);
     
-    boost::this_thread::sleep_for(boost::chrono::milliseconds(200));  
+    boost::this_thread::sleep_for(boost::chrono::milliseconds(100));  
     philosopher->setAction(THINK);
 
     semaphores[number].post();
     semaphores[(number+1)%NUMBER_PHILOSOPHERS].post();
 
-    // philosopher->block();
-    // philosophers[(number+1)%NUMBER_PHILOSOPHERS].unblock();
-    // philosophers[(number-1)%NUMBER_PHILOSOPHERS].unblock();
+    philosopher->block();
+    philosophers[(number+1)%NUMBER_PHILOSOPHERS].unblock();
+    philosophers[(number-1)%NUMBER_PHILOSOPHERS].unblock();
 }
 
 
 void Table::think(Philosopher *philosopher){
-    boost::this_thread::sleep_for(boost::chrono::milliseconds(200));  
+    //boost::this_thread::sleep_for(boost::chrono::milliseconds(200));  
     philosopher->setAction(HUNGRY);
 }   
 
