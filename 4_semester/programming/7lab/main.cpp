@@ -96,15 +96,16 @@ class Table{
     static void dinner();
 
     static int count;
+    static int times[NUMBER_PHILOSOPHERS];
     static Philosopher philosophers[NUMBER_PHILOSOPHERS];
     static boost::thread threads[NUMBER_PHILOSOPHERS];
-    static boost::interprocess::interprocess_semaphore tableSemaphore;
     static boost::interprocess::interprocess_semaphore printSemaphore;
     static boost::interprocess::interprocess_semaphore semaphores[NUMBER_PHILOSOPHERS];
 };
 int Table::count=0;
-boost::interprocess::interprocess_semaphore Table::tableSemaphore=
-    boost::interprocess::interprocess_semaphore(1);
+int Table::times[NUMBER_PHILOSOPHERS]={
+        20, 50, 60, 20, 80
+    };
 boost::interprocess::interprocess_semaphore Table::printSemaphore=
     boost::interprocess::interprocess_semaphore(1);
 Philosopher Table::philosophers[NUMBER_PHILOSOPHERS];
@@ -118,35 +119,33 @@ boost::interprocess::interprocess_semaphore Table::semaphores[NUMBER_PHILOSOPHER
     };
 
 void Table::action(Philosopher *philosopher){
-    while(count<100){
-        if(!philosopher->checkBlock()){
-            eat(philosopher);
-            think(philosopher);
-        }
-        
+    while(count<1000){
+        eat(philosopher);
+        think(philosopher);
     }
 }
+
+
+
 void Table::eat(Philosopher *philosopher){
     int number=philosopher->getNumber();
 
-    tableSemaphore.wait();
+    boost::this_thread::sleep_for(boost::chrono::milliseconds(times[number])); 
+
     semaphores[number].wait();
     semaphores[(number+1)%NUMBER_PHILOSOPHERS].wait();
-    tableSemaphore.post();
+    
 
     philosopher->setAction(EAT);
     
     printActionPhilosophers(philosopher);
     
-    boost::this_thread::sleep_for(boost::chrono::milliseconds(100));  
+    boost::this_thread::sleep_for(boost::chrono::milliseconds(10));  
     philosopher->setAction(THINK);
 
     semaphores[number].post();
     semaphores[(number+1)%NUMBER_PHILOSOPHERS].post();
 
-    philosopher->block();
-    philosophers[(number+1)%NUMBER_PHILOSOPHERS].unblock();
-    philosophers[(number-1)%NUMBER_PHILOSOPHERS].unblock();
 }
 
 
@@ -218,5 +217,5 @@ int main()
     Table::dinner();
     Table::printCountDinner();
     
-  return 0;
+    return 0;
 }
