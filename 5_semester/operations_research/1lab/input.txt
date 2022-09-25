@@ -1,6 +1,6 @@
 number of x: 3 ;
 number of constraints: 3 ;
-min(0) or max(1): 0 ;
+min(zero) or max(one): 0 ;
 objective function coefficients: 
 1 2 3 ;
 constraints coefficients:
