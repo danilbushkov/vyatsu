@@ -11,6 +11,7 @@ pub fn parse(s: String) -> SimplexData {
         coefficients: vec![],
         constraints_coefficients: vec![],
         conditions: vec![],
+        basis: vec![],
     };
 
     s.retain(|c| 
@@ -20,7 +21,8 @@ pub fn parse(s: String) -> SimplexData {
         c == ' ' ||
         c == '=' ||
         c == '>' ||
-        c == '<' 
+        c == '<' ||
+        c == '-' 
     );
 
     let mut lines: Vec<&str> = s.split(';').collect();
@@ -44,6 +46,7 @@ pub fn parse(s: String) -> SimplexData {
         vec.push(iter.next().unwrap().parse::<f64>().unwrap());
 
         data.constraints_coefficients.push(vec);
+        data.basis.push(None);
     }
 
     data

@@ -12,7 +12,7 @@ use crate::input::input;
 fn main() {
     let input = input();
     let mut data = parse(input);
-    data.canonical_view();
+    data.preparatory_stage();
 
     println!("{}", data);
 
