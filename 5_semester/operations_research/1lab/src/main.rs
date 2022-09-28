@@ -13,6 +13,7 @@ fn main() {
     let input = input();
     let mut data = parse(input);
     data.preparatory_stage();
+    data.form_basis();
 
     println!("{}", data);
 
