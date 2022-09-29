@@ -14,7 +14,7 @@ fn main() {
     let mut data = parse(input);
     data.preparatory_stage();
     data.form_basis();
-
+    data.calculate_deltas();
     println!("{}", data);
 
 
