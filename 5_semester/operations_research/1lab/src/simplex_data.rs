@@ -1,6 +1,6 @@
 use std::fmt;
 use std::collections::HashSet;
-
+use std::collections::HashMap;
 
 
 pub const M: f64 = 10000.0;
@@ -139,7 +139,72 @@ impl SimplexData {
         true
     }
 
+    fn get_resolving_column_index(&mut self) -> usize {
+        let mut column_index = 0;
+        for i in 1..self.num_of_vars {
+            if self.direction == 0 {
+                if self.deltas[i] > self.deltas[column_index] {
+                    column_index = i;
+                }
+            } else {
+                if self.deltas[i] < self.deltas[column_index] {
+                    column_index = i;
+                }
+            }
+        }
 
+        column_index
+    }
+
+    pub fn move_to_optimal_solution(&mut self) -> bool {
+        let mut Q: HashMap<usize, f64> = HashMap::new();
+        let column_index = self.get_resolving_column_index();
+        for i in 0..self.num_of_constraints {
+            let a = self.constraints_coefficients[i][column_index];
+            let b = self.constraints_coefficients[i][self.num_of_vars];
+            if a > 0.0 {
+                Q.insert(i, b/a);
+            } 
+        }
+        let mut iter = Q.iter();
+        let mut min: f64 = 0.0;
+        let mut index = 0;
+        match iter.next() {
+            Some((i, v)) => {
+                min = *v;
+                index = *i;
+            }, 
+            None => {
+                return false;
+            },
+        }
+        
+        while let Some ((i, v)) = iter.next() {
+            if *v < min {
+                min = *v;
+                index = *i;
+            }
+        }
+
+        self.basis[index] = Some(column_index);
+        let value = self.constraints_coefficients[index][column_index];
+        for item in self.constraints_coefficients[index].iter_mut() {
+            *item = *item / value;
+        }
+
+        for i in 0..self.num_of_constraints {
+            if i != index {
+                for j in 0..=self.num_of_vars {
+                    let v = self.constraints_coefficients[index][j];
+                    let item = &mut self.constraints_coefficients[i][j];
+                    *item = *item - v*(*item);
+                }
+            }
+        }
+
+
+        true
+    }
    
 
 
@@ -207,7 +272,7 @@ impl fmt::Display for SimplexData {
                     
                 }
                 s = s + "\n";
-                for i in 0..self.num_of_vars {
+                for _ in 0..self.num_of_vars {
                     s = format!("{}{:->8}", s, '-');
                     
                 }
