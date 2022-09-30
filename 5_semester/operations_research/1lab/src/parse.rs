@@ -8,6 +8,7 @@ pub fn parse(s: String) -> SimplexData {
     let mut s = s;
 
     let mut data = SimplexData {
+        num_of_vars_in_f: 0,
         num_of_vars: 0,
         num_of_constraints: 0,
         direction: 0,
@@ -35,6 +36,7 @@ pub fn parse(s: String) -> SimplexData {
         *line = line.trim();
     }
     data.num_of_vars = lines[0].parse::<usize>().unwrap();
+    data.num_of_vars_in_f = data.num_of_vars;
     data.num_of_constraints = lines[1].parse::<usize>().unwrap();
     data.direction = lines[2].parse::<usize>().unwrap();
     data.coefficients = 

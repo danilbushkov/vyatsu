@@ -14,8 +14,32 @@ fn main() {
     let mut data = parse(input);
     data.preparatory_stage();
     data.form_basis();
-    data.calculate_deltas();
-    println!("{}", data);
+
+    let mut work = true;
+    while work {
+        data.calculate_deltas();
+        println!("{}", data);
+        if data.check_optimality() {
+            work = false;
+            if data.check_artificial_variables_in_basis() {
+                let s = "It doesn't have a correct solution because the solution contains artificial variables!";
+                println!("{}", s);
+            } else {
+                data.print_result();
+            }
+        } else {
+            if !data.move_to_optimal_solution() {
+                println!("There is no decision!");
+                work = false;
+            }
+        }
+        
+    }
+    
+
+
+
+    //println!("{}", data);
 
 
 }

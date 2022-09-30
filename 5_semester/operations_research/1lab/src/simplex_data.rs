@@ -6,6 +6,7 @@ use std::collections::HashMap;
 pub const M: f64 = 10000.0;
 
 pub struct SimplexData {
+    pub num_of_vars_in_f: usize,
     pub num_of_vars: usize,
     pub num_of_constraints: usize,
     pub direction: usize,
@@ -168,13 +169,14 @@ impl SimplexData {
         }
         let mut iter = Q.iter();
         let mut min: f64 = 0.0;
-        let mut index = 0;
+        let mut index: usize = 0;
         match iter.next() {
             Some((i, v)) => {
                 min = *v;
                 index = *i;
             }, 
             None => {
+                
                 return false;
             },
         }
@@ -206,7 +208,41 @@ impl SimplexData {
         true
     }
    
+    pub fn check_artificial_variables_in_basis(&mut self) -> bool {
+        for item in &self.basis {
+            match item {
+                Some(v) => {
+                    if self.artificial_variables.contains(&v) {
+                        return true;
+                    }
+                },
+                None => return true,
+            }
+        }
 
+
+        false
+    }
+
+    pub fn print_result(&mut self) {
+        let mut result: Vec<f64> = vec![0.0; self.num_of_vars_in_f];
+        println!("Result: ");
+        for (i, item) in self.basis.iter().enumerate() {
+            if let Some(v) = item {
+                if *v < self.num_of_vars_in_f {
+                    result[*v] = self.constraints_coefficients[i][self.num_of_vars];
+                }
+            }
+        }
+        let mut s = String::new();
+        for (_, item) in result.iter().enumerate() {
+            s = format!("{} {}", s, item);
+        }
+        println!("{}", s);
+
+        println!("F = {}", self.deltas[self.num_of_vars]);
+
+    }
 
     pub fn _canonical_view(&mut self) {
         for i in 0..self.num_of_constraints {
@@ -268,12 +304,12 @@ impl fmt::Display for SimplexData {
             {
                 let mut s = String::new();
                 for i in 0..self.num_of_vars {
-                    s = format!("{}{:^8}", s, i);
+                    s = format!("{}{:^8.4}", s, i);
                     
                 }
                 s = s + "\n";
                 for _ in 0..self.num_of_vars {
-                    s = format!("{}{:->8}", s, '-');
+                    s = format!("{}{:->8.4}", s, '-');
                     
                 }
                 s
@@ -281,7 +317,7 @@ impl fmt::Display for SimplexData {
             { 
                 let mut s = String::new();
                 for item in self.coefficients.iter() {
-                    s = format!("{}{:^8}", s, item);
+                    s = format!("{}{:^8.4}", s, item);
                     
                 }
                 s
@@ -291,7 +327,7 @@ impl fmt::Display for SimplexData {
                 for vec in self.constraints_coefficients.iter() {
                     for item in vec {
                         
-                        s = format!("{}{:^8}", s, item);
+                        s = format!("{}{:^8.4}", s, item);
                     }
                     s = s + "\n";
                 }
@@ -302,7 +338,7 @@ impl fmt::Display for SimplexData {
                 let mut s = String::from("Basis: ");
                 for item in &self.basis {
                     match item {
-                        Some(v) => s = format!("{}{:<5}", s, v),
+                        Some(v) => s = format!("{}{:<5.4}", s, v),
                         None => s = format!("{}{:>5}", s, 'n')
                     }
                 }
@@ -312,7 +348,7 @@ impl fmt::Display for SimplexData {
             {
                 let mut s = String::from("Artificial variables: ");
                 for item in &self.artificial_variables {
-                    s = format!("{}{:<8}", s, item);
+                    s = format!("{}{:<8.4}", s, item);
                 }
 
                 s
@@ -329,7 +365,7 @@ impl fmt::Display for SimplexData {
                 let mut s = String::from("Deltas: \n");
                 for item in self.deltas.iter() {
                     
-                    s = format!("{}{:^8}", s, item);
+                    s = format!("{}{:^8.4}", s, item);
                 }
                 s
             }
