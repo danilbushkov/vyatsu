@@ -1,0 +1,11 @@
+number of x: 3 ;
+number of constraints: 3 ;
+min(zero) or max(one): 1 ;
+objective function coefficients: 
+4 5 4 ;
+constraints coefficients:
+2 3 6 <= 240 ;
+4 2 4 <= 200 ;
+4 6 8 <= 160 ;
+
+end

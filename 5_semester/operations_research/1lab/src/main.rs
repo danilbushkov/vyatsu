@@ -29,7 +29,7 @@ fn main() {
             }
         } else {
             if !data.move_to_optimal_solution() {
-                println!("There is no decision!");
+                println!("The function is not limited. There is no optimal solution!");
                 work = false;
             }
         }
@@ -39,7 +39,7 @@ fn main() {
 
 
 
-    //println!("{}", data);
+    
 
 
 }

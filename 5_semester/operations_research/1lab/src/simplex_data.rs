@@ -198,8 +198,9 @@ impl SimplexData {
             if i != index {
                 for j in 0..=self.num_of_vars {
                     let v = self.constraints_coefficients[index][j];
+                    let c = self.constraints_coefficients[i][column_index];
                     let item = &mut self.constraints_coefficients[i][j];
-                    *item = *item - v*(*item);
+                    *item = *item - v*c;
                 }
             }
         }
@@ -236,11 +237,11 @@ impl SimplexData {
         }
         let mut s = String::new();
         for (_, item) in result.iter().enumerate() {
-            s = format!("{} {}", s, item);
+            s = format!("{} {:8.5}", s, item);
         }
         println!("{}", s);
 
-        println!("F = {}", self.deltas[self.num_of_vars]);
+        println!("F = {:8.5}", self.deltas[self.num_of_vars]);
 
     }
 
