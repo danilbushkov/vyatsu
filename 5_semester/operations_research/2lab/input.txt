@@ -1,0 +1,11 @@
+number of x: 3 ;
+number of constraints: 3 ;
+min(zero) or max(one): 0 ;
+objective function coefficients: 
+1 2 3 ;
+constraints coefficients:
+1 0 3 <= 3 ;
+4 0 6 >= 4 ;
+7 1 9 = 3 ;
+
+end
