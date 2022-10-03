@@ -1,0 +1,10 @@
+number of x: 2 ;
+number of constraints: 2 ;
+min(zero) or max(one): 1 ;
+objective function coefficients: 
+5 4 ;
+constraints coefficients:
+1 1 <= 5 ;
+10 6 <= 45 ;
+
+end

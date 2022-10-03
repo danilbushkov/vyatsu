@@ -19,6 +19,7 @@ fn main() {
     while work {
         data.calculate_deltas();
         println!("{}", data);
+        println!("{:=>40}", "=");
         if data.check_optimality() {
             work = false;
             if data.check_artificial_variables_in_basis() {

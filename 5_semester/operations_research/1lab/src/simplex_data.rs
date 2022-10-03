@@ -195,11 +195,14 @@ impl SimplexData {
         }
 
         for i in 0..self.num_of_constraints {
+            
+
             if i != index {
+                let c = self.constraints_coefficients[i][column_index];
                 for j in 0..=self.num_of_vars {
                     let v = self.constraints_coefficients[index][j];
-                    let c = self.constraints_coefficients[i][column_index];
                     let item = &mut self.constraints_coefficients[i][j];
+                    
                     *item = *item - v*c;
                 }
             }
