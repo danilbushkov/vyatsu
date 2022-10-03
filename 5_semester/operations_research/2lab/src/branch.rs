@@ -44,11 +44,13 @@ pub fn branch_and_bound_method(data: SimplexData) {
                             list.push_front(data_right);
                         } else {
                             println!("{}", "Branch has no solution");
+                            println!("{:->9}", "-");
                         }
                     }
                 } else {
 
                     println!("{}", "Branch has no solution");
+                    println!("{:->9}", "-");
                 }
             }
 
