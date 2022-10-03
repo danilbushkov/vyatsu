@@ -126,13 +126,14 @@ impl SimplexData {
     }
 
     pub fn check_optimality(&mut self) -> bool {
-        for item in &self.deltas {
+        
+        for i in 0..(self.deltas.len()-1) {
             if self.direction == 0 {
-                if *item > 0.0 {
+                if self.deltas[i] > 0.0 {
                     return false;
                 }
             }else {
-                if *item < 0.0 {
+                if self.deltas[i] < 0.0 {
                     return false;
                 }
             }
