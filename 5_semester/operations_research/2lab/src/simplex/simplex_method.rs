@@ -2,7 +2,7 @@
 use crate::simplex::simplex_data::SimplexData;
 
 
-fn simplex_method(data: SimplexData) -> Option<SimplexData> {
+pub fn simplex_method(data: SimplexData) -> Option<SimplexData> {
     let mut data = data;
     data.preparatory_stage();
     data.form_basis();
@@ -23,7 +23,7 @@ fn simplex_method(data: SimplexData) -> Option<SimplexData> {
             if !data.move_to_optimal_solution() {
                 return None;
                 //println!("The function is not limited. There is no optimal solution!");
-                work = false;
+                //work = false;
             }
         }
         

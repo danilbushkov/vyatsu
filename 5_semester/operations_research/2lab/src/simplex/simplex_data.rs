@@ -2,6 +2,8 @@ use std::fmt;
 use std::collections::HashSet;
 use std::collections::HashMap;
 
+use crate::simplex::result::SimplexResult;
+
 
 pub const M: f64 = 10000.0;
 
@@ -231,7 +233,7 @@ impl SimplexData {
     }
 
 
-    pub fn get_result(&mut self) -> (Vec<f64>, f64) {
+    pub fn get_result(&self) -> SimplexResult {
         let mut result: Vec<f64> = vec![0.0; self.num_of_vars_in_f];
         for (i, item) in self.basis.iter().enumerate() {
             if let Some(v) = item {
@@ -240,22 +242,26 @@ impl SimplexData {
                 }
             }
         }
-        
-        (result, self.deltas[self.num_of_vars])
+        SimplexResult {
+            vec: result,
+            f: self.deltas[self.num_of_vars]
+        }
     }
 
 
 
     pub fn add_condition(&mut self, x_index: usize, condition: String, value: f64) {
-        let mut vec: Vec<f64> = vec![0.0 ; self.num_of_vars+1];
+        let mut vec: Vec<f64> = vec![0.0 ; self.num_of_vars];
+        vec.push(value);
         vec[x_index] = 1.0;
         self.conditions.push(condition);
         self.constraints_coefficients.push(vec);
         self.num_of_constraints += 1;
+        self.basis.push(None);
     }
 
 
-    pub fn _print_result(&mut self) {
+    pub fn print_result(&self) {
         let mut result: Vec<f64> = vec![0.0; self.num_of_vars_in_f];
         println!("Result: ");
         for (i, item) in self.basis.iter().enumerate() {

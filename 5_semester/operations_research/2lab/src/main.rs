@@ -1,4 +1,5 @@
 mod simplex;
+mod branch;
 mod parse;
 mod input;
 
@@ -7,36 +8,14 @@ mod input;
 //use crate::simplex_data::SimplexData;
 use crate::parse::parse;
 use crate::input::input;
+use crate::branch::branch_and_bound_method;
 
 
 fn main() {
     let input = input();
     let mut data = parse(input);
-    // data.preparatory_stage();
-    // data.form_basis();
-
-    // let mut work = true;
-    // while work {
-    //     data.calculate_deltas();
-    //     println!("{}", data);
-    //     println!("{:=>40}", "=");
-    //     if data.check_optimality() {
-    //         work = false;
-    //         if data.check_artificial_variables_in_basis() {
-    //             let s = "It doesn't have a correct solution because the solution contains artificial variables!";
-    //             println!("{}", s);
-    //         } else {
-    //             data.print_result();
-    //         }
-    //     } else {
-    //         if !data.move_to_optimal_solution() {
-    //             println!("The function is not limited. There is no optimal solution!");
-    //             work = false;
-    //         }
-    //     }
-        
-    // }
     
+    branch_and_bound_method(data);
 
 
 
