@@ -2,20 +2,153 @@ Result:
   3.75000  1.25000
 F = 23.75000
 =========
+number of variables: 2
+number of constraints: 2
+min(0) or max(1): 1
+
+   0       1    
+----------------
+ 5.0000  4.0000 
+
+  1.0000    1.0000    5.0000  
+ 10.0000    6.0000   45.0000  
+
+Basis:     n    n
+Artificial variables: 
+Conditions: <= <= 
+Deltas: 
+
+
   3.75000  1.25000
 F = 23.75000
 ---------
+number of variables: 2
+number of constraints: 3
+min(0) or max(1): 1
+
+   0       1    
+----------------
+ 5.0000  4.0000 
+
+  1.0000    1.0000    5.0000  
+ 10.0000    6.0000   45.0000  
+  1.0000    0.0000    3.0000  
+
+Basis:     n    n    n
+Artificial variables: 
+Conditions: <= <= <= 
+Deltas: 
+
+
   3.00000  2.00000
 F = 23.00000
 ---------
+number of variables: 2
+number of constraints: 3
+min(0) or max(1): 1
+
+   0       1    
+----------------
+ 5.0000  4.0000 
+
+  1.0000    1.0000    5.0000  
+ 10.0000    6.0000   45.0000  
+  1.0000    0.0000    4.0000  
+
+Basis:     n    n    n
+Artificial variables: 
+Conditions: <= <= >= 
+Deltas: 
+
+
   4.00000  0.83333
 F = 23.33333
 ---------
+number of variables: 2
+number of constraints: 4
+min(0) or max(1): 1
+
+   0       1    
+----------------
+ 5.0000  4.0000 
+
+  1.0000    1.0000    5.0000  
+ 10.0000    6.0000   45.0000  
+  1.0000    0.0000    4.0000  
+  0.0000    1.0000    0.0000  
+
+Basis:     n    n    n    n
+Artificial variables: 
+Conditions: <= <= >= <= 
+Deltas: 
+
+
   4.50000  0.00000
 F = 22.50000
 ---------
+number of variables: 2
+number of constraints: 4
+min(0) or max(1): 1
+
+   0       1    
+----------------
+ 5.0000  4.0000 
+
+  1.0000    1.0000    5.0000  
+ 10.0000    6.0000   45.0000  
+  1.0000    0.0000    4.0000  
+  0.0000    1.0000    1.0000  
+
+Basis:     n    n    n    n
+Artificial variables: 
+Conditions: <= <= >= >= 
+Deltas: 
+
+
 Branch has no solution
-Branch has no solution
+number of variables: 2
+number of constraints: 5
+min(0) or max(1): 1
+
+   0       1    
+----------------
+ 5.0000  4.0000 
+
+  1.0000    1.0000    5.0000  
+ 10.0000    6.0000   45.0000  
+  1.0000    0.0000    4.0000  
+  0.0000    1.0000    0.0000  
+  1.0000    0.0000    4.0000  
+
+Basis:     n    n    n    n    n
+Artificial variables: 
+Conditions: <= <= >= <= <= 
+Deltas: 
+
+
+  4.00000  0.00000
+F = 20.00000
+---------
+number of variables: 2
+number of constraints: 5
+min(0) or max(1): 1
+
+   0       1    
+----------------
+ 5.0000  4.0000 
+
+  1.0000    1.0000    5.0000  
+ 10.0000    6.0000   45.0000  
+  1.0000    0.0000    4.0000  
+  0.0000    1.0000    0.0000  
+  1.0000    0.0000    5.0000  
+
+Basis:     n    n    n    n    n
+Artificial variables: 
+Conditions: <= <= >= <= >= 
+Deltas: 
+
+
 Branch has no solution
 Result:
   3.00000  2.00000

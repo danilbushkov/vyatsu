@@ -1,6 +1,6 @@
 use std::fmt;
 use std::collections::HashSet;
-use std::collections::HashMap;
+
 
 
 pub const M: f64 = 10000.0;
@@ -159,35 +159,34 @@ impl SimplexData {
     }
 
     pub fn move_to_optimal_solution(&mut self) -> bool {
-        let mut Q: HashMap<usize, f64> = HashMap::new();
+        let mut Q: Vec<(usize, f64)> = Vec::new();
         let column_index = self.get_resolving_column_index();
         for i in 0..self.num_of_constraints {
             let a = self.constraints_coefficients[i][column_index];
             let b = self.constraints_coefficients[i][self.num_of_vars];
             if a > 0.0 {
-                Q.insert(i, b/a);
+                Q.push((i, b/a));
             } 
         }
-        let mut iter = Q.iter();
-        let mut min: f64 = 0.0;
-        let mut index: usize = 0;
-        match iter.next() {
-            Some((i, v)) => {
-                min = *v;
-                index = *i;
-            }, 
-            None => {
-                
-                return false;
-            },
+
+
+        if Q.is_empty() {
+            return false;
         }
-        
-        while let Some ((i, v)) = iter.next() {
-            if *v < min {
-                min = *v;
-                index = *i;
+
+        let mut index: usize = Q[Q.len()-1].0;
+        let mut min: f64 = Q[Q.len()-1].1;
+
+
+        if index > 0 {
+            for i in (0..(Q.len()-1)).rev() {
+                if Q[i].1 <= min {
+                    min = Q[i].1;
+                    index = Q[i].0;
+                }
             }
         }
+        
 
         self.basis[index] = Some(column_index);
         let value = self.constraints_coefficients[index][column_index];
