@@ -22,7 +22,7 @@ pub fn branch_and_bound_method(data: SimplexData) {
             while !list.is_empty() {
                 
                 let data = list.pop_back().unwrap();
-                println!("{}", data);
+                //println!("{}", data);
                 let mut data_left = data.clone();
                 let mut data_right = data.clone();
                 
