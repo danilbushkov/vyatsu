@@ -20,6 +20,7 @@ pub fn simplex_method(data: SimplexData) -> Option<SimplexData> {
                 //println!("{}", s);
             } 
         } else {
+            //print!("aaaaaa");
             if !data.move_to_optimal_solution() {
                 return None;
                 //println!("The function is not limited. There is no optimal solution!");

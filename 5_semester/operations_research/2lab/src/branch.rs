@@ -11,7 +11,7 @@ pub fn branch_and_bound_method(data: SimplexData) {
     let mut tmp_data = simplex_method(data.clone());
     if let Some(d) = tmp_data {
         d.print_result();
-        println!("{:->9}", "-");
+        println!("{:=>9}", "=");
         let result = d.get_result();
 
         let mut int_results: Vec<SimplexResult> = vec![];
@@ -22,6 +22,7 @@ pub fn branch_and_bound_method(data: SimplexData) {
             while !list.is_empty() {
                 
                 let data = list.pop_back().unwrap();
+                //println!("{}", data);
                 let mut data_left = data.clone();
                 let mut data_right = data.clone();
                 
@@ -29,7 +30,7 @@ pub fn branch_and_bound_method(data: SimplexData) {
                 if let Some(r) = result {
                     r.get_result().print();
                     
-                    //println!("{:->9}", "-");
+                    println!("{:->9}", "-");
                     if check_result_for_integer(&r.get_result()) {
                         int_results.push(r.get_result());
                     } else {
@@ -38,6 +39,7 @@ pub fn branch_and_bound_method(data: SimplexData) {
                             data_left.add_condition(i, "<=".to_string(), v.floor());
                             data_right.add_condition(i, ">=".to_string(), v.ceil());
                             //println!("{}", data_left);
+                            //println!("{}", data_right);
                             list.push_front(data_left);
                             list.push_front(data_right);
                         } else {

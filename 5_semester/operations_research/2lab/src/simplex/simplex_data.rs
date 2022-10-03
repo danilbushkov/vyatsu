@@ -130,13 +130,14 @@ impl SimplexData {
     }
 
     pub fn check_optimality(&mut self) -> bool {
-        for item in &self.deltas {
+        
+        for i in 0..(self.deltas.len()-1) {
             if self.direction == 0 {
-                if *item > 0.0 {
+                if self.deltas[i] > 0.0 {
                     return false;
                 }
             }else {
-                if *item < 0.0 {
+                if self.deltas[i] < 0.0 {
                     return false;
                 }
             }
@@ -364,7 +365,7 @@ impl fmt::Display for SimplexData {
                 for vec in self.constraints_coefficients.iter() {
                     for item in vec {
                         
-                        s = format!("{}{:^8.4}", s, item);
+                        s = format!("{}{:^10.4}", s, item);
                     }
                     s = s + "\n";
                 }
@@ -402,7 +403,7 @@ impl fmt::Display for SimplexData {
                 let mut s = String::from("Deltas: \n");
                 for item in self.deltas.iter() {
                     
-                    s = format!("{}{:^8.4}", s, item);
+                    s = format!("{}{:^12.4}", s, item);
                 }
                 s
             }
