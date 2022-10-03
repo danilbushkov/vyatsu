@@ -1,7 +1,7 @@
 
 use std::collections::HashSet;
 
-use crate::simplex::SimplexData;
+use crate::simplex::simplex_data::SimplexData;
 
 
 pub fn parse(s: String) -> SimplexData {
