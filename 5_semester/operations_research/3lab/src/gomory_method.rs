@@ -23,9 +23,11 @@ pub fn gomory_method(data: SimplexData) {
                 if let Some(mut d) = data {
                     let r = d.get_result();
                     if !check_vec_integer(&r.vec) {
-                        let line = get_line_max_fraciton(&r.vec);
+                        let line = get_line_max_fraciton(&d);
                         if let Some(l) = line {
+                            println!("{}", d);
                             form_constraint(&mut d, l);
+                            println!("{}", d);
                             data = simplex_method(d);
                         } else {
                             data = None;
@@ -77,11 +79,13 @@ fn check_vec_integer(vec: &Vec<f64>) -> bool {
     true
 }
 
-fn get_line_max_fraciton(vec: &Vec<f64>) -> Option<usize> {
+
+
+fn get_line_max_fraciton(data: &SimplexData) -> Option<usize> {
     let mut max: f64 = 0.0;
     let mut index = None;
-    for (i, item) in vec.iter().enumerate() {
-        let f = get_fraction(*item);
+    for i in 0..data.num_of_constraints {
+        let f = get_fraction(data.constraints_coefficients[i][data.num_of_vars]);
         if f > max {
             max = f;
             index = Some(i);
@@ -107,7 +111,7 @@ fn form_constraint(data: &mut SimplexData, line: usize) -> bool {
 
 
 fn get_fraction(f: f64) -> f64 {
-    let int = f.ceil();
+    let int = f.floor();
     let res = (int - f).abs();
     if is_integer(res) {
         return 0.0;
