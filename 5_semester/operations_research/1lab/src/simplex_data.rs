@@ -292,6 +292,20 @@ impl SimplexData {
 
         true
     }
+
+    pub fn check_many_solutions(&self) -> bool {
+        let mut c = 0;
+        for i in 0..self.num_of_vars {
+            if self.deltas[i] == 0.0 {
+                c += 1;
+            }
+        }
+        if c > self.num_of_constraints {
+            return true;
+        }
+
+        true
+    }
 }
 
 
@@ -376,4 +390,7 @@ impl fmt::Display for SimplexData {
             
         )
     }
+
+
+
 }

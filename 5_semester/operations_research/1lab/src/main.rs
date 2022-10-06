@@ -27,6 +27,9 @@ fn main() {
                 println!("{}", s);
             } else {
                 data.print_result();
+                if data.check_many_solutions() {
+                    println!("Many solutions!");
+                }
             }
         } else {
             if !data.move_to_optimal_solution() {
