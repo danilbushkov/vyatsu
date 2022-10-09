@@ -1,0 +1,13 @@
+dev/
+*.exe
+*.EXE 
+
+*.obj
+*.OBJ 
+
+*.map
+*.MAP
+
+*.zip
+archives/
+
