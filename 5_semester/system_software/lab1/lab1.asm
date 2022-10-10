@@ -94,7 +94,7 @@ input proc near
   im2:
     cmp al, 0Dh
     je im3
-    cmp al, 2Fh
+    cmp al, 1Fh
     jle im1
   
     inc cx
