@@ -16,8 +16,8 @@
     errorCharCountZero db 'Error: Character not entered!',0Ah,'$'
     errorManyChar db 'Error: More than 1 character entered!',0Ah,'$'
 
-    result db 'Result:',0Ah,'$'
-    char db 'd'
+    messageResult db 'Result:',0Ah,'$'
+    char db ' '
     
     maxStrLen dw 14h
 
@@ -165,10 +165,14 @@ inputChar proc near
   printErrCharCountZero:
     lea dx, errorCharCountZero
     call printMessage
+    lea dx, messageAgain
+    call printMessage
     jmp ich
 
   printErrManyChar:
     lea dx, errorManyChar
+    call printMessage
+    lea dx, messageAgain
     call printMessage
     jmp ich
 
@@ -251,7 +255,8 @@ inputThreeStringAndChar proc near
     cmp cx, strCount
     jne printAndInput
 
-
+    lea dx, messageChar
+    call printMessage
     call inputChar
 
     
@@ -280,6 +285,32 @@ replace proc near
     ret
 replace endp
 
+
+replaceStrings proc near 
+    mov cx, 0h
+  rst:
+
+    push cx
+
+    mov ax, type String
+    mul cx
+    lea dx, strings 
+    add dx, ax
+    mov ah, char
+    call replace
+
+    pop cx
+
+    inc cx 
+    cmp cx, strCount 
+    jne rst
+    
+    ret
+
+replaceStrings endp
+
+
+;dx - address begin string
 printString proc near
     push dx 
     
@@ -296,17 +327,41 @@ printString proc near
     ret
 printString endp
 
+printStrings proc near 
+    lea dx, messageResult
+    call printMessage
+
+    mov cx, 0h
+  prst:
+
+    push cx
+
+    mov ax, type String
+    mul cx
+    lea dx, strings
+    add dx, ax
+    call printString
+
+    mov ah, 02h
+    mov dl, 0Ah
+    int 21h
+
+    pop cx
+    inc cx 
+    cmp cx, strCount 
+    jne prst
+    
+    ret
+printStrings endp
+
 
 main:
     call init
-    ;call inputChar
-    call inputThreeStringAndChar
     
-    ;lea dx, teststr
-    ;mov ah, char
-    ;call replace
-    ;call printString
-    ;lea dx, teststr
+    call inputThreeStringAndChar
+    call replaceStrings
+    call printStrings
+    
     
 
     mov ah, 4ch
