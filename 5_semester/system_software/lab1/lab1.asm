@@ -12,7 +12,7 @@
 
     char db 'd'
     ;teststr db '00000a0000a000df00adsf$'
-    ;maxStrLen db 14h
+    maxStrLen dw 14h
 
 
 String struc
@@ -37,16 +37,78 @@ init endp
 printMessage proc near
     push ax 
     push cx
+
     mov ah, 09h
     int 21h
+
     pop cx
     pop ax 
     ret
 printMessage endp
 
+;dx - begin string
+;ax - len
+;0 - no error
+;1 - error: length > max
+;2 - error: length == 0
+;3 - error: first char != 0
 inputStr proc near 
-    mov ax, 01h
+    push dx
     
+    mov bx, dx
+    mov si, dx
+    mov dx, ax
+    mov cx, 0h
+  im1:
+    mov ah, 0h
+    int 16h    
+    cmp al, 0h 
+    jne im2
+    jmp im1
+
+  im2:
+    cmp al, 0Dh
+    je im3
+    cmp al, 2Fh
+    jle im1
+  
+    inc cx
+    cmp cx, dx 
+    jg im4 
+    mov [si], al 
+    inc si
+    
+  im4:
+    mov ah, 02h
+    mov dl, al
+    int 21h
+
+    jne im1;
+  im3:
+
+    mov ah, 02h
+    mov dl, 0Ah
+    int 21h
+
+
+
+    mov ah, 1h
+    cmp cx, dx
+    jg iquit
+
+    mov ah, 2h
+    cmp cx, 0h
+    je iquit
+
+    mov ah, 3h
+    cmp [bx], byte ptr '0'
+    jne iquit
+
+    mov ah, 0h
+    mov [bx].len, cx
+    
+  iquit:
+    pop dx
     ret
 inputStr endp
 
@@ -64,7 +126,8 @@ input proc near
     lea dx, message0
     call printMessage
 
-    mov cx, 0
+    mov cx, 0h
+    call inputStr
   printAndInput:
     lea dx, message1
     call printMessage
@@ -81,9 +144,6 @@ input endp
 
 ;dx - begin string
 ;ah - char
-
-
-
 replace proc near
     push dx     
 
@@ -128,9 +188,9 @@ main:
     lea dx, teststr
     mov ah, char
     call replace
-    
-    ;lea dx, teststr
     call printString
+    ;lea dx, teststr
+    
 
     mov ah, 4ch
     int 21h
