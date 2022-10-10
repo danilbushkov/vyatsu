@@ -4,14 +4,21 @@
 
 .data 
     strCount dw 3h
-    message0 db 'Enter 3 string.',0Ah,'$'
-    message1 db 'Enter string (max length 20):',0Ah,'$'
+    messageStringCount db 'Enter 3 string.',0Ah,'$'
+    messageString db 'Enter string  (max length 20):',0Ah,'$'
+    messageChar db 'Enter char:',0Ah,'$'
+    messageAgain db 'Enter again:',0Ah,'$'
+    
+    errorLong db 'Error: String is too long!',0Ah,'$'
+    errorZeroLength db 'Error: String does not start at 0!',0Ah,'$'
+    errorNoZeroChar db 'Error: First character is not Zero!',0Ah,'$'
 
-    error0 db 'Error: String is too long!$'
-    error1 db 'Error: String does not start at 0!$'
+    errorCharCountZero db 'Error: Character not entered!',0Ah,'$'
+    errorManyChar db 'Error: More than 1 character entered!',0Ah,'$'
 
+    result db 'Result:',0Ah,'$'
     char db 'd'
-    ;teststr db '00000a0000a000df00adsf$'
+    
     maxStrLen dw 14h
 
 
@@ -20,7 +27,8 @@ String struc
     len dw 0h
 String ends
 
-    teststr String < '000000a00', 9h >
+    strings String 3h dup(<>)
+    ;teststr String < '000000a00', 9h >
     ;teststr db '00000a0000a000df00adsf$'
 
 .code
@@ -46,14 +54,31 @@ printMessage proc near
     ret
 printMessage endp
 
-;dx - begin string
+
+;al - number sting
+printEnterString proc near 
+    
+    lea si, messageString
+    add si, 0Ch
+    add al, 30h
+    mov [si], al
+    lea dx, messageString
+    call printMessage
+
+    ret
+printEnterString endp
+
+
+;dx - address begin string
 ;ax - len
 ;0 - no error
 ;1 - error: length > max
 ;2 - error: length == 0
 ;3 - error: first char != 0
-inputStr proc near 
+input proc near 
+    
     push dx
+    
     
     mov bx, dx
     mov si, dx
@@ -79,17 +104,20 @@ inputStr proc near
     inc si
     
   im4:
+    push dx 
     mov ah, 02h
     mov dl, al
     int 21h
+    pop dx
 
     jne im1;
   im3:
 
+    push dx 
     mov ah, 02h
     mov dl, 0Ah
     int 21h
-
+    pop dx
 
 
     mov ah, 1h
@@ -108,39 +136,127 @@ inputStr proc near
     mov [bx].len, cx
     
   iquit:
+
+    
     pop dx
     ret
-inputStr endp
+input endp
 
 
 inputChar proc near
 
-    ret
+    
+  ich:
+    lea dx, char
+    mov ax, 1h 
+    call input
+    cmp ah, 0h
+    je cexit
+
+    cmp ah, 3h
+    je cexit
+
+    cmp ah, 1h 
+    je printErrManyChar
+
+    cmp ah, 2h 
+    je printErrCharCountZero
+
+  printErrCharCountZero:
+    lea dx, errorCharCountZero
+    call printMessage
+    jmp ich
+
+  printErrManyChar:
+    lea dx, errorManyChar
+    call printMessage
+    jmp ich
+
+  cexit:
+    ret 
 inputChar endp
 
-
-    ret
-input proc near
+;dx - address begin string
+inputStr proc near
     push cx
+  ish:
+    ;lea dx, char
+    mov ax, maxStrLen
+    call input
+    cmp ah, 0h
+    je inexit
 
-    lea dx, message0
+    cmp ah, 1h 
+    je printErrLong
+
+    cmp ah, 2h 
+    je printErrZeroLength
+
+    cmp ah, 3h
+    je printErrNoZeroChar
+
+  printErrLong:
+    push dx
+    lea dx, errorLong
+    call printMessage
+    lea dx, messageAgain
+    call printMessage
+    pop dx
+    jmp ish
+
+  printErrZeroLength:
+    push dx
+    lea dx, errorZeroLength
+    call printMessage
+    lea dx, messageAgain
+    call printMessage
+    pop dx
+    jmp ish
+
+  printErrNoZeroChar:
+    push dx
+    lea dx, errorNoZeroChar
+    call printMessage
+    lea dx, messageAgain
+    call printMessage
+    pop dx
+    jmp ish
+
+  inexit:
+    pop cx
+    ret
+inputStr endp
+    
+inputThreeStringAndChar proc near
+
+    lea dx, messageStringCount
     call printMessage
 
     mov cx, 0h
-    call inputStr
+    ;call input
   printAndInput:
-    lea dx, message1
-    call printMessage
+
+
+    mov al, cl
+    inc al
+    call printEnterString
     
+    mov ax, type String
+    mul cx
+    lea dx, strings
+    add dx, ax
+    call inputStr
     
     inc cx
     cmp cx, strCount
     jne printAndInput
 
 
-    pop cx
+    call inputChar
+
+    
     ret
-input endp 
+inputThreeStringAndChar endp 
 
 ;dx - begin string
 ;ah - char
@@ -183,12 +299,13 @@ printString endp
 
 main:
     call init
-    call input
+    ;call inputChar
+    call inputThreeStringAndChar
     
-    lea dx, teststr
-    mov ah, char
-    call replace
-    call printString
+    ;lea dx, teststr
+    ;mov ah, char
+    ;call replace
+    ;call printString
     ;lea dx, teststr
     
 
