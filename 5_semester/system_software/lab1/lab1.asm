@@ -7,9 +7,21 @@
     message0 db 'Enter 3 string.',0Ah,'$'
     message1 db 'Enter string (max length 20):',0Ah,'$'
 
-    char db 'b'
-    teststr db '00000a0000a000df00adsf$'
+    error0 db 'Error: String is too long!$'
+    error1 db 'Error: String does not start at 0!$'
 
+    char db 'd'
+    ;teststr db '00000a0000a000df00adsf$'
+    ;maxStrLen db 14h
+
+
+String struc
+    chars db 14h dup (' ')
+    len dw 0h
+String ends
+
+    teststr String < '000000a00', 9h >
+    ;teststr db '00000a0000a000df00adsf$'
 
 .code
 
@@ -69,24 +81,44 @@ input endp
 
 ;dx - begin string
 ;ah - char
+
+
+
 replace proc near
     push dx     
-    
-    mov si, dx
-    jmp m1
 
-  m2:
+    mov si, dx
+    mov cx, [si].len
+    dec cx
+    jmp rm1
+  rm2:
     mov [si], ah
-  m1:
+  rm1:
     inc si
-    cmp byte ptr [si],'0'
-    je m2
-    cmp [si],'$'
-    jne m1
+    cmp [si], byte ptr '0'
+    je rm2
+    
+    loop rm1
 
     pop dx
     ret
 replace endp
+
+printString proc near
+    push dx 
+    
+    mov si, dx
+    mov cx, [si].len
+  pm1:
+    mov ah, 02h
+    mov dl, [si]
+    int 21h
+    inc si
+    loop pm1
+
+    pop dx
+    ret
+printString endp
 
 
 main:
@@ -97,8 +129,8 @@ main:
     mov ah, char
     call replace
     
-    lea dx, teststr
-    call printMessage
+    ;lea dx, teststr
+    call printString
 
     mov ah, 4ch
     int 21h
