@@ -4,7 +4,7 @@
 
 .data 
     strCount dw 3h
-    messageStringCount db 'Enter 3 string.',0Ah,'$'
+    messageStringCount db 'Enter 3 string. Strings must start with 0',0Ah,'$'
     messageString db 'Enter string  (max length 20):',0Ah,'$'
     messageChar db 'Enter char:',0Ah,'$'
     messageAgain db 'Enter again:',0Ah,'$'
@@ -94,12 +94,17 @@ input proc near
   im2:
     cmp al, 0Dh
     je im3
-    cmp al, 1Fh
+
+    cmp al, 24h
     jle im1
+
+    cmp al, 7Fh
+    je im1
   
-    inc cx
+    
     cmp cx, dx 
-    jg im4 
+    jge im1 
+    inc cx
     mov [si], al 
     inc si
     
@@ -110,8 +115,9 @@ input proc near
     int 21h
     pop dx
 
-    jne im1;
+    jmp im1;
   im3:
+
 
     push dx 
     mov ah, 02h
@@ -275,12 +281,16 @@ replace proc near
   rm2:
     mov [si], ah
   rm1:
+    cmp cx, 0h 
+    je rm3
+    dec cx
     inc si
     cmp [si], byte ptr '0'
     je rm2
     
-    loop rm1
-
+    jmp rm1 
+  
+  rm3:
     pop dx
     ret
 replace endp
