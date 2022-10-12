@@ -139,6 +139,8 @@ input proc near
     jne iquit
 
     mov ah, 0h
+    cmp dx, 1h 
+    je iquit
     mov [bx].len, cx
     
   iquit:
@@ -272,7 +274,6 @@ inputThreeStringAndChar endp
 ;dx - begin string
 ;ah - char
 replace proc near
-    push dx     
 
     mov si, dx
     mov cx, [si].len
@@ -291,7 +292,7 @@ replace proc near
     jmp rm1 
   
   rm3:
-    pop dx
+    
     ret
 replace endp
 
