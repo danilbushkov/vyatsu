@@ -1,18 +1,21 @@
 
 
-
+#[derive(Debug, PartialEq)]
 pub struct Data {
-    costs: Vec<Vec<usize>>,
-    reserves: Vec<usize>,
-    needs: Vec<usize>,
-    number_of_providers: usize,
-    number_of_clients: usize,
-    
+    pub costs: Vec<Vec<usize>>,
+    pub reserves: Vec<usize>,
+    pub needs: Vec<usize>,
+    pub number_of_providers: usize,
+    pub number_of_clients: usize,
 }
 
 
 
 impl Data {
+    
+
+
+
     pub fn getAmountReserves(&self) -> usize {
         let mut amount = 0;
         for item in &self.reserves {
