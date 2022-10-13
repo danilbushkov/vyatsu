@@ -18,13 +18,14 @@ impl Data {
     pub fn add_fictitious_reserve(&mut self, reserve: isize) {
         self.reserves.push(reserve);
         self.costs.push(vec![0; self.number_of_clients]);
-
+        self.routes.push(vec![0; self.number_of_clients])
     } 
 
     pub fn add_fictitious_need(&mut self, need: isize) {
         self.needs.push(need);
-        for item in self.costs.iter_mut() {
-            item.push(0);
+        for i in 0..self.costs.len() {
+            self.costs[i].push(0);
+            self.routes[i].push(0);
         }
     } 
 
