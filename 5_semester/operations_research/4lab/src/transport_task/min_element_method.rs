@@ -48,8 +48,6 @@ pub fn min_element_method(mut data: Data) -> Data {
     }
     
     
-    println!("{data}");
-    
     data
 }
 
