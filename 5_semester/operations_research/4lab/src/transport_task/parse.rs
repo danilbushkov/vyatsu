@@ -4,11 +4,12 @@ use crate::transport_task::data::Data;
 
 pub fn parse(mut string: String) -> Data {
     
-    let mut costs: Vec<Vec<usize>> = vec![];
-    let mut reserves: Vec<usize> = vec![];
-    let mut needs: Vec<usize> = vec![];
+    let mut costs: Vec<Vec<isize>> = vec![];
+    let mut reserves: Vec<isize> = vec![];
+    let mut needs: Vec<isize> = vec![];
     let mut number_of_providers: usize = 0;
     let mut number_of_clients: usize = 0;
+    let mut routes: Vec<Vec<isize>> = vec![];
 
 
     string.retain(|c| 
@@ -20,23 +21,24 @@ pub fn parse(mut string: String) -> Data {
     let parts: Vec<&str> = string.split(';').collect();
     
     reserves = parts[0].split(',').collect::<Vec<&str>>().iter()
-                .map(|item| item.parse::<usize>().unwrap()).collect();
+                .map(|item| item.parse::<isize>().unwrap()).collect();
     needs = parts[1].split(',').collect::<Vec<&str>>().iter()
-                .map(|item| item.parse::<usize>().unwrap()).collect();
+                .map(|item| item.parse::<isize>().unwrap()).collect();
 
     number_of_providers = reserves.len();
     number_of_clients = needs.len();
 
     
 
-    let mut right: Vec<usize> = parts[2].split(',').collect::<Vec<&str>>().iter()
-                .map(|item| item.parse::<usize>().unwrap()).collect();
+    let right: Vec<isize> = parts[2].split(',').collect::<Vec<&str>>().iter()
+                .map(|item| item.parse::<isize>().unwrap()).collect();
     
-    let mut right: &[usize] = &right;
-    let mut left: &[usize] = &[];
+    let mut right: &[isize] = &right;
+    let mut left: &[isize] = &[];
     for _ in 0..(right.len()/number_of_clients) {
         (left, right) = right.split_at(number_of_clients);
         costs.push(Vec::from(left));
+        routes.push(vec![0; number_of_clients]);
     }
 
     
@@ -46,6 +48,7 @@ pub fn parse(mut string: String) -> Data {
         needs,
         number_of_providers,
         number_of_clients,
+        routes,
     }
 }
 
@@ -72,6 +75,10 @@ fn test_parse_0() {
         needs: vec![10, 4, 1],
         number_of_providers: 3,
         number_of_clients: 3,
+        routes: vec![vec![0, 0, 0], 
+                    vec![0, 0, 0], 
+                    vec![0, 0, 0]],
+                    
     };
 
     assert_eq!(data, parse(string));
@@ -100,6 +107,10 @@ fn test_parse_1() {
         needs: vec![10, 4, 1],
         number_of_providers: 4,
         number_of_clients: 3,
+        routes: vec![vec![0, 0, 0], 
+                    vec![0, 0, 0], 
+                    vec![0, 0, 0],
+                    vec![0, 0, 0]],
     };
 
     assert_eq!(data, parse(string));
@@ -128,6 +139,10 @@ fn test_parse_2() {
         needs: vec![10, 4, 1, 4, 4],
         number_of_providers: 4,
         number_of_clients: 5,
+        routes: vec![vec![0, 0, 0, 0, 0], 
+                    vec![0, 0, 0, 0, 0], 
+                    vec![0, 0, 0, 0, 0],
+                    vec![0, 0, 0, 0, 0]],
     };
 
     assert_eq!(data, parse(string));
