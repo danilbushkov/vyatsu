@@ -67,6 +67,14 @@ impl Data {
 
         result
     }
+
+    pub fn get_result(&self) -> isize {
+        let mut result = 0;
+        for (a, b) in self.involved_routes.iter() {
+            result += self.costs[*a][*b]*self.routes[*a][*b];
+        }
+        result
+    }
 }
 
 
