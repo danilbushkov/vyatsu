@@ -24,10 +24,15 @@ pub fn move_reserve(mut data: Data, index: (usize, usize)) -> Data {
             data.routes[cycle[i].0][cycle[i].1] = data.routes[cycle[i].0][cycle[i].1] + min;
         } else {
             data.routes[cycle[i].0][cycle[i].1] = data.routes[cycle[i].0][cycle[i].1] - min;
+            if data.routes[cycle[i].0][cycle[i].1] == 0 
+                && !data.epsilons.contains(&(cycle[i].0, cycle[i].1)) {
+                
+                data.involved_routes.remove(&(cycle[i].0, cycle[i].1));
+            }
         }
     }
 
-    
+    data.involved_routes.insert(index);
 
 
     data
