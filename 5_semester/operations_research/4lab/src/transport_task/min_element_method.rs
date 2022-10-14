@@ -27,7 +27,7 @@ pub fn min_element_method(mut data: Data) -> Data {
 
     let mut possible_reserves: HashSet<usize> = HashSet::new();
     let mut possible_needs: HashSet<usize> = HashSet::new();
-    let mut reserve = true;
+    let mut reserve = false;
     let mut i: usize = 0;
     while i < sorted_costs.len() {
 
