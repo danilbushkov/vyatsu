@@ -1,5 +1,5 @@
 
-//use std::collections::{HashMap, HashSet};
+use std::collections::{HashMap, HashSet};
 
 
 
@@ -49,6 +49,22 @@ impl Data {
         }
 
         amount
+    }
+
+    pub fn get_involved_routes(&self) -> HashMap<usize, HashSet<usize>> {
+        let mut result:HashMap<usize, HashSet<usize>> = HashMap::new();
+
+        for (a, b) in self.involved_routes.iter() {
+            if let Some(v) = result.get_mut(a) {
+                
+                v.insert(*b);
+                
+            } else {
+                result.insert(*a, HashSet::from([*b]));
+            }
+        }
+
+        result
     }
 }
 

@@ -4,8 +4,12 @@ pub mod input;
 pub mod display;
 mod min_element_method;
 mod potentials;
+pub mod potential_method;
+
+
 
 use crate::transport_task::data::Data;
+
 
 
 pub fn transport_task(mut data: Data) {
