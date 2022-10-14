@@ -1,13 +1,38 @@
 
 
+use std::collections::HashSet;
 
 
 
 
 
-// pub fn get_evaluations(costs: &Vec<Vec<isize>>, involved_routes: Vec<usize>) -> bool {
 
-// }
+
+
+pub fn get_evaluations(costs: &Vec<Vec<isize>>, involved_routes: &Vec<(usize, usize)>) -> Vec<(usize, usize, isize)> {
+    let (reserves, needs) = get_potentials(costs, involved_routes);
+
+    let mut set: HashSet<(usize, usize)> = HashSet::new();
+    for item in involved_routes {
+        set.insert((item.0, item.1));
+    }
+
+    let mut not_involved_routes = vec![];
+    for i in 0..costs.len() {
+        for j in 0..costs[0].len() {
+            if !set.contains(&(i, j)) {
+                not_involved_routes.push((i, j, 0));
+            }
+        }
+    }
+
+    for item in not_involved_routes.iter_mut() {
+        item.2 = costs[item.0][item.1] - (reserves[item.0] + needs[item.1]);
+    }
+
+
+    not_involved_routes
+}
 
 
 pub fn get_potentials(costs: &Vec<Vec<isize>>, involved_routes: &Vec<(usize, usize)>) -> (Vec<isize>, Vec<isize>) {
@@ -50,6 +75,37 @@ pub fn get_potentials(costs: &Vec<Vec<isize>>, involved_routes: &Vec<(usize, usi
     (reserves, needs)
 }
 
+
+
+
+#[test]
+fn test_get_evaluations() {
+    let costs: Vec<Vec<isize>> = vec![
+        vec![3, 5, 4, 0],
+        vec![6, 3, 1, 0],
+        vec![3, 2, 7, 0],
+    ];
+
+    let involved_routes: Vec<(usize, usize)> = vec![
+        (0, 0),
+        (1, 0),
+        (1, 1),
+        (1, 2),
+        (1, 3),
+        (2, 1),
+    ];
+
+    let results = vec![
+        (0, 1, 5),
+        (0, 2, 6),
+        (0, 3, 3),
+        (2, 0, -2),
+        (2, 2, 7),
+        (2, 3, 1),
+    ];
+
+    assert_eq!(get_evaluations(&costs, &involved_routes), results);
+}
 
 
 
