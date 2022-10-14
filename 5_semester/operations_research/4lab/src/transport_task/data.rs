@@ -1,4 +1,7 @@
 
+//use std::collections::{HashMap, HashSet};
+
+
 
 #[derive(Debug, PartialEq)]
 pub struct Data {
@@ -8,6 +11,7 @@ pub struct Data {
     pub number_of_providers: usize,
     pub number_of_clients: usize,
     pub routes: Vec<Vec<isize>>,
+    pub involved_routes: Vec<(usize, usize)>,
 }
 
 

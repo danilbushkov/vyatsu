@@ -1,4 +1,6 @@
 
+
+
 use crate::transport_task::data::Data;
 
 
@@ -10,6 +12,7 @@ pub fn parse(mut string: String) -> Data {
     let mut number_of_providers: usize = 0;
     let mut number_of_clients: usize = 0;
     let mut routes: Vec<Vec<isize>> = vec![];
+    let mut involved_routes: Vec<(usize, usize)> = vec![];
 
 
     string.retain(|c| 
@@ -49,6 +52,7 @@ pub fn parse(mut string: String) -> Data {
         number_of_providers,
         number_of_clients,
         routes,
+        involved_routes,
     }
 }
 
@@ -78,6 +82,7 @@ fn test_parse_0() {
         routes: vec![vec![0, 0, 0], 
                     vec![0, 0, 0], 
                     vec![0, 0, 0]],
+        involved_routes: vec![],
                     
     };
 
@@ -111,6 +116,7 @@ fn test_parse_1() {
                     vec![0, 0, 0], 
                     vec![0, 0, 0],
                     vec![0, 0, 0]],
+        involved_routes: vec![],
     };
 
     assert_eq!(data, parse(string));
@@ -143,6 +149,7 @@ fn test_parse_2() {
                     vec![0, 0, 0, 0, 0], 
                     vec![0, 0, 0, 0, 0],
                     vec![0, 0, 0, 0, 0]],
+        involved_routes: vec![],
     };
 
     assert_eq!(data, parse(string));
