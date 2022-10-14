@@ -5,11 +5,20 @@ use std::collections::HashSet;
 
 
 
+pub fn get_negative_cell(costs: &Vec<Vec<isize>>, involved_routes: &Vec<(usize, usize)>) -> Option<(usize, usize)> {
+    let mut evaluations = get_evaluations(costs, involved_routes);
+
+    for item in evaluations {
+        if item.2 < 0 {
+            return Some((item.0, item.1));
+        }
+    }
+    None
+}
 
 
 
-
-pub fn get_evaluations(costs: &Vec<Vec<isize>>, involved_routes: &Vec<(usize, usize)>) -> Vec<(usize, usize, isize)> {
+fn get_evaluations(costs: &Vec<Vec<isize>>, involved_routes: &Vec<(usize, usize)>) -> Vec<(usize, usize, isize)> {
     let (reserves, needs) = get_potentials(costs, involved_routes);
 
     let mut set: HashSet<(usize, usize)> = HashSet::new();
