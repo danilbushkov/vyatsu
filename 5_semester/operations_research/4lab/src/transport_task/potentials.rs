@@ -5,7 +5,7 @@ use std::collections::HashSet;
 
 
 
-pub fn get_negative_cell(costs: &Vec<Vec<isize>>, involved_routes: &Vec<(usize, usize)>) -> Option<(usize, usize)> {
+pub fn get_negative_cell(costs: &Vec<Vec<isize>>, involved_routes: &HashSet<(usize, usize)>) -> Option<(usize, usize)> {
     let mut evaluations = get_evaluations(costs, involved_routes);
 
     for item in evaluations {
@@ -18,13 +18,11 @@ pub fn get_negative_cell(costs: &Vec<Vec<isize>>, involved_routes: &Vec<(usize, 
 
 
 
-fn get_evaluations(costs: &Vec<Vec<isize>>, involved_routes: &Vec<(usize, usize)>) -> Vec<(usize, usize, isize)> {
+fn get_evaluations(costs: &Vec<Vec<isize>>, involved_routes: &HashSet<(usize, usize)>) -> Vec<(usize, usize, isize)> {
     let (reserves, needs) = get_potentials(costs, involved_routes);
 
-    let mut set: HashSet<(usize, usize)> = HashSet::new();
-    for item in involved_routes {
-        set.insert((item.0, item.1));
-    }
+    let mut set: &HashSet<(usize, usize)> = involved_routes;
+    
 
     let mut not_involved_routes = vec![];
     for i in 0..costs.len() {
@@ -44,7 +42,7 @@ fn get_evaluations(costs: &Vec<Vec<isize>>, involved_routes: &Vec<(usize, usize)
 }
 
 
-pub fn get_potentials(costs: &Vec<Vec<isize>>, involved_routes: &Vec<(usize, usize)>) -> (Vec<isize>, Vec<isize>) {
+pub fn get_potentials(costs: &Vec<Vec<isize>>, involved_routes: &HashSet<(usize, usize)>) -> (Vec<isize>, Vec<isize>) {
     let mut needs: Vec<Option<isize>> = vec![None; costs[0].len()];
     let mut reserves: Vec<Option<isize>> = vec![None; costs.len()];
 
@@ -95,14 +93,14 @@ fn test_get_evaluations() {
         vec![3, 2, 7, 0],
     ];
 
-    let involved_routes: Vec<(usize, usize)> = vec![
+    let involved_routes: HashSet<(usize, usize)> = HashSet::from([
         (0, 0),
         (1, 0),
         (1, 1),
         (1, 2),
         (1, 3),
         (2, 1),
-    ];
+    ]);
 
     let results = vec![
         (0, 1, 5),
@@ -128,7 +126,7 @@ fn test_get_potentials_0() {
         vec![0, 0, 0, 0]
     ];
 
-    let involved_routes: Vec<(usize, usize)> = vec![
+    let involved_routes: HashSet<(usize, usize)> = HashSet::from([
         (0, 0),
         (0, 2),
         (0, 3),
@@ -136,7 +134,7 @@ fn test_get_potentials_0() {
         (2, 1),
         (2, 3),
         (3, 3),
-    ];
+    ]);
 
     let results = (vec![0, -2, -4, -6], vec![4, 5, 3, 6]);
 
@@ -153,7 +151,7 @@ fn test_get_potentials_1() {
         vec![0, 0, 0, 0]
     ];
 
-    let involved_routes: Vec<(usize, usize)> = vec![
+    let involved_routes: HashSet<(usize, usize)> = HashSet::from([
         (0, 0),
         (0, 2),
         (1, 1),
@@ -161,7 +159,7 @@ fn test_get_potentials_1() {
         (2, 1),
         (2, 3),
         (3, 3),
-    ];
+    ]);
 
     let results = (vec![0, -2, -3, -5], vec![4, 4, 3, 5]);
 
