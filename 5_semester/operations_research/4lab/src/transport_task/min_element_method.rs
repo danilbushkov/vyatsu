@@ -1,5 +1,7 @@
 
 
+use std::collections::HashSet;
+
 use crate::transport_task::data::Data;
 use crate::transport_task::parse::parse;
 
@@ -23,22 +25,84 @@ pub fn min_element_method(mut data: Data) -> Data {
     let mut reserves = data.reserves.clone();
     let mut needs = data.needs.clone();
 
+    let mut possible_reserves: HashSet<usize> = HashSet::new();
+    let mut possible_needs: HashSet<usize> = HashSet::new();
+    let mut reserve = true;
     let mut i: usize = 0;
     while i < sorted_costs.len() {
 
-        if (reserves[sorted_costs[i].0] > 0)
-            && (reserves[sorted_costs[i].0] <= needs[sorted_costs[i].1]) {
+        if ( 
+            ((reserves[sorted_costs[i].0] > 0)
+            && (reserves[sorted_costs[i].0] <= needs[sorted_costs[i].1]))) 
+
+            || ( possible_reserves.contains(&sorted_costs[i].0) && 
+               ( possible_needs.contains(&sorted_costs[i].1) || needs[sorted_costs[i].1] > 0) ) {
+
+
+            if possible_reserves.contains(&sorted_costs[i].0) {
+                possible_reserves.remove(&sorted_costs[i].0);
+                if possible_needs.contains(&sorted_costs[i].1) {
+                    possible_needs.remove(&sorted_costs[i].1);
+                }
+            }
+
+            if (reserves[sorted_costs[i].0] == needs[sorted_costs[i].1]) 
+                && reserves[sorted_costs[i].0] > 0 {
+                if reserve {
+                    possible_reserves.insert(sorted_costs[i].0);
+                    reserve = false;
+                } else {
+                    possible_needs.insert(sorted_costs[i].1);
+                    reserve = true;
+                }
+            }
+
             data.routes[sorted_costs[i].0][sorted_costs[i].1] = reserves[sorted_costs[i].0];
             needs[sorted_costs[i].1] -= reserves[sorted_costs[i].0];
             reserves[sorted_costs[i].0] = 0;
             data.involved_routes.push((sorted_costs[i].0, sorted_costs[i].1));
 
-        } else if (needs[sorted_costs[i].1] > 0) 
-            && (reserves[sorted_costs[i].0] >= needs[sorted_costs[i].1]) {
+            
+
+            
+
+        } else if 
+            ( (needs[sorted_costs[i].1] > 0) 
+            && (reserves[sorted_costs[i].0] >= needs[sorted_costs[i].1]))
+            
+            || ( possible_needs.contains(&sorted_costs[i].1) &&
+                (possible_reserves.contains(&sorted_costs[i].0) || reserves[sorted_costs[i].0] > 0)) {
+
+
+            if possible_needs.contains(&sorted_costs[i].1) {
+                possible_needs.remove(&sorted_costs[i].1);
+                if possible_reserves.contains(&sorted_costs[i].0) {
+                    possible_reserves.remove(&sorted_costs[i].0);
+                }
+            }
+
+
+            if (reserves[sorted_costs[i].0] == needs[sorted_costs[i].1]) 
+                && reserves[sorted_costs[i].0] > 0 {
+            
+                if reserve {
+                    possible_reserves.insert(sorted_costs[i].0);
+                    reserve = false;
+                } else {
+                    possible_needs.insert(sorted_costs[i].1);
+                    reserve = true;
+                }
+                
+            }
+
+
             data.routes[sorted_costs[i].0][sorted_costs[i].1] = needs[sorted_costs[i].1];
             reserves[sorted_costs[i].0] -= needs[sorted_costs[i].1];
             needs[sorted_costs[i].1] = 0;
             data.involved_routes.push((sorted_costs[i].0, sorted_costs[i].1));
+
+            
+
         }
         
         
@@ -47,7 +111,7 @@ pub fn min_element_method(mut data: Data) -> Data {
         
     }
     
-    
+    println!("{}", data);
     data
 }
 
@@ -155,5 +219,36 @@ fn test_min_el_method_2() {
         (0, 0),
         (0, 3),
         (3, 3),
+    ]);
+}
+
+
+#[test]
+fn test_min_el_method_3() {
+    let string = "
+        Reserves: 160, 120, 170 ;
+        Needs: 120, 50, 190, 90 ;
+        Costs(a/b):
+        7, 8, 1, 2,
+        4, 5, 9, 8,
+        9, 2, 3, 6
+    
+        end
+    ".to_string();
+    
+    let result = vec![
+        vec![0, 0, 160, 0],
+        vec![120, 0, 0, 0],
+        vec![0, 50, 30, 90],
+    ];
+
+    assert_eq!(min_element_method(parse(string.clone())).routes, result);
+    assert_eq!(min_element_method(parse(string)).involved_routes, vec![
+        (0, 2),
+        (2, 1),
+        (2, 2),
+        (1, 0),
+        (2, 3),
+        (2, 0),
     ]);
 }
