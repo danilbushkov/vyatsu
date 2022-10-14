@@ -1,5 +1,7 @@
 
 
+use std::collections::HashSet;
+
 
 use crate::transport_task::data::Data;
 
@@ -12,7 +14,7 @@ pub fn parse(mut string: String) -> Data {
     let mut number_of_providers: usize = 0;
     let mut number_of_clients: usize = 0;
     let mut routes: Vec<Vec<isize>> = vec![];
-    let mut involved_routes: Vec<(usize, usize)> = vec![];
+    let mut involved_routes: HashSet<(usize, usize)> = HashSet::new();
     let mut epsilons = vec![];
 
 
@@ -84,7 +86,7 @@ fn test_parse_0() {
         routes: vec![vec![0, 0, 0], 
                     vec![0, 0, 0], 
                     vec![0, 0, 0]],
-        involved_routes: vec![],
+        involved_routes: HashSet::new(),
         epsilons: vec![],
     };
 
@@ -118,7 +120,7 @@ fn test_parse_1() {
                     vec![0, 0, 0], 
                     vec![0, 0, 0],
                     vec![0, 0, 0]],
-        involved_routes: vec![],
+        involved_routes: HashSet::new(),
         epsilons: vec![],
     };
 
@@ -152,7 +154,7 @@ fn test_parse_2() {
                     vec![0, 0, 0, 0, 0], 
                     vec![0, 0, 0, 0, 0],
                     vec![0, 0, 0, 0, 0]],
-        involved_routes: vec![],
+        involved_routes: HashSet::new(),
         epsilons: vec![],
     };
 

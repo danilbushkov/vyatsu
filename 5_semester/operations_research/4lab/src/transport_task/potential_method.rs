@@ -9,7 +9,26 @@ use crate::transport_task::data::Data;
 
 pub fn move_reserve(mut data: Data, index: (usize, usize)) -> Data {
     let cycle = get_cycle(&data.get_involved_routes(), index);
+    let mut min = isize::MAX;
     
+    let mut i = 1;
+    while i < cycle.len() {
+        if data.routes[cycle[i].0][cycle[i].1] < min {
+            min = data.routes[cycle[i].0][cycle[i].1];
+        }
+        i += 2;
+    }
+
+    for i in 0..cycle.len() {
+        if i % 2 == 0 {
+            data.routes[cycle[i].0][cycle[i].1] = data.routes[cycle[i].0][cycle[i].1] + min;
+        } else {
+            data.routes[cycle[i].0][cycle[i].1] = data.routes[cycle[i].0][cycle[i].1] - min;
+        }
+    }
+
+    
+
 
     data
 }

@@ -61,7 +61,7 @@ pub fn min_element_method(mut data: Data) -> Data {
             data.routes[sorted_costs[i].0][sorted_costs[i].1] = reserves[sorted_costs[i].0];
             needs[sorted_costs[i].1] -= reserves[sorted_costs[i].0];
             reserves[sorted_costs[i].0] = 0;
-            data.involved_routes.push((sorted_costs[i].0, sorted_costs[i].1));
+            data.involved_routes.insert((sorted_costs[i].0, sorted_costs[i].1));
 
             
 
@@ -101,7 +101,7 @@ pub fn min_element_method(mut data: Data) -> Data {
             data.routes[sorted_costs[i].0][sorted_costs[i].1] = needs[sorted_costs[i].1];
             reserves[sorted_costs[i].0] -= needs[sorted_costs[i].1];
             needs[sorted_costs[i].1] = 0;
-            data.involved_routes.push((sorted_costs[i].0, sorted_costs[i].1));
+            data.involved_routes.insert((sorted_costs[i].0, sorted_costs[i].1));
 
             
 
@@ -159,13 +159,13 @@ fn test_min_el_method_0() {
     ];
 
     assert_eq!(min_element_method(parse(string.clone())).routes, result);
-    assert_eq!(min_element_method(parse(string)).involved_routes, vec![
+    assert_eq!(min_element_method(parse(string)).involved_routes, HashSet::from([
         (0, 2),
         (2, 1),
         (2, 2),
         (1, 0),
         (1, 2),
-    ]);
+    ]));
 }
 
 
@@ -214,7 +214,7 @@ fn test_min_el_method_2() {
     ];
 
     assert_eq!(min_element_method(parse(string.clone())).routes, result);
-    assert_eq!(min_element_method(parse(string.clone())).involved_routes, vec![
+    assert_eq!(min_element_method(parse(string.clone())).involved_routes, HashSet::from([
         (1, 2),
         (2, 1),
         (2, 3),
@@ -222,7 +222,7 @@ fn test_min_el_method_2() {
         (0, 0),
         (0, 3),
         (3, 3),
-    ]);
+    ]));
     assert_eq!(min_element_method(parse(string.clone())).epsilons, vec![
         (0, 2),
     ]);
@@ -249,14 +249,14 @@ fn test_min_el_method_3() {
     ];
 
     assert_eq!(min_element_method(parse(string.clone())).routes, result);
-    assert_eq!(min_element_method(parse(string.clone())).involved_routes, vec![
+    assert_eq!(min_element_method(parse(string.clone())).involved_routes, HashSet::from([
         (0, 2),
         (2, 1),
         (2, 2),
         (1, 0),
         (2, 3),
         (2, 0),
-    ]);
+    ]));
     assert_eq!(min_element_method(parse(string.clone())).epsilons, vec![
         (2, 0),
     ]);
