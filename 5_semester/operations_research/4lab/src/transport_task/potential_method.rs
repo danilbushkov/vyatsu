@@ -8,8 +8,8 @@ use crate::transport_task::data::Data;
 
 
 pub fn move_reserve(mut data: Data, index: (usize, usize)) -> Data {
-    data.get_involved_routes();
-
+    let cycle = get_cycle(&data.get_involved_routes(), index);
+    
 
     data
 }

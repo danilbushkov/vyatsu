@@ -40,6 +40,7 @@ pub fn min_element_method(mut data: Data) -> Data {
 
 
             if possible_reserves.contains(&sorted_costs[i].0) {
+                data.epsilons.push((sorted_costs[i].0, sorted_costs[i].1));
                 possible_reserves.remove(&sorted_costs[i].0);
                 if possible_needs.contains(&sorted_costs[i].1) {
                     possible_needs.remove(&sorted_costs[i].1);
@@ -75,6 +76,7 @@ pub fn min_element_method(mut data: Data) -> Data {
 
 
             if possible_needs.contains(&sorted_costs[i].1) {
+                data.epsilons.push((sorted_costs[i].0, sorted_costs[i].1));
                 possible_needs.remove(&sorted_costs[i].1);
                 if possible_reserves.contains(&sorted_costs[i].0) {
                     possible_reserves.remove(&sorted_costs[i].0);
@@ -187,7 +189,8 @@ fn test_min_el_method_1() {
         vec![0, 30, 0, 0],
     ];
 
-    assert_eq!(min_element_method(parse(string)).routes, result);
+    assert_eq!(min_element_method(parse(string.clone())).routes, result);
+    assert_eq!(min_element_method(parse(string.clone())).epsilons, vec![]);
 }
 
 #[test]
@@ -211,7 +214,7 @@ fn test_min_el_method_2() {
     ];
 
     assert_eq!(min_element_method(parse(string.clone())).routes, result);
-    assert_eq!(min_element_method(parse(string)).involved_routes, vec![
+    assert_eq!(min_element_method(parse(string.clone())).involved_routes, vec![
         (1, 2),
         (2, 1),
         (2, 3),
@@ -219,6 +222,9 @@ fn test_min_el_method_2() {
         (0, 0),
         (0, 3),
         (3, 3),
+    ]);
+    assert_eq!(min_element_method(parse(string.clone())).epsilons, vec![
+        (0, 2),
     ]);
 }
 
@@ -243,7 +249,7 @@ fn test_min_el_method_3() {
     ];
 
     assert_eq!(min_element_method(parse(string.clone())).routes, result);
-    assert_eq!(min_element_method(parse(string)).involved_routes, vec![
+    assert_eq!(min_element_method(parse(string.clone())).involved_routes, vec![
         (0, 2),
         (2, 1),
         (2, 2),
@@ -251,4 +257,8 @@ fn test_min_el_method_3() {
         (2, 3),
         (2, 0),
     ]);
+    assert_eq!(min_element_method(parse(string.clone())).epsilons, vec![
+        (2, 0),
+    ]);
+
 }

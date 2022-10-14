@@ -12,6 +12,7 @@ pub struct Data {
     pub number_of_clients: usize,
     pub routes: Vec<Vec<isize>>,
     pub involved_routes: Vec<(usize, usize)>,
+    pub epsilons: Vec<(usize, usize)>,
 }
 
 
