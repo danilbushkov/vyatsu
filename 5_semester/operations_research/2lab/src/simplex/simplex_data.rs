@@ -216,10 +216,11 @@ impl SimplexData {
     }
    
     pub fn check_artificial_variables_in_basis(&mut self) -> bool {
-        for item in &self.basis {
+        for (i, item) in self.basis.iter().enumerate() {
             match item {
                 Some(v) => {
-                    if self.artificial_variables.contains(&v) {
+                    if self.artificial_variables.contains(&v) 
+                        && self.constraints_coefficients[i][self.num_of_vars] != 0.0 {
                         return true;
                     }
                 },

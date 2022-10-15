@@ -34,14 +34,23 @@ pub fn branch_and_bound_method(data: SimplexData) {
                     if check_result_for_integer(&r.get_result()) {
                         int_results.push(r.get_result());
                     } else {
-                        if let Some((i,v)) = get_non_integer_value(&r.get_result()) {
+                        let vec = get_non_integer_value(&r.get_result());
+                        if !vec.is_empty() {
                             
-                            data_left.add_condition(i, "<=".to_string(), v.floor());
-                            data_right.add_condition(i, ">=".to_string(), v.ceil());
-                            //println!("{}", data_left);
-                            //println!("{}", data_right);
-                            list.push_front(data_left);
-                            list.push_front(data_right);
+                            let i = vec[0].0;
+                            let v = vec[0].1;
+
+                            //for (i, v) in vec {
+                                let mut l = data_left.clone();
+                                let mut r = data_right.clone();
+                                l.add_condition(i, "<=".to_string(), v.floor());
+                                r.add_condition(i, ">=".to_string(), v.ceil());
+                                println!("{}", l);
+                                println!("{}", r);
+                                list.push_front(l);
+                                list.push_front(r);
+                            //}
+                            
                         } else {
                             println!("{}", "Branch has no solution");
                             println!("{:->9}", "-");
@@ -119,13 +128,15 @@ fn check_result_for_integer(result: &SimplexResult) -> bool {
     true
 }
 
-fn get_non_integer_value(result: &SimplexResult) -> Option<(usize, f64)> {
-    for (i, item) in result.vec.iter().enumerate() {
+fn get_non_integer_value(r: &SimplexResult) -> Vec<(usize, f64)> {
+    let mut result = vec![];
+    for (i, item) in r.vec.iter().enumerate() {
         if !is_integer(*item) {
-            return Some((i,*item));
+            result.push((i,*item));
+            
         }
     }
-    None
+    result
 }
 
 
