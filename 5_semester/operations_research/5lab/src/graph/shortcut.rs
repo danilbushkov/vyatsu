@@ -28,6 +28,7 @@ pub fn find_shortcut(graph: &Graph, start: usize, target: usize) -> (LinkedList<
     
     while !list.is_empty() {
         if let Some(vertice) = list.pop_back() {
+            
             if !vertices_costs.contains_key(&vertice) {
                 let mut not_calculated: Vec<usize> = vec![];
                 let mut min = isize::MAX;
@@ -154,13 +155,13 @@ fn test_find_shortcut_1() {
 
 
 #[test]
-fn test_find_shortcut() {
+fn test_find_shortcut_2() {
     let string = "
             a   b   c   d   e   f   g   h
         a   1,  5,  1,  0,  2,  0,  0,  0;
         b   0,  0,  0,  0, -1,  0,  0,  0;
         c   0,  0,  0,  2,  0,  4,  0,  2;
-        d   2,  0,  2,  0,  0,  0,  1,  0;
+        d   2,  0,  0,  0,  0,  0,  1,  0;
         e   0,  0,  0,  0,  0,  0,  3,  0;
         f   0,  0,  0,  0,  0,  0,  1,  0;
         g   0,  0,  0,  0,  0,  0,  0,  0;
