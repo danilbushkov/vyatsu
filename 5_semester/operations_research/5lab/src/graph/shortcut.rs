@@ -53,7 +53,9 @@ pub fn find_shortcut(graph: &Graph, start: usize, target: usize) -> (LinkedList<
                         if vertice != target {
                             if let Some(vertices) = graph.get(&vertice) {
                                 for item in vertices {
-                                    list.push_front(*item.0);
+                                    if !vertices_costs.contains_key(item.0) {
+                                        list.push_front(*item.0);
+                                    }
                                 }
                             }
                         }
@@ -106,7 +108,7 @@ pub fn find_shortcut(graph: &Graph, start: usize, target: usize) -> (LinkedList<
 
 
 #[test]
-fn test_find_shortcut() {
+fn test_find_shortcut_0() {
     let string = "
             a   b   c   d   e   f   g 
         a   1,  5,  1,  0,  2,  0,  0 ;
@@ -150,6 +152,27 @@ fn test_find_shortcut_1() {
     assert_eq!(find_shortcut(&parse(string), 0, 6), (result, -6))
 }
 
+
+#[test]
+fn test_find_shortcut() {
+    let string = "
+            a   b   c   d   e   f   g   h
+        a   1,  5,  1,  0,  2,  0,  0,  0;
+        b   0,  0,  0,  0, -1,  0,  0,  0;
+        c   0,  0,  0,  2,  0,  4,  0,  2;
+        d   2,  0,  2,  0,  0,  0,  1,  0;
+        e   0,  0,  0,  0,  0,  0,  3,  0;
+        f   0,  0,  0,  0,  0,  0,  1,  0;
+        g   0,  0,  0,  0,  0,  0,  0,  0;
+        h  -1,  0,  0,  0,  0,  0,  0,  0
+    ".to_string();
+
+
+
+    let result: LinkedList<usize> = LinkedList::from([0, 2, 3, 6]);
+
+    assert_eq!(find_shortcut(&parse(string), 0, 6), (result, 4))
+}
 
 
 
