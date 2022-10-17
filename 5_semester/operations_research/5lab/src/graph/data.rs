@@ -3,12 +3,13 @@ use std::collections::HashMap;
 use std::fmt;
 
 
-pub type Graph = HashMap<usize, HashMap<usize, isize>>;
+pub type Edges = HashMap<usize, HashMap<usize, isize>>;
 
 
-// pub struct Graph {
-//     pub vertices: HashMap<usize, HashMap<usize, isize>>,
-// }
+pub struct Graph {
+    pub edges: Edges,
+    pub number_of_vertices: usize,
+}
 
 
 

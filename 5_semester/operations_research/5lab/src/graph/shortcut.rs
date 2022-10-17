@@ -2,12 +2,12 @@
 
 use std::collections::{LinkedList, HashMap};
 
-use crate::graph::Graph;
+use crate::graph::Edges;
 use crate::graph::parse;
 
 
 
-pub fn find_shortcut(graph: &Graph, start: usize, target: usize) -> (LinkedList<usize>, isize) {
+pub fn find_shortcut(graph: &Edges, start: usize, target: usize) -> (LinkedList<usize>, isize) {
     let mut list: LinkedList<usize> = LinkedList::new();
     match graph.get(&start) {
         Some(v) => {
@@ -48,7 +48,7 @@ pub fn find_shortcut(graph: &Graph, start: usize, target: usize) -> (LinkedList<
                 }
                 if not_calculated.len() == 0 {
                     if min == isize::MAX {
-                        vertices_costs.insert(vertice, 0);
+                        vertices_costs.insert(vertice, isize::MAX);
                     } else {
                         vertices_costs.insert(vertice, min);
                         if vertice != target {
@@ -125,7 +125,7 @@ fn test_find_shortcut_0() {
 
     let result: LinkedList<usize> = LinkedList::from([0, 2, 3, 6]);
 
-    assert_eq!(find_shortcut(&parse(string), 0, 6), (result, 4))
+    assert_eq!(find_shortcut(&parse(string).edges, 0, 6), (result, 4))
 }
 
 
@@ -150,7 +150,7 @@ fn test_find_shortcut_1() {
 
     let result: LinkedList<usize> = LinkedList::from([0, 7, 1, 4, 6]);
 
-    assert_eq!(find_shortcut(&parse(string), 0, 6), (result, -6))
+    assert_eq!(find_shortcut(&parse(string).edges, 0, 6), (result, -6))
 }
 
 
@@ -172,7 +172,7 @@ fn test_find_shortcut_2() {
 
     let result: LinkedList<usize> = LinkedList::from([0, 2, 3, 6]);
 
-    assert_eq!(find_shortcut(&parse(string), 0, 6), (result, 4))
+    assert_eq!(find_shortcut(&parse(string).edges, 0, 6), (result, 4))
 }
 
 

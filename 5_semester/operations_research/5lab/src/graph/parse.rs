@@ -1,11 +1,13 @@
 use std::collections::HashMap;
 
 
-use crate::graph::Graph;
+use crate::graph::{Edges, Graph};
+
 
 
 pub fn parse(mut string: String) -> Graph {
-    let mut vertices: Graph = HashMap::new();
+    let mut edges: Edges = HashMap::new();
+    let mut number_of_vertices = 0;
     string.retain(|c| 
         (c >= '0' && c <= '9') ||
         c == ';' ||
@@ -19,20 +21,26 @@ pub fn parse(mut string: String) -> Graph {
     for item in parts {
         vec.push(item.split(',').map(|a| a.parse::<isize>().unwrap()).collect());
     }
-
+    if !vec.is_empty() {
+        number_of_vertices = vec[0].len();
+    }
     for (i, v) in vec.iter().enumerate() {
         for (j, a) in v.iter().enumerate() {
             if *a != 0 {
-                if let Some(v) = vertices.get_mut(&i) {
+                if let Some(v) = edges.get_mut(&i) {
                     v.insert(j, *a);
                 } else {
-                    vertices.insert(i, HashMap::from([(j, *a)]));
+                    edges.insert(i, HashMap::from([(j, *a)]));
                 }
             }
         }
     }
 
-    vertices
+    Graph {
+        edges,
+        number_of_vertices,
+    }
+    
 }
 
 
@@ -51,7 +59,7 @@ fn test_parse() {
     
     
     
-    let result: Graph = HashMap::from([
+    let result: Edges = HashMap::from([
         (0, HashMap::from([(1, 5), (2, 1), (4, 2)])),
         (1, HashMap::from([(4, -1)])),
         (2, HashMap::from([(3, 2), (5, 4)])),
@@ -61,5 +69,6 @@ fn test_parse() {
 
     ]);
 
-    assert_eq!(parse(string), result);
+    assert_eq!(parse(string.clone()).edges, result);
+    assert_eq!(parse(string).number_of_vertices, 7);
 }

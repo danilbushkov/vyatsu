@@ -1,7 +1,7 @@
 mod input;
 mod graph;
 
-use crate::graph::Graph;
+use crate::graph::Edges;
 use crate::graph::{find_shortcut, parse};
 
 fn main() {
@@ -19,6 +19,6 @@ fn main() {
 
 
 
-    find_shortcut(&parse(string), 0, 6);
+    find_shortcut(&parse(string).edges, 0, 6);
     println!("Hello, world!");
 }
