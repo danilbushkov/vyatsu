@@ -2,7 +2,7 @@
 
 use std::collections::{LinkedList, HashMap};
 
-use crate::graph::Edges;
+use crate::graph::{Edges, Graph};
 use crate::graph::parse;
 
 
@@ -36,10 +36,12 @@ pub fn find_shortcut(graph: &Edges, start: usize, target: usize) -> (LinkedList<
                     
                     if let Some(value) = b.get(&vertice) {
                         if let Some(cost) = vertices_costs.get(&a) {
-
-                            if (*cost + value) < min && *a != vertice {
-                                min = *cost + value;
+                            if *cost != isize::MAX {
+                                if (*cost + value) < min && *a != vertice {
+                                    min = *cost + value;
+                                }
                             }
+                            
                         } else {
                             not_calculated.push(*a);
                         }
@@ -77,15 +79,68 @@ pub fn find_shortcut(graph: &Edges, start: usize, target: usize) -> (LinkedList<
     let mut cost = 0;
     if let Some(c) = vertices_costs.get(&target) {
         cost = *c;
+        road = get_road(&graph, vertices_costs, target, cost);
     }
 
+    
+
+    
+    
+
+    (road, cost)
+}
+
+pub fn find_shortcut_v2(graph: &Graph, start: usize, target: usize) -> (LinkedList<usize>, isize) {
+    let mut road:LinkedList<usize> = LinkedList::new();
+    let mut cost: isize = 0;
+
+    let mut vertices_costs: HashMap<usize, isize> = HashMap::new();
+    for i in 0..graph.number_of_vertices {
+        vertices_costs.insert(i, isize::MAX);
+    }
+    if let Some(s) = vertices_costs.get_mut(&start) {
+        *s = 0;
+    }
+    for _ in 0..(graph.number_of_vertices-1) {
+
+        for (key, value) in graph.edges.iter() {
+            for (index, cost) in value.iter() {
+               // if let Some(a) = vertices_costs.get(&key) {
+                let a = *vertices_costs.get(&key).unwrap();
+                let b = *vertices_costs.get(&index).unwrap();
+                    
+                if a != isize::MAX {
+                    if b > (a + cost) {
+                        vertices_costs.insert(*index, a + cost);
+                        println!("{}", a+cost);
+                    }
+                }
+                
+
+            }
+        }
+    }
+
+    
+    
+    if let Some(t) = vertices_costs.get(&target) {
+        cost = *t;
+        road = get_road(&graph.edges, vertices_costs, target, cost);
+    }
+    
+
+    (road, cost)
+}
+
+fn get_road(edges: &Edges, vertices_costs: HashMap<usize, isize>, target: usize, cost: isize) -> LinkedList<usize> {
+    let mut road: LinkedList<usize> = LinkedList::new();
     if cost != 0 { 
         let mut ct = cost;
         let mut v = target;
         road.push_back(v);
         while ct != 0 {
             let c = ct;
-            for (key, value) in graph {
+            for (key, value) in edges {
                 if let Some(a) = value.get(&v) {
                     if let Some(t) = vertices_costs.get(&key) {
                         if (c-a) == *t {
@@ -99,13 +154,8 @@ pub fn find_shortcut(graph: &Edges, start: usize, target: usize) -> (LinkedList<
             road.push_front(v);
         }
     }
-
-    
-    
-
-    (road, cost)
+    road
 }
-
 
 
 #[test]
@@ -125,7 +175,8 @@ fn test_find_shortcut_0() {
 
     let result: LinkedList<usize> = LinkedList::from([0, 2, 3, 6]);
 
-    assert_eq!(find_shortcut(&parse(string).edges, 0, 6), (result, 4))
+    assert_eq!(find_shortcut(&parse(string.clone()).edges, 0, 6), (result.clone(), 4));
+    assert_eq!(find_shortcut_v2(&parse(string), 0, 6), (result, 4))
 }
 
 
@@ -150,7 +201,8 @@ fn test_find_shortcut_1() {
 
     let result: LinkedList<usize> = LinkedList::from([0, 7, 1, 4, 6]);
 
-    assert_eq!(find_shortcut(&parse(string).edges, 0, 6), (result, -6))
+    assert_eq!(find_shortcut(&parse(string.clone()).edges, 0, 6), (result.clone(), -6));
+    assert_eq!(find_shortcut_v2(&parse(string), 0, 6), (result, -6))
 }
 
 
@@ -172,7 +224,8 @@ fn test_find_shortcut_2() {
 
     let result: LinkedList<usize> = LinkedList::from([0, 2, 3, 6]);
 
-    assert_eq!(find_shortcut(&parse(string).edges, 0, 6), (result, 4))
+    assert_eq!(find_shortcut(&parse(string.clone()).edges, 0, 6), (result.clone(), 4));
+    assert_eq!(find_shortcut_v2(&parse(string), 0, 6), (result, 4))
 }
 
 
