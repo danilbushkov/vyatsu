@@ -22,9 +22,13 @@ pub fn parse(mut string: String) -> Data {
     if !vec.is_empty() {
         attachments = vec[0].clone();
     }
+    attachments.insert(0, 0);
     
     for i in 1..vec.len() {
-        profits.push(vec[i].clone());
+        let mut tmp = vec[i].clone();
+        tmp.insert(0, 0);
+        profits.push(tmp);
+
     }
     
     Data {
@@ -45,12 +49,12 @@ fn test_parse() {
         end
     ".to_string();
     
-    let attachments: Vec<isize> = vec![1, 3, 6];
+    let attachments: Vec<isize> = vec![0, 1, 3, 6];
 
     let profits: Vec<Vec<isize>> = vec![
-        vec![1, 5, 4],
-        vec![2, 3, 1],
-        vec![4, 1, 4],
+        vec![0, 1, 5, 4],
+        vec![0, 2, 3, 1],
+        vec![0, 4, 1, 4],
     ];  
 
     assert_eq!(parse(string.clone()).attachments, attachments);

@@ -1,6 +1,7 @@
 mod input;
 mod parse;
 mod data;
+mod task;
 
 
 use crate::input::input;
