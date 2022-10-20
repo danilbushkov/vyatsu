@@ -45,9 +45,9 @@ pub fn get_cycle(involved_routes: &HashMap<usize, HashSet<usize>>,
     let mut list: LinkedList<Vec<(usize, usize)>> = LinkedList::new();
     let mut results: Vec<Vec<(usize, usize)>> = vec![];
     list.push_front(vec![target]);
-    let mut c = 0;
-    while !list.is_empty() && c < 30 {
-        c += 1;
+    
+    while !list.is_empty() {
+        
         if let Some(v) = list.pop_back() {
             if v.len() % 2 == 1 {
 
