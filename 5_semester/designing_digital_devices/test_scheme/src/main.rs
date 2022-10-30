@@ -3,6 +3,7 @@ mod parse;
 mod generate;
 mod file;
 mod hex;
+mod binary;
 
 use std::io;
 use std::collections::{LinkedList, HashMap};
@@ -10,6 +11,8 @@ use crate::data::TBLData;
 use crate::parse::parse;
 use crate::generate::generate;
 use crate::file::{read_file, write_file};
+use crate::binary::{f64_to_b32, b32_to_f64};
+use crate::hex::{bin_to_hex};
 
 
 
@@ -24,9 +27,14 @@ fn main() {
         
     // }
     let data = parse(s);
-
-    write_file(&"./output.txt".to_string(), &generate(&data));
-    println!("{}", generate(&data));
+    //
+    //100_0001_1110_0000_0000_0000_0000_0000
+    //write_file(&"./output.txt".to_string(), &generate(&data));
+    let num1 = bin_to_hex(&format!("{:032b}",f64_to_b32(10.0)));
+    //println!("{:032b}", f64_to_b32(10.0));
+    //println!("{:032b}", f64_to_b32(6.0));
+    let num2 = bin_to_hex(&format!("{:032b}",f64_to_b32(6.0)));
+    println!("{}", generate(&data, 25.0, &num1, &num2));
 
     
     // for item in data.groups {

@@ -14,7 +14,7 @@ pub fn bin_to_hex(number: &String) -> String {
     let mut string = String::new();
 
     for i in 0..number.len()/4 {
-        string = string + &bin_to_hex_digit(&number[i..i+4]);
+        string = string + &bin_to_hex_digit(&number[i*4..(i*4)+4]);
     }
 
     string
@@ -55,12 +55,12 @@ fn bin_to_hex_digit(digit: &str) -> String {
         "0111" => "7".to_string(),
         "1000" => "8".to_string(),
         "1001" => "9".to_string(),
-        "1010" => "10".to_string(),
-        "1011" => "11".to_string(),
-        "1100" => "12".to_string(),
-        "1101" => "13".to_string(),
-        "1110" => "14".to_string(),
-        "1111" => "15".to_string(),
+        "1010" => "A".to_string(),
+        "1011" => "B".to_string(),
+        "1100" => "C".to_string(),
+        "1101" => "D".to_string(),
+        "1110" => "E".to_string(),
+        "1111" => "F".to_string(),
         _ => "".to_string(),
     } 
 }

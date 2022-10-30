@@ -9,7 +9,7 @@ use crate::data::TBLData;
 // UNIT ns;
 // RADIX HEX;
 // PATTERN
-pub fn generate(data: &TBLData) -> String {
+pub fn generate(data: &TBLData, clk_ns: f64, number1: &String, number2: &String) -> String {
     let mut string = String::new();
 
     //GROUP CREATE
@@ -48,19 +48,37 @@ pub fn generate(data: &TBLData) -> String {
 
     string += "PATTERN\n";
 
+
+    let mut ns = clk_ns;
+    let mut clk = "0";
+    let mut num_clk = 0;
+    let mut num1 = 2;
+    let mut num2 = 4;
+
     for _ in 0..9 {
 
-        string += "0.0";
+        string += &ns.to_string();
         string += "> ";
 
         for item in &data.inputs {
             if let Some(v) = data.groups.get(item) {
-                let m = if v % 4 == 0 {0} else {1};
-                for _ in 0..(v / 4 + m) {
-                    string += "0";
+                if num_clk == num1 {
+                    string += number1;
+                } else if num_clk == num2 {
+                    string += number2;
+                } else {
+                    let m = if v % 4 == 0 {0} else {1};
+                    for _ in 0..(v / 4 + m) {
+                        string += "0";
+                    }
                 } 
             } else {
-                string += "0";
+                if item == "clk" {
+                    string += clk;
+                } else {
+                    string += "0";
+                }
+                
             }
             string += " ";
         }
@@ -80,6 +98,15 @@ pub fn generate(data: &TBLData) -> String {
         }
 
         string += "\n";
+
+
+        if clk == "1" {
+            clk = "0";
+        } else {
+            clk = "1";
+            num_clk += 1;
+        }
+        ns += clk_ns;
     }
     string += ";";
 
