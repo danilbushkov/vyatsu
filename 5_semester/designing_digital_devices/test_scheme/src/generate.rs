@@ -52,10 +52,10 @@ pub fn generate(data: &TBLData, clk_ns: f64, number1: &String, number2: &String)
     let mut ns = clk_ns;
     let mut clk = "0";
     let mut num_clk = 0;
-    let mut num1 = 2;
-    let mut num2 = 4;
+    let mut num1 = 1;
+    let mut num2 = 3;
 
-    for _ in 0..9 {
+    for _ in 0..70 {
 
         string += &ns.to_string();
         string += "> ";
