@@ -14,10 +14,19 @@ use crate::file::{read_file, write_file};
 use crate::binary::{f64_to_b32, b32_to_f64};
 use crate::hex::{bin_to_hex};
 
+use std::process::Command;
 
 
 
 fn main() {
+
+    let output = Command::new("sh")
+            .arg("-c")
+            .arg("echo hello")
+            .output()
+            .expect("failed to execute process");
+
+    
 
     let mut s = read_file(&"./input.txt".to_string());
 

@@ -16,7 +16,10 @@ pub fn parse(string: String) -> TBLData {
 
 
 
-    let mut patterns: Vec<String> = tmp.back().unwrap().split('\n').map(|s| s.to_string()).collect();
+    let mut tmp_patterns: Vec<String> = tmp.back().unwrap()
+        .split("PATTERN").collect::<Vec<&str>>()[1].trim()
+        .split('\n').map(|s| s.to_string()).collect();
+
     tmp.pop_back();
 
 
@@ -55,6 +58,29 @@ pub fn parse(string: String) -> TBLData {
 
 
     }
+
+    
+    let mut patterns: Vec<HashMap<String, String>> = vec![];
+    for item in tmp_patterns {
+
+        let tmp: String = item.split('>').collect::<Vec<&str>>()[1].to_string();
+        let tmp: Vec<&str> = tmp.split('=').collect();
+        let input: Vec<&str> = tmp[0].split_whitespace().collect();
+        let output: Vec<&str> = tmp[1].split_whitespace().collect();
+        let mut map: HashMap<String, String> = HashMap::new();
+        
+        for i in 0..inputs.len() {
+            map.insert(inputs[i].clone(), input[i].to_string());
+        }
+
+        for i in 0..outputs.len() {
+            map.insert(outputs[i].clone(), output[i].to_string());
+        }
+        patterns.push(map);
+
+    }
+    
+
 
 
     TBLData {
