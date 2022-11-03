@@ -16,7 +16,7 @@ use crate::file::{read_file, write_file};
 use crate::binary::{f64_to_b32, b32_to_f64};
 use crate::hex::{bin_to_hex};
 use crate::command::run_simulation;
-use crate::simulation::{simulation, sim_ch};
+use crate::simulation::{simulation, sim_ch, sim_order};
 
 
 
@@ -28,8 +28,11 @@ fn main() {
     let project_name = "lab1";
     let project_path = "D:\\labs\\3_1_32\\";
     
-    println!("{}", sim_ch(project_path, project_name, 10.0, 5.0));
-    println!("{}", sim_ch(project_path, project_name, 15.0, 5.0));
+    //println!("{}", sim_ch(project_path, project_name, 10.0, 5.0));
+    //println!("{}", sim_ch(project_path, project_name, 15.0, 5.0));
+    println!("{}", sim_order(project_path, project_name, 10.0, 5.0));
+    println!("{}", sim_order(project_path, project_name, 15.0, 5.0));
+
     // simulation(project_path, project_name, num1,
     //     num2,
     //     clk_ns,

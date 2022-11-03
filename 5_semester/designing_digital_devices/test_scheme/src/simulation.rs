@@ -1,6 +1,6 @@
 
 
-use crate::binary::{f64_to_b32, b32_to_f64};
+use crate::binary::{f64_to_b32, b32_to_f64, order_b32_to_f64, order_f64_to_b32};
 use crate::hex::{bin_to_hex, hex_to_bin};
 use crate::data::TBLData;
 use crate::parse::parse;
@@ -21,6 +21,22 @@ pub fn sim_ch(project_path: &str, project_name: &str, num1: f64, num2: f64) -> f
     );
 
     b32_to_f64(u32::from_str_radix(&hex_to_bin(&result),2).unwrap())
+    
+}
+
+pub fn sim_order(project_path: &str, project_name: &str, num1: f64, num2: f64) -> f64 {
+    let num1 = bin_to_hex(&format!("{:032b}",order_f64_to_b32(num1)));
+    let num2 = bin_to_hex(&format!("{:032b}",order_f64_to_b32(num2)));
+    let result = simulation(
+        project_path,
+        project_name,
+        &num1,
+        &num2,
+        25.0,
+        70
+    );
+
+    order_b32_to_f64(u32::from_str_radix(&hex_to_bin(&result),2).unwrap())
     
 }
 
