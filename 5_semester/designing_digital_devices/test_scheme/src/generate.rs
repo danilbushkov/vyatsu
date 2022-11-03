@@ -9,7 +9,7 @@ use crate::data::TBLData;
 // UNIT ns;
 // RADIX HEX;
 // PATTERN
-pub fn generate(data: &TBLData, clk_ns: f64, number1: &String, number2: &String) -> String {
+pub fn generate(data: &TBLData, clk_ns: f64, number1: &String, number2: &String, count_clk: usize) -> String {
     let mut string = String::new();
 
     //GROUP CREATE
@@ -55,7 +55,7 @@ pub fn generate(data: &TBLData, clk_ns: f64, number1: &String, number2: &String)
     let mut num1 = 1;
     let mut num2 = 3;
 
-    for _ in 0..70 {
+    for _ in 0..(count_clk*2) {
 
         string += &ns.to_string();
         string += "> ";
