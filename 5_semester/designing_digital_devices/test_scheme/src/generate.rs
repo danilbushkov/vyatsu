@@ -9,7 +9,7 @@ use crate::data::TBLData;
 // UNIT ns;
 // RADIX HEX;
 // PATTERN
-pub fn generate(data: &TBLData, clk_ns: f64, number1: &String, number2: &String, count_clk: usize) -> String {
+pub fn generate(data: &TBLData, clk_ns: f64, number1: &str, number2: &str, count_clk: usize) -> String {
     let mut string = String::new();
 
     //GROUP CREATE
