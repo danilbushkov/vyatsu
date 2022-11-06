@@ -11,4 +11,6 @@ pub fn run_simulation(project_path: &str, project_name: &str) {
             .arg(project_name)
             .output()
             .expect("failed simulation");
+
+            //println!("{}",output.stdout.escape_ascii().to_string());
 }

@@ -25,13 +25,19 @@ use crate::simulation::{simulation, sim_ch, sim_order};
 fn main() {
 
 
-    let project_name = "lab1";
-    let project_path = "D:\\labs\\3_1_32\\";
+    //let project_name = "lab1";
+    //let project_path = "D:\\labs\\3_1_32\\";
+    //D:\labs\with_my_ua
+    let project_name = "project";
+    let project_path = "D:\\labs\\project\\";
     
-    //println!("{}", sim_ch(project_path, project_name, 10.0, 5.0));
+    println!("{}", sim_ch(project_path, project_name, 10.0, 5.0));
+    println!("{}", sim_ch(project_path, project_name, 100.0, 10.0));
+    println!("{}", sim_ch(project_path, project_name, 100.0, 5.5));
+    println!("{}", sim_ch(project_path, project_name, 75.0, 3.0));
     //println!("{}", sim_ch(project_path, project_name, 15.0, 5.0));
-    println!("{}", sim_order(project_path, project_name, 10.0, 5.0));
-    println!("{}", sim_order(project_path, project_name, 15.0, 5.0));
+    //println!("{}", sim_order(project_path, project_name, 1.0, 1.0));
+    //println!("{}", sim_order(project_path, project_name, 15.0, 5.0));
 
     // simulation(project_path, project_name, num1,
     //     num2,
