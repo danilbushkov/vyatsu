@@ -6,6 +6,7 @@ mod hex;
 mod binary;
 mod command;
 mod simulation;
+mod tests;
 
 use std::io;
 use std::collections::{LinkedList, HashMap};
@@ -31,13 +32,13 @@ fn main() {
     let project_name = "project";
     let project_path = "D:\\labs\\project\\";
     
-    println!("{}", sim_ch(project_path, project_name, 10.0, 5.0));
-    println!("{}", sim_ch(project_path, project_name, 100.0, 10.0));
-    println!("{}", sim_ch(project_path, project_name, 100.0, 5.5));
-    println!("{}", sim_ch(project_path, project_name, 75.0, 3.0));
+    // println!("{}", sim_ch(project_path, project_name, 10.0, 5.0));
+    // println!("{}", sim_ch(project_path, project_name, 100.0, 10.0));
+    // println!("{}", sim_ch(project_path, project_name, 100.0, 5.5));
+    // println!("{}", sim_ch(project_path, project_name, 75.0, 3.0));
 
-    println!("{}", sim_ch(project_path, project_name, -75.0, 3.0));
-    println!("{}", sim_ch(project_path, project_name, -75.0, -3.0));
+    // println!("{}", sim_ch(project_path, project_name, -75.0, 3.0));
+    println!("{}", sim_ch(project_path, project_name, "0", -75.0, -3.0).1);
 
     //println!("{}", sim_ch(project_path, project_name, -1.0, 1.0));
     //println!("{}", sim_ch(project_path, project_name, -1.0, -1.0));

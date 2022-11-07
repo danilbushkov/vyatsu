@@ -8,10 +8,12 @@ use crate::generate::generate;
 use crate::file::{read_file, write_file};
 use crate::command::run_simulation;
 
-pub fn sim_ch(project_path: &str, project_name: &str, num1: f64, num2: f64) -> f64 {
+
+
+
+pub fn sim_ch(project_path: &str, project_name: &str, opcode: &str, num1: f64, num2: f64) -> (f64, String) {
     let num1 = bin_to_hex(&format!("{:032b}",f64_to_b32(num1)));
     let num2 = bin_to_hex(&format!("{:032b}",f64_to_b32(num2)));
-    let opcode = "1";
     let data = simulation(
         project_path,
         project_name,
@@ -22,6 +24,7 @@ pub fn sim_ch(project_path: &str, project_name: &str, num1: f64, num2: f64) -> f
         opcode
     );
     let result = data.patterns[data.patterns.len()-2].get("result").unwrap().to_string();
+    let flags = hex_to_bin(data.patterns[data.patterns.len()-2].get("F").unwrap());
     // for i in 0..data.patterns.len()-1 {
     //     let r = data.patterns[i].get("result").unwrap();
     //     let b = hex_to_bin(r);
@@ -30,14 +33,12 @@ pub fn sim_ch(project_path: &str, project_name: &str, num1: f64, num2: f64) -> f
     //     println!("{}", f);
     // } 
     //println!("{}",&hex_to_bin(&result));
-    b32_to_f64(u32::from_str_radix(&hex_to_bin(&result),2).unwrap())
-    
+    (b32_to_f64(u32::from_str_radix(&hex_to_bin(&result),2).unwrap()), flags)
 }
 
-pub fn sim_order(project_path: &str, project_name: &str, num1: f64, num2: f64) -> f64 {
+pub fn sim_order(project_path: &str, project_name: &str,  opcode: &str, num1: f64, num2: f64) -> (f64, String) {
     let num1 = bin_to_hex(&format!("{:032b}",order_f64_to_b32(num1)));
     let num2 = bin_to_hex(&format!("{:032b}",order_f64_to_b32(num2)));
-    let opcode = "0";
     let data = simulation(
         project_path,
         project_name,
@@ -48,7 +49,9 @@ pub fn sim_order(project_path: &str, project_name: &str, num1: f64, num2: f64) -
         opcode
     );
     let result = data.patterns[data.patterns.len()-2].get("result").unwrap().to_string();
-    order_b32_to_f64(u32::from_str_radix(&hex_to_bin(&result),2).unwrap())
+    let flags = hex_to_bin(data.patterns[data.patterns.len()-2].get("F").unwrap());
+    
+    (order_b32_to_f64(u32::from_str_radix(&hex_to_bin(&result),2).unwrap()), flags)
     
 }
 
