@@ -9,7 +9,7 @@ use crate::data::TBLData;
 // UNIT ns;
 // RADIX HEX;
 // PATTERN
-pub fn generate(data: &TBLData, clk_ns: f64, number1: &str, number2: &str, count_clk: usize) -> String {
+pub fn generate(data: &TBLData, clk_ns: f64, number1: &str, number2: &str, count_clk: usize, opcode: &str) -> String {
     let mut string = String::new();
 
     //GROUP CREATE
@@ -61,10 +61,16 @@ pub fn generate(data: &TBLData, clk_ns: f64, number1: &str, number2: &str, count
         string += "> ";
 
         for item in &data.inputs {
+
             if let Some(v) = data.groups.get(item) {
-                if num_clk == num1 {
-                    string += number1;
-                } else if num_clk == num2 {
+                if num_clk == num1 && (item == "x" || item == "opcode") {
+                    if item == "x" {
+                        string += number1;
+                    } else if item == "opcode" {
+                        string += opcode;
+                    }
+                   
+                } else if num_clk == num2 && item == "x" {
                     string += number2;
                 } else {
                     let m = if v % 4 == 0 {0} else {1};
@@ -78,6 +84,7 @@ pub fn generate(data: &TBLData, clk_ns: f64, number1: &str, number2: &str, count
                 } else {
                     string += "0";
                 }
+                
                 
             }
             string += " ";

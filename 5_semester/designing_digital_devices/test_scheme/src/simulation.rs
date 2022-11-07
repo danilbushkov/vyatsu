@@ -11,13 +11,15 @@ use crate::command::run_simulation;
 pub fn sim_ch(project_path: &str, project_name: &str, num1: f64, num2: f64) -> f64 {
     let num1 = bin_to_hex(&format!("{:032b}",f64_to_b32(num1)));
     let num2 = bin_to_hex(&format!("{:032b}",f64_to_b32(num2)));
+    let opcode = "1";
     let data = simulation(
         project_path,
         project_name,
         &num1,
         &num2,
         25.0,
-        70
+        70,
+        opcode
     );
     let result = data.patterns[data.patterns.len()-2].get("result").unwrap().to_string();
     // for i in 0..data.patterns.len()-1 {
@@ -35,13 +37,15 @@ pub fn sim_ch(project_path: &str, project_name: &str, num1: f64, num2: f64) -> f
 pub fn sim_order(project_path: &str, project_name: &str, num1: f64, num2: f64) -> f64 {
     let num1 = bin_to_hex(&format!("{:032b}",order_f64_to_b32(num1)));
     let num2 = bin_to_hex(&format!("{:032b}",order_f64_to_b32(num2)));
+    let opcode = "0";
     let data = simulation(
         project_path,
         project_name,
         &num1,
         &num2,
         25.0,
-        70
+        70,
+        opcode
     );
     let result = data.patterns[data.patterns.len()-2].get("result").unwrap().to_string();
     order_b32_to_f64(u32::from_str_radix(&hex_to_bin(&result),2).unwrap())
@@ -56,6 +60,7 @@ pub fn simulation(project_path: &str,
     num2: &str,
     clk_ns: f64,
     count_clk: usize,
+    opcode: &str
   ) -> TBLData {
 
     let tbl_file_path = project_path.to_string() + project_name + ".tbl";
@@ -64,7 +69,7 @@ pub fn simulation(project_path: &str,
     let data = parse(tbl_file);
 
 
-    write_file(&tbl_file_path, &generate(&data, clk_ns, num1, num2, count_clk));
+    write_file(&tbl_file_path, &generate(&data, clk_ns, num1, num2, count_clk, opcode));
 
     run_simulation(project_path, project_name);
 
