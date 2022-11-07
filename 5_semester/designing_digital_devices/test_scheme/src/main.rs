@@ -38,7 +38,7 @@ fn main() {
     // println!("{}", sim_ch(project_path, project_name, 75.0, 3.0));
 
     // println!("{}", sim_ch(project_path, project_name, -75.0, 3.0));
-    println!("{}", sim_ch(project_path, project_name, "0", -75.0, -3.0).1);
+    println!("{}", sim_ch(project_path, project_name, "0", -75.0, -3.0).0);
 
     //println!("{}", sim_ch(project_path, project_name, -1.0, 1.0));
     //println!("{}", sim_ch(project_path, project_name, -1.0, -1.0));

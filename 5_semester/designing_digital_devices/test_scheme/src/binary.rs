@@ -53,8 +53,9 @@ pub fn b32_to_f64(binary_number: u32) -> f64 {
     let exponent = exponent(binary_number);
     let fraction = fraction(binary_number);
     if fraction == 0.0 {
-        if exponent != 128 {
-            panic!("Error: Wrong format! \nHelp: Characteristic at zero result should be 10000000");
+        
+        if exponent != 0 {
+            panic!("Error: Wrong format! \nHelp: Characteristic at zero result should be 10000000. Characteristic is {}.", exponent);
         }
     }
 
