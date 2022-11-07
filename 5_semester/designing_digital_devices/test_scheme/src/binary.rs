@@ -55,7 +55,7 @@ pub fn b32_to_f64(binary_number: u32) -> f64 {
     if fraction == 0.0 {
         
         if exponent != 0 {
-            panic!("Error: Wrong format! \nHelp: Characteristic at zero result should be 10000000. Characteristic is {}.", exponent);
+            println!("Error: Wrong format! \nHelp: Characteristic at zero result should be 10000000. Characteristic is {}.", exponent);
         }
     }
 

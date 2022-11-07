@@ -20,7 +20,7 @@ pub fn sim_ch(project_path: &str, project_name: &str, opcode: &str, num1: f64, n
         &num1,
         &num2,
         25.0,
-        70,
+        90,
         opcode
     );
     let result = data.patterns[data.patterns.len()-2].get("result").unwrap().to_string();
@@ -45,7 +45,7 @@ pub fn sim_order(project_path: &str, project_name: &str,  opcode: &str, num1: f6
         &num1,
         &num2,
         25.0,
-        70,
+        90,
         opcode
     );
     let result = data.patterns[data.patterns.len()-2].get("result").unwrap().to_string();
