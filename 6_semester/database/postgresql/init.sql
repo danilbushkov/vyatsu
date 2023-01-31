@@ -21,12 +21,12 @@ CREATE TABLE organization (
 
 
 
-CREATE TABLE user_organization (
-    user_id BIGINT NOT NULL,
+CREATE TABLE account_organization (
+    account_id BIGINT NOT NULL,
     organization_id BIGINT NOT NULL,
     role_name role_type_enum NOT NULL DEFAULT 'member',
-    PRIMARY KEY(user_id, organization_id),
-    FOREIGN KEY(user_id)
+    PRIMARY KEY(account_id, organization_id),
+    FOREIGN KEY(account_id)
         REFERENCES account(id)
         ON DELETE CASCADE,
     FOREIGN KEY(organization_id)
@@ -64,4 +64,42 @@ CREATE TABLE subscription (
         REFERENCES gym(id)
         ON DELETE CASCADE
 );
+
+DO LANGUAGE plpgsql $$
+DECLARE
+    --Хранит ID студентов
+    _account_id bigint;
+    --Хранит ID предметов
+    _organization_id bigint;
+    --Хранит ID учителей
+    _bot_id bigint;
+    --Хранит ID групп
+    _gym_id bigint;
+BEGIN
+    
+    INSERT INTO account(login, first_name, second_name, email, phone, password) 
+        VALUES('ivan', 'ivan', 'ivanov', 'ivan@mail.com', '1111111111', '12345678')
+        RETURNING id INTO _account_id;
+
+    INSERT INTO organization(name, email) 
+        VALUES('organization1', 'organization1@mail.com')
+        RETURNING id INTO _organization_id;
+
+    INSERT INTO account_organization(account_id, organization_id, role_name) 
+        VALUES(_account_id, _organization_id, 'admin');
+
+    INSERT INTO bot(name, organization_id) 
+        VALUES('bot1', _organization_id)
+        RETURNING id INTO _bot_id;
+
+    INSERT INTO gym(name, address, bot_id) 
+        VALUES('bot1', 'address1',_bot_id)
+        RETURNING id INTO _gym_id;
+
+
+    INSERT INTO subscription(name, cost, num_trainings, gym_id)
+        VALUES('test', 100, 10, _bot_id);
+
+END ;
+$$;
 
