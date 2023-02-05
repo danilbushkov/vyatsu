@@ -204,3 +204,31 @@ CREATE TRIGGER commit_gym_change
 --UPDATE gym SET address = 'address4' WHERE id = 3;
 
 ------------------------------------------------------------------------
+
+
+CREATE OR REPLACE FUNCTION get_value_by_id (
+    table_name VARCHAR,
+    column_name VARCHAR,
+    id BIGINT
+)
+RETURNS TEXT
+AS $$
+DECLARE
+    result TEXT;
+BEGIN
+    IF id is NULL THEN
+        id := 1;
+    END IF;
+    EXECUTE 'SELECT '|| column_name ||' FROM '|| table_name ||' WHERE id = $1' 
+    USING id INTO result;
+    
+    RETURN result;
+END;
+$$ LANGUAGE plpgsql;
+
+--example
+-- SELECT get_value_by_id('account', 'login', NULL);
+-- SELECT get_value_by_id('account', 'login', 2);
+
+-- SELECT get_value_by_id('gym', 'address', NULL);
+-- SELECT get_value_by_id('gym', 'address', 2);
