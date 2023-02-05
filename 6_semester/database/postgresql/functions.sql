@@ -4,9 +4,6 @@
 
 
 
--- struct
-
---log gym
 
 --example function
 CREATE OR REPLACE FUNCTION test_function(arg1 NUMERIC, arg2 NUMERIC) 
@@ -163,3 +160,47 @@ $$ LANGUAGE plpgsql;
 --     ARRAY(SELECT (id, name, num_trainings)::t_subscription FROM subscription),
 --     20
 -- );
+
+
+------------------------------------------------------------------------
+
+
+CREATE TABLE log_gym (
+    id BIGSERIAL PRIMARY KEY,
+    gym_id BIGINT REFERENCES gym(id),
+    change_datetime TIMESTAMP DEFAULT NOW(),
+    old_value VARCHAR(50) DEFAULT NULL,
+    new_value VARCHAR(50) DEFAULT NULL
+);
+
+CREATE OR REPLACE FUNCTION trigger_func()
+RETURNS TRIGGER
+AS $$
+DECLARE
+    old_val VARCHAR(50);
+BEGIN
+    IF (TG_OP = 'UPDATE') THEN
+        old_val := OLD.address;
+    ELSIF (TG_OP = 'INSERT') THEN
+        old_val := NULL;
+    END IF;
+    INSERT INTO log_gym
+        (gym_id, old_value, new_value)
+    VALUES
+        (NEW.id, old_val, NEW.address);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER commit_gym_change
+    AFTER UPDATE OR INSERT
+    ON gym
+    FOR EACH ROW
+    EXECUTE PROCEDURE trigger_func();
+
+
+--example
+--INSERT INTO gym (name, address, bot_id) VALUES ('gym100', 'address3', 1);
+--UPDATE gym SET address = 'address4' WHERE id = 3;
+
+------------------------------------------------------------------------
