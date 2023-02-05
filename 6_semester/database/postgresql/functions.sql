@@ -73,24 +73,24 @@ END;
 $$ LANGUAGE plpgsql;
 
 --example
-SELECT save_account(
-    NULL,
-    'Pavel',
-    'Pavel',
-    'Pavlov',
-    'pavel@mail.com',
-    '+78888888888',
-    'lkasjdfklkdjaf'
-);
-SELECT save_account(
-    3,
-    'Pavel1',
-    'Pavel1',
-    'Pavlov1',
-    'pavel1@mail.com',
-    '+78888888889',
-    'lkasjdfklkdjaff'
-);
+-- SELECT save_account(
+--     NULL,
+--     'Pavel',
+--     'Pavel',
+--     'Pavlov',
+--     'pavel@mail.com',
+--     '+78888888888',
+--     'lkasjdfklkdjaf'
+-- );
+-- SELECT save_account(
+--     3,
+--     'Pavel1',
+--     'Pavel1',
+--     'Pavlov1',
+--     'pavel1@mail.com',
+--     '+78888888889',
+--     'lkasjdfklkdjaff'
+-- );
 
 
 ------------------------------------------------------------------------
@@ -111,10 +111,10 @@ END;
 $$ LANGUAGE plpgsql;
 
 --example
-INSERT INTO bot(name, organization_id) VALUES ('test_bot', 1);
+--INSERT INTO bot(name, organization_id) VALUES ('test_bot', 1);
 
-SELECT delete_bot(1);
-SELECT delete_bot(3);
+--SELECT delete_bot(1);
+--SELECT delete_bot(3);
 
 
 ------------------------------------------------------------------------
@@ -132,5 +132,34 @@ END;
 $$ LANGUAGE plpgsql;
 
 --example
-SELECT * FROM filter_subscription_by_cost(200);
+--SELECT * FROM filter_subscription_by_cost(200);
 
+
+------------------------------------------------------------------------
+
+CREATE TYPE t_subscription AS (
+    id BIGINT,
+    name VARCHAR(50),
+    num_trainings INT
+);
+
+CREATE OR REPLACE FUNCTION filter_array_of_subscriptions (
+    arr t_subscription[],
+    filter_var INTEGER
+)
+RETURNS t_subscription[]
+AS $$
+BEGIN
+    RETURN ARRAY( 
+        SELECT (id, name, num_trainings)::t_subscription
+            FROM unnest(arr)
+            WHERE num_trainings >= filter_var
+    );
+END;
+$$ LANGUAGE plpgsql;
+
+--example
+-- SELECT filter_array_of_subscriptions(
+--     ARRAY(SELECT (id, name, num_trainings)::t_subscription FROM subscription),
+--     20
+-- );
