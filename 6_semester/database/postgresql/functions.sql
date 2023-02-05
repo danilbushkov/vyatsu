@@ -2,7 +2,7 @@
 
 
 
---setof subscription
+
 
 -- struct
 
@@ -119,4 +119,18 @@ SELECT delete_bot(3);
 
 ------------------------------------------------------------------------
 
+
+--filter subscription
+CREATE OR REPLACE FUNCTION filter_subscription_by_cost (
+    min_val BIGINT
+)
+RETURNS SETOF subscription
+AS $$
+BEGIN
+    RETURN QUERY (SELECT * FROM subscription WHERE cost >= min_val);
+END;
+$$ LANGUAGE plpgsql;
+
+--example
+SELECT * FROM filter_subscription_by_cost(200);
 
