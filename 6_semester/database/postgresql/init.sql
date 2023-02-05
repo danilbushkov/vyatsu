@@ -51,7 +51,7 @@ CREATE TABLE gym (
     bot_id BIGINT NOT NULL,
     FOREIGN KEY(bot_id)
         REFERENCES bot(id)
-        ON DELETE CASCADE
+        --ON DELETE CASCADE
 );
 
 CREATE TABLE subscription (

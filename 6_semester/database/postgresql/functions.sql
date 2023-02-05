@@ -1,6 +1,6 @@
 
 
---delete bot
+
 
 --setof subscription
 
@@ -8,12 +8,17 @@
 
 --log gym
 
-
+--example function
 CREATE OR REPLACE FUNCTION test_function(arg1 NUMERIC, arg2 NUMERIC) 
 RETURNS NUMERIC
 AS $$
     SELECT arg1 + arg2;
 $$ LANGUAGE SQL;
+
+
+------------------------------------------------------------------------
+
+
 
 
 --save account
@@ -86,3 +91,32 @@ SELECT save_account(
     '+78888888889',
     'lkasjdfklkdjaff'
 );
+
+
+------------------------------------------------------------------------
+
+--delete bot
+CREATE OR REPLACE FUNCTION delete_bot(
+    _id BIGINT
+) RETURNS VOID
+AS $$
+BEGIN
+    DELETE FROM bot WHERE id = _id; 
+    
+    EXCEPTION
+        WHEN foreign_key_violation THEN 
+            RAISE EXCEPTION 'Невозможно выполнить удаление, так как есть внешние
+        ссылки.';
+END;
+$$ LANGUAGE plpgsql;
+
+--example
+INSERT INTO bot(name, organization_id) VALUES ('test_bot', 1);
+
+SELECT delete_bot(1);
+SELECT delete_bot(3);
+
+
+------------------------------------------------------------------------
+
+
