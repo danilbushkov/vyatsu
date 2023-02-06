@@ -1,10 +1,13 @@
+from presenter import Presenter
+from widgets.window import Window
 
-import window
+class App:
 
-window.run()
-
-
-
-
+    def __init__(self, config):
+        self.presenter = Presenter(self)
+        self.window = Window(config, self.presenter)
 
 
+
+    def run(self):
+        self.window.run();

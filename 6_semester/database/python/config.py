@@ -11,6 +11,7 @@ menu_height = window_height
 
 config = {
     "window": {
+        "title": "Test",
         "width": window_width,
         "height": window_height,
     },

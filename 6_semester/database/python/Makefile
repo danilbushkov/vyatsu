@@ -1,5 +1,5 @@
 all: run
 
 
-run: app.py window.py
-	python3 app.py
+run: 
+	python3 main.py
