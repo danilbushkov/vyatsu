@@ -8,7 +8,7 @@ class App:
         self.window = Window(config)
         self.presenter = Presenter(self)
 
-        self.window.menu.table_btn.config(command=self.presenter.hide_table)
+        self.window.menu.table_btn.config(command=self.presenter.show_table)
 
         
         
