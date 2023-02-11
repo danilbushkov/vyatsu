@@ -17,7 +17,7 @@ class Window:
         self.table_area.pack()
        
         self.menu.pack()
-        #self.form.pack()
+        
 
         
 

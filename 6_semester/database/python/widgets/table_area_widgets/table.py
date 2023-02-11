@@ -35,7 +35,9 @@ class Table:
         for subscription in subscriptions:
             self.tree.insert("", END, values=subscription)
 
-    
+    def clear(self):
+        for k in self.tree.get_children(""): 
+            self.tree.delete(k)
 
 
     def pack(self):
