@@ -4,9 +4,9 @@ from tkinter import ttk
 
 class Table:
     def __init__(self, master, config):
-        w = 100
-        h = 100
-        self.frame = Frame(master=master, height=h, width=w, borderwidth=1,relief=SOLID)
+        # w = 100
+        # h = 100
+        self.frame = Frame(master=master, borderwidth=1,relief=SOLID)
         
         
         columns = ("id" ,"name", "cost", "num_trainings", "gym")
@@ -39,4 +39,4 @@ class Table:
 
 
     def pack(self):
-        self.frame.pack(side=RIGHT, anchor=NE)
+        self.frame.pack(side=TOP, anchor=NE, fill=BOTH)

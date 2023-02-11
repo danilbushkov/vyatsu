@@ -1,7 +1,8 @@
 from tkinter import *
 from widgets.menu import Menu
+from widgets.table_area import TableArea
 from widgets.form import Form
-from widgets.table import Table
+
 
 
 class Window:
@@ -10,13 +11,14 @@ class Window:
         self.setup(config)
         
         self.menu = Menu(self.root, config)
-        self.table = Table(self.root, config)
-
-        #self.form 
+        self.table_area = TableArea(self.root, config)
+        self.form = Form(self.root, config)
         
-
-        self.table.pack()
+        self.table_area.pack()
+       
         self.menu.pack()
+        #self.form.pack()
+
         
 
     def setup(self, config):
