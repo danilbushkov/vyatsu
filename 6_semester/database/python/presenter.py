@@ -1,5 +1,6 @@
 from model import Model
 from tkinter import *
+from tkinter.messagebox import askyesno
 
 
 class Presenter:
@@ -74,12 +75,13 @@ class Presenter:
 
     def delete_subscription(self):
         self.view.window.error_label["text"] = ""
-        for item in self.view.window.table_area.table.get_selection():
-            if not self.model.delete_subscription(item[0]):
-                self.view.window.error_label["text"] = "Ошибка при удалении"
-                break
-        self.clear_table()
-        self.fill_table()
+        if askyesno(title="Подтвержение операции", message="Удалить запись?"):
+            for item in self.view.window.table_area.table.get_selection():
+                if not self.model.delete_subscription(item[0]):
+                    self.view.window.error_label["text"] = "Ошибка при удалении"
+                    break
+            self.clear_table()
+            self.fill_table()
 
 
     def update_subscription(self):
