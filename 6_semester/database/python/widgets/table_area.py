@@ -17,7 +17,7 @@ class TableArea:
                             text="Удалить абонемент")
         self.update_btn = Button(master=self.frame, 
                             text="Изменить абонемент")
-        self.error_label = Label(master = self.frame, foreground="red", text="")
+        
         
 
 
@@ -26,7 +26,7 @@ class TableArea:
         self.update_btn.pack(anchor=NW, padx=10, pady=10)
         self.filter.pack()
         
-        self.error_label.pack(anchor=NW)
+        
         
 
 

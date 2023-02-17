@@ -21,7 +21,7 @@ class UpdateForm:
         
         self.update_btn = Button(master = self.frame, text="Изменить абонемент")
 
-        self.error_label = Label(master = self.frame, foreground="red", text="")
+        
 
         self.label_form.pack(anchor=NW, ipady=20)
         self.label_name.pack(anchor=NW)
@@ -33,7 +33,7 @@ class UpdateForm:
         self.label_gym.pack(anchor=NW)
         self.gyms.pack(anchor=NW, pady=6)
         self.update_btn.pack(anchor=NW)
-        self.error_label.pack(anchor=NW)
+        
         
         
 

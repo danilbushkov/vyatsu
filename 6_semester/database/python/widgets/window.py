@@ -15,10 +15,12 @@ class Window:
         self.table_area = TableArea(self.root, config)
         self.form = Form(self.root, config)
         self.update_form = UpdateForm(self.root, config)
-        
-        self.table_area.pack()
-       
+        self.error_label = Label(master = self.root, foreground="red", text="")
+
         self.menu.pack()
+        self.error_label.pack(side = BOTTOM)
+        self.table_area.pack()
+        
         
 
         

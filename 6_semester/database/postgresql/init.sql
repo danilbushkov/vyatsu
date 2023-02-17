@@ -89,12 +89,12 @@ BEGIN
         RETURNING id INTO _bot_id;
 
     INSERT INTO gym(name, address, bot_id) 
-        VALUES('bot1', 'address1',_bot_id)
+        VALUES('gym1', 'address1',_bot_id)
         RETURNING id INTO _gym_id;
 
 
     INSERT INTO subscription(name, cost, num_trainings, gym_id)
-        VALUES('test', 100, 10, _bot_id);
+        VALUES('test1', 100, 10, _bot_id);
 
 
 
@@ -114,12 +114,12 @@ BEGIN
         RETURNING id INTO _bot_id;
 
     INSERT INTO gym(name, address, bot_id) 
-        VALUES('bot2', 'address2',_bot_id)
+        VALUES('gym2', 'address2',_bot_id)
         RETURNING id INTO _gym_id;
 
 
     INSERT INTO subscription(name, cost, num_trainings, gym_id)
-        VALUES('test', 500, 30, _bot_id);
+        VALUES('test2', 500, 30, _bot_id);
 
 END ;
 $$;

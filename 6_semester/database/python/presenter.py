@@ -1,33 +1,41 @@
+from model import Model
 
 
 class Presenter:
 
-    def __init__(self, view):
+    def __init__(self, view, db):
         self.view = view
+        self.model = Model(db)
+
+        self.fill_table()
 
 ####areas
     def show_form(self):
         if self.view.state != 'form':
+            self.view.state = 'form'
             self.view.window.table_area.unpack()
             self.view.window.update_form.unpack()
             self.view.window.form.pack()
-            self.view.state = 'form'
+            
 
 
 
     def show_table(self):
         if self.view.state != 'table' :
+            self.view.state = 'table'
             self.view.window.form.unpack()
             self.view.window.update_form.unpack()
             self.view.window.table_area.pack()
-            self.view.state = 'table'
+            
+
 
     def show_update_form(self):
         if self.view.state != 'update' :
+            self.view.state = 'update'
             self.view.window.form.unpack()
             self.view.window.table_area.unpack()
             self.view.window.update_form.pack()
-            self.view.state = 'update'
+            
 
 
 ####
@@ -61,34 +69,15 @@ class Presenter:
         self.view.window.table_area.table.clear()
 
 
-    # def fill_table(self):
-    #     subscriptions = [
-    #         (1,"Обычный", 100, 10, "Gym1"),
-    #         (1,"Обычный", 100, 10, "Gym1"),
-    #         (1,"Обычный", 100, 10, "Gym1"),
-    #         (1,"Обычный", 100, 10, "Gym1"),
-    #         (1,"Обычный", 100, 10, "Gym1"),
-    #         (1,"Обычный", 100, 10, "Gym1"),
-    #         (1,"Обычный", 100, 10, "Gym1"),
-    #         (1,"Обычный", 100, 10, "Gym1"),
-    #         (1,"Обычный", 100, 10, "Gym1"),
-    #         (1,"Обычный", 100, 10, "Gym1"),
-    #         (1,"Обычный", 100, 10, "Gym1"),
-    #         (1,"Обычный", 100, 10, "Gym1"),
-    #         (1,"Обычный", 100, 10, "Gym1"),
-    #         (1,"Обычный", 100, 10, "Gym1"),
-    #         (1,"Обычный", 100, 10, "Gym1"),
-    #         (1,"Обычный", 100, 10, "Gym1"),
-    #         (1,"Обычный", 100, 10, "Gym1"),
-    #         (1,"Обычный", 100, 10, "Gym1"),
-    #         (1,"Обычный", 100, 10, "Gym1"),
-    #         (1,"Обычный", 100, 10, "Gym1"),
-    #         (1,"Обычный", 100, 10, "Gym1"),
-    #         (1,"Обычный", 100, 10, "Gym1"),
-    #         (1,"Обычный", 100, 10, "Gym1"),
-    #         (2,"Обычный", 100, 10, "Gym1"),
-    #         ]
-    #     self.view.window.table_area.table.insert(subscriptions)
+    def fill_table(self):
+        data = self.model.get_subscriptions()
+        if data[1]:
+            if data[0]:
+                self.view.window.table_area.table.insert(data[0])
+        else:
+            self.view.window.error_label["text"] = "Ошибка заполнения таблицы"
+            
+        
 
 
 

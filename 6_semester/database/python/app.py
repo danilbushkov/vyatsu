@@ -1,12 +1,18 @@
 from widgets.window import Window
 from presenter import Presenter
+from database import DataBase
 
 class App:
 
     def __init__(self, config):
         self.state = 'table'
+        self.database = DataBase()
         self.window = Window(config)
-        self.presenter = Presenter(self)
+
+        if not self.database.connect(config):
+            self.window.error_label["text"] = "Ошибка подлючения"
+
+        self.presenter = Presenter(self, self.database)
 
         self.window.menu.table_btn.config(command=self.presenter.show_table)
         self.window.menu.add_btn.config(command=self.presenter.show_form)
@@ -20,7 +26,9 @@ class App:
 
 
     def run(self):
-        self.window.run();
+        self.window.run()
+        self.database.close()
+
 
 
 
