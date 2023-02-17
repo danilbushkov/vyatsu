@@ -68,4 +68,23 @@ class Model:
         ''',
         subscription
         )
-    
+
+    def get_filter_subscriptions(self, filter):
+        return self.db.select(
+        ''' 
+            SELECT 
+                s.id,
+                s.name, 
+                s.cost, 
+                s.num_trainings, 
+                g.name 
+            FROM 
+                subscription s 
+            INNER JOIN 
+                gym g 
+            ON 
+                s.gym_id = g.id 
+            WHERE s.cost >= %s AND s.cost <= %s
+        ''',
+        filter
+        )

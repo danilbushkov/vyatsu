@@ -20,17 +20,18 @@ class DataBase:
 
         return True
 
-    def select(self, query, data=None):
+    def select(self, query, values=None):
         if self.conn:
             data = []
             try:
                 cursor = self.conn.cursor()
-                cursor.execute(query, data)
+                cursor.execute(query, values)
                 for row in cursor.fetchall():
                     data.append(row);
 
                 cursor.close()
-            except:
+            except BaseException as e:
+                print(e)
                 return ([], False)
 
             return (data, True)
