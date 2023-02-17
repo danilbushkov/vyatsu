@@ -1,6 +1,7 @@
 from tkinter import *
 from widgets.menu import Menu
 from widgets.table_area import TableArea
+from widgets.update_form import UpdateForm
 from widgets.form import Form
 
 
@@ -13,6 +14,7 @@ class Window:
         self.menu = Menu(self.root, config)
         self.table_area = TableArea(self.root, config)
         self.form = Form(self.root, config)
+        self.update_form = UpdateForm(self.root, config)
         
         self.table_area.pack()
        

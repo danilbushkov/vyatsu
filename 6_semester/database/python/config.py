@@ -11,12 +11,20 @@ menu_height = window_height
 
 config = {
     "window": {
-        "title": "Test",
+        "title": "App",
         "width": window_width,
         "height": window_height,
     },
     "menu": {
         "width": menu_width,
         "height": menu_height
+    },
+    "db": {
+        "host": "localhost",
+        "port": 5432,
+        "password": "testpassword",
+        "user": "testuser",
+        "dbname": "testdb"
     }
 }
+

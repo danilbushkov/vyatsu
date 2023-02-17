@@ -15,10 +15,18 @@ class TableArea:
         self.filter = Filter(self.frame, config)
         self.delete_btn = Button(master=self.frame, 
                             text="Удалить абонемент")
+        self.update_btn = Button(master=self.frame, 
+                            text="Изменить абонемент")
+        self.error_label = Label(master = self.frame, foreground="red", text="")
+        
+
 
         self.table.pack()
         self.delete_btn.pack(side=LEFT, anchor=NW, padx=10, pady=10)
+        self.update_btn.pack(anchor=NW, padx=10, pady=10)
         self.filter.pack()
+        
+        self.error_label.pack(anchor=NW)
         
 
 

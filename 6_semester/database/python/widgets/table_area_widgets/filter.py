@@ -13,8 +13,10 @@ class Filter:
         self.bottom = Entry(master = self.filter_frame)
         self.top = Entry(master = self.filter_frame)
         self.label_to = Label(master = self.filter_frame, text="до")
-        self.btn = Button(master = self.filter_frame, text="Применить")
-        self.error_label = Label(master = self.frame, foreground="red", text="")
+        self.apply_btn = Button(master = self.filter_frame, text="Применить")
+
+        self.cancel_btn = Button(master = self.frame, text="Отменить")
+        
         
         
 
@@ -24,9 +26,11 @@ class Filter:
         self.bottom.pack(side=LEFT)
         self.label_to.pack(side=LEFT)
         self.top.pack(side=LEFT)
-        self.btn.pack(side=LEFT)
+        self.apply_btn.pack(side=LEFT)
         self.filter_frame.pack(anchor=NW)
-        self.error_label.pack(anchor=NW)
+        
+        self.cancel_btn.pack(anchor=NE)
+        
 
         
 

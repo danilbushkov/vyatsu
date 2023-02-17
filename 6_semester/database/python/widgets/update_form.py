@@ -1,13 +1,13 @@
 from tkinter import *
 from tkinter import ttk
 
-class Form:
+class UpdateForm:
 
     def __init__(self, master, config):
 
         self.frame = Frame(master=master)
 
-        self.label_form = Label(master = self.frame, text="Форма добавления")
+        self.label_form = Label(master = self.frame, text="Форма изменения")
         self.label_name = Label(master = self.frame, text="Название абонемента")
         self.label_cost = Label(master = self.frame, text="Цена абонемента")
         self.label_num_trainings = Label(master = self.frame, text="Количество тренировок")
@@ -19,7 +19,7 @@ class Form:
         self.gyms = ttk.Combobox(master = self.frame, state="readonly")
 
         
-        self.add_btn = Button(master = self.frame, text="Добавить абонемент")
+        self.update_btn = Button(master = self.frame, text="Изменить абонемент")
 
         self.error_label = Label(master = self.frame, foreground="red", text="")
 
@@ -32,12 +32,8 @@ class Form:
         self.trainings_input.pack(anchor=NW)        
         self.label_gym.pack(anchor=NW)
         self.gyms.pack(anchor=NW, pady=6)
-        self.add_btn.pack(anchor=NW)
+        self.update_btn.pack(anchor=NW)
         self.error_label.pack(anchor=NW)
-        
-
-    
-        
         
         
 

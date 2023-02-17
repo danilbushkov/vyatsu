@@ -10,8 +10,11 @@ class App:
 
         self.window.menu.table_btn.config(command=self.presenter.show_table)
         self.window.menu.add_btn.config(command=self.presenter.show_form)
-        self.window.table_area.delete_btn.config(command=self.presenter.clear_table)
-        self.window.table_area.filter.btn.config(command=self.presenter.fill_table)
+        self.window.table_area.delete_btn.config(command=self.presenter.delete_subscription)
+        self.window.table_area.filter.apply_btn.config(command=self.presenter.apply_filter)
+        self.window.table_area.filter.cancel_btn.config(command=self.presenter.cancel_filter)
+        self.window.table_area.update_btn.config(command=self.presenter.show_update_form)
+        self.window.update_form.update_btn.config(command=self.presenter.update_subscription)
         
 
 
