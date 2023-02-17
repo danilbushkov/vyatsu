@@ -34,6 +34,22 @@ class DataBase:
                 return ([], False)
 
             return (data, True)
+
+    
+    def insert(self, query, data=None):
+        if self.conn:
+            try:
+                cursor = self.conn.cursor()
+                cursor.execute(query, data) 
+                self.conn.commit()
+                cursor.close()  
+            except:
+                return False
+
+            return True
+        
+
+    
         
 
     def close(self):

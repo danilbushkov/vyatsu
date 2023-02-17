@@ -25,4 +25,25 @@ class Model:
             
         '''
         )
+
+    def add_subscription(self, subscription):
+        return self.db.insert(
+        '''
+            INSERT INTO subscription (name, cost, num_trainings, gym_id) 
+            VALUES (%s, %s, %s, %s)
+        ''',
+        subscription
+        )
+
+    def get_gyms(self):
+        return self.db.select(
+        ''' 
+            SELECT 
+                id,
+                name
+            FROM 
+                gym 
+            
+        '''
+        )
     
