@@ -44,3 +44,11 @@ class Table:
 
     def pack(self):
         self.frame.pack(side=TOP, anchor=NE, fill=BOTH)
+
+    def get_selection(self):
+        data = []
+        for selected_item in self.tree.selection():
+            item = self.tree.item(selected_item)
+            data.append(item["values"])
+
+        return data

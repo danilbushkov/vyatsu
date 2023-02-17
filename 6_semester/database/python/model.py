@@ -27,7 +27,7 @@ class Model:
         )
 
     def add_subscription(self, subscription):
-        return self.db.insert(
+        return self.db.execute(
         '''
             INSERT INTO subscription (name, cost, num_trainings, gym_id) 
             VALUES (%s, %s, %s, %s)
@@ -45,5 +45,27 @@ class Model:
                 gym 
             
         '''
+        )
+
+    def delete_subscription(self, id):
+        return self.db.execute(
+            '''
+            DELETE FROM subscription WHERE id=%s
+            ''',
+            (id,)
+        )
+
+    def update_subscription(self, subscription):
+        return self.db.execute(
+        '''
+            UPDATE subscription 
+            SET 
+                name = %s, 
+                cost = %s, 
+                num_trainings = %s, 
+                gym_id = %s 
+            WHERE id = %s
+        ''',
+        subscription
         )
     

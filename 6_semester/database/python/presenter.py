@@ -1,4 +1,5 @@
 from model import Model
+from tkinter import *
 
 
 class Presenter:
@@ -35,12 +36,16 @@ class Presenter:
 
 
     def show_update_form(self):
-        if self.view.state != 'update' :
+        count = len(self.view.window.table_area.table.get_selection())
+        if count > 0 and self.view.state != 'update' :
             self.view.state = 'update'
             self.view.window.form.unpack()
             self.view.window.table_area.unpack()
             self.view.window.update_form.pack()
             self.view.window.error_label["text"]=""
+            self.fill_update_form()
+        else:
+            self.view.window.error_label["text"] = "Не выбран элемент"
             
 
 
@@ -66,11 +71,29 @@ class Presenter:
 
 
 
-    def delete_subscription():
-        pass
+    def delete_subscription(self):
+        for item in self.view.window.table_area.table.get_selection():
+            if not self.model.delete_subscription(item[0]):
+                self.view.window.error_label["text"] = "Ошибка при удалении"
+                break
+        self.clear_table()
+        self.fill_table()
 
-    def update_subscription():
-        pass
+
+    def update_subscription(self):
+        name = self.view.window.update_form.name_input.get().strip()
+        cost = self.view.window.update_form.cost_input.get().strip()
+        num_trainings = self.view.window.update_form.trainings_input.get().strip()
+        gym = self.view.window.update_form.gyms.get().strip()
+        subscription = (name, cost, num_trainings, gym)
+        if self.check_subscription(subscription):
+            subscription = (name, cost, num_trainings, self.gyms_id[gym], self.id)
+            if self.model.update_subscription(subscription):
+                self.clear_table()
+                self.fill_table()
+                self.show_table()
+            else:
+                self.view.window.error_label["text"] = "Ошибка при изменении абонемента"
     
 ####
 ####filter
@@ -151,5 +174,20 @@ class Presenter:
 
         return True
 
+    def fill_update_form(self):
+        item = self.view.window.table_area.table.get_selection()[0]
+        if item:
+            self.id = item[0]
+            self.view.window.update_form.name_input.delete(0, END)
+            self.view.window.update_form.cost_input.delete(0, END)
+            self.view.window.update_form.trainings_input.delete(0, END)
 
+
+            self.view.window.update_form.name_input.insert(0, (item[1]))
+            self.view.window.update_form.cost_input.insert(0, (item[2]))
+            self.view.window.update_form.trainings_input.insert(0, (item[3]))
+            self.view.window.update_form.gyms.set(item[4])
+
+            
+                
 

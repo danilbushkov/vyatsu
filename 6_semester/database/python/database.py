@@ -36,7 +36,7 @@ class DataBase:
             return (data, True)
 
     
-    def insert(self, query, data=None):
+    def execute(self, query, data=None):
         if self.conn:
             try:
                 cursor = self.conn.cursor()
@@ -48,7 +48,7 @@ class DataBase:
 
             return True
         
-
+    
     
         
 
