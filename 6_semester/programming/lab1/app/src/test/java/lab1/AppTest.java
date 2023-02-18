@@ -7,8 +7,81 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
-    @Test void appHasAGreeting() {
-        App classUnderTest = new App();
-        assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
+    @Test void isPrefix() {
+        
+        
+        assertTrue(Task.isPrefix("", ""));
+        assertTrue(Task.isPrefix("abcdef", ""));
+        assertTrue(Task.isPrefix("abcdef", "a"));
+        assertTrue(Task.isPrefix("abcdef", "ab"));
+        assertTrue(Task.isPrefix("abcdef", "abcdef"));
+        
+
+
+        assertTrue(!Task.isPrefix("", "abcdef"));
+        assertTrue(!Task.isPrefix("abcdef", "abcdefe"));
+        assertTrue(!Task.isPrefix("abcdef", "c"));
+        assertTrue(!Task.isPrefix("abcdef", "ac"));
+        assertTrue(!Task.isPrefix("abcdef", "abcdee"));
     }
+
+    @Test void isSuffix() {
+        
+
+        assertTrue(Task.isSuffix("", ""));
+        assertTrue(Task.isSuffix("abcdef", ""));
+        assertTrue(Task.isSuffix("abcdef", "f"));
+        assertTrue(Task.isSuffix("abcdef", "def"));
+        assertTrue(Task.isSuffix("abcdef", "abcdef"));
+        
+
+
+        assertTrue(!Task.isSuffix("", "abcdef"));
+        assertTrue(!Task.isSuffix("abcdef", "abcdefe"));
+        assertTrue(!Task.isSuffix("abcdef", "e"));
+        assertTrue(!Task.isSuffix("abcdef", "fef"));
+        assertTrue(!Task.isSuffix("abcdef", "ebcdef"));
+    }
+
+
+    @Test void isSubstring() {
+        
+
+        assertTrue(Task.isSubstring("", ""));
+        assertTrue(Task.isSubstring("abcdef", "b"));
+        assertTrue(Task.isSubstring("abcdef", "ef"));
+        assertTrue(Task.isSubstring("abcdef", "bc"));
+        assertTrue(Task.isSubstring("abcdef", "bcd"));
+        assertTrue(Task.isSubstring("abcdef", "abcdef"));
+        
+
+
+        assertTrue(!Task.isSubstring("", "abcdef"));
+        assertTrue(!Task.isSubstring("abcdef", "abcdefe"));
+        assertTrue(!Task.isSubstring("abcdef", "ce"));
+        assertTrue(!Task.isSubstring("abcdef", "fef"));
+        assertTrue(!Task.isSubstring("abcdef", "abcdea"));
+    }
+
+
+    @Test void isSubsequence() {
+        
+
+        assertTrue(Task.isSubsequence("", ""));
+        assertTrue(Task.isSubsequence("abcdef", "b"));
+        assertTrue(Task.isSubsequence("abcdef", "af"));
+        assertTrue(Task.isSubsequence("abcdef", "be"));
+        assertTrue(Task.isSubsequence("abcdef", "ace"));
+        assertTrue(Task.isSubsequence("abcdef", "abcdef"));
+        
+
+
+        assertTrue(!Task.isSubsequence("", "abcdef"));
+        assertTrue(!Task.isSubsequence("abcdef", "afe"));
+        assertTrue(!Task.isSubsequence("abcdef", "ba"));
+        assertTrue(!Task.isSubsequence("abcdef", "ec"));
+        assertTrue(!Task.isSubsequence("abcdef", "cbcdef"));
+    }
+
+
 }
