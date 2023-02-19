@@ -28,6 +28,7 @@ public class ConsoleApp {
 
     }
     private void info() {
+        System.out.println();
         System.out.println("Menu items: ");
         System.out.println("1 - isPrefix");
         System.out.println("2 - isSuffix");
