@@ -57,12 +57,15 @@ public class Task {
     public static boolean isSubsequence(String str, String sub) {
         int n = str.length();
         int m = sub.length();
+        
         if(n < m) {
             return false;
         }
         if(m == 0) {
             return true;
         }
+
+
         int i = 0;
         int j = 0;
         while(i < n-m+j+1) {
