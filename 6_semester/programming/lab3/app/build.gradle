@@ -26,7 +26,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass = 'lab1.App'
+    mainClass = 'lab3.App'
 }
 
 tasks.named('test') {
@@ -38,6 +38,6 @@ tasks.named('test') {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'lab1.App'
+        attributes 'Main-Class': 'lab3.App'
     }
 }
