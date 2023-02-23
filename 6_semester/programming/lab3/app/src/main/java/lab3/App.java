@@ -8,8 +8,8 @@ public class App {
     
 
     public static void main(String[] args) {
-        GUIApp app = new GUIApp();
-        app.run();
+        Window window = new Window();
+        window.run();
         
         
     }
