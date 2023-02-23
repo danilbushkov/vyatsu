@@ -7,12 +7,13 @@ set(CMAKE_AUTOUIC ON)
 
 find_package(Qt5Widgets REQUIRED)
 
-set(INCLUDE_DIR ./)
+set(INCLUDE_DIR ./src/)
 include_directories(${INCLUDE_DIR})
 
 add_executable(      
   ${PROJECT_NAME}                     
-  main.cpp                               
+  ./src/main.cpp                               
+  ./src/view.cpp
   
 )     
 

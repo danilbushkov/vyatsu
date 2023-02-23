@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>541</width>
+    <height>416</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Приложение</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <widget class="QGroupBox" name="Menu">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>10</y>
+      <width>141</width>
+      <height>361</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string/>
+    </property>
+    <widget class="QPushButton" name="tableButton">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>10</y>
+       <width>141</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Показать таблицу</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="formButton">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>50</y>
+       <width>141</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Добавить данные</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="tableArea">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>10</y>
+      <width>381</width>
+      <height>361</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string/>
+    </property>
+    <widget class="QTableView" name="tableView">
+     <property name="geometry">
+      <rect>
+       <x>5</x>
+       <y>21</y>
+       <width>371</width>
+       <height>221</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="updateFormButton">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>250</y>
+       <width>90</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Изменить</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="deleteButton">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>290</y>
+       <width>90</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Удалить</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit">
+     <property name="geometry">
+      <rect>
+       <x>180</x>
+       <y>250</y>
+       <width>101</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="filterApplyButton">
+     <property name="geometry">
+      <rect>
+       <x>290</x>
+       <y>250</y>
+       <width>90</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Применить</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="filterCancelButton">
+     <property name="geometry">
+      <rect>
+       <x>290</x>
+       <y>280</y>
+       <width>90</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Отменить</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="filterLabel">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>260</y>
+       <width>58</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Цена от</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>0</y>
+       <width>91</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Абонементы</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="addArea">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>10</y>
+      <width>391</width>
+      <height>371</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string/>
+    </property>
+    <widget class="QLabel" name="label1">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>10</y>
+       <width>91</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Добавление</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label1_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>151</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Название абонемента</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="nameEdit">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>40</y>
+       <width>171</width>
+       <height>28</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label1_3">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>80</y>
+       <width>151</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Цена</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="costEdit">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>80</y>
+       <width>171</width>
+       <height>28</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label1_4">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>120</y>
+       <width>151</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Количество тренировок</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="trainingsInput">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>120</y>
+       <width>171</width>
+       <height>28</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="addButton">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>210</y>
+       <width>90</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Добавить</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBox">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>160</y>
+       <width>76</width>
+       <height>24</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>160</y>
+       <width>58</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Зал:</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="updateButton">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>210</y>
+       <width>90</width>
+       <height>28</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Изменить</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="errorLabel">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>380</y>
+      <width>58</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
