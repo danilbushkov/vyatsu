@@ -3,6 +3,9 @@
 
 #include <ui.h>
 #include <string>
+#include <QtWidgets/QMessageBox>
+#include <model.h>
+#include <unordered_map>
 
 class View: public QMainWindow {
     Q_OBJECT
@@ -11,6 +14,8 @@ private:
     Ui::MainWindow window;
     std::string state;
     int id = 0;
+    Model model;
+    QMap<QString, QString> keys;
     
 public:
     
@@ -20,6 +25,7 @@ public:
         window.setupUi(this);
         window.retranslateUi(this);
         window.addArea->setVisible(false);
+        model = Model();
 
         QStringList headers = { "id", "Название", "Цена", "Количество тренировок", "Зал" };
         window.tableWidget->setColumnCount(5); 
@@ -30,8 +36,16 @@ public:
         window.tableWidget->horizontalHeader()->setStretchLastSection(true);
         window.tableWidget->hideColumn(0);
         
-        addItemsInCombobox({"Test", "Test2"});
+        window.errorLabel->setStyleSheet("QLabel { color : red; }");;
+        
 
+        std::vector<QStringList> vec = model.getKeys();
+        for(int i = 0; i < vec.size(); i++) {
+            keys[vec[1][i]] = vec[0][i];
+        }
+
+        addItemsInCombobox(vec[1]);
+        addRowsInTable(model.getRows());
         bindHandlers();
 
         
@@ -40,9 +54,11 @@ public:
     void bindHandlers();
     void addRowInTable(QStringList row);
     void clearTable();
+    void addRowsInTable(std::vector<QStringList> rows);
 
     void addItemsInCombobox(QStringList row);
-
+    bool checkForm();
+    
 private slots:
     void viewTable();
     void viewAddForm();

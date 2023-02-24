@@ -137,7 +137,7 @@ public:
         updateButton->setGeometry(QRect(170, 210, 90, 28));
         errorLabel = new QLabel(centralwidget);
         errorLabel->setObjectName(QString::fromUtf8("errorLabel"));
-        errorLabel->setGeometry(QRect(400, 370, 58, 16));
+        errorLabel->setGeometry(QRect(170, 370, 501, 20));
         MainWindow->setCentralWidget(centralwidget);
 
         retranslateUi(MainWindow);

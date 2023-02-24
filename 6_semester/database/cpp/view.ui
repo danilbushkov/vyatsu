@@ -320,10 +320,10 @@
    <widget class="QLabel" name="errorLabel">
     <property name="geometry">
      <rect>
-      <x>400</x>
+      <x>170</x>
       <y>370</y>
-      <width>58</width>
-      <height>16</height>
+      <width>501</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">
