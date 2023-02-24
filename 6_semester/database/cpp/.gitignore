@@ -4,3 +4,6 @@ CMakeFiles/
 app
 Makefile
 app_autogen/
+.qmake.stash
+moc_predefs.h
+moc_view.cpp

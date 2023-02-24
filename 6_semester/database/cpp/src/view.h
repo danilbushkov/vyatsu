@@ -16,7 +16,6 @@ private:
     int id = 0;
     Model model;
     QMap<QString, QString> keys;
-    
 public:
     
 
@@ -36,9 +35,10 @@ public:
         window.tableWidget->horizontalHeader()->setStretchLastSection(true);
         window.tableWidget->hideColumn(0);
         
-        window.errorLabel->setStyleSheet("QLabel { color : red; }");;
-        
+        window.errorLabel->setStyleSheet("QLabel { color : red; }");
 
+        
+        
         std::vector<QStringList> vec = model.getKeys();
         for(int i = 0; i < vec.size(); i++) {
             keys[vec[1][i]] = vec[0][i];
@@ -50,6 +50,8 @@ public:
 
         
     };
+
+    virtual ~View(){};
 
     void bindHandlers();
     void addRowInTable(QStringList row);
