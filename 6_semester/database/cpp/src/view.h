@@ -10,6 +10,7 @@ class View: public QMainWindow {
 private:
     Ui::MainWindow window;
     std::string state;
+    int id = 0;
     
 public:
     
@@ -29,7 +30,8 @@ public:
         window.tableWidget->horizontalHeader()->setStretchLastSection(true);
         window.tableWidget->hideColumn(0);
         
-        
+        addItemsInCombobox({"Test", "Test2"});
+
         bindHandlers();
 
         
@@ -39,12 +41,17 @@ public:
     void addRowInTable(QStringList row);
     void clearTable();
 
+    void addItemsInCombobox(QStringList row);
+
 private slots:
     void viewTable();
     void viewAddForm();
     void viewUpdateForm();
     void deleteRow();
     void addRow();
+    void updateRow();
+    void filterApply();
+    void filterCancel();
 
 
 

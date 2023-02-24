@@ -13,13 +13,26 @@ void View::viewTable() {
 }
 
 void View::viewUpdateForm() {
-    if(state != "update") {
+    QList<QTableWidgetItem *> items = window.tableWidget->selectedItems();
+    if(state != "update" && items.size() > 0) {
         state = "update";
         window.label1->setText("Изменение");
         window.addArea->setVisible(true);
         window.tableArea->setVisible(false);
         window.addButton->setVisible(false);
         window.updateButton->setVisible(true);
+
+        id = items.at(0)->data(0).toInt();
+        QString name = items.at(1)->data(0).toString();
+        QString cost = items.at(2)->data(0).toString();
+        QString trainingsCount = items.at(3)->data(0).toString();
+        QString gym = items.at(4)->data(0).toString();
+        
+        window.costEdit->setText(cost);
+        window.nameEdit->setText(name);
+        window.trainingsInput->setText(trainingsCount);
+        window.comboBox->setCurrentText(gym);
+
 
     }
     
@@ -34,6 +47,11 @@ void View::viewAddForm() {
         window.tableArea->setVisible(false);
         window.addButton->setVisible(true);
         window.updateButton->setVisible(false);
+
+        window.costEdit->setText("");
+        window.nameEdit->setText("");
+        window.trainingsInput->setText("");
+        
     }
     
     
@@ -48,9 +66,25 @@ void View::deleteRow() {
 void View::addRow() {
     addRowInTable({"test", "Test", "Test", "test", "test"});
     
+    //comboBox->currentText()
+}
+
+void View::updateRow() {
+    addRowInTable({"test", "Test", "Test", "test", "test"});
+    
+    //comboBox->currentText()
+}
+
+void View::filterApply() {
+    
+    
     
 }
 
+void View::filterCancel() {
+    
+    
+}
 
 
 
@@ -86,6 +120,27 @@ void View::bindHandlers() {
         SLOT(deleteRow())
     );
 
+    connect(
+        window.updateButton, 
+        SIGNAL(clicked()), 
+        this, 
+        SLOT(updateRow())
+    );
+    
+    connect(
+        window.filterApplyButton, 
+        SIGNAL(clicked()), 
+        this, 
+        SLOT(filterApply())
+    );
+
+    connect(
+        window.filterCancelButton, 
+        SIGNAL(clicked()), 
+        this, 
+        SLOT(filterCancel())
+    );
+
 }
 
 void View::clearTable() {
@@ -102,6 +157,13 @@ void View::addRowInTable(QStringList row) {
     for(int i = 0; i < row.size(); i++) {
 
         window.tableWidget->setItem(n,i, new QTableWidgetItem(row[i]));
+    }
+    
+}
+
+void View::addItemsInCombobox(QStringList items) {
+    for(QString item: items) {
+        window.comboBox->addItem(item);
     }
     
 }
