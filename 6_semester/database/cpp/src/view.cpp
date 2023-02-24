@@ -91,19 +91,26 @@ void View::deleteRow() {
 void View::addRow() {
     window.errorLabel->setText("");
     
+    QStringList row = getFormItems();
+    if(row.size() > 0) {
+        model.addRow(row);
+        clearTable();
+        addRowsInTable(model.getRows());
+    }
 
-    clearTable();
-    addRowsInTable(model.getRows());
-    //comboBox->currentText()
+    
+    
 }
 
 void View::updateRow() {
     window.errorLabel->setText("");
     
-    
-    //comboBox->currentText()
-    clearTable();
-    addRowsInTable(model.getRows());
+    QStringList row = getFormItems();
+    if(row.size() > 0) {
+        model.updateRow(row);
+        clearTable();
+        addRowsInTable(model.getRows());
+    }
 }
 
 void View::filterApply() {
@@ -222,6 +229,40 @@ void View::addRowsInTable(std::vector<QStringList> rows) {
     }
 }
 
-bool View::checkForm() {
+QStringList View::getFormItems() {
+    QString name = window.nameEdit->text().trimmed();
+    QString cost = window.costEdit->text().trimmed();
+    QString trainingsCount = window.trainingsInput->text().trimmed();
+    QString gym = window.comboBox->currentText();
+    
+    keys[window.comboBox->currentText()];
 
+    if(name.size() == 0 || name.size() > 50) {
+        window.errorLabel->setText("Имя должно быть заполнено, длина от 1 до 50!");
+        return {};
+    }
+
+    bool ok;
+    int num = cost.toInt(&ok);
+    if(!ok || num < 0 || num > 1000000) {
+        window.errorLabel->setText("Цена должна быть числом от 0 до 1000000!");
+        return {};
+    }
+
+    num = trainingsCount.toInt(&ok);
+    if(!ok || num < 0 || num > 1000) {
+        window.errorLabel->setText("Количество тренировок должно быть числом от 0 до 1000!");
+        return {};
+    }
+
+    if(gym == "") {
+        window.errorLabel->setText("Не выбран зал!");
+        return {};
+    }
+    QString gymId = keys[gym];
+
+    if(state == "add") {
+        return {QString(id), name, cost, trainingsCount, gymId};
+    } 
+    return {name, cost, trainingsCount, gymId};
 }

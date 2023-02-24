@@ -57,8 +57,8 @@ public:
     void addRowsInTable(std::vector<QStringList> rows);
 
     void addItemsInCombobox(QStringList row);
-    bool checkForm();
-    
+    QStringList getFormItems();
+
 private slots:
     void viewTable();
     void viewAddForm();
