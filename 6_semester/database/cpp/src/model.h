@@ -33,7 +33,9 @@ public:
     }
 
     void addRow(QStringList row) {
-        getRow();
+        row.push_front(QString(count));
+        count++;
+        rows.push_back(row);
     }
 
     std::vector<QStringList> getKeys() {
@@ -49,11 +51,11 @@ public:
 
     QStringList getRow() {
         return {
-            QString(count),
+            "1",
             "Name"+QString(count),
             "cost"+QString(count),
             "trainings"+QString(count),
-            "gym"+QString(count),
+            "gym2"
         };
         count++;
     }

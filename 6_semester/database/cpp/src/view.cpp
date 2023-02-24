@@ -16,8 +16,10 @@ void View::viewTable() {
 void View::viewUpdateForm() {
     
     if(state != "update") {
-        QList<QTableWidgetItem *> items = window.tableWidget->selectedItems();
-        if(items.size() > 0) {
+        
+        
+        int cur = window.tableWidget->currentRow();
+        if(cur != -1) {
             state = "update";
             window.label1->setText("Изменение");
             window.addArea->setVisible(true);
@@ -25,11 +27,11 @@ void View::viewUpdateForm() {
             window.addButton->setVisible(false);
             window.updateButton->setVisible(true);
 
-            id = items.at(0)->data(0).toInt();
-            QString name = items.at(1)->data(0).toString();
-            QString cost = items.at(2)->data(0).toString();
-            QString trainingsCount = items.at(3)->data(0).toString();
-            QString gym = items.at(4)->data(0).toString();
+            id = window.tableWidget->item(cur, 0)->data(0).toInt();
+            QString name = window.tableWidget->item(cur, 1)->data(0).toString();
+            QString cost = window.tableWidget->item(cur, 2)->data(0).toString();
+            QString trainingsCount = window.tableWidget->item(cur, 3)->data(0).toString();
+            QString gym = window.tableWidget->item(cur, 4)->data(0).toString();
             
             window.costEdit->setText(cost);
             window.nameEdit->setText(name);
@@ -64,10 +66,10 @@ void View::viewAddForm() {
 
 void View::deleteRow() {
     window.errorLabel->setText("");
-    QList<QTableWidgetItem *> items = window.tableWidget->selectedItems();
-    if(items.size() > 0) {
+    int cur = window.tableWidget->currentRow();
+    if(cur != -1) {
         QMessageBox msgBox;
-        msgBox.setText("Удаление.");
+        msgBox.setWindowTitle("Удаление.");
         msgBox.setInformativeText("Вы уверены, что хотите удалить строку?");
         
         msgBox.addButton(QString("Отмена"), QMessageBox::NoRole);
@@ -76,7 +78,7 @@ void View::deleteRow() {
 
         int ret = msgBox.exec();
         if(ret == QMessageBox::YesRole){
-            int id = items.at(0)->data(0).toInt();
+            int id = window.tableWidget->item(cur, 0)->data(0).toInt();
             model.deleteRow(id);
             clearTable();
             addRowsInTable(model.getRows());
@@ -96,6 +98,7 @@ void View::addRow() {
         model.addRow(row);
         clearTable();
         addRowsInTable(model.getRows());
+        viewTable();
     }
 
     
@@ -110,6 +113,7 @@ void View::updateRow() {
         model.updateRow(row);
         clearTable();
         addRowsInTable(model.getRows());
+        viewTable();
     }
 }
 
@@ -225,7 +229,7 @@ void View::addItemsInCombobox(QStringList items) {
 
 void View::addRowsInTable(std::vector<QStringList> rows) {
     for(QStringList row: rows) {
-        addItemsInCombobox(row);
+        addRowInTable(row);
     }
 }
 
@@ -261,7 +265,7 @@ QStringList View::getFormItems() {
     }
     QString gymId = keys[gym];
 
-    if(state == "add") {
+    if(state == "update") {
         return {QString(id), name, cost, trainingsCount, gymId};
     } 
     return {name, cost, trainingsCount, gymId};
