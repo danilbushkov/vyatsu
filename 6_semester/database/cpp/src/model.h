@@ -54,11 +54,11 @@ public:
     void updateRow(QStringList row) {
         std::string s = " UPDATE subscription \
             SET \
-                name ="  + row[1].toStdString() +","+  
-                "cost =" + row[2].toStdString() +","+ 
-                "num_trainings =" + row[3].toStdString() +","+
-                "gym_id ="+ row[4].toStdString() + 
-            "WHERE id =" + row[0].toStdString();
+                name = '"  + row[1].toStdString() +"' ,"+  
+                "cost = " + row[2].toStdString() +","+ 
+                "num_trainings = " + row[3].toStdString() +","+
+                "gym_id = "+ row[4].toStdString() + 
+            " WHERE id = " + row[0].toStdString();
         db->exec(s);
     }
 
@@ -66,8 +66,8 @@ public:
 
         std::string s = "INSERT INTO subscription ( \ 
             name, cost, num_trainings, gym_id)  \
-            VALUES (" + 
-            row[0].toStdString()+","+ 
+            VALUES ('" + 
+            row[0].toStdString()+"',"+ 
             row[1].toStdString()+","+
             row[2].toStdString()+","+
             row[3].toStdString() + ")";

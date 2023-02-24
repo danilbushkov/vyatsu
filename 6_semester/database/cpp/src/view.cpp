@@ -72,12 +72,12 @@ void View::deleteRow() {
         msgBox.setWindowTitle("Удаление.");
         msgBox.setInformativeText("Вы уверены, что хотите удалить строку?");
         
-        msgBox.addButton(QString("Отмена"), QMessageBox::NoRole);
-        msgBox.addButton(QString("Удалить"), QMessageBox::YesRole);
+        QPushButton *noButton = msgBox.addButton(QString("Отмена"), QMessageBox::NoRole);
+        QPushButton *yesButton = msgBox.addButton(QString("Удалить"), QMessageBox::YesRole);
         
 
         int ret = msgBox.exec();
-        if(ret == QMessageBox::YesRole){
+        if(msgBox.clickedButton() == yesButton){
             int id = window.tableWidget->item(cur, 0)->data(0).toInt();
             model->deleteRow(id);
             clearTable();
@@ -266,7 +266,7 @@ QStringList View::getFormItems() {
     QString gymId = keys[gym];
 
     if(state == "update") {
-        return {QString(id), name, cost, trainingsCount, gymId};
+        return {QString::fromStdString(std::to_string(id)), name, cost, trainingsCount, gymId};
     } 
     return {name, cost, trainingsCount, gymId};
 }
