@@ -79,9 +79,9 @@ void View::deleteRow() {
         int ret = msgBox.exec();
         if(ret == QMessageBox::YesRole){
             int id = window.tableWidget->item(cur, 0)->data(0).toInt();
-            model.deleteRow(id);
+            model->deleteRow(id);
             clearTable();
-            addRowsInTable(model.getRows());
+            addRowsInTable(model->getRows());
         }
 
     } else {
@@ -95,9 +95,9 @@ void View::addRow() {
     
     QStringList row = getFormItems();
     if(row.size() > 0) {
-        model.addRow(row);
+        model->addRow(row);
         clearTable();
-        addRowsInTable(model.getRows());
+        addRowsInTable(model->getRows());
         viewTable();
     }
 
@@ -110,9 +110,9 @@ void View::updateRow() {
     
     QStringList row = getFormItems();
     if(row.size() > 0) {
-        model.updateRow(row);
+        model->updateRow(row);
         clearTable();
-        addRowsInTable(model.getRows());
+        addRowsInTable(model->getRows());
         viewTable();
     }
 }
@@ -125,7 +125,7 @@ void View::filterApply() {
     if(ok) {
         if(num >= 0 && num <= 1000000) {
             clearTable();
-            addRowsInTable(model.getFilterRows(str));
+            addRowsInTable(model->getFilterRows(str));
         } else {
             window.errorLabel->setText("Фильтр должен быть числом от 0 до 1000000!");
         }
@@ -142,7 +142,7 @@ void View::filterCancel() {
     window.errorLabel->setText("");
     
     clearTable();
-    addRowsInTable(model.getRows());
+    addRowsInTable(model->getRows());
 }
 
 

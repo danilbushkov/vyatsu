@@ -7,7 +7,7 @@
 
 class Model {
 private: 
-    std::vector<QStringList> rows;
+    
     int count = 0;
 
     DataBase *db;
@@ -17,16 +17,33 @@ public:
 
     Model() {
         db = new DataBase();
-        rows.push_back(getRow());
-        rows.push_back(getRow());
-        rows.push_back(getRow());
-        rows.push_back(getRow());
-        rows.push_back(getRow());
-        rows.push_back(getRow());
-        rows.push_back(getRow());
+        
+        // rows.push_back(getRow());
+        // rows.push_back(getRow());
+        // rows.push_back(getRow());
+        // rows.push_back(getRow());
+        // rows.push_back(getRow());
+        // rows.push_back(getRow());
     }
 
     std::vector<QStringList> getRows() {
+        std::vector<std::vector<std::string>> qrows = db->get(
+            "SELECT s.id, s.name, s.cost, s.num_trainings, g.name FROM \
+                subscription s \
+            INNER JOIN \
+                gym g \
+            ON \
+                s.gym_id = g.id"
+        );
+        std::vector<QStringList> rows;
+        for(auto qrow: qrows) {
+            int size = rows.size();
+            rows.push_back({});
+            for(auto item: qrow) {
+                rows[size].push_back(QString::fromStdString(item));
+            }
+        }
+
         return rows;
     }
 
@@ -63,29 +80,50 @@ public:
     }
 
     std::vector<QStringList> getKeys() {
-        std::vector<QStringList> keys;
-        keys.push_back({"1", "2", "3"});
-        keys.push_back({"gym1", "gym2", "gym3"});
+        std::vector<std::vector<std::string>> rows = db->get(
+            "SELECT id, name FROM gym"
+        );
+
+        std::vector<QStringList> keys(2);
+        for(auto row: rows) {
+            for(int i = 0; i < 2; i++) {
+                QString s = QString::fromStdString(row[i]);
+                keys[i].push_back(s);
+            }
+        }
+
+        // keys.push_back({"1", "2", "3"});
+        // keys.push_back({"gym1", "gym2", "gym3"});
         return keys;
     }
 
     std::vector<QStringList> getFilterRows(QString filter) {
+        std::vector<std::vector<std::string>> qrows = db->get(
+            "SELECT s.id, s.name, s.cost, s.num_trainings, g.name FROM \
+                subscription s \
+            INNER JOIN \
+                gym g \
+            ON \
+                s.gym_id = g.id \
+            WHERE s.cost >= " + filter.toStdString()
+        );
+        std::vector<QStringList> rows;
+        for(auto qrow: qrows) {
+            int size = rows.size();
+            rows.push_back({});
+            for(auto item: qrow) {
+                rows[size].push_back(QString::fromStdString(item));
+            }
+        }
+
         return rows;
     }
 
-    QStringList getRow() {
-        return {
-            "1",
-            "Name"+QString(count),
-            "cost"+QString(count),
-            "trainings"+QString(count),
-            "gym2"
-        };
-        count++;
-    }
+    
 
 
     ~Model() {
+        
         delete db;
     }
 

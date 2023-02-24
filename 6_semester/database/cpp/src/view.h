@@ -14,7 +14,7 @@ private:
     Ui::MainWindow window;
     std::string state;
     int id = 0;
-    Model model;
+    Model *model;
     QMap<QString, QString> keys;
 public:
     
@@ -24,7 +24,7 @@ public:
         window.setupUi(this);
         window.retranslateUi(this);
         window.addArea->setVisible(false);
-        model = Model();
+        model = new Model();
 
         QStringList headers = { "id", "Название", "Цена", "Количество тренировок", "Зал" };
         window.tableWidget->setColumnCount(5); 
@@ -39,19 +39,21 @@ public:
 
         
         
-        std::vector<QStringList> vec = model.getKeys();
+        std::vector<QStringList> vec = model->getKeys();
         for(int i = 0; i < vec.size(); i++) {
             keys[vec[1][i]] = vec[0][i];
         }
 
         addItemsInCombobox(vec[1]);
-        addRowsInTable(model.getRows());
+        addRowsInTable(model->getRows());
         bindHandlers();
 
         
     };
 
-    virtual ~View(){};
+    virtual ~View(){
+        delete model;
+    };
 
     void bindHandlers();
     void addRowInTable(QStringList row);
