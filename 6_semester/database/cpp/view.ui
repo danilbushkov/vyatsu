@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>541</width>
-    <height>416</height>
+    <width>725</width>
+    <height>409</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -64,19 +64,19 @@
      <rect>
       <x>150</x>
       <y>10</y>
-      <width>381</width>
+      <width>551</width>
       <height>361</height>
      </rect>
     </property>
     <property name="title">
      <string/>
     </property>
-    <widget class="QTableView" name="tableView">
+    <widget class="QTableWidget" name="tableWidget">
      <property name="geometry">
       <rect>
-       <x>5</x>
-       <y>21</y>
-       <width>371</width>
+       <x>0</x>
+       <y>20</y>
+       <width>541</width>
        <height>221</height>
       </rect>
      </property>
@@ -110,7 +110,7 @@
     <widget class="QLineEdit" name="lineEdit">
      <property name="geometry">
       <rect>
-       <x>180</x>
+       <x>330</x>
        <y>250</y>
        <width>101</width>
        <height>31</height>
@@ -120,7 +120,7 @@
     <widget class="QPushButton" name="filterApplyButton">
      <property name="geometry">
       <rect>
-       <x>290</x>
+       <x>450</x>
        <y>250</y>
        <width>90</width>
        <height>28</height>
@@ -133,8 +133,8 @@
     <widget class="QPushButton" name="filterCancelButton">
      <property name="geometry">
       <rect>
-       <x>290</x>
-       <y>280</y>
+       <x>450</x>
+       <y>290</y>
        <width>90</width>
        <height>28</height>
       </rect>
@@ -146,7 +146,7 @@
     <widget class="QLabel" name="filterLabel">
      <property name="geometry">
       <rect>
-       <x>120</x>
+       <x>260</x>
        <y>260</y>
        <width>58</width>
        <height>16</height>
@@ -176,7 +176,7 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>150</x>
+      <x>220</x>
       <y>10</y>
       <width>391</width>
       <height>371</height>
@@ -285,7 +285,7 @@
       <rect>
        <x>170</x>
        <y>160</y>
-       <width>76</width>
+       <width>171</width>
        <height>24</height>
       </rect>
      </property>
@@ -320,8 +320,8 @@
    <widget class="QLabel" name="errorLabel">
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>380</y>
+      <x>400</x>
+      <y>370</y>
       <width>58</width>
       <height>16</height>
      </rect>

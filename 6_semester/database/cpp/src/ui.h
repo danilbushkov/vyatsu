@@ -18,7 +18,7 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QPushButton>
-#include <QtWidgets/QTableView>
+#include <QtWidgets/QTableWidget>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -31,7 +31,7 @@ public:
     QPushButton *tableButton;
     QPushButton *formButton;
     QGroupBox *tableArea;
-    QTableView *tableView;
+    QTableWidget *tableWidget;
     QPushButton *updateFormButton;
     QPushButton *deleteButton;
     QLineEdit *lineEdit;
@@ -57,7 +57,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(541, 416);
+        MainWindow->resize(725, 409);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         centralwidget->setEnabled(true);
@@ -73,10 +73,10 @@ public:
         tableArea = new QGroupBox(centralwidget);
         tableArea->setObjectName(QString::fromUtf8("tableArea"));
         tableArea->setEnabled(true);
-        tableArea->setGeometry(QRect(150, 10, 381, 361));
-        tableView = new QTableView(tableArea);
-        tableView->setObjectName(QString::fromUtf8("tableView"));
-        tableView->setGeometry(QRect(5, 21, 371, 221));
+        tableArea->setGeometry(QRect(150, 10, 551, 361));
+        tableWidget = new QTableWidget(tableArea);
+        tableWidget->setObjectName(QString::fromUtf8("tableWidget"));
+        tableWidget->setGeometry(QRect(0, 20, 541, 221));
         updateFormButton = new QPushButton(tableArea);
         updateFormButton->setObjectName(QString::fromUtf8("updateFormButton"));
         updateFormButton->setGeometry(QRect(0, 250, 90, 28));
@@ -85,23 +85,23 @@ public:
         deleteButton->setGeometry(QRect(0, 290, 90, 28));
         lineEdit = new QLineEdit(tableArea);
         lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
-        lineEdit->setGeometry(QRect(180, 250, 101, 31));
+        lineEdit->setGeometry(QRect(330, 250, 101, 31));
         filterApplyButton = new QPushButton(tableArea);
         filterApplyButton->setObjectName(QString::fromUtf8("filterApplyButton"));
-        filterApplyButton->setGeometry(QRect(290, 250, 90, 28));
+        filterApplyButton->setGeometry(QRect(450, 250, 90, 28));
         filterCancelButton = new QPushButton(tableArea);
         filterCancelButton->setObjectName(QString::fromUtf8("filterCancelButton"));
-        filterCancelButton->setGeometry(QRect(290, 280, 90, 28));
+        filterCancelButton->setGeometry(QRect(450, 290, 90, 28));
         filterLabel = new QLabel(tableArea);
         filterLabel->setObjectName(QString::fromUtf8("filterLabel"));
-        filterLabel->setGeometry(QRect(120, 260, 58, 16));
+        filterLabel->setGeometry(QRect(260, 260, 58, 16));
         label_2 = new QLabel(tableArea);
         label_2->setObjectName(QString::fromUtf8("label_2"));
         label_2->setGeometry(QRect(150, 0, 91, 16));
         addArea = new QGroupBox(centralwidget);
         addArea->setObjectName(QString::fromUtf8("addArea"));
         addArea->setEnabled(true);
-        addArea->setGeometry(QRect(150, 10, 391, 371));
+        addArea->setGeometry(QRect(220, 10, 391, 371));
         label1 = new QLabel(addArea);
         label1->setObjectName(QString::fromUtf8("label1"));
         label1->setGeometry(QRect(150, 10, 91, 16));
@@ -128,7 +128,7 @@ public:
         addButton->setGeometry(QRect(170, 210, 90, 28));
         comboBox = new QComboBox(addArea);
         comboBox->setObjectName(QString::fromUtf8("comboBox"));
-        comboBox->setGeometry(QRect(170, 160, 76, 24));
+        comboBox->setGeometry(QRect(170, 160, 171, 24));
         label = new QLabel(addArea);
         label->setObjectName(QString::fromUtf8("label"));
         label->setGeometry(QRect(10, 160, 58, 16));
@@ -137,7 +137,7 @@ public:
         updateButton->setGeometry(QRect(170, 210, 90, 28));
         errorLabel = new QLabel(centralwidget);
         errorLabel->setObjectName(QString::fromUtf8("errorLabel"));
-        errorLabel->setGeometry(QRect(230, 380, 58, 16));
+        errorLabel->setGeometry(QRect(400, 370, 58, 16));
         MainWindow->setCentralWidget(centralwidget);
 
         retranslateUi(MainWindow);

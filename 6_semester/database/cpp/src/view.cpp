@@ -1,5 +1,6 @@
 
 #include <view.h>
+#include <iostream>
 
 
 
@@ -38,6 +39,19 @@ void View::viewAddForm() {
     
 }
 
+void View::deleteRow() {
+    clearTable();
+    
+    
+}
+
+void View::addRow() {
+    addRowInTable({"test", "Test", "Test", "test", "test"});
+    
+    
+}
+
+
 
 
 void View::bindHandlers() {
@@ -59,7 +73,35 @@ void View::bindHandlers() {
         this, 
         SLOT(viewUpdateForm())
     );
+    connect(
+        window.addButton, 
+        SIGNAL(clicked()), 
+        this, 
+        SLOT(addRow())
+    );
+    connect(
+        window.deleteButton, 
+        SIGNAL(clicked()), 
+        this, 
+        SLOT(deleteRow())
+    );
 
+}
 
+void View::clearTable() {
+    int n = window.tableWidget->rowCount();
+    for(int i = 0; i < n; i++) {
+        window.tableWidget->removeRow(0);
+    }
 
+}
+
+void View::addRowInTable(QStringList row) {
+    int n = window.tableWidget->rowCount();
+    window.tableWidget->insertRow(n);
+    for(int i = 0; i < row.size(); i++) {
+
+        window.tableWidget->setItem(n,i, new QTableWidgetItem(row[i]));
+    }
+    
 }
