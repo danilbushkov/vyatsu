@@ -4,6 +4,9 @@
 #include <string>
 #include <chrono>
 #include <complex>
+#include <test.h>
+#include <cstring>
+
 
 using namespace std;
 
@@ -146,7 +149,7 @@ bool check_equal(vector<double> &poly1, vector<double> &poly2) {
 }
 
 
-int main() {
+int _main() {
 
     vector<double> result;
     vector<double> dft_mult_result;
@@ -186,6 +189,44 @@ int main() {
     // dft(cpoly1, result);
     // print_complex_poly(result);
 
+
+    return 0;
+}
+
+
+char *name_app = "app";
+
+int help() {
+    cout << "Usage: " << name_app << " <command> [args]" << endl;
+    cout << "Commands:" << endl;
+    cout << "   help - Print usage info." << endl;
+    cout << "   test - Test funtions." << endl;
+
+    
+    cout << endl;
+
+}
+
+
+
+
+int main(int argc, char *argv[]) {
+    
+
+    if(argc == 1) {
+        help();
+        return 0;
+    }
+
+    if(argc == 2) {
+        if(strcmp("test", argv[1]) == 0) {
+            test();
+            return 0;
+        } else {
+            cout << "Command: " << argv[1] << endl;
+            cout << "No such command" << endl;
+        }
+    }
 
     return 0;
 }

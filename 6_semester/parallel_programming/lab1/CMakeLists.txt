@@ -10,6 +10,8 @@ include_directories (
 add_executable(
     ${PROJECT_NAME}
     ./src/main.cpp
-
+    ./src/test.cpp 
+    ./src/lib.cpp
+    
 )
 
