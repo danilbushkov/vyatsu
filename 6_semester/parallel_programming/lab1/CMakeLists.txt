@@ -12,6 +12,7 @@ add_executable(
     ./src/main.cpp
     ./src/test.cpp 
     ./src/lib.cpp
-    
+    ./src/mult.cpp
+    ./src/print.cpp
 )
 

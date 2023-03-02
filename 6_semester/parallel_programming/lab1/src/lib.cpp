@@ -8,10 +8,10 @@ int floor_power2(int num) {
 }
 
 
-int reverse_int(int num, int log2n) {
+int reverse_int(int num, int p) {
     int result = 0;
-    for(int i = 0; i <= log2n; i++) {
-        result |= ( (num >> i) & 1) << (log2n - i);
+    for(int i = 0; i <= p; i++) {
+        result |= ( (num >> i) & 1) << (p - i);
     }
     return result;
 }
