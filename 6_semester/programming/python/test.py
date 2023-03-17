@@ -1,4 +1,4 @@
-from matrix import add, multiply_by_number, subtract, transpose, multiply
+from matrix.matrix import add, multiply_by_number, subtract, transpose, multiply
 
 
 def multiply_by_number_test():
