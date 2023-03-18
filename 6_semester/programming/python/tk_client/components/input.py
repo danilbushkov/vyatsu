@@ -6,12 +6,18 @@ def change():
 class Input(Spinbox):
 
     def __init__(self, parent=None, from_=-100.0, to=100.0):
+
         self.from_ = int(from_)
         self.to = int(to)
-        self.present_value = 0
+        if self.from_ < 0:
+            self.present_value = 0
+        else:
+            self.present_value = self.from_    
         self.val = StringVar(value=self.present_value)
 
-        super().__init__(parent, from_=from_, to=to, width=4, textvariable=self.val)
+        super().__init__(parent, from_=from_, to=to, width=4)
+        if self.from_ >= -9 and self.to <= 9:
+            self.config(state="readonly")
         
         self.val.trace_add("write", self.change)
         
@@ -19,7 +25,11 @@ class Input(Spinbox):
     def change(self, *args):
         val = self.val.get()
         if val == "":
-            self.val.set(0)
+            if self.from_ < 0:
+                self.val.set(0)
+            else:
+                self.val.set(self.from_) 
+            
         elif self.is_int(val):
             if int(val) < self.from_:
                 self.val.set(self.from_)
@@ -40,3 +50,8 @@ class Input(Spinbox):
         except ValueError:
             return False
 
+    def set(self, value):
+        self.val.set(value)
+
+    def get(self):
+        return self.val.get()

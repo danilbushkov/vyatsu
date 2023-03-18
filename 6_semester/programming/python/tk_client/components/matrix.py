@@ -9,9 +9,11 @@ class Matrix(Frame):
         self.label_name = Label(self, text=name)
         self.label_name.pack(side=TOP)
 
-        self.input = Input(self, from_=-100.0, to=100.0)
+
+
+        self.input = Input(self, from_=1, to=5)
         self.input.pack(anchor=NW)
-        self.input = Input(self, from_=-100.0, to=100.0)
+        self.input = Input(self, from_=1, to=5)
         self.input.pack(anchor=NW)
 
         
