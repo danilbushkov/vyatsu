@@ -51,6 +51,7 @@ class Input(Spinbox):
             return False
 
     def set(self, value):
+        self.present_value = value
         self.val.set(value)
 
     def get(self):

@@ -34,6 +34,8 @@ class MatrixArea(Frame):
         self.matrix.clear_matrix()
         self.matrix.create_matrix(n, m)
 
+    def get_matrix(self):
+        return self.matrix.get_matrix()
 
 class Matrix(Frame):
     def __init__(self, parent=None, n=1, m=1):
@@ -54,9 +56,9 @@ class Matrix(Frame):
         for r in range(n):
             self.inputs.append([])
             for c in range(m):
-                btn = Input(self, from_=-100, to=100)
-                btn.grid(row=r, column=c)
-                self.inputs[r].append(btn)
+                input = Input(self, from_=-100, to=100)
+                input.grid(row=r, column=c)
+                self.inputs[r].append(input)
 
 
     def clear_matrix(self):
@@ -82,7 +84,7 @@ class Matrix(Frame):
         for i in range(n):
             matrix.append([])
             for j in range(m):
-                matrix[i].append(int(self.inputs[i][j]))
+                matrix[i].append(int(self.inputs[i][j].get()))
         
         return matrix
 
@@ -140,3 +142,49 @@ class MatrixSetting(ttk.Frame):
 
     def get_number_of_column(self):
         return int(self.input_col.get())
+
+class ResultMatrix(Frame):
+
+    def __init__(self, parent=None):
+        super().__init__(parent, borderwidth=1, relief=SOLID)
+
+        for c in range(6): self.columnconfigure(index=c, weight=1)
+        for r in range(5): self.rowconfigure(index=r, weight=1)
+        
+
+        self.labels = []
+        self.label = Label(self, text="Результат")
+        self.label.grid(column=0, row=0, columnspan=6)
+        #self.create_matrix([])
+
+
+    def create_matrix(self, matrix):
+        n = len(matrix)
+        m = 0
+        if n > 0:
+            m = len(matrix[0])
+
+        for r in range(n):
+            self.labels.append([])
+            for c in range(m):
+                text = 0
+                if m > 0 and n > 0:
+                    text = matrix[r][c]
+                label = Button(self, text=text)
+                label.grid(row=r+1, column=c)
+                self.labels[r].append(label)
+
+
+    def clear_matrix(self):
+        n = len(self.labels)
+        m = 0
+        if n > 0:
+            m = len(self.labels[0])
+
+
+        for i in range(n):
+            for j in range(m):
+                self.labels[i][j].destroy()
+
+        self.labels=[]
+

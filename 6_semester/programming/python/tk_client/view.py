@@ -7,7 +7,7 @@ class View(Tk):
     def __init__(self):
         super().__init__()
 
-        self.geometry("1000x700")
+        self.geometry("800x500")
         self.title("Операции над матрицами")
         self.resizable(False, False)
 
