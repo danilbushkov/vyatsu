@@ -1,6 +1,9 @@
 from tkinter import *
 from tkinter import ttk
 from tk_client.components.add_area import AddArea
+from tk_client.components.subtract_area import SubtractArea
+from tk_client.components.multiply_area import MultiplyArea
+
 
 class View(Tk):
     
@@ -19,10 +22,10 @@ class View(Tk):
         self.add_area = AddArea(self)
         self.add_area.pack(fill=BOTH, expand=True)
 
-        self.subtract_area = AddArea(self)
+        self.subtract_area = SubtractArea(self)
         self.subtract_area.pack(fill=BOTH, expand=True)
 
-        self.multiply_area = AddArea(self)
+        self.multiply_area = MultiplyArea(self)
         self.multiply_area.pack(fill=BOTH, expand=True)
 
         self.multiply_num_area = AddArea(self)

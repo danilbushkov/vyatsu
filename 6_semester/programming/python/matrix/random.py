@@ -5,6 +5,6 @@ def get_random_matrix(n, m):
     for i in range(n):
         matrix.append([])
         for _ in range(m):
-            matrix[i].append(random.randint(0,100))
+            matrix[i].append(random.randint(-100,100))
 
     return matrix

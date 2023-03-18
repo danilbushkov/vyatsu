@@ -155,7 +155,7 @@ class ResultMatrix(Frame):
         self.labels = []
         self.label = Label(self, text="Результат")
         self.label.grid(column=0, row=0, columnspan=6)
-        #self.create_matrix([])
+        
 
 
     def create_matrix(self, matrix):
@@ -170,7 +170,7 @@ class ResultMatrix(Frame):
                 text = 0
                 if m > 0 and n > 0:
                     text = matrix[r][c]
-                label = Button(self, text=text)
+                label = ttk.Label(self, text=text, padding=3)
                 label.grid(row=r+1, column=c)
                 self.labels[r].append(label)
 
