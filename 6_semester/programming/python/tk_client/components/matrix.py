@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from matrix.random import get_random_matrix
 
 from tk_client.components.input import Input
 
@@ -23,11 +24,15 @@ class MatrixArea(Frame):
         self.matrix = Matrix(self, n=3, m=3)
         self.matrix.grid(row=1, column=0)
         
-        self.matrix_setting = MatrixSetting(self)
+        self.matrix_setting = MatrixSetting(self, accept_command=self.change_matrix ,fill_command=self.matrix.fill_matrix_random)
         self.matrix_setting.grid(row=2, column=0)
         
 
-        
+    def change_matrix(self):
+        n = self.matrix_setting.get_number_of_row()
+        m = self.matrix_setting.get_number_of_column()
+        self.matrix.clear_matrix()
+        self.matrix.create_matrix(n, m)
 
 
 class Matrix(Frame):
@@ -41,11 +46,11 @@ class Matrix(Frame):
 
         self.inputs = []
 
-        self.fill_matrix(n, m)
+        self.create_matrix(n, m)
         
 
 
-    def fill_matrix(self, n, m):
+    def create_matrix(self, n, m):
         for r in range(n):
             self.inputs.append([])
             for c in range(m):
@@ -81,6 +86,19 @@ class Matrix(Frame):
         
         return matrix
 
+    def fill_matrix_random(self):
+        n = len(self.inputs)
+        m = 0
+        if n > 0:
+            m = len(self.inputs[0])
+
+        matrix = get_random_matrix(n, m)
+
+        for i in range(n):
+            for j in range(m):
+                self.inputs[i][j].set(matrix[i][j])
+
+
 
 class MatrixSetting(ttk.Frame):
     def __init__(self, parent=None, accept_command=None, fill_command=None):
@@ -107,14 +125,14 @@ class MatrixSetting(ttk.Frame):
         self.input_col = Input(self, from_=1, to=5)
         self.input_col.grid(row=1, column=1)
 
-        
-        
-        self.btn = Button(self, text="Принять", command=accept_command)
-        self.btn.grid(row=2, column=0)
-
-
         self.btn_random = Button(self, text="Заполнить", command=fill_command)
-        self.btn_random.grid(row=2, column=1)
+        self.btn_random.grid(row=2, column=0)
+        
+        self.btn = Button(self, text="Изменить", command=accept_command)
+        self.btn.grid(row=2, column=1)
+
+
+        
         
 
     def get_number_of_row(self):

@@ -12,7 +12,7 @@ class Input(Spinbox):
         if self.from_ < 0:
             self.present_value = 0
         else:
-            self.present_value = self.from_    
+            self.present_value = 3  
         self.val = StringVar(value=self.present_value)
 
         super().__init__(parent, from_=from_, to=to, width=4, textvariable=self.val)
