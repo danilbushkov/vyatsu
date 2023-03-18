@@ -15,7 +15,7 @@ class Input(Spinbox):
             self.present_value = self.from_    
         self.val = StringVar(value=self.present_value)
 
-        super().__init__(parent, from_=from_, to=to, width=4)
+        super().__init__(parent, from_=from_, to=to, width=4, textvariable=self.val)
         if self.from_ >= -9 and self.to <= 9:
             self.config(state="readonly")
         
