@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
             test();
             return 0;
         } else if(strcmp("test1", argv[1]) == 0) {
-            test_multiplication(10, 10);
+            test_multiplication("1", 10, 10);
             return 0;
         } else {
             cout << "Command: " << argv[1] << endl;
