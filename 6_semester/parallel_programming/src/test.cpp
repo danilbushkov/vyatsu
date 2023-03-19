@@ -9,7 +9,8 @@
 
 void test_multiplication(int poly1_size, int poly2_size) {
     
-    vector<double> result;
+    vector<double> result1;
+    vector<double> result2;
     vector<double> dft_mult_result;
     vector<double> poly1;
     vector<double> poly2;
@@ -20,10 +21,24 @@ void test_multiplication(int poly1_size, int poly2_size) {
         polynomial_multiplication,
         poly1,
         poly2,
-        result,
+        result1,
         "polynomial_multiplication"
     );
 
+    print_multiplication_time(
+        dft_mult,
+        poly1,
+        poly2,
+        result2,
+        "dft_mult"
+    );
+
+    if(!check_equal(result1, result2)) {
+        cout << "Error: dft_result and multiply_result are not equal" << endl;
+        print_poly(result1);
+        print_poly(result2);
+    }
+    
 
 }
 

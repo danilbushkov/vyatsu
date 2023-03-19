@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 project(app)
 
+#SET(CMAKE_CXX_FLAGS "-O3")
 
 include_directories (
     ./src/
