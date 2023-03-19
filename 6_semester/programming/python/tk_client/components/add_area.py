@@ -27,14 +27,14 @@ class AddArea(Frame):
         self.result_matrix = ResultMatrix(self)
         self.result_matrix.grid(row=1, column=2)
 
-        self.btn = Button(self, text="Сложить", command=self.add)
+        self.btn = Button(self, text="Сложить", command=self.handler)
         self.btn.grid(row=2, column = 0, columnspan=col)
 
         self.label_error = Label(self, text="", foreground="red")
         self.label_error.grid(row=3, column = 0, columnspan=col)
 
 
-    def add(self):
+    def handler(self):
         self.label_error["text"]=""
         m1 = self.matrix_area1.get_matrix()
         m2 = self.matrix_area2.get_matrix()
