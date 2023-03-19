@@ -9,10 +9,12 @@ include_directories (
 
 add_executable(
     ${PROJECT_NAME}
+    ./src/multiply.cpp
     ./src/main.cpp
     ./src/test.cpp 
     ./src/lib.cpp
-    ./src/mult.cpp
     ./src/print.cpp
+    ./src/poly.cpp
+    ./src/dft.cpp
 )
 

@@ -3,6 +3,28 @@
 #include <print.h>
 
 
+
+
+void print_multiplication_time(
+    void multiply(vector<double> &, vector<double> &, vector<double> &),
+    vector<double> &poly1, 
+    vector<double> &poly2, 
+    vector<double> &result,
+    string func_name
+) {
+
+    auto start = chrono::steady_clock::now();
+
+    multiply(poly1, poly2, result);
+
+    auto end = chrono::steady_clock::now();
+
+    print_time(func_name, start, end);
+
+}
+
+
+
 void print_time(string task, 
                 chrono::steady_clock::time_point start, 
                 chrono::steady_clock::time_point end) {

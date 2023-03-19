@@ -1,6 +1,40 @@
 
 #include <test.h>
 
+
+
+
+
+
+
+void test_multiplication(int poly1_size, int poly2_size) {
+    
+    vector<double> result;
+    vector<double> dft_mult_result;
+    vector<double> poly1;
+    vector<double> poly2;
+    get_random_poly(poly1, poly1_size);
+    get_random_poly(poly2, poly2_size);
+    
+    print_multiplication_time(
+        polynomial_multiplication,
+        poly1,
+        poly2,
+        result,
+        "polynomial_multiplication"
+    );
+
+
+}
+
+
+
+
+
+
+
+
+
 void test() {
 
     if(floor_power2(0) != 0) {
