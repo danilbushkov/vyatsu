@@ -1,6 +1,5 @@
 #include <lib.h>
 
-
 int floor_power2(int num) {
     int result = 0;
     for(; num > 1; num=num>>1, result++);
