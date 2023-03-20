@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <complex>
+#include <stack>
 #include <lib.h>
 #include <poly.h>
 #include <print.h>
@@ -13,5 +14,6 @@ void fft_alloc(vector<complex<double>> &poly, complex<double> wn);
 void fft_mult(vector<double> &poly1, vector<double> &poly2, vector<double> &result);
 void fft_mult_alloc(vector<double> &poly1, vector<double> &poly2, vector<double> &result);
 void fft_mult(vector<double> &poly1, vector<double> &poly2, vector<double> &result);
+void fft_mult_stack(vector<double> &poly1, vector<double> &poly2, vector<double> &result);
 
 #endif

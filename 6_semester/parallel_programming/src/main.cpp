@@ -19,6 +19,7 @@ const int mult_code = 1;
 const int dft_code = 2;
 const int fft_alloc_code = 4;
 const int fft_code = 8;
+const int fft_stack_code = 16;
 
 
 char *name_app = "app";
@@ -50,13 +51,18 @@ int main(int argc, char *argv[]) {
             test();
             return 0;
         } else if(strcmp("test1", argv[1]) == 0) {
-            test_multiplication("1", 2, 2, 15);
-            //test_multiplication("1", 3, 3, 15);
-            int code = mult_code | fft_alloc_code | fft_code;
+            //test_multiplication("1", 2, 2, 15);
+            test_multiplication("1", 3, 3, 15);
+            int code = mult_code | fft_alloc_code | fft_code | fft_stack_code;
 
-            // test_multiplication("2", 1000, 1000, code);
-            // test_multiplication("3", 6000, 6000, code);
-            // test_multiplication("3", 10000, 10000, code);
+            test_multiplication("2", 1000, 1000, code);
+            test_multiplication("3", 6000, 6000, code);
+            test_multiplication("4", 10000, 10000, code);
+
+            code = fft_alloc_code | fft_code | fft_stack_code;
+            test_multiplication("5", 30000, 30000, code);
+            test_multiplication("6", 100000, 100000, code);
+            test_multiplication("7", 700000, 700000, code);
             return 0;
         } else {
             cout << "Command: " << argv[1] << endl;

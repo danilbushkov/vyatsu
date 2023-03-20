@@ -12,6 +12,7 @@ void test_multiplication(char *name, int poly1_size, int poly2_size, int code) {
     bool dft_code = (code >> 1) & 1;
     bool fft_alloc_code = (code >> 2) & 1;
     bool fft_code = (code >> 3) & 1;
+    bool fft_stack_code = (code >> 4) & 1;
     
     std::cout << "Test: " << name << std::endl;
 
@@ -19,6 +20,7 @@ void test_multiplication(char *name, int poly1_size, int poly2_size, int code) {
     vector<double> result2;
     vector<double> result3;
     vector<double> result4;
+    vector<double> result5;
     vector<double> dft_mult_result;
     vector<double> poly1;
     vector<double> poly2;
@@ -64,6 +66,16 @@ void test_multiplication(char *name, int poly1_size, int poly2_size, int code) {
         );
     }
 
+    if(fft_stack_code) {
+        print_multiplication_time(
+            fft_mult_stack,
+            poly1,
+            poly2,
+            result5,
+            "fft_stack"
+        );
+    }
+
     if(mult_code && dft_code) {
         if(!check_equal(result1, result2)) {
             cout << "Error: dft_result and multiply_result are not equal" << endl;
@@ -86,6 +98,15 @@ void test_multiplication(char *name, int poly1_size, int poly2_size, int code) {
             cout << "Error: fft_result and multiply_result are not equal" << endl;
 
             print_poly(result4);
+            print_poly(result1);
+        }
+    }
+
+    if(mult_code && fft_stack_code) {
+        if(!check_equal(result1, result4)) {
+            cout << "Error: fft_stack_result and multiply_result are not equal" << endl;
+
+            print_poly(result5);
             print_poly(result1);
         }
     }

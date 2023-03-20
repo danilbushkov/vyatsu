@@ -63,12 +63,60 @@ void fft(vector<complex<double>> &poly, complex<double> wn) {
         
     }
     
-
-
     recursive_fft(poly, 0, n, wn);
 }
 
+struct fft_data {
+    int start;
+    int end;
+    complex<double> w;
+    bool v;
+};
 
+void fft_stack(vector<complex<double>> &poly, complex<double> wn) {
+    int n = poly.size();
+    if (n == 1)
+        return;
+    
+    for(int i = 0; i < n; i++) {
+        int rev_i = reverse_int(i, floor_power2(n-1));
+        
+        if(i < rev_i) {
+            swap(poly[i], poly[rev_i]);
+        }
+        
+    }
+    
+    stack<fft_data> s;
+    fft_data data = {0, n, wn, false};
+    s.push(data);
+
+    while(!s.empty()) {
+        data = s.top();
+        s.pop();
+        if(data.v) {
+            complex<double> w = 1;
+            int d = data.end - data.start;
+            for (int i = data.start; i < data.end - d/2; i++) {
+                complex<double> t = w * poly[i + d/2];
+                poly[i + d/2] = poly[i] - t;
+                poly[i] = poly[i] + t;
+                w *= wn;
+            }
+        } else {
+            data.v = true;
+            s.push(data);
+            int d = data.end - data.start;
+            if (d > 1) {
+                int k = (data.start + data.end) >> 1;
+                s.push({data.start, k, wn * wn, false});
+                s.push({k, data.end, wn * wn, false});
+            }
+        }
+        
+    }
+    
+}
 
 
 void fft_mult(
@@ -125,6 +173,10 @@ void fft_mult(
 
 void fft_mult_alloc(vector<double> &poly1, vector<double> &poly2, vector<double> &result) {
     fft_mult(fft_alloc, poly1, poly2, result);
+}
+
+void fft_mult_stack(vector<double> &poly1, vector<double> &poly2, vector<double> &result) {
+    fft_mult(fft_stack, poly1, poly2, result);
 }
 
 void fft_mult(vector<double> &poly1, vector<double> &poly2, vector<double> &result) {
