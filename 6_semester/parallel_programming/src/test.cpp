@@ -7,41 +7,88 @@
 
 
 
-void test_multiplication(char *name, int poly1_size, int poly2_size) {
+void test_multiplication(char *name, int poly1_size, int poly2_size, int code) {
+    bool mult_code = code & 1;
+    bool dft_code = (code >> 1) & 1;
+    bool fft_alloc_code = (code >> 2) & 1;
+    bool fft_code = (code >> 3) & 1;
     
     std::cout << "Test: " << name << std::endl;
 
     vector<double> result1;
     vector<double> result2;
+    vector<double> result3;
+    vector<double> result4;
     vector<double> dft_mult_result;
     vector<double> poly1;
     vector<double> poly2;
     get_random_poly(poly1, poly1_size);
     get_random_poly(poly2, poly2_size);
     
-    print_multiplication_time(
-        polynomial_multiplication,
-        poly1,
-        poly2,
-        result1,
-        "polynomial_multiplication"
-    );
-
-    print_multiplication_time(
-        dft_mult,
-        poly1,
-        poly2,
-        result2,
-        "dft_mult"
-    );
-
-    if(!check_equal(result1, result2)) {
-        cout << "Error: dft_result and multiply_result are not equal" << endl;
-        print_poly(result1);
-        print_poly(result2);
+    if(mult_code) {
+        print_multiplication_time(
+            polynomial_multiplication,
+            poly1,
+            poly2,
+            result1,
+            "polynomial_multiplication"
+        );
     }
     
+    if(dft_code) {
+        print_multiplication_time(
+            dft_mult,
+            poly1,
+            poly2,
+            result2,
+            "dft_mult"
+        );
+    }
+    
+    if(fft_alloc_code) {
+        print_multiplication_time(
+            fft_mult_alloc,
+            poly1,
+            poly2,
+            result3,
+            "fft_mult_alloc"
+        );
+    }
+    if(fft_code) {
+        print_multiplication_time(
+            fft_mult,
+            poly1,
+            poly2,
+            result4,
+            "fft_mult"
+        );
+    }
 
+    if(mult_code && dft_code) {
+        if(!check_equal(result1, result2)) {
+            cout << "Error: dft_result and multiply_result are not equal" << endl;
+            print_poly(result1);
+            print_poly(result2);
+        }
+    }
+    
+    if(mult_code && fft_alloc_code) {
+        if(!check_equal(result1, result3)) {
+            cout << "Error: fft_alloc_result and multiply_result are not equal" << endl;
+            print_poly(result1);
+            print_poly(result3);
+        }
+    }
+
+    if(mult_code && fft_code) {
+        if(!check_equal(result1, result4)) {
+            cout << "Error: fft_result and multiply_result are not equal" << endl;
+            print_poly(result1);
+            print_poly(result4);
+        }
+    }
+    
+    cout << endl;
 }
 
 

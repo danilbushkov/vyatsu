@@ -14,3 +14,13 @@ int reverse_int(int num, int p) {
     }
     return result;
 }
+
+bool has_one_bit(int num) {
+    int count = 0;
+    while(num > 0) {
+        count = count + (num & 1);
+        num = num >> 1;
+    }
+
+    return count == 1;
+}

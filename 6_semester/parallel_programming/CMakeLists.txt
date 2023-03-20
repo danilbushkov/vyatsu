@@ -17,5 +17,6 @@ add_executable(
     ./src/print.cpp
     ./src/poly.cpp
     ./src/dft.cpp
+    ./src/fft.cpp
 )
 

@@ -23,6 +23,7 @@ void cpoly_to_dpoly(vector<complex<double>> &poly, vector<double> &result) {
 
 
 void get_random_poly(vector<double> &poly, int size, int min, int max) {
+    srand (time(NULL));
     poly.reserve(size);
     for(int i = 0; i < size; i++) {
         int item = min + rand() % ((max + 1) - min);
