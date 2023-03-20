@@ -20,9 +20,9 @@ void fft_alloc(vector<complex<double>> &poly, complex<double> wn) {
     
     complex<double> w = 1;
     for (int i = 0; i < n / 2; i++) {
-        
-        poly[i] = a[i] + w * b[i];
-        poly[i + n / 2] = a[i] - w * b[i]; 
+        complex<double> t = w * b[i];
+        poly[i] = a[i] + t;
+        poly[i + n / 2] = a[i] - t; 
         w *= wn;
     }
 }
@@ -31,19 +31,21 @@ void recursive_fft(vector<complex<double>> &p, int start, int end, complex<doubl
     int d = end - start;
     
     if (d > 1) {
-        cout << start << " " << end << endl;
+        
         int k = (start + end) >> 1;
         recursive_fft(p, start, k, wn * wn);
         recursive_fft(p, k, end, wn * wn);
         complex<double> w = 1;
         for (int i = start; i < end - d/2; i++) {
             complex<double> t = w * p[i + d/2];
-            p[i] = p[i] + t;
             p[i + d/2] = p[i] - t;
+            p[i] = p[i] + t;
             w *= wn;
 
         }
+        
     }
+    
 }
 
 
@@ -51,7 +53,7 @@ void fft(vector<complex<double>> &poly, complex<double> wn) {
     int n = poly.size();
     if (n == 1)
         return;
-    //print_complex_poly(poly);
+    
     for(int i = 0; i < n; i++) {
         int rev_i = reverse_int(i, floor_power2(n-1));
         
@@ -60,7 +62,7 @@ void fft(vector<complex<double>> &poly, complex<double> wn) {
         }
         
     }
-    //print_complex_poly(poly);
+    
 
 
     recursive_fft(poly, 0, n, wn);
