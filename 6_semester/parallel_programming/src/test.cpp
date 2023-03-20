@@ -67,24 +67,26 @@ void test_multiplication(char *name, int poly1_size, int poly2_size, int code) {
     if(mult_code && dft_code) {
         if(!check_equal(result1, result2)) {
             cout << "Error: dft_result and multiply_result are not equal" << endl;
-            print_poly(result1);
             print_poly(result2);
+            print_poly(result1);
         }
     }
     
     if(mult_code && fft_alloc_code) {
         if(!check_equal(result1, result3)) {
             cout << "Error: fft_alloc_result and multiply_result are not equal" << endl;
-            print_poly(result1);
+            
             print_poly(result3);
+            print_poly(result1);
         }
     }
 
     if(mult_code && fft_code) {
         if(!check_equal(result1, result4)) {
             cout << "Error: fft_result and multiply_result are not equal" << endl;
-            print_poly(result1);
+
             print_poly(result4);
+            print_poly(result1);
         }
     }
     

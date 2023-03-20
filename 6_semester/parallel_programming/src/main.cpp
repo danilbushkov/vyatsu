@@ -50,12 +50,13 @@ int main(int argc, char *argv[]) {
             test();
             return 0;
         } else if(strcmp("test1", argv[1]) == 0) {
-            test_multiplication("1", 3, 3, 7);
+            test_multiplication("1", 2, 2, 15);
+            //test_multiplication("1", 3, 3, 15);
             int code = mult_code | fft_alloc_code | fft_code;
 
-            test_multiplication("2", 1000, 1000, code);
-            test_multiplication("3", 6000, 6000, code);
-            test_multiplication("3", 10000, 10000, code);
+            // test_multiplication("2", 1000, 1000, code);
+            // test_multiplication("3", 6000, 6000, code);
+            // test_multiplication("3", 10000, 10000, code);
             return 0;
         } else {
             cout << "Command: " << argv[1] << endl;

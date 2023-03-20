@@ -2,12 +2,6 @@
 #include <iostream>
 
 
-// void fft(vector<complex<double>> &poly, int k, double s, vector<complex<double>> &result) {
-//     //преобразовать к n^2
-//     //
-
-
-// }
 
 void fft_alloc(vector<complex<double>> &poly, complex<double> wn) {
     int n = poly.size();
@@ -33,29 +27,43 @@ void fft_alloc(vector<complex<double>> &poly, complex<double> wn) {
     }
 }
 
+void recursive_fft(vector<complex<double>> &p, int start, int end, complex<double> wn) {
+    int d = end - start;
+    
+    if (d > 1) {
+        cout << start << " " << end << endl;
+        int k = (start + end) >> 1;
+        recursive_fft(p, start, k, wn * wn);
+        recursive_fft(p, k, end, wn * wn);
+        complex<double> w = 1;
+        for (int i = start; i < end - d/2; i++) {
+            complex<double> t = w * p[i + d/2];
+            p[i] = p[i] + t;
+            p[i + d/2] = p[i] - t;
+            w *= wn;
+
+        }
+    }
+}
+
 
 void fft(vector<complex<double>> &poly, complex<double> wn) {
     int n = poly.size();
     if (n == 1)
         return;
-    
-    vector<complex<double>> a(n / 2), b(n / 2);
-    for (int i = 0; i < n / 2; i++) {
-        a[i] = poly[2 * i];
-        b[i] = poly[2 * i + 1];
-    }
-    
-
-    fft_alloc(a, wn * wn);
-    fft_alloc(b, wn * wn);
-    
-    complex<double> w = 1;
-    for (int i = 0; i < n / 2; i++) {
+    //print_complex_poly(poly);
+    for(int i = 0; i < n; i++) {
+        int rev_i = reverse_int(i, floor_power2(n-1));
         
-        poly[i] = a[i] + w * b[i];
-        poly[i + n / 2] = a[i] - w * b[i]; 
-        w *= wn;
+        if(i < rev_i) {
+            swap(poly[i], poly[rev_i]);
+        }
+        
     }
+    //print_complex_poly(poly);
+
+
+    recursive_fft(poly, 0, n, wn);
 }
 
 
@@ -78,6 +86,7 @@ void fft_mult(
         size++;
     }
 
+    size *= 2;
 
     vector<complex<double>> cpoly1;
     vector<complex<double>> cpoly2;
@@ -86,22 +95,22 @@ void fft_mult(
     dpoly_to_cpoly(poly1, cpoly1);
     dpoly_to_cpoly(poly2, cpoly2);
 
-    cpoly1.resize(size*2, complex<double>(0, 0));
-    cpoly2.resize(size*2, complex<double>(0, 0));
-    cresult.resize(size*2, complex<double>(0, 0));
+    cpoly1.resize(size, complex<double>(0, 0));
+    cpoly2.resize(size, complex<double>(0, 0));
+    cresult.resize(size, complex<double>(0, 0));
 
     
-    double f = 2 * M_PI / (size*2);
+    double f = 2 * M_PI / (size);
     complex<double> w = complex<double>(cos(f), sin(f));
 
     fft(cpoly1, w);
     fft(cpoly2, w);
 
-    for(int i = 0; i < size*2; i++) {
-        cresult[i] = (cpoly1[i] * cpoly2[i]) / complex<double>(size*2, 0);
+    for(int i = 0; i < size; i++) {
+        cresult[i] = (cpoly1[i] * cpoly2[i]) / complex<double>(size, 0);
     }
 
-    f = - 2 * M_PI / (size*2);
+    f = - 2 * M_PI / (size);
     w = complex<double>(cos(f), sin(f));
     fft(cresult, w);
 
