@@ -10,19 +10,27 @@ void recursive_pfft(vector<complex<double>> &p, int start, int end, complex<doub
         
         int k = (start + end) >> 1;
 
-        mtx.lock();
+        
         if(threads_num > 0) {
+            mtx.lock();
+            if(threads_num > 0) {
+                threads_num -= 1;
+                mtx.unlock();
+                thread pfft_thread(recursive_pfft, ref(p), start, k, wn*wn);
+                recursive_pfft(p, k, end, wn * wn);
 
-            threads_num -= 1;
-            mtx.unlock();
-            thread pfft_thread(recursive_pfft, ref(p), start, k, wn*wn);
-            recursive_pfft(p, k, end, wn * wn);
-
-            pfft_thread.join();
-            threads_num += 1;
+                pfft_thread.join();
+                threads_num += 1;
+            } else {
+                mtx.unlock();
+                recursive_pfft(p, start, k, wn * wn);
+                recursive_pfft(p, k, end, wn * wn);
+            }
+            
+            
+            
 
         } else {
-            mtx.unlock();
             recursive_pfft(p, start, k, wn * wn);
             recursive_pfft(p, k, end, wn * wn);
         }
