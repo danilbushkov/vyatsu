@@ -1,5 +1,7 @@
 #include <pfft.h>
 
+static int threads_num = thread::hardware_concurrency()-1; 
+static mutex mtx;
 
 void recursive_pfft(vector<complex<double>> &p, int start, int end, complex<double> wn) {
     int d = end - start;
@@ -7,8 +9,25 @@ void recursive_pfft(vector<complex<double>> &p, int start, int end, complex<doub
     if (d > 1) {
         
         int k = (start + end) >> 1;
-        recursive_pfft(p, start, k, wn * wn);
-        recursive_pfft(p, k, end, wn * wn);
+
+        mtx.lock();
+        if(threads_num > 0) {
+
+            threads_num -= 1;
+            mtx.unlock();
+            thread pfft_thread(recursive_pfft, ref(p), start, k, wn*wn);
+            recursive_pfft(p, k, end, wn * wn);
+
+            pfft_thread.join();
+            threads_num += 1;
+
+        } else {
+            mtx.unlock();
+            recursive_pfft(p, start, k, wn * wn);
+            recursive_pfft(p, k, end, wn * wn);
+        }
+        
+
         complex<double> w = 1;
         for (int i = start; i < end - d/2; i++) {
             complex<double> t = w * p[i + d/2];
@@ -45,6 +64,7 @@ void pfft_mult(
     void fft(vector<complex<double>> &, complex<double>),
     vector<double> &poly1, vector<double> &poly2, vector<double> &result
 ) {
+    
     int n = poly1.size();
     int m = poly2.size();
 
@@ -75,10 +95,19 @@ void pfft_mult(
     double f = 2 * M_PI / (size);
     complex<double> w = complex<double>(cos(f), sin(f));
 
-    thread fft1(fft, ref(cpoly1), w);
-    fft(cpoly2, w);
+    if(threads_num > 0) {
 
-    fft1.join();
+        threads_num -= 1;
+        thread fft1(fft, ref(cpoly1), w);
+
+        fft(cpoly2, w);
+
+        fft1.join();
+        threads_num += 1;
+    } else {
+        fft(cpoly1, w);
+        fft(cpoly2, w);
+    }
 
     for(int i = 0; i < size; i++) {
         cresult[i] = (cpoly1[i] * cpoly2[i]) / complex<double>(size, 0);

@@ -5,6 +5,7 @@
 #include <chrono>
 #include <complex>
 #include <cstring>
+#include <thread>
 
 #include <print.h>
 #include <multiply.h>
@@ -52,6 +53,8 @@ int main(int argc, char *argv[]) {
         if(strcmp("test-lib", argv[1]) == 0) {
             test();
             return 0;
+        } if(strcmp("threads_num", argv[1]) == 0) {
+            cout << thread::hardware_concurrency() << endl;
         } else if(strcmp("test1", argv[1]) == 0) {
             //test_multiplication("1", 2, 2, 15);
             test_multiplication("1", 3, 3, 15);
