@@ -179,6 +179,6 @@ void fft_mult_stack(vector<double> &poly1, vector<double> &poly2, vector<double>
     fft_mult(fft_stack, poly1, poly2, result);
 }
 
-void fft_mult(vector<double> &poly1, vector<double> &poly2, vector<double> &result) {
+void fft_mult_recursive(vector<double> &poly1, vector<double> &poly2, vector<double> &result) {
     fft_mult(fft, poly1, poly2, result);
 }

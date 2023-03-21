@@ -3,7 +3,43 @@
 
 
 
+void test_parallel_multiplication(char *name, int poly1_size, int poly2_size) {
+    std::cout << "Test: " << name << std::endl;
 
+    vector<double> result1;
+    vector<double> result2;
+    vector<double> dft_mult_result;
+    vector<double> poly1;
+    vector<double> poly2;
+    get_random_poly(poly1, poly1_size);
+    get_random_poly(poly2, poly2_size);
+
+    print_multiplication_time(
+        fft_mult_recursive,
+        poly1,
+        poly2,
+        result1,
+        "fft_recursive_mult"
+    );
+
+    print_multiplication_time(
+        pfft_mult,
+        poly1,
+        poly2,
+        result2,
+        "pfft_mult"
+    );
+    
+    if(!check_equal(result1, result2)) {
+        cout << "Error: pfft_result and fft_recursive_result are not equal" << endl;
+        print_poly(result2);
+        print_poly(result1);
+    }
+    
+    
+
+    
+}
 
 
 
@@ -11,7 +47,7 @@ void test_multiplication(char *name, int poly1_size, int poly2_size, int code) {
     bool mult_code = code & 1;
     bool dft_code = (code >> 1) & 1;
     bool fft_alloc_code = (code >> 2) & 1;
-    bool fft_code = (code >> 3) & 1;
+    bool fft_recursive_code = (code >> 3) & 1;
     bool fft_stack_code = (code >> 4) & 1;
     
     std::cout << "Test: " << name << std::endl;
@@ -56,13 +92,13 @@ void test_multiplication(char *name, int poly1_size, int poly2_size, int code) {
             "fft_mult_alloc"
         );
     }
-    if(fft_code) {
+    if(fft_recursive_code) {
         print_multiplication_time(
-            fft_mult,
+            fft_mult_recursive,
             poly1,
             poly2,
             result4,
-            "fft_mult"
+            "fft_recursive"
         );
     }
 
@@ -93,9 +129,9 @@ void test_multiplication(char *name, int poly1_size, int poly2_size, int code) {
         }
     }
 
-    if(mult_code && fft_code) {
+    if(mult_code && fft_recursive_code) {
         if(!check_equal(result1, result4)) {
-            cout << "Error: fft_result and multiply_result are not equal" << endl;
+            cout << "Error: fft_recursive_result and multiply_result are not equal" << endl;
 
             print_poly(result4);
             print_poly(result1);

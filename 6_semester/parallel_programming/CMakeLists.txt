@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 3.16)
 
 project(app)
 
-#SET(CMAKE_CXX_FLAGS "-O3")
+#SET(CMAKE_CXX_FLAGS "-O2")
+SET(CMAKE_CXX_FLAGS "-pthread")
 
 include_directories (
     ./src/
@@ -18,5 +19,6 @@ add_executable(
     ./src/poly.cpp
     ./src/dft.cpp
     ./src/fft.cpp
+    ./src/pfft.cpp
 )
 
