@@ -36,9 +36,31 @@ void test_parallel_multiplication(char *name, int poly1_size, int poly2_size) {
         print_poly(result1);
     }
     
-    
+}
 
-    
+void test_parallel_fft(char *name, int poly1_size) {
+
+    vector<double> poly1;
+    vector<double> poly2;
+    get_random_poly(poly1, poly1_size);
+    get_random_poly(poly2, poly1_size);
+    vector<double> result1;
+    vector<double> result2;
+    print_multiplication_time(
+        test_fft,
+        poly1,
+        poly2,
+        result1,
+        "test_fft"
+    );
+
+    print_multiplication_time(
+        test_pfft,
+        poly1,
+        poly2,
+        result2,
+        "test_pfft"
+    );
 }
 
 

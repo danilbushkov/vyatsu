@@ -117,6 +117,7 @@ void pfft_mult(
         fft(cpoly2, w);
     }
 
+    
     for(int i = 0; i < size; i++) {
         cresult[i] = (cpoly1[i] * cpoly2[i]) / complex<double>(size, 0);
     }
@@ -130,7 +131,43 @@ void pfft_mult(
     
 }
 
+void stub_fft(
+    void fft(vector<complex<double>> &, complex<double>),
+    vector<double> &poly1, vector<double> &poly2, vector<double> &result
+) {
+    int n = poly1.size();
+    int m = poly2.size();
+
+    if(n == 0 || m == 0) {
+        return;
+    }
+
+    int size = max(n, m);
+
+    while(!has_one_bit(size)) {
+        size++;
+    }
+
+    size *= 2;
+
+    vector<complex<double>> cpoly1;
+
+    dpoly_to_cpoly(poly1, cpoly1);
+    cpoly1.resize(size, complex<double>(0, 0));
+    
+    double f = 2 * M_PI;
+    complex<double> w = complex<double>(cos(f), sin(f));
+    fft(cpoly1, w);
+}
 
 void pfft_mult(vector<double> &poly1, vector<double> &poly2, vector<double> &result) {
     pfft_mult(pfft, poly1, poly2, result);
+}
+
+void test_pfft(vector<double> &poly1, vector<double> &poly2, vector<double> &result) {
+    stub_fft(pfft, poly1, poly2, result);
+}
+
+void test_fft(vector<double> &poly1, vector<double> &poly2, vector<double> &result) {
+    stub_fft(fft, poly1, poly2, result);
 }

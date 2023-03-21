@@ -10,9 +10,12 @@
 #include <thread>
 #include <functional>
 #include <mutex>
+#include <fft.h>
 
 using namespace std;
 
 void pfft_mult(vector<double> &poly1, vector<double> &poly2, vector<double> &result);
 
+void test_pfft(vector<double> &poly1, vector<double> &poly2, vector<double> &result);
+void test_fft(vector<double> &poly1, vector<double> &poly2, vector<double> &result);
 #endif

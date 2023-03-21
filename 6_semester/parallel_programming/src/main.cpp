@@ -71,8 +71,12 @@ int main(int argc, char *argv[]) {
             return 0;
         } else if(strcmp("test2", argv[1]) == 0) {
             
-            test_parallel_multiplication("1", 200000, 200000);
+            test_parallel_multiplication("1", 1000000, 1000000);
             return 0;
+        } else if(strcmp("test_pfft", argv[1]) == 0) {
+            test_parallel_fft("1", 100000);
+            test_parallel_fft("2", 500000);
+            test_parallel_fft("3", 1000000);
         } else {
             cout << "Command: " << argv[1] << endl;
             cout << "No such command" << endl;
