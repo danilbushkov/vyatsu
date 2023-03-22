@@ -63,6 +63,41 @@ void test_parallel_fft(char *name, int poly1_size) {
     );
 }
 
+void test_omp_multiplication(char *name, int poly1_size, int poly2_size) {
+    std::cout << "Test: " << name << std::endl;
+
+    vector<double> result1;
+    vector<double> result2;
+    vector<double> dft_mult_result;
+    vector<double> poly1;
+    vector<double> poly2;
+    get_random_poly(poly1, poly1_size);
+    get_random_poly(poly2, poly2_size);
+
+    print_multiplication_time(
+        fft_mult_recursive,
+        poly1,
+        poly2,
+        result1,
+        "fft_recursive_mult"
+    );
+
+    print_multiplication_time(
+        omp_fft_mult,
+        poly1,
+        poly2,
+        result2,
+        "omp_fft_mult"
+    );
+    
+    if(!check_equal(result1, result2)) {
+        cout << "Error: omp_result and fft_recursive_result are not equal" << endl;
+        print_poly(result2);
+        print_poly(result1);
+    }
+    
+}
+
 
 
 void test_multiplication(char *name, int poly1_size, int poly2_size, int code) {

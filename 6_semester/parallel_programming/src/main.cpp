@@ -71,7 +71,13 @@ int main(int argc, char *argv[]) {
             return 0;
         } else if(strcmp("test2", argv[1]) == 0) {
             
-            test_parallel_multiplication("1", 300000, 300000);
+            test_parallel_multiplication("1", 100000, 100000);
+            test_parallel_multiplication("2", 300000, 300000);
+            return 0;
+        } else if(strcmp("test3", argv[1]) == 0) {
+            
+            test_omp_multiplication("1", 100000, 100000);
+            test_omp_multiplication("2", 300000, 300000);
             return 0;
         } else if(strcmp("test_pfft", argv[1]) == 0) {
             test_parallel_fft("1", 100000);

@@ -18,4 +18,13 @@ void pfft_mult(vector<double> &poly1, vector<double> &poly2, vector<double> &res
 
 void test_pfft(vector<double> &poly1, vector<double> &poly2, vector<double> &result);
 void test_fft(vector<double> &poly1, vector<double> &poly2, vector<double> &result);
+void transformation(vector<complex<double>> &p, int start, int end, int d, complex<double> w, complex<double> wn);
+
+void stub_fft(
+    void fft(vector<complex<double>> &, complex<double>),
+    vector<double> &poly1, vector<double> &poly2, vector<double> &result
+);
+
+
+
 #endif

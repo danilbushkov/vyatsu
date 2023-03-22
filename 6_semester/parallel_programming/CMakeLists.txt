@@ -20,5 +20,6 @@ add_executable(
     ./src/dft.cpp
     ./src/fft.cpp
     ./src/pfft.cpp
+    ./src/omp_fft.cpp
 )
 
