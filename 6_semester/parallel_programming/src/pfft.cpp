@@ -1,6 +1,6 @@
 #include <pfft.h>
 
-static int threads_num = thread::hardware_concurrency()-1; 
+static int threads_num = thread::hardware_concurrency()+6; 
 static mutex mtx;
 
 
@@ -47,21 +47,46 @@ void recursive_pfft(vector<complex<double>> &p, int start, int end, complex<doub
         }
         
 
+        if(threads_num > 1 && d >= 1000) {
+            mtx.lock();
+            if(threads_num > 1) {
+                int n = threads_num+1;
+                while(!has_one_bit(n) || d < n*2) {
+                    n--;
+                }
+                threads_num = threads_num - n - 1;
+                mtx.unlock();
 
-        if(d >= 4) {
-            int df = d / 4;
-            int s = start;
-            int e = end - d/2 - df;
-            complex<double> w = 1;
-            for(int i = 0; i < 2; i++) {
+                vector<thread> threads;
+                int df = d / (2*n);
+                int e = end - d/2 - df;
+                complex<double> w = 1;
+                for(int i = 0; i < (n-1); i++) {
+                    w = pow(wn, df*i);
+                    threads.push_back(
+                        thread(transformation, ref(p), start + i*df, e + i*df, d/2, w, wn)
+                    );
+                    //transformation(p, start + i*df, e + i*df, d/2, w, wn);
+                    
+                    
+                }
+                w = pow(wn, df*(n-1));
+                transformation(p, start + (n-1)*df, e + (n-1)*df, d/2, w, wn);
+                for(int i = 0; i < threads.size(); i++) {
+                    threads[i].join();
+                    mtx.lock();
+                    threads_num++;
+                    mtx.unlock();
+                }
+
                 
-                w = pow(wn, df*i);
-                transformation(p, start + i*df, e + i*df, d/2, w, wn);
-                
-                
+
+
+            } else {
+                mtx.unlock();
+                transformation(p, start, end-d/2, d/2, 1, wn);
             }
-            //transformation(p, s, e, d/2, w, wn);
-
+            
         } else {
             transformation(p, start, end-d/2, d/2, 1, wn);
         }
