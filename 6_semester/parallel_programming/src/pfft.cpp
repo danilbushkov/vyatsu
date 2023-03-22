@@ -1,6 +1,6 @@
 #include <pfft.h>
 
-static int threads_num = thread::hardware_concurrency()+8; 
+static int threads_num = thread::hardware_concurrency()-1; 
 static mutex mtx;
 
 
