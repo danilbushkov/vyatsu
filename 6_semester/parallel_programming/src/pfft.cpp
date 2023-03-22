@@ -48,14 +48,14 @@ void recursive_pfft(vector<complex<double>> &p, int start, int end, complex<doub
         
         //int n = 8;
         //if(d >= n*2) {
-        if(threads_num > 0 && d >= 1000) {
+        if(threads_num > 0 && d >= 10000) {
             mtx.lock();
             if(threads_num > 0) {
                 int n = threads_num+1;
                 while(!has_one_bit(n) || d < n*2) {
                     n--;
                 }
-                threads_num = threads_num - n - 1;
+                threads_num = threads_num - (n - 1);
                 mtx.unlock();
                 
                 vector<thread> threads;
