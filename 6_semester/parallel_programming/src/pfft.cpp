@@ -3,6 +3,19 @@
 static int threads_num = thread::hardware_concurrency()-1; 
 static mutex mtx;
 
+
+void transformation(vector<complex<double>> &p, int start, int end, int d, complex<double> w, complex<double> wn) {
+
+    for (int i = start; i < end; i++) {
+        complex<double> t = w * p[i + d];
+        p[i + d] = p[i] - t;
+        p[i] = p[i] + t;
+        w *= wn;
+
+    }
+}
+
+
 void recursive_pfft(vector<complex<double>> &p, int start, int end, complex<double> wn) {
     int d = end - start;
     
@@ -20,30 +33,40 @@ void recursive_pfft(vector<complex<double>> &p, int start, int end, complex<doub
                 recursive_pfft(p, k, end, wn * wn);
 
                 pfft_thread.join();
+                mtx.lock();
                 threads_num += 1;
+                mtx.unlock();
             } else {
                 mtx.unlock();
                 recursive_pfft(p, start, k, wn * wn);
                 recursive_pfft(p, k, end, wn * wn);
             }
-            
-            
-            
-
         } else {
             recursive_pfft(p, start, k, wn * wn);
             recursive_pfft(p, k, end, wn * wn);
         }
         
 
-        complex<double> w = 1;
-        for (int i = start; i < end - d/2; i++) {
-            complex<double> t = w * p[i + d/2];
-            p[i + d/2] = p[i] - t;
-            p[i] = p[i] + t;
-            w *= wn;
 
+        if(d >= 4) {
+            int df = d / 4;
+            int s = start;
+            int e = end - d/2 - df;
+            complex<double> w = 1;
+            for(int i = 0; i < 2; i++) {
+                
+                w = pow(wn, df*i);
+                transformation(p, start + i*df, e + i*df, d/2, w, wn);
+                
+                
+            }
+            //transformation(p, s, e, d/2, w, wn);
+
+        } else {
+            transformation(p, start, end-d/2, d/2, 1, wn);
         }
+            
+        
         
     }
     
