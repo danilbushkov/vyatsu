@@ -12,6 +12,7 @@
 #include <mutex>
 #include <fft.h>
 #include <pfft.h>
+#include <omp.h>
 
 using namespace std;
 

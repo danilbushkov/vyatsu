@@ -11,20 +11,32 @@ void recursive_omp_fft(vector<complex<double>> &p, int start, int end, complex<d
         
         int k = (start + end) >> 1;
 
-        
-        
-        recursive_omp_fft(p, start, k, wn * wn);
-        recursive_omp_fft(p, k, end, wn * wn);
-        
+        #pragma omp parallel 
+        {
+            #pragma omp single nowait 
+            {
+                #pragma omp task
+                {
+                    recursive_omp_fft(p, start, k, wn * wn);
+                }
+                #pragma omp task
+                {
+                    recursive_omp_fft(p, k, end, wn * wn);
+                }
+                
+               #pragma omp taskwait
+           }
+        }
         
         //int n = 8;
         //if(d >= n*2) {
         
+        
+        //if(d >= n*2) {
+            
+            
         int n = 8;
         if(d >= n*2) {
-            
-            
-            
             vector<thread> threads;
             int df = d / (2*n);
             int e = end - d/2 - df*(n-1);
@@ -36,13 +48,6 @@ void recursive_omp_fft(vector<complex<double>> &p, int start, int end, complex<d
                 
                 
             }
-            
-            
-
-            
-
-            
-
 
         } else {
             
@@ -111,12 +116,25 @@ void omp_fft_mult(
     double f = 2 * M_PI / (size);
     complex<double> w = complex<double>(cos(f), sin(f));
 
-    
-    fft(cpoly1, w);
-    fft(cpoly2, w);
+    #pragma omp parallel
+    {
+        #pragma omp single
+        {
+            #pragma omp task 
+            {
+                fft(cpoly1, w);
+            }
+            #pragma omp task 
+            {
+                fft(cpoly2, w);
+            }
+        
+            #pragma omp taskwait
+        }
+        
+    }
     
 
-    
     for(int i = 0; i < size; i++) {
         cresult[i] = (cpoly1[i] * cpoly2[i]) / complex<double>(size, 0);
     }
