@@ -11,22 +11,19 @@ void recursive_omp_fft(vector<complex<double>> &p, int start, int end, complex<d
         
         int k = (start + end) >> 1;
 
-        #pragma omp parallel 
+        
+        
+        #pragma omp task shared(p)
         {
-            #pragma omp single nowait 
-            {
-                #pragma omp task
-                {
-                    recursive_omp_fft(p, start, k, wn * wn);
-                }
-                #pragma omp task
-                {
-                    recursive_omp_fft(p, k, end, wn * wn);
-                }
-                
-               #pragma omp taskwait
-           }
+            recursive_omp_fft(p, start, k, wn * wn);
         }
+        #pragma omp task shared(p)
+        {
+            recursive_omp_fft(p, k, end, wn * wn);
+        }
+        
+        #pragma omp taskwait
+           
         
         //int n = 8;
         //if(d >= n*2) {
@@ -77,7 +74,12 @@ void omp_fft(vector<complex<double>> &poly, complex<double> wn) {
         
     }
     
+    
+    
     recursive_omp_fft(poly, 0, n, wn);
+    
+    
+    
 }
 
 
@@ -116,7 +118,7 @@ void omp_fft_mult(
     double f = 2 * M_PI / (size);
     complex<double> w = complex<double>(cos(f), sin(f));
 
-    #pragma omp parallel
+    #pragma omp parallel shared(cpoly1, cpoly2)
     {
         #pragma omp single
         {
@@ -124,16 +126,20 @@ void omp_fft_mult(
             {
                 fft(cpoly1, w);
             }
+            
             #pragma omp task 
             {
-                fft(cpoly2, w);
+               fft(cpoly2, w);
             }
+            
+            
         
-            #pragma omp taskwait
         }
         
     }
     
+    // fft(cpoly1, w);
+    // fft(cpoly2, w);
 
     for(int i = 0; i < size; i++) {
         cresult[i] = (cpoly1[i] * cpoly2[i]) / complex<double>(size, 0);
@@ -141,7 +147,14 @@ void omp_fft_mult(
 
     f = - 2 * M_PI / (size);
     w = complex<double>(cos(f), sin(f));
-    fft(cresult, w);
+    #pragma omp parallel shared(cresult)
+    {
+        #pragma omp single
+        {
+            fft(cresult, w);
+        }
+        #pragma omp taskwait
+    }
 
     cpoly_to_dpoly(cresult, result);
 
