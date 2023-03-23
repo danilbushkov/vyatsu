@@ -20,13 +20,13 @@ void fft_iterative(vector<complex<double>> &poly, complex<double> w1) {
     for(int i = floor_power2(n)-1; i >= 0; i--) {
         int num_seq = pow(2, i);
         
-
+        complex<double> wn = pow(w1, num_seq);
         for(int j = 0; j < num_seq; j++) {
 
             int num_items = n / num_seq;
             
             complex<double> w = 1;
-            complex<double> wn = pow(w1, num_seq);
+            
             int s = num_items*j;
             int e = s + num_items/2;
             
@@ -56,19 +56,20 @@ void fft_iterative_(vector<complex<double>> &poly, double s) {
         }
         
     }
-    double f = s*2 * M_PI / (n);
-    complex<double> w1 = complex<double>(cos(f), sin(f));
+    // double f = s*2 * M_PI / (n);
+    // complex<double> w1 = complex<double>(cos(f), sin(f));
     for(int i = floor_power2(n)-1; i >= 0; i--) {
         int num_seq = pow(2, i);
         
-
+        double f = s*2 * M_PI / (n) * num_seq;
+        complex<double> wn = complex<double>(cos(f), sin(f));
+        
+        //complex<double> wn = pow(w1, num_seq);
         for(int j = 0; j < num_seq; j++) {
 
             int num_items = n / num_seq;
             
             complex<double> w = 1;
-            double f = s*2 * M_PI / (n) * num_seq;
-            complex<double> wn = complex<double>(cos(f), sin(f));
             //pow(w1, num_seq);
             int s = num_items*j;
             int e = s + num_items/2;
