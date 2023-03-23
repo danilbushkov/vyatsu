@@ -21,6 +21,7 @@ const int dft_code = 2;
 const int fft_alloc_code = 4;
 const int fft_recursive_code = 8;
 const int fft_stack_code = 16;
+const int fft_iterative_code = 32;
 
 const int pfft_code = 128;
 
@@ -42,7 +43,7 @@ void help() {
 
 
 int main(int argc, char *argv[]) {
-    srand (time(NULL));
+    //srand (time(NULL));
 
     if(argc == 1) {
         help();
@@ -59,17 +60,21 @@ int main(int argc, char *argv[]) {
             cout << thread::hardware_concurrency() << endl;
         } else if(strcmp("test1", argv[1]) == 0) {
             //test_multiplication("1", 2, 2, 15);
-            test_multiplication("1", 3, 3, 15);
-            int code = mult_code | fft_alloc_code | fft_recursive_code | fft_stack_code;
+            int code = mult_code | fft_recursive_code | fft_iterative_code ;
+            test_multiplication("1", 3, 3, code);
+            test_multiplication("1", 100000, 100000, code);
+            
+            code = fft_recursive_code | fft_iterative_code ;
+            test_multiplication("1", 400000, 400000, code);
+            test_multiplication("1", 500000, 500000, code);
+            // test_multiplication("2", 1000, 1000, code);
+            // test_multiplication("3", 6000, 6000, code);
+            // test_multiplication("4", 10000, 10000, code);
 
-            test_multiplication("2", 1000, 1000, code);
-            test_multiplication("3", 6000, 6000, code);
-            test_multiplication("4", 10000, 10000, code);
-
-            code = fft_alloc_code | fft_recursive_code | fft_stack_code;
-            test_multiplication("5", 30000, 30000, code);
-            test_multiplication("6", 100000, 100000, code);
-            test_multiplication("7", 700000, 700000, code);
+            // code = fft_alloc_code | fft_recursive_code | fft_stack_code;
+            // test_multiplication("5", 30000, 30000, code);
+            // test_multiplication("6", 100000, 100000, code);
+            // test_multiplication("7", 700000, 700000, code);
             return 0;
         } else if(strcmp("test2", argv[1]) == 0) {
             

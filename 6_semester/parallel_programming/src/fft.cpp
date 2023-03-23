@@ -3,6 +3,48 @@
 
 
 
+
+void fft_iterative(vector<complex<double>> &poly, complex<double> w1) {
+    int n = poly.size();
+    if (n == 1)
+        return;
+    
+    for(int i = 0; i < n; i++) {
+        int rev_i = reverse_int(i, floor_power2(n-1));
+        
+        if(i < rev_i) {
+            swap(poly[i], poly[rev_i]);
+        }
+        
+    }
+    for(int i = floor_power2(n)-1; i >= 0; i--) {
+        int num_seq = pow(2, i);
+        
+
+        for(int j = 0; j < num_seq; j++) {
+
+            int num_items = n / num_seq;
+            
+            complex<double> w = 1;
+            complex<double> wn = pow(w1, num_seq);
+            int s = num_items*j;
+            int e = s + num_items/2;
+            
+            for(int k = s; k < e; k++) {
+                
+                complex<double> t = w * poly[k + num_items/2];
+                poly[k+num_items/2] = poly[k] - t;
+                poly[k] = poly[k] + t;
+                w *= wn;
+            }
+        }
+    }
+
+    
+}
+
+
+
 void fft_alloc(vector<complex<double>> &poly, complex<double> wn) {
     int n = poly.size();
     if (n == 1)
@@ -181,4 +223,8 @@ void fft_mult_stack(vector<double> &poly1, vector<double> &poly2, vector<double>
 
 void fft_mult_recursive(vector<double> &poly1, vector<double> &poly2, vector<double> &result) {
     fft_mult(fft, poly1, poly2, result);
+}
+
+void fft_mult_iterative(vector<double> &poly1, vector<double> &poly2, vector<double> &result) {
+    fft_mult(fft_iterative, poly1, poly2, result);
 }

@@ -15,5 +15,6 @@ void fft_mult_alloc(vector<double> &poly1, vector<double> &poly2, vector<double>
 void fft_mult_recursive(vector<double> &poly1, vector<double> &poly2, vector<double> &result);
 void fft_mult_stack(vector<double> &poly1, vector<double> &poly2, vector<double> &result);
 void fft(vector<complex<double>> &poly, complex<double> wn);
+void fft_mult_iterative(vector<double> &poly1, vector<double> &poly2, vector<double> &result);
 
 #endif
