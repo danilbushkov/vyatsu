@@ -38,13 +38,18 @@ void recursive_omp_fft(vector<complex<double>> &p, int start, int end, complex<d
             int df = d / (2*n);
             int e = end - d/2 - df*(n-1);
             complex<double> w = 1;
-            for(int i = 0; i < n; i++) {
-                w = pow(wn, df*i);
+            
+            #pragma omp parallel shared(p)
+            {
+                #pragma omp for 
+                for(int i = 0; i < n; i++) {
+                    
+                    transformation(p, start + i*df, e + i*df, d/2, pow(wn, df*i), wn);
                 
-                transformation(p, start + i*df, e + i*df, d/2, w, wn);
                 
-                
+                }
             }
+            
 
         } else {
             
@@ -153,7 +158,6 @@ void omp_fft_mult(
         {
             fft(cresult, w);
         }
-        #pragma omp taskwait
     }
 
     cpoly_to_dpoly(cresult, result);

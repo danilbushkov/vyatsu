@@ -53,7 +53,9 @@ int main(int argc, char *argv[]) {
         if(strcmp("test-lib", argv[1]) == 0) {
             test();
             return 0;
-        } if(strcmp("threads_num", argv[1]) == 0) {
+        } if(strcmp("omp_get_nested", argv[1]) == 0) {
+            cout << omp_get_nested() << endl;
+        } else if(strcmp("threads_num", argv[1]) == 0) {
             cout << thread::hardware_concurrency() << endl;
         } else if(strcmp("test1", argv[1]) == 0) {
             //test_multiplication("1", 2, 2, 15);
@@ -75,7 +77,7 @@ int main(int argc, char *argv[]) {
             test_parallel_multiplication("2", 300000, 300000);
             return 0;
         } else if(strcmp("test3", argv[1]) == 0) {
-            
+            omp_set_nested(0);
             test_omp_multiplication("1", 100000, 100000);
             test_omp_multiplication("2", 300000, 300000);
             return 0;
