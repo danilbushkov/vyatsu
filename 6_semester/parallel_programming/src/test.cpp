@@ -173,7 +173,7 @@ void test_multiplication(char *name, int poly1_size, int poly2_size, int code) {
 
     if(fft_iterative_code) {
         print_multiplication_time(
-            fft_mult_iterative,
+            fft_mult_iterative_,
             poly1,
             poly2,
             result6,

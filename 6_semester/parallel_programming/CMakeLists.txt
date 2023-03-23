@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 project(app)
 
-#SET(CMAKE_CXX_FLAGS "-O2")
+SET(CMAKE_CXX_FLAGS "-O2")
 SET(CMAKE_CXX_FLAGS "-pthread")
 SET(CMAKE_CXX_FLAGS "-fopenmp")
 

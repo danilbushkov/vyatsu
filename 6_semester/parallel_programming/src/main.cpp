@@ -62,11 +62,11 @@ int main(int argc, char *argv[]) {
             //test_multiplication("1", 2, 2, 15);
             int code = mult_code | fft_recursive_code | fft_iterative_code ;
             test_multiplication("1", 3, 3, code);
-            test_multiplication("1", 100000, 100000, code);
-            
+            test_multiplication("1", 1000, 1000, code);
+
             code = fft_recursive_code | fft_iterative_code ;
-            test_multiplication("1", 400000, 400000, code);
-            test_multiplication("1", 500000, 500000, code);
+            //test_multiplication("1", 400000, 400000, code);
+            test_multiplication("1", 1000000, 1000000, code);
             // test_multiplication("2", 1000, 1000, code);
             // test_multiplication("3", 6000, 6000, code);
             // test_multiplication("4", 10000, 10000, code);
