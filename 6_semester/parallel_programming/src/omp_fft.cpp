@@ -13,16 +13,16 @@ void recursive_omp_fft(vector<complex<double>> &p, int start, int end, complex<d
 
         
         
-        #pragma omp task shared(p)
-        {
+        //#pragma omp task shared(p)
+        //{
             recursive_omp_fft(p, start, k, wn * wn);
-        }
-        #pragma omp task shared(p)
-        {
+        //}
+        //#pragma omp task shared(p)
+        //{
             recursive_omp_fft(p, k, end, wn * wn);
-        }
+        //}
         
-        #pragma omp taskwait
+        //#pragma omp taskwait
            
         
         //int n = 8;
@@ -39,16 +39,16 @@ void recursive_omp_fft(vector<complex<double>> &p, int start, int end, complex<d
             int e = end - d/2 - df*(n-1);
             complex<double> w = 1;
             
-            #pragma omp parallel shared(p)
-            {
-                #pragma omp for 
+            //#pragma omp parallel shared(p)
+            //{
+            //    #pragma omp for 
                 for(int i = 0; i < n; i++) {
                     
                     transformation(p, start + i*df, e + i*df, d/2, pow(wn, df*i), wn);
                 
                 
                 }
-            }
+            //}
             
 
         } else {
@@ -125,14 +125,14 @@ void omp_fft_mult(
 
     #pragma omp parallel shared(cpoly1, cpoly2)
     {
-        #pragma omp single
+        #pragma omp sections
         {
-            #pragma omp task 
+            #pragma omp section 
             {
                 fft(cpoly1, w);
             }
             
-            #pragma omp task 
+            #pragma omp section
             {
                fft(cpoly2, w);
             }
@@ -146,19 +146,24 @@ void omp_fft_mult(
     // fft(cpoly1, w);
     // fft(cpoly2, w);
 
-    for(int i = 0; i < size; i++) {
-        cresult[i] = (cpoly1[i] * cpoly2[i]) / complex<double>(size, 0);
+    #pragma omp parallel shared(cresult, cpoly1, cpoly2) 
+    {
+        #pragma omp for
+        for(int i = 0; i < size; i++) {
+            cresult[i] = (cpoly1[i] * cpoly2[i]) / complex<double>(size, 0);
+        }
     }
+    
 
     f = - 2 * M_PI / (size);
     w = complex<double>(cos(f), sin(f));
-    #pragma omp parallel shared(cresult)
-    {
-        #pragma omp single
-        {
+    // #pragma omp parallel shared(cresult)
+    // {
+    //     #pragma omp single
+    //     {
             fft(cresult, w);
-        }
-    }
+    //    }
+    //}
 
     cpoly_to_dpoly(cresult, result);
 
