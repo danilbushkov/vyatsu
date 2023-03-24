@@ -17,5 +17,7 @@ void fft_mult_stack(vector<double> &poly1, vector<double> &poly2, vector<double>
 void fft(vector<complex<double>> &poly, complex<double> wn);
 void fft_mult_iterative(vector<double> &poly1, vector<double> &poly2, vector<double> &result);
 void fft_mult_iterative_(vector<double> &poly1, vector<double> &poly2, vector<double> &result);
+void fft_iterative_(vector<complex<double>> &poly, double s);
+
 
 #endif

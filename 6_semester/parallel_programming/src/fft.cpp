@@ -65,9 +65,10 @@ void fft_iterative_(vector<complex<double>> &poly, double s) {
         complex<double> wn = complex<double>(cos(f), sin(f));
         
         //complex<double> wn = pow(w1, num_seq);
+        int num_items = n / num_seq;
         for(int j = 0; j < num_seq; j++) {
 
-            int num_items = n / num_seq;
+            
             
             complex<double> w = 1;
             //pow(w1, num_seq);

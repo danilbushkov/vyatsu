@@ -22,5 +22,6 @@ add_executable(
     ./src/fft.cpp
     ./src/pfft.cpp
     ./src/omp_fft.cpp
+    ./src/iter_pfft.cpp
 )
 

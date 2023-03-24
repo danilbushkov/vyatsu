@@ -15,23 +15,23 @@ void test_parallel_multiplication(char *name, int poly1_size, int poly2_size) {
     get_random_poly(poly2, poly2_size);
 
     print_multiplication_time(
-        fft_mult_recursive,
+        fft_mult_iterative_,
         poly1,
         poly2,
         result1,
-        "fft_recursive_mult"
+        "iter_fft_mult"
     );
 
     print_multiplication_time(
-        pfft_mult,
+        iter_pfft_mult,
         poly1,
         poly2,
         result2,
-        "pfft_mult"
+        "iter_pfft_mult"
     );
     
     if(!check_equal(result1, result2)) {
-        cout << "Error: pfft_result and fft_recursive_result are not equal" << endl;
+        cout << "Error: iter_pfft_result and iter_fft_result are not equal" << endl;
         print_poly(result2);
         print_poly(result1);
     }
