@@ -1,6 +1,6 @@
 #include <iter_pfft.h>
 
-#include <pfft.h>
+
 
 static int threads_num = thread::hardware_concurrency()-1; 
 static mutex mtx;
@@ -17,6 +17,27 @@ static mutex mtx;
 //     }
 // }
 
+void sequence_transformation(vector<complex<double>> &poly, int start, int end, int num_items, complex<double> wn) {
+    
+    for(int j = start; j < end; j++) {
+
+            
+            
+        complex<double> w = 1;
+        
+        int s = num_items*j;
+        int e = s + num_items/2;
+        
+        for(int k = s; k < e; k++) {
+            
+            complex<double> t = w * poly[k + num_items/2];
+            poly[k+num_items/2] = poly[k] - t;
+            poly[k] = poly[k] + t;
+            w *= wn;
+        }
+    }
+}
+
 
 void iter_pfft(vector<complex<double>> &poly, double s) {
     int n = poly.size();
@@ -31,33 +52,40 @@ void iter_pfft(vector<complex<double>> &poly, double s) {
         }
         
     }
-    // double f = s*2 * M_PI / (n);
-    // complex<double> w1 = complex<double>(cos(f), sin(f));
+    
+
     for(int i = floor_power2(n)-1; i >= 0; i--) {
         int num_seq = pow(2, i);
         
         double f = s*2 * M_PI / (n) * num_seq;
         complex<double> wn = complex<double>(cos(f), sin(f));
         
-        //complex<double> wn = pow(w1, num_seq);
         int num_items = n / num_seq;
-        for(int j = 0; j < num_seq; j++) {
 
-            
-            
-            complex<double> w = 1;
-            //pow(w1, num_seq);
-            int s = num_items*j;
-            int e = s + num_items/2;
-            
-            for(int k = s; k < e; k++) {
-                
-                complex<double> t = w * poly[k + num_items/2];
-                poly[k+num_items/2] = poly[k] - t;
-                poly[k] = poly[k] + t;
-                w *= wn;
+        if(threads_num > 0 && num_seq/2!=0) {
+            mtx.lock();
+            if(threads_num > 0) {
+                threads_num--;
+                mtx.unlock();
+                int tmp = num_seq / 2;
+                thread seq_thread(sequence_transformation, ref(poly), 0, tmp, num_items, wn);
+
+                sequence_transformation(poly, tmp, num_seq, num_items, wn);
+                seq_thread.join();
+
+                mtx.lock();
+                threads_num++;
+                mtx.unlock();
+            } else {
+                mtx.unlock();
+                sequence_transformation(poly, 0, num_seq, num_items, wn);
             }
+            
+        } else {
+            sequence_transformation(poly, 0, num_seq, num_items, wn);
         }
+        
+        
     }
 
     
@@ -95,10 +123,19 @@ void iter_pfft_mult(
     cresult.resize(size, complex<double>(0, 0));
 
     
-    
+    if(threads_num > 0) {
+        threads_num--;
+        thread fft_thread(fft, ref(cpoly1), 1);
 
-    fft(cpoly1, 1);
-    fft(cpoly2, 1);
+        fft(cpoly2, 1);
+
+        fft_thread.join();
+        threads_num++;
+    } else {
+        fft(cpoly1, 1);
+        fft(cpoly2, 1);
+    }
+    
 
     for(int i = 0; i < size; i++) {
         cresult[i] = (cpoly1[i] * cpoly2[i]) / complex<double>(size, 0);
