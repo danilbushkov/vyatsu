@@ -75,15 +75,15 @@ void test_omp_multiplication(char *name, int poly1_size, int poly2_size) {
     get_random_poly(poly2, poly2_size);
 
     print_multiplication_time(
-        fft_mult_recursive,
+        fft_mult_iterative_,
         poly1,
         poly2,
         result1,
-        "fft_recursive_mult"
+        "fft_mult"
     );
 
     print_multiplication_time(
-        omp_fft_mult,
+        omp_iter_fft_mult,
         poly1,
         poly2,
         result2,
@@ -91,7 +91,7 @@ void test_omp_multiplication(char *name, int poly1_size, int poly2_size) {
     );
     
     if(!check_equal(result1, result2)) {
-        cout << "Error: omp_result and fft_recursive_result are not equal" << endl;
+        cout << "Error: omp_result and fft_result are not equal" << endl;
         print_poly(result2);
         print_poly(result1);
     }
