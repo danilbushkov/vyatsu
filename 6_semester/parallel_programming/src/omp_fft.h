@@ -4,15 +4,18 @@
 #include <vector>
 #include <complex>
 #include <stack>
-#include <lib.h>
-#include <poly.h>
-#include <print.h>
+
 #include <thread>
 #include <functional>
 #include <mutex>
-#include <fft.h>
-#include <pfft.h>
 #include <omp.h>
+
+#include "fft.h"
+#include "pfft.h"
+
+#include "lib.h"
+#include "poly.h"
+#include "print.h"
 
 using namespace std;
 

@@ -7,11 +7,11 @@
 #include <thread>
 #include <functional>
 
-#include <lib.h>
-#include <poly.h>
-#include <print.h>
-#include <fft.h>
-#include <pfft.h>
+#include "lib.h"
+#include "poly.h"
+#include "print.h"
+#include "fft.h"
+#include "pfft.h"
 
 using namespace std;
 

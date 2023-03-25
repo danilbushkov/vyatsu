@@ -1,4 +1,4 @@
-#include <lib.h>
+#include "lib.h"
 
 int floor_power2(int num) {
     int result = 0;

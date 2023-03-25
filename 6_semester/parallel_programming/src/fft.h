@@ -4,9 +4,9 @@
 #include <vector>
 #include <complex>
 #include <stack>
-#include <lib.h>
-#include <poly.h>
-#include <print.h>
+#include "lib.h"
+#include "poly.h"
+#include "print.h"
 
 using namespace std;
 

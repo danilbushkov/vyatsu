@@ -1,7 +1,7 @@
-#include <fft.h>
+
 #include <iostream>
 
-
+#include "fft.h"
 
 
 void fft_iterative(vector<complex<double>> &poly, complex<double> w1) {

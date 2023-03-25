@@ -1,4 +1,4 @@
-#include <multiply.h>
+#include "multiply.h"
 
 // a0x^0 + a1x^1 + ... + an-1^n-1 
 void polynomial_multiplication(vector<double> &poly1, vector<double> &poly2, vector<double> &result) {

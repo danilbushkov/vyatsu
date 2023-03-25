@@ -3,14 +3,16 @@
 
 #include <vector>
 #include <complex>
-#include <stack>
-#include <lib.h>
-#include <poly.h>
-#include <print.h>
-
-#include <fft.h>
-#include <pfft.h>
 #include <omp.h>
+
+
+#include "lib.h"
+#include "poly.h"
+#include "print.h"
+
+#include "fft.h"
+#include "pfft.h"
+
 
 
 using namespace std;

@@ -1,4 +1,4 @@
-#include <dft.h>
+#include "dft.h"
 
 
 void dft(vector<complex<double>> &poly, int k, double s, vector<complex<double>> &result) {

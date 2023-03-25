@@ -3,7 +3,8 @@
 
 #include <complex>
 #include <vector>
-#include <poly.h>
+
+#include "poly.h"
 
 using namespace std;
 
