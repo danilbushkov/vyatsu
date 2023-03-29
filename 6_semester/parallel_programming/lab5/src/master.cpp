@@ -21,7 +21,7 @@ void set_result(std::ofstream &out, std::vector<double> &poly) {
     out << poly.size() << '\n';
     
     for(int i = 0; i < poly.size(); i++) {
-        out << poly[i] << ' ';
+        out << round(poly[i]) << ' ';
     }
 }
 
@@ -54,9 +54,8 @@ bool has_one_bit(int num) {
 }
 
 
-void fft(int tid, int n, std::complex<double> *poly, double s) {
+void fft(int tid, int msgtag, int n, std::complex<double> *poly, double s) {
 
-    int msgtag = 1;
 
     double *data = (double *) poly;
 
@@ -65,13 +64,14 @@ void fft(int tid, int n, std::complex<double> *poly, double s) {
     pvm_initsend(PvmDataDefault);
     pvm_pkint(&n, 1, 1);
     pvm_send(tid, msgtag);
+
+    pvm_initsend(PvmDataDefault);
     pvm_pkdcplx(data, n, 1);
     pvm_send(tid, msgtag);
+
+    pvm_initsend(PvmDataDefault);
     pvm_pkdouble(&s, 1, 1);
     pvm_send(tid, msgtag);
-
-    pvm_recv(tid, msgtag);
-    pvm_upkdcplx(data, n, 1);
     
 
 }
@@ -106,30 +106,46 @@ void fft_mult(
     std::complex<double> *cresult = new std::complex<double>[size];
 
 
-    for(int i = 0; i < size; i++) {
-        std::cout << cpoly1[i] << std::endl;
-    }
 
     dpoly_to_cpoly(poly1, size, cpoly1);
     dpoly_to_cpoly(poly2, size, cpoly2);
 
-
+    double *data = (double *) cpoly1;
     
     
+    int msgtag = 1;
+    fft(tids[0], msgtag, size, cpoly1, 1);
+    fft(tids[1], msgtag, size, cpoly2, 1);
 
-    fft(tids[0], size, cpoly1, 1);
-    fft(tids[1], size, cpoly2, 1);
+
+    
+
+    
+    pvm_recv(tids[0], msgtag);
+    pvm_upkdcplx(data, n, 1);
+
+    data = (double *) cpoly2;
+    pvm_recv(tids[1], msgtag);
+    pvm_upkdcplx(data, n, 1);
 
     for(int i = 0; i < size; i++) {
         cresult[i] = (cpoly1[i] * cpoly2[i]) / std::complex<double>(size, 0);
     }
 
     
-    fft(tids[2], size, cresult, -1);
+    fft(tids[2], msgtag, size, cresult, -1);
+
+    data = (double *) cresult;
+    pvm_recv(tids[2], msgtag);
+    pvm_upkdcplx(data, n, 1);
+
+    
 
     cpoly_to_dpoly(size, cresult, result);
 
-
+    delete[] cpoly1;
+    delete[] cpoly2;
+    delete[] cresult;
 }
 
 
@@ -167,7 +183,7 @@ int main(int argc, char** argv) {
     }
     
 
-    std::cout << "sssssssssssss" << std::endl;
+    
 
 
     if (out.is_open()) {

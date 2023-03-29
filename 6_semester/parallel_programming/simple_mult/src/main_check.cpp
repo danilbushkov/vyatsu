@@ -40,6 +40,7 @@ int main(int argc, char *argv[]) {
     for(int i = 0; i < p2.size(); i++) {
         if(p1[i] != p2[i]) {
             std::cout << "Not equal" << std::endl;
+            return 0;
         }
     }
 

@@ -91,9 +91,18 @@ int main() {
 
     pvm_recv(ptid, msgtag);
     pvm_upkint(&s, 1, 1);
+
+    std::complex<double> *cdata = (std::complex<double> *) poly;
+    for(int i = 0; i < n; i++) {
+        std::cout << cdata[i] << std::endl;
+    }
     
-    fft_iterative((std::complex<double> *) poly, n, s);
+    fft_iterative(cdata, n, s);
     
+    std::cout << "After:" << std::endl;
+    for(int i = 0; i < n; i++) {
+        std::cout << cdata[i] << std::endl;
+    }
     
     pvm_initsend(PvmDataDefault);
     pvm_pkdcplx(poly, n, 1);
