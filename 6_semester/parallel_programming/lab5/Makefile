@@ -1,4 +1,4 @@
-all: bin/master
+all: bin/master bin/slave
 
 
 bin/master: bin src/master.cpp
@@ -9,9 +9,13 @@ bin/slave: bin src/slave.cpp
 	g++ src/slave.cpp -o bin/slave \
 		-Ipvm -Lpvm -lpvm3
 
-cp:
+cp: bin/master bin/slave
 	cp ./bin/* ~/pvm3/bin/LINUX64
 
+rm: 
+	rm ~/pvm3/bin/LINUX64/*
+
+comp: rm cp
 
 bin: 
 	mkdir bin
