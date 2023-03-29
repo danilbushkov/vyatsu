@@ -11,6 +11,8 @@ mult: bin src/main_mult.cpp
 check: bin src/main_check.cpp 
 	g++ src/main_check.cpp -o bin/check
 
+fft: bin src/main_fft.cpp 
+	g++ src/main_fft.cpp -o bin/fft
 
 bin: 
 	mkdir bin
