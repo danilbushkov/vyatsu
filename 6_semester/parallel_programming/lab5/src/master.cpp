@@ -122,22 +122,23 @@ void fft_mult(
 
     
     pvm_recv(tids[0], msgtag);
-    pvm_upkdcplx(data, n, 1);
+    pvm_upkdcplx(data, size, 1);
 
     data = (double *) cpoly2;
     pvm_recv(tids[1], msgtag);
-    pvm_upkdcplx(data, n, 1);
+    pvm_upkdcplx(data, size, 1);
+
+
 
     for(int i = 0; i < size; i++) {
         cresult[i] = (cpoly1[i] * cpoly2[i]) / std::complex<double>(size, 0);
     }
-
     
     fft(tids[2], msgtag, size, cresult, -1);
 
     data = (double *) cresult;
     pvm_recv(tids[2], msgtag);
-    pvm_upkdcplx(data, n, 1);
+    pvm_upkdcplx(data, size, 1);
 
     
 

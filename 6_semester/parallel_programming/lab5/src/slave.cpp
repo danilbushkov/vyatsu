@@ -77,7 +77,7 @@ int main() {
     int msgtag = 1;
     int ptid;
     int n;
-    int s;
+    double s;
     ptid = pvm_parent();
     
 
@@ -90,19 +90,15 @@ int main() {
     pvm_upkdcplx(poly, n, 1);
 
     pvm_recv(ptid, msgtag);
-    pvm_upkint(&s, 1, 1);
+    pvm_upkdouble(&s, 1, 1);
+
 
     std::complex<double> *cdata = (std::complex<double> *) poly;
-    for(int i = 0; i < n; i++) {
-        std::cout << cdata[i] << std::endl;
-    }
+    
     
     fft_iterative(cdata, n, s);
     
-    std::cout << "After:" << std::endl;
-    for(int i = 0; i < n; i++) {
-        std::cout << cdata[i] << std::endl;
-    }
+    
     
     pvm_initsend(PvmDataDefault);
     pvm_pkdcplx(poly, n, 1);
