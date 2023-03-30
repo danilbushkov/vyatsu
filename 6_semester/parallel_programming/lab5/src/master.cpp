@@ -3,6 +3,7 @@
 #include <vector>
 #include <complex>
 #include <fstream>
+#include <chrono>
 
 void get_polys(std::ifstream &in, std::vector<double> &poly1, std::vector<double> &poly2) {
     int n = 0;
@@ -149,7 +150,17 @@ void fft_mult(
     delete[] cresult;
 }
 
-
+void print_time(std::string task, 
+                std::chrono::steady_clock::time_point start, 
+                std::chrono::steady_clock::time_point end) {
+    auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+    auto sec = std::chrono::duration_cast<std::chrono::seconds>(end - start).count();
+    auto min = std::chrono::duration_cast<std::chrono::minutes>(end - start).count();
+    std::cout << "Task: " << task << "\n";
+    std::cout << "    Time in sec: " << ms / 1000 << "\n";
+    std::cout << "    Time in min:sec:ms: " << min << ":" << sec - min*60 << ":" << ms % 1000 << "\n";
+    std::cout << "\n";
+}
 
 
 int main(int argc, char** argv) {
@@ -175,7 +186,16 @@ int main(int argc, char** argv) {
     
     if(cc == 3) {
 
+
+        auto start = std::chrono::steady_clock::now();
+
         fft_mult(3, tids, poly1, poly2, result);
+
+        auto end = std::chrono::steady_clock::now();
+
+        print_time("pvm_func", start, end);
+
+        
 
 
         

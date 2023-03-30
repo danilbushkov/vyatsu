@@ -17,6 +17,12 @@ fft: bin src/main_fft.cpp
 bin: 
 	mkdir bin
 
+ck:
+	./bin/check
+
+mt:
+	./bin/mult
+
 t1:
 	./bin/gen 8192
 
