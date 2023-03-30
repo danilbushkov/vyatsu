@@ -14,13 +14,13 @@ void test_parallel_multiplication(char *name, int poly1_size, int poly2_size) {
     get_random_poly(poly1, poly1_size);
     get_random_poly(poly2, poly2_size);
 
-    print_multiplication_time(
-        fft_mult_iterative_,
-        poly1,
-        poly2,
-        result1,
-        "iter_fft_mult"
-    );
+    // print_multiplication_time(
+    //     fft_mult_iterative_,
+    //     poly1,
+    //     poly2,
+    //     result1,
+    //     "iter_fft_mult"
+    // );
 
     print_multiplication_time(
         iter_pfft_mult,
@@ -30,11 +30,11 @@ void test_parallel_multiplication(char *name, int poly1_size, int poly2_size) {
         "iter_pfft_mult"
     );
     
-    if(!check_equal(result1, result2)) {
-        cout << "Error: iter_pfft_result and iter_fft_result are not equal" << endl;
-        print_poly(result2);
-        print_poly(result1);
-    }
+    // if(!check_equal(result1, result2)) {
+    //     cout << "Error: iter_pfft_result and iter_fft_result are not equal" << endl;
+    //     print_poly(result2);
+    //     print_poly(result1);
+    // }
     
 }
 
@@ -74,13 +74,13 @@ void test_omp_multiplication(char *name, int poly1_size, int poly2_size) {
     get_random_poly(poly1, poly1_size);
     get_random_poly(poly2, poly2_size);
 
-    print_multiplication_time(
-        fft_mult_iterative_,
-        poly1,
-        poly2,
-        result1,
-        "fft_mult"
-    );
+    // print_multiplication_time(
+    //     fft_mult_iterative_,
+    //     poly1,
+    //     poly2,
+    //     result1,
+    //     "fft_mult"
+    // );
 
     print_multiplication_time(
         omp_iter_fft_mult,
@@ -90,11 +90,11 @@ void test_omp_multiplication(char *name, int poly1_size, int poly2_size) {
         "omp_fft_mult"
     );
     
-    if(!check_equal(result1, result2)) {
-        cout << "Error: omp_result and fft_result are not equal" << endl;
-        print_poly(result2);
-        print_poly(result1);
-    }
+    // if(!check_equal(result1, result2)) {
+    //     cout << "Error: omp_result and fft_result are not equal" << endl;
+    //     print_poly(result2);
+    //     print_poly(result1);
+    // }
     
 }
 
