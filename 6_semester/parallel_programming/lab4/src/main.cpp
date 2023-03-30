@@ -2,8 +2,11 @@
 #include <vector>
 #include <complex>
 #include <fstream>
+#include <chrono>
+#include <string>
 #include <mpi.h>
 #include "slave.h"
+
 
 void get_polys(std::ifstream &in, std::vector<double> &poly1, std::vector<double> &poly2) {
     int n = 0;
@@ -132,6 +135,25 @@ void fft_mult(
 }
 
 
+
+
+
+
+
+void print_time(std::string task, 
+                std::chrono::steady_clock::time_point start, 
+                std::chrono::steady_clock::time_point end) {
+    auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+    auto sec = std::chrono::duration_cast<std::chrono::seconds>(end - start).count();
+    auto min = std::chrono::duration_cast<std::chrono::minutes>(end - start).count();
+    std::cout << "Task: " << task << "\n";
+    std::cout << "    Time in sec: " << ms / 1000 << "\n";
+    std::cout << "    Time in min:sec:ms: " << min << ":" << sec - min*60 << ":" << ms % 1000 << "\n";
+    std::cout << "\n";
+}
+
+
+
 void master() {
     const std::string path = std::string(getenv("HOME")) + "/tmp/test";
     
@@ -148,9 +170,15 @@ void master() {
     in.close();
     
     
+    auto start = std::chrono::steady_clock::now();
 
-    
     fft_mult(poly1, poly2, result);
+
+    auto end = std::chrono::steady_clock::now();
+
+    print_time("mpi_func", start, end);
+    
+    
 
     
     

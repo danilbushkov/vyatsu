@@ -17,5 +17,40 @@ fft: bin src/main_fft.cpp
 bin: 
 	mkdir bin
 
+t1:
+	./bin/gen 8192
+
+t2:
+	./bin/gen 16384
+
+t3:
+	./bin/gen 32768
+
+t4:
+	./bin/gen 65536
+
+t5:
+	./bin/gen 131072
+
+t6:
+	./bin/gen 262144
+
+t7:
+	./bin/gen 524288
+
+t8:
+	./bin/gen 1048576
+
+t9:
+	./bin/gen 2097152
+
+t10:
+	./bin/gen 4194304
+
+t11:
+	./bin/gen 8388608
+
+t12:
+	./bin/gen 16777216
 
 	
