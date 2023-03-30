@@ -4,6 +4,7 @@
 #include <complex>
 #include <fstream>
 #include <chrono>
+#include "lib.h"
 
 void get_polys(std::ifstream &in, std::vector<double> &poly1, std::vector<double> &poly2) {
     int n = 0;
@@ -43,16 +44,6 @@ void cpoly_to_dpoly(int n, std::complex<double> *poly, std::vector<double> &resu
     }
 }
 
-
-bool has_one_bit(int num) {
-    int count = 0;
-    while(num > 0) {
-        count = count + (num & 1);
-        num = num >> 1;
-    }
-
-    return count == 1;
-}
 
 
 void fft(int tid, int msgtag, int n, std::complex<double> *poly, double s) {
@@ -116,7 +107,8 @@ void fft_mult(
     
     int msgtag = 1;
     fft(tids[0], msgtag, size, cpoly1, 1);
-    fft(tids[1], msgtag, size, cpoly2, 1);
+    //fft(tids[1], msgtag, size, cpoly2, 1);
+    fft_iterative(cpoly2, size, 1);
 
 
     
@@ -125,9 +117,9 @@ void fft_mult(
     pvm_recv(tids[0], msgtag);
     pvm_upkdcplx(data, size, 1);
 
-    data = (double *) cpoly2;
-    pvm_recv(tids[1], msgtag);
-    pvm_upkdcplx(data, size, 1);
+    // data = (double *) cpoly2;
+    // pvm_recv(tids[1], msgtag);
+    // pvm_upkdcplx(data, size, 1);
 
 
 
@@ -135,11 +127,12 @@ void fft_mult(
         cresult[i] = (cpoly1[i] * cpoly2[i]) / std::complex<double>(size, 0);
     }
     
-    fft(tids[2], msgtag, size, cresult, -1);
+    fft_iterative(cresult, size, -1);
+    //fft(tids[2], msgtag, size, cresult, -1);
 
-    data = (double *) cresult;
-    pvm_recv(tids[2], msgtag);
-    pvm_upkdcplx(data, size, 1);
+    // data = (double *) cresult;
+    // pvm_recv(tids[2], msgtag);
+    // pvm_upkdcplx(data, size, 1);
 
     
 
@@ -165,7 +158,7 @@ void print_time(std::string task,
 
 int main(int argc, char** argv) {
     int cc;
-    int tids[3];
+    int tids[1];
     const std::string path = std::string(getenv("HOME")) + "/tmp/test";
     
     std::ifstream in(path+"/input.txt");
@@ -182,14 +175,14 @@ int main(int argc, char** argv) {
     
     
 
-    cc = pvm_spawn("slave", (char**)0, 0, "", 3, tids);
+    cc = pvm_spawn("slave", (char**)0, 0, "", 1, tids);
     
-    if(cc == 3) {
+    if(cc == 1) {
 
 
         auto start = std::chrono::steady_clock::now();
 
-        fft_mult(3, tids, poly1, poly2, result);
+        fft_mult(1, tids, poly1, poly2, result);
 
         auto end = std::chrono::steady_clock::now();
 
