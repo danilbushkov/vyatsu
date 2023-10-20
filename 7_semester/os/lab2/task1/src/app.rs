@@ -40,26 +40,42 @@ impl eframe::App for App {
             });
 
         egui::CentralPanel::default().show(ctx, |ui| {
-            //ui.with_layout(egui::Layout::top_down(egui::Align::Center), |ui| {
+            //ui.with_layout(
+            //    egui::Layout::top_down_justified(egui::Align::Center),
+            //    |ui| {
             //    ui.label("world!");
             //    ui.label("Hello");
             //});
-            ui.with_layout(egui::Layout::top_down(egui::Align::Center), |ui| {
-                egui::ScrollArea::new([true, true]).show(ui, |ui| {
-                    egui::Grid::new("some_unique_id")
-                        .min_col_width(200.0)
-                        .show(ui, |ui| {
-                            for i in 0..100 {
-                                egui::Frame::none()
-                                    .stroke(egui::Stroke::new(1.0, egui::Color32::GRAY))
-                                    .inner_margin(egui::style::Margin::same(5.0))
-                                    .show(ui, |ui| {
-                                        ui.label(i.to_string());
-                                    });
-                                ui.end_row();
-                            }
+            ui.group(|ui| {
+                ui.label("Таблица пользователей");
+                egui::Frame::none()
+                    .stroke(egui::Stroke::new(2.0, egui::Color32::GRAY))
+                    .inner_margin(egui::style::Margin::same(5.0))
+                    .show(ui, |ui| {
+                        egui::ScrollArea::new([true, true]).show(ui, |ui| {
+                            egui::Grid::new("grid").show(ui, |ui| {
+                                for i in 0..300 {
+                                    egui::Frame::none()
+                                        .stroke(egui::Stroke::new(2.0, egui::Color32::GRAY))
+                                        .inner_margin(egui::style::Margin::same(5.0))
+                                        .show(ui, |ui| {
+                                            ui.add_sized(
+                                                [30.0, 20.0],
+                                                egui::Label::new(i.to_string()),
+                                            );
+                                        });
+                                    egui::Frame::none()
+                                        .stroke(egui::Stroke::new(2.0, egui::Color32::GRAY))
+                                        .inner_margin(egui::style::Margin::same(5.0))
+                                        .show(ui, |ui| {
+                                            ui.add_sized([100.0, 20.0], egui::Label::new(""));
+                                        });
+                                    ui.end_row();
+                                }
+                            });
                         });
-                });
+                        //    });
+                    });
             });
         });
     }
