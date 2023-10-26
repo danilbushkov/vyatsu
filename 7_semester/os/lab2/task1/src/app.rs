@@ -1,9 +1,9 @@
 use eframe::egui;
 
 use crate::defines::TABLE_ROW_SIZE;
+use crate::spinlock::Spinlock;
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Arc;
-use std::{hint, thread};
 
 pub struct App {
     _name: String,
@@ -12,7 +12,7 @@ pub struct App {
     task_window_open: bool,
     threads: Vec<std::thread::JoinHandle<()>>,
     exit: Arc<AtomicUsize>,
-    name_spinlocks: Vec<Arc<AtomicUsize>>,
+    name_spinlocks: Vec<Arc<Spinlock>>,
     names: Vec<String>,
 }
 
@@ -63,7 +63,7 @@ impl App {
         let mut name_spinlocks: Vec<_> = vec![];
         for _ in 0..TABLE_ROW_SIZE {
             names.push("".to_owned());
-            name_spinlocks.push(Arc::new(AtomicUsize::new(0)));
+            name_spinlocks.push(Arc::new(Spinlock::new()));
         }
         Self {
             _name: "Test".to_owned(),
@@ -99,12 +99,12 @@ impl App {
                                     .stroke(egui::Stroke::new(2.0, egui::Color32::GRAY))
                                     .inner_margin(egui::style::Margin::same(5.0))
                                     .show(ui, |ui| {
-                                        //
+                                        self.name_spinlocks[i].lock();
                                         ui.add_sized(
                                             [100.0, 20.0],
                                             egui::Label::new(&self.names[i]),
                                         );
-                                        //
+                                        self.name_spinlocks[i].unlock();
                                     });
                                 ui.end_row();
                             }
