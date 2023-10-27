@@ -1,5 +1,6 @@
 mod app;
 mod defines;
+mod shared_container;
 mod spinlock;
 
 fn main() -> Result<(), eframe::Error> {

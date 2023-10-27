@@ -2029,6 +2029,7 @@ name = "task1"
 version = "0.1.0"
 dependencies = [
  "eframe",
+ "rand",
 ]
 
 [[package]]
