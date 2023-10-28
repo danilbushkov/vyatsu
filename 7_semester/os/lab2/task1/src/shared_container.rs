@@ -1,6 +1,5 @@
 use crate::spinlock::Spinlock;
 
-use core::ops::{Deref, DerefMut};
 use std::cell::UnsafeCell;
 
 pub struct SharedContainer<T> {

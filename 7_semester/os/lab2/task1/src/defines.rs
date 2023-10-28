@@ -3,7 +3,7 @@ pub const TASK_TEXT: &str = "С помощью блокирующих перем
 из уже имеющегося списка. Второй поток проверяет, не дублируются ли пользователи, и заменяет \
 имена повторяющихся словом \"повтор\". ";
 
-pub const TABLE_ROW_SIZE: usize = 200;
+pub const TABLE_ROW_SIZE: usize = 100;
 
 pub const USER_ARRAY: &'static [&str] = &[
     "Мария",
