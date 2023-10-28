@@ -97,17 +97,13 @@ impl eframe::App for App {
                     let set = self.set_of_added_names.get_mut();
                     set.clear();
                     self.set_of_added_names.unlock();
-                    self.reset_adder.unlock();
                     self.reset_reviewer.unlock();
+
+                    self.reset_adder.unlock();
                 }
             });
 
         egui::CentralPanel::default().show(ctx, |_| {
-            //ui.with_layout(
-            //    egui::Layout::top_down_justified(egui::Align::Center),
-            //    |ui| {
-            //    ui.label("world!");
-            //    ui.label("Hello");
             egui::SidePanel::left("table0")
                 .resizable(false)
                 .show(ctx, |ui| {
