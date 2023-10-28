@@ -24,7 +24,8 @@ pub struct App {
     added_names: Arc<SharedContainer<Vec<&'static str>>>,
     adder_position: Arc<SharedContainer<Option<usize>>>,
     reviewer_position: Arc<SharedContainer<Option<usize>>>,
-    reset: Arc<SharedContainer<bool>>,
+    reset_adder: Arc<SharedContainer<bool>>,
+    reset_reviewer: Arc<SharedContainer<bool>>,
 }
 
 impl Drop for App {
@@ -62,7 +63,8 @@ impl eframe::App for App {
                     self.task_window_open = true;
                 }
                 if ui.add(egui::Button::new("Сбросить")).clicked() {
-                    self.reset.get();
+                    self.reset_adder.get();
+                    self.reset_reviewer.get();
                     self.adder_frequency = 0;
                     self.reviewer_frequency = 0;
 
@@ -95,7 +97,8 @@ impl eframe::App for App {
                     let set = self.set_of_added_names.get_mut();
                     set.clear();
                     self.set_of_added_names.unlock();
-                    self.reset.unlock();
+                    self.reset_adder.unlock();
+                    self.reset_reviewer.unlock();
                 }
             });
 
@@ -139,7 +142,9 @@ impl App {
             added_names: Arc::new(SharedContainer::new(vec![])),
             shared_adder_frequency: Arc::new(SharedContainer::new(0)),
             shared_reviewer_frequency: Arc::new(SharedContainer::new(0)),
-            reset: Arc::new(SharedContainer::new(false)),
+            reset_adder: Arc::new(SharedContainer::new(false)),
+
+            reset_reviewer: Arc::new(SharedContainer::new(false)),
         };
         slf.threads.push(slf.spawn_adder());
         slf.threads.push(slf.spawn_reviewer());
@@ -150,7 +155,7 @@ impl App {
         let name_container = Arc::clone(&self.names);
         let frequency_container = Arc::clone(&self.shared_adder_frequency);
         let position = Arc::clone(&self.adder_position);
-        let reset = Arc::clone(&self.reset);
+        let reset = Arc::clone(&self.reset_adder);
         let thread = thread::spawn(move || {
             let mut random = rand::thread_rng();
             while exit.load(Ordering::SeqCst) == 0 {
@@ -201,7 +206,7 @@ impl App {
         let adder_position = Arc::clone(&self.adder_position);
         let viewed_names = Arc::clone(&self.added_names);
         let set = Arc::clone(&self.set_of_added_names);
-        let reset = Arc::clone(&self.reset);
+        let reset = Arc::clone(&self.reset_reviewer);
         let thread = thread::spawn(move || {
             while exit.load(Ordering::SeqCst) == 0 {
                 reset.get();
