@@ -15,11 +15,14 @@ pub struct Philosopher {
     state: Mutex<State>,
     number_of_eaten_portions: Mutex<usize>,
     frequency: Mutex<usize>,
+    guard: Mutex<()>,
+    name: usize,
 }
 
 impl Philosopher {
-    pub fn new(pos: Pos2) -> Self {
+    pub fn new(name: usize, pos: Pos2) -> Self {
         Self {
+            name,
             pos,
             ..Self::default()
         }
@@ -57,17 +60,39 @@ impl Philosopher {
     pub fn get_number_of_eaten_portions(&self) -> usize {
         *self.number_of_eaten_portions.lock()
     }
+    pub fn reset(&self) {
+        self.set_state(State::Sleep);
+        self.set_left_fork(false);
+        self.set_right_fork(false);
+        self.set_frequency(0);
+        self.reset_number_of_eaten_portions();
+    }
+    pub fn get_guard(&self) -> MutexGuard<'_, ()> {
+        self.guard.lock()
+    }
+    pub fn get_name(&self) -> usize {
+        self.name
+    }
+
+    fn set_frequency(&self, value: usize) {
+        *self.frequency.lock() = value
+    }
+    fn reset_number_of_eaten_portions(&self) {
+        *self.number_of_eaten_portions.lock() = 0;
+    }
 }
 
 impl Default for Philosopher {
     fn default() -> Self {
         Self {
+            name: 0,
             pos: eframe::egui::pos2(0.0, 0.0),
             left_fork: Mutex::new(false),
             right_fork: Mutex::new(false),
             state: Mutex::new(State::Sleep),
             number_of_eaten_portions: Mutex::new(0),
             frequency: Mutex::new(0),
+            guard: Mutex::new(()),
         }
     }
 }

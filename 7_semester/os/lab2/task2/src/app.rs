@@ -1,14 +1,14 @@
 use eframe::egui;
 
 use crate::defines::TASK_TEXT;
-use eframe::egui::mutex::Mutex;
+use crate::table::Table;
 use eframe::egui::Ui;
 use eframe::egui::{Context, Pos2, Vec2};
 use egui::style::Margin;
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Arc;
-use std::thread;
 use std::thread::JoinHandle;
+use std::{thread, time};
 
 use crate::fork::Fork;
 use crate::philosopher::{Philosopher, State};
@@ -17,8 +17,9 @@ pub struct App {
     threads: Vec<JoinHandle<()>>,
     exit: Arc<AtomicUsize>,
     task_window_open: bool,
-    philosophers: Vec<Philosopher>,
-    forks: Vec<Fork>,
+    philosophers: Vec<Arc<Philosopher>>,
+    forks: Vec<Arc<Fork>>,
+    table: Arc<Table>,
 }
 
 impl Drop for App {
@@ -51,11 +52,19 @@ impl eframe::App for App {
                 if ui.add(egui::Button::new("Показать задание")).clicked() {
                     self.task_window_open = true;
                 }
-                if ui.add(egui::Button::new("Сбросить")).clicked() {}
+                if ui.add(egui::Button::new("Сбросить")).clicked() {
+                    let _guards: Vec<_> =
+                        self.philosophers.iter().map(|ph| ph.get_guard()).collect();
+                    for ph in self.philosophers.iter() {
+                        ph.reset();
+                    }
+                    for fk in self.forks.iter() {
+                        fk.visible(true)
+                    }
+                }
             });
 
         egui::CentralPanel::default().show(ctx, |_| {
-            //  egui::ScrollArea::new([true, true]).show(ui, |ui| {
             self.show_food(ctx, egui::pos2(200.0, 200.0));
             for i in 0..self.forks.len() {
                 let fk = &self.forks[i];
@@ -73,7 +82,6 @@ impl eframe::App for App {
                     ph.get_number_of_eaten_portions(),
                 );
             }
-            // });
         });
     }
 }
@@ -96,9 +104,12 @@ impl App {
         ];
         let mut phs = vec![];
         let mut forks = vec![];
+        let mut table_forks = vec![];
         for i in 0..5 {
-            phs.push(Philosopher::new(ph_pos2[i]));
-            forks.push(Fork::new(fork_pos2[i], true));
+            phs.push(Arc::new(Philosopher::new(i, ph_pos2[i])));
+            let fork = Arc::new(Fork::new(fork_pos2[i], true));
+            table_forks.push(Some(Arc::clone(&fork)));
+            forks.push(fork);
         }
 
         let mut slf = Self {
@@ -107,9 +118,62 @@ impl App {
             task_window_open: false,
             philosophers: phs,
             forks,
+            table: Arc::new(Table::new(table_forks)),
         };
-        //slf.threads.push(slf.)
+        for i in 0..slf.philosophers.len() {
+            slf.threads.push(Self::spawn_philosopher(
+                &slf.philosophers[i],
+                &slf.table,
+                &slf.exit,
+            ));
+        }
+
         slf
+    }
+
+    fn spawn_philosopher(
+        philosopher: &Arc<Philosopher>,
+        table: &Arc<Table>,
+        exit: &Arc<AtomicUsize>,
+    ) -> JoinHandle<()> {
+        let exit = Arc::clone(exit);
+        let philosopher = Arc::clone(philosopher);
+        let table = Arc::clone(table);
+        thread::spawn(move || {
+            while exit.load(Ordering::SeqCst) != 1 {
+                let _guard = philosopher.get_guard();
+                let frequency = philosopher.get_frequency();
+                if frequency != 0 {
+                    let ms = 1000 + (4000 - 200) / 100 * (101 - frequency);
+                    thread::sleep(time::Duration::from_millis(ms as u64));
+                    philosopher.set_state(State::Hungry);
+                    let n = philosopher.get_name();
+                    let fs = vec![n, (n + 1) % 5];
+                    let forks = table.take_forks(fs);
+
+                    for (_, f) in forks.iter() {
+                        f.visible(false);
+                    }
+                    philosopher.set_right_fork(true);
+                    philosopher.set_left_fork(true);
+
+                    philosopher.set_state(State::Eat);
+                    thread::sleep(time::Duration::from_millis(2000));
+
+                    for (_, f) in forks.iter() {
+                        f.visible(true);
+                    }
+
+                    philosopher.set_left_fork(false);
+                    philosopher.set_right_fork(false);
+
+                    table.put_forks(forks);
+
+                    philosopher.inc_number_of_eaten_portions();
+                    philosopher.set_state(State::Sleep);
+                }
+            }
+        })
     }
 
     fn show_state_image(&self, ui: &mut Ui, state: State) {
