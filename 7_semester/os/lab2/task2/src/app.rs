@@ -1,6 +1,8 @@
 use eframe::egui;
 
 use crate::defines::TASK_TEXT;
+use eframe::egui::mutex::Mutex;
+use eframe::egui::Ui;
 use eframe::egui::{Context, Pos2, Vec2};
 use egui::style::Margin;
 use std::sync::atomic::{AtomicUsize, Ordering};
@@ -8,28 +10,8 @@ use std::sync::Arc;
 use std::thread;
 use std::thread::JoinHandle;
 
-use eframe::egui::Ui;
-
-#[derive(Copy, Clone)]
-pub enum State {
-    Eat,
-    Hungry,
-    Sleep,
-}
-
-pub struct Philosopher {
-    pub pos: Pos2,
-    pub left_fork: bool,
-    pub right_fork: bool,
-    pub state: State,
-    pub number_of_eaten_portions: usize,
-    pub frequency: usize,
-}
-
-pub struct Fork {
-    pub pos: Pos2,
-    pub visible: bool,
-}
+use crate::fork::Fork;
+use crate::philosopher::{Philosopher, State};
 
 pub struct App {
     threads: Vec<JoinHandle<()>>,
@@ -63,7 +45,8 @@ impl eframe::App for App {
                 for i in 0..self.philosophers.len() {
                     let ph = &mut self.philosophers[i];
                     ui.label("Частота философа ".to_owned() + &i.to_string() + " :");
-                    ui.add(egui::Slider::new(&mut ph.frequency, 0..=100));
+                    let mut f = ph.get_mut_frequency();
+                    ui.add(egui::Slider::new(&mut *f, 0..=100));
                 }
                 if ui.add(egui::Button::new("Показать задание")).clicked() {
                     self.task_window_open = true;
@@ -76,18 +59,18 @@ impl eframe::App for App {
             self.show_food(ctx, egui::pos2(200.0, 200.0));
             for i in 0..self.forks.len() {
                 let fk = &self.forks[i];
-                self.show_fork(ctx, &i.to_string(), fk.pos, fk.visible);
+                self.show_fork(ctx, &i.to_string(), fk.get_pos(), fk.is_visible());
             }
             for i in 0..self.philosophers.len() {
                 let ph = &self.philosophers[i];
                 self.show_philosopher(
                     ctx,
                     &i.to_string(),
-                    ph.pos,
-                    ph.state,
-                    ph.left_fork,
-                    ph.right_fork,
-                    ph.number_of_eaten_portions,
+                    ph.get_pos(),
+                    ph.get_state(),
+                    ph.get_left_fork(),
+                    ph.get_right_fork(),
+                    ph.get_number_of_eaten_portions(),
                 );
             }
             // });
@@ -114,18 +97,8 @@ impl App {
         let mut phs = vec![];
         let mut forks = vec![];
         for i in 0..5 {
-            phs.push(Philosopher {
-                pos: ph_pos2[i],
-                left_fork: true,
-                right_fork: true,
-                state: State::Sleep,
-                number_of_eaten_portions: 0,
-                frequency: 0,
-            });
-            forks.push(Fork {
-                pos: fork_pos2[i],
-                visible: true,
-            })
+            phs.push(Philosopher::new(ph_pos2[i]));
+            forks.push(Fork::new(fork_pos2[i], true));
         }
 
         let mut slf = Self {
