@@ -22,6 +22,8 @@ pub struct Philosopher {
     pub left_fork: bool,
     pub right_fork: bool,
     pub state: State,
+    pub number_of_eaten_portions: usize,
+    pub frequency: usize,
 }
 
 pub struct Fork {
@@ -58,10 +60,11 @@ impl eframe::App for App {
         egui::SidePanel::right("right")
             .resizable(false)
             .show(ctx, |ui| {
-                ui.label("Частота первого философа:");
-                // ui.add(egui::Slider::new(&mut self.adder_frequency, 0..=100));
-                ui.label("Частота второго философа:");
-                // ui.add(egui::Slider::new(&mut self.reviewer_frequency, 0..=100));
+                for i in 0..self.philosophers.len() {
+                    let ph = &mut self.philosophers[i];
+                    ui.label("Частота философа ".to_owned() + &i.to_string() + " :");
+                    ui.add(egui::Slider::new(&mut ph.frequency, 0..=100));
+                }
                 if ui.add(egui::Button::new("Показать задание")).clicked() {
                     self.task_window_open = true;
                 }
@@ -84,6 +87,7 @@ impl eframe::App for App {
                     ph.state,
                     ph.left_fork,
                     ph.right_fork,
+                    ph.number_of_eaten_portions,
                 );
             }
             // });
@@ -112,9 +116,11 @@ impl App {
         for i in 0..5 {
             phs.push(Philosopher {
                 pos: ph_pos2[i],
-                left_fork: false,
-                right_fork: false,
+                left_fork: true,
+                right_fork: true,
                 state: State::Sleep,
+                number_of_eaten_portions: 0,
+                frequency: 0,
             });
             forks.push(Fork {
                 pos: fork_pos2[i],
@@ -150,14 +156,14 @@ impl App {
             .inner_margin(Margin {
                 left: 0.0,
                 right: 0.0,
-                top: 30.0,
+                top: 20.0,
                 bottom: 20.0,
             })
             .show(ui, |ui| {
                 if visible {
                     ui.add(
                         egui::Image::new(egui::include_image!("../images/fork.png"))
-                            .fit_to_exact_size(Vec2 { x: 30.0, y: 50.0 })
+                            .fit_to_exact_size(Vec2 { x: 40.0, y: 60.0 })
                             .rounding(5.0),
                     );
                 }
@@ -186,18 +192,37 @@ impl App {
         state: State,
         left_fork: bool,
         right_fork: bool,
+        number_of_eaten_portions: usize,
     ) {
         egui::Area::new("ph".to_owned() + name)
             .fixed_pos(pos)
             .show(ctx, |ui| {
-                egui::Grid::new("grid".to_owned() + name)
-                    .min_col_width(15.0)
-                    .show(ui, |ui| {
-                        self.show_fork_image(ui, left_fork);
+                egui::Grid::new("vgrid".to_owned() + name).show(ui, |ui| {
+                    egui::Frame::none()
+                        .inner_margin(Margin {
+                            left: 38.0,
+                            right: 38.0,
+                            top: 0.0,
+                            bottom: 0.0,
+                        })
+                        .show(ui, |ui| {
+                            ui.label("Философ ".to_owned() + name);
+                        });
+                    ui.end_row();
+                    egui::Grid::new("grid".to_owned() + name)
+                        .min_col_width(15.0)
+                        .show(ui, |ui| {
+                            self.show_fork_image(ui, left_fork);
 
-                        self.show_state_image(ui, state);
-                        self.show_fork_image(ui, right_fork);
-                    });
+                            self.show_state_image(ui, state);
+                            self.show_fork_image(ui, right_fork);
+                        });
+                    ui.end_row();
+                    ui.label(
+                        "\tКоличество съеденных \n\t\t\t\t порций: ".to_owned()
+                            + &number_of_eaten_portions.to_string(),
+                    )
+                });
             });
     }
 }
