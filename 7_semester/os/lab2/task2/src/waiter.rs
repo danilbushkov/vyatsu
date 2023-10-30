@@ -1,40 +1,42 @@
 use crate::fork::Fork;
+use std::collections::HashSet;
 use std::sync::{Arc, Condvar, Mutex};
 
-struct Resources {
+struct Resource {
     forks: Vec<Option<Arc<Fork>>>,
-    permissions: Vec<bool>,
+    presence: HashSet<usize>,
 }
 
 pub struct Waiter {
     nps: usize,
-    resources: Mutex<Resources>,
+    resource: Mutex<Resource>,
     condvar: Condvar,
 }
 
 impl Waiter {
     pub fn new(number_of_philosophers: usize, forks: Vec<Option<Arc<Fork>>>) -> Self {
-        let vec = vec![true; number_of_philosophers];
-
         Self {
             nps: number_of_philosophers,
-            resources: Mutex::new(Resources {
+            resource: Mutex::new(Resource {
                 forks,
-                permissions: vec,
+                presence: HashSet::new(),
             }),
             condvar: Condvar::new(),
         }
     }
 
     pub fn take_forks(&self, name_philosopher: usize) -> Vec<(usize, Arc<Fork>)> {
-        let mut guard = self.resources.lock().unwrap();
+        let mut guard = self.resource.lock().unwrap();
         let nm = name_philosopher;
 
         let nfks = vec![nm, (nm + 1) % self.nps];
+        let t = if nm == 0 { self.nps - 1 } else { nm - 1 };
+        let neighbors = ((nm + 1) % self.nps, t);
 
-        while !guard.permissions[nm] {
+        while guard.presence.contains(&neighbors.0) || guard.presence.contains(&neighbors.1) {
             guard = self.condvar.wait(guard).unwrap();
         }
+        guard.presence.insert(nm);
 
         let mut fs = vec![];
         let mut i = 0;
@@ -48,26 +50,18 @@ impl Waiter {
         for i in nfks.iter() {
             fs.push((*i, guard.forks[*i].take().unwrap()));
         }
+        guard.presence.remove(&nm);
         fs
     }
-    pub fn put_forks(&self, name_philosopher: usize, forks: Vec<(usize, Arc<Fork>)>) {
-        let mut guard = self.resources.lock().unwrap();
-        let nm = name_philosopher;
+    pub fn put_forks(&self, _name_philosopher: usize, forks: Vec<(usize, Arc<Fork>)>) {
+        let mut guard = self.resource.lock().unwrap();
         for (i, fk) in forks {
             guard.forks[i] = Some(fk);
         }
-        let t = if nm == 0 { self.nps - 1 } else { nm - 1 };
-        let neighbors = ((nm + 1) % self.nps, t);
-        //guard.permissions[nm] = false;
-        //guard.permissions[neighbors.0] = true;
-        //guard.permissions[neighbors.1] = true;
 
-        self.condvar.notify_one();
+        self.condvar.notify_all();
     }
     pub fn reset(&self) {
-        let mut guard = self.resources.lock().unwrap();
-        for p in guard.permissions.iter_mut() {
-            *p = true;
-        }
+        //
     }
 }
