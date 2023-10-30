@@ -61,6 +61,7 @@ impl eframe::App for App {
                     for fk in self.forks.iter() {
                         fk.visible(true)
                     }
+                    self.waiter.reset();
                 }
             });
 
@@ -113,12 +114,12 @@ impl App {
         }
 
         let mut slf = Self {
+            waiter: Arc::new(Waiter::new(phs.len(), waiter_forks)),
             exit: Arc::new(AtomicUsize::new(0)),
             threads: vec![],
             task_window_open: false,
             philosophers: phs,
             forks,
-            waiter: Arc::new(Waiter::new(waiter_forks)),
         };
         for i in 0..slf.philosophers.len() {
             slf.threads.push(Self::spawn_philosopher(
@@ -148,8 +149,8 @@ impl App {
                     thread::sleep(time::Duration::from_millis(ms as u64));
                     philosopher.set_state(State::Hungry);
                     let n = philosopher.get_name();
-                    let fs = vec![n, (n + 1) % 5];
-                    let forks = waiter.take_forks(fs);
+                    // let fs = vec![n, (n + 1) % 5];
+                    let forks = waiter.take_forks(n);
 
                     for (_, f) in forks.iter() {
                         f.visible(false);
@@ -167,7 +168,7 @@ impl App {
                     philosopher.set_left_fork(false);
                     philosopher.set_right_fork(false);
 
-                    waiter.put_forks(forks);
+                    waiter.put_forks(n, forks);
 
                     philosopher.inc_number_of_eaten_portions();
                     philosopher.set_state(State::Sleep);
