@@ -1,12 +1,12 @@
 use crate::fork::Fork;
 use std::sync::{Arc, Condvar, Mutex};
 
-pub struct Table {
+pub struct Waiter {
     forks: Mutex<Vec<Option<Arc<Fork>>>>,
     condvar: Condvar,
 }
 
-impl Table {
+impl Waiter {
     pub fn new(forks: Vec<Option<Arc<Fork>>>) -> Self {
         Self {
             forks: Mutex::new(forks),

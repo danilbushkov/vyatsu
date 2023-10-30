@@ -1,7 +1,7 @@
 use eframe::egui;
 
 use crate::defines::TASK_TEXT;
-use crate::table::Table;
+use crate::waiter::Waiter;
 use eframe::egui::Ui;
 use eframe::egui::{Context, Pos2, Vec2};
 use egui::style::Margin;
@@ -19,7 +19,7 @@ pub struct App {
     task_window_open: bool,
     philosophers: Vec<Arc<Philosopher>>,
     forks: Vec<Arc<Fork>>,
-    table: Arc<Table>,
+    waiter: Arc<Waiter>,
 }
 
 impl Drop for App {
@@ -104,11 +104,11 @@ impl App {
         ];
         let mut phs = vec![];
         let mut forks = vec![];
-        let mut table_forks = vec![];
+        let mut waiter_forks = vec![];
         for i in 0..5 {
             phs.push(Arc::new(Philosopher::new(i, ph_pos2[i])));
             let fork = Arc::new(Fork::new(fork_pos2[i], true));
-            table_forks.push(Some(Arc::clone(&fork)));
+            waiter_forks.push(Some(Arc::clone(&fork)));
             forks.push(fork);
         }
 
@@ -118,12 +118,12 @@ impl App {
             task_window_open: false,
             philosophers: phs,
             forks,
-            table: Arc::new(Table::new(table_forks)),
+            waiter: Arc::new(Waiter::new(waiter_forks)),
         };
         for i in 0..slf.philosophers.len() {
             slf.threads.push(Self::spawn_philosopher(
                 &slf.philosophers[i],
-                &slf.table,
+                &slf.waiter,
                 &slf.exit,
             ));
         }
@@ -133,12 +133,12 @@ impl App {
 
     fn spawn_philosopher(
         philosopher: &Arc<Philosopher>,
-        table: &Arc<Table>,
+        waiter: &Arc<Waiter>,
         exit: &Arc<AtomicUsize>,
     ) -> JoinHandle<()> {
         let exit = Arc::clone(exit);
         let philosopher = Arc::clone(philosopher);
-        let table = Arc::clone(table);
+        let waiter = Arc::clone(waiter);
         thread::spawn(move || {
             while exit.load(Ordering::SeqCst) != 1 {
                 let _guard = philosopher.get_guard();
@@ -149,7 +149,7 @@ impl App {
                     philosopher.set_state(State::Hungry);
                     let n = philosopher.get_name();
                     let fs = vec![n, (n + 1) % 5];
-                    let forks = table.take_forks(fs);
+                    let forks = waiter.take_forks(fs);
 
                     for (_, f) in forks.iter() {
                         f.visible(false);
@@ -167,7 +167,7 @@ impl App {
                     philosopher.set_left_fork(false);
                     philosopher.set_right_fork(false);
 
-                    table.put_forks(forks);
+                    waiter.put_forks(forks);
 
                     philosopher.inc_number_of_eaten_portions();
                     philosopher.set_state(State::Sleep);
