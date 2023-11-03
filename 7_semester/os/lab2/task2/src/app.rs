@@ -33,6 +33,7 @@ impl Drop for App {
 
 impl eframe::App for App {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+        ctx.request_repaint();
         if self.task_window_open {
             egui::Window::new("Задание")
                 .open(&mut self.task_window_open)

@@ -40,6 +40,7 @@ impl Drop for App {
 
 impl eframe::App for App {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+        ctx.request_repaint();
         let reviwer = self.shared_reviewer_frequency.get_mut();
         let adder = self.shared_adder_frequency.get_mut();
         *reviwer = self.reviewer_frequency;
