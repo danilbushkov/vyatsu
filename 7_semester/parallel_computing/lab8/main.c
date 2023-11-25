@@ -76,7 +76,7 @@ void dpoly_to_cpoly(struct array *poly, double complex *result) {
 
 void cpoly_to_dpoly(int n, double complex *poly, struct array *result) {
     for(int i = 0; i < n; i++) {
-        result->arr[i] = (double) poly[i];
+        result->arr[i] = round((double) poly[i]);
     }
 }
 
@@ -158,9 +158,7 @@ struct array mult(struct array *poly1, struct array *poly2) {
     int n = poly1->size;
     int m = poly2->size;
 
-    if(n == 0 || m == 0) {
-        return;
-    }
+    
 
     int size = 0;
     if(n > m) {
@@ -179,7 +177,7 @@ struct array mult(struct array *poly1, struct array *poly2) {
     complex double *cpoly2 = calloc(size, sizeof(complex double));
     complex double *cresult = calloc(size, sizeof(complex double));
     struct array result;
-    result.size = size;
+    result.size = m+n-1;
     result.arr = calloc(size, sizeof(double));
 
 
@@ -205,7 +203,7 @@ struct array mult(struct array *poly1, struct array *poly2) {
     fft(cresult, size, -1);
     
 
-    cpoly_to_dpoly(size, cresult, &result);
+    cpoly_to_dpoly(result.size, cresult, &result);
 
     free(cpoly1);
     free(cpoly2);
@@ -214,26 +212,86 @@ struct array mult(struct array *poly1, struct array *poly2) {
     return result;
 }
 
+struct array smult(int n, struct array *poly_arr) {
+    struct array poly;
+    if(n == 0) {
+        return poly;
+    } else if (n == 1) {
+        return poly_arr[0];
+    }
+    poly = simple_mult(&poly_arr[0], &poly_arr[1]);
+    for(int i = 2; i < n; i++) {
+        struct array tmp = simple_mult(&poly, &poly_arr[i]);
+        free_array(&poly);
+        poly = tmp;
+    }
+    return poly;
+}
+
+struct array fmult(int n, struct array *poly_arr) {
+    struct array poly;
+    if(n == 0) {
+        return poly;
+    } else if (n == 1) {
+        return poly_arr[0];
+    }
+
+
+    int m = n/2;
+    struct array *tpoly = calloc(m, sizeof(struct array));
+    for(int i = 0, j = 0; i < m; i++, j += 2) {
+        tpoly[i] = mult(&poly_arr[j], &poly_arr[j+1]);
+    }
+    while(m > 1) {
+        struct array *tmp = calloc(m/2, sizeof(struct array));
+        for(int i = 0, j = 0; i < m/2; i++, j += 2) {
+            tmp[i] = mult(&tpoly[j], &tpoly[j+1]);
+        }
+        for(int j = 0; j < m; j++) {
+            free_array(&tpoly[j]);
+        }
+        free(tpoly);
+        tpoly = tmp;
+        m /= 2;
+    }
+
+//    poly = mult(&poly_arr[0], &poly_arr[1]);
+//    for(int i = 2; i < n; i++) {
+//        struct array tmp = mult(&poly, &poly_arr[i]);
+//        free_array(&poly);
+//        poly = tmp;
+//    }
+    struct array p = tpoly[0];
+    free(tpoly);
+    return p;
+}
+
 
 int main() {
 
     srand(time(NULL));
-    struct array poly1 = get_random_poly(8, -100, 100);
-    struct array poly2 = get_random_poly(8, -100, 100);
+    int n = 4;
+    struct array *poly_arr = calloc(n, sizeof(struct array));
+    for(int i = 0; i < n; i++) {
+        poly_arr[i] = get_random_poly(10000, -10, 10);
+    }
 
-    struct array poly = simple_mult(&poly1, &poly2);
-    struct array fpoly = mult(&poly1, &poly2);
+    struct array poly = smult(n, poly_arr);
+    //struct array poly = simple_mult(&poly1, &poly2);
+    struct array fpoly = fmult(n, poly_arr);
 
-    print_poly(&poly1);
-    print_poly(&poly2);
-    print_poly(&poly);
+    
+    //print_poly(&poly);
     if(!check(&poly, &fpoly)) {
         printf("not equal\n");
     }
-    print_poly(&fpoly);
+    printf("\n");
+    //print_poly(&fpoly);
 
-    free_array(&poly1);
-    free_array(&poly2);
+    for(int i = 0; i < n; i++) {
+        free_array(&poly_arr[i]);
+    }
+    free(poly_arr);
     free_array(&poly);
     free_array(&fpoly);
     return 0;
