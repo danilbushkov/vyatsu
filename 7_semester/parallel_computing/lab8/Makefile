@@ -2,7 +2,7 @@ all: run
 
 
 run: main
-	./main
+	./main 4 10 0
 
 
 

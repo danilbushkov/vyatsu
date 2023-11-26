@@ -266,33 +266,59 @@ struct array fmult(int n, struct array *poly_arr) {
     return p;
 }
 
-
-int main() {
-
+// 1 аргумент - количество полиномов
+// 2 аргумент - размер полинома
+// 3 аргумент - флаг тестирования, 1 - тестирование, 0 - без тестирования
+int main(int argc, char *argv[]) {
     srand(time(NULL));
-    int n = 4;
+    if(argc < 4) {
+        printf("Requires 3 arguments: number of polynomials, polynomial size(2^size) and check flag\n");
+        return 1;
+    }
+
+    int n = atoi(argv[1]);
+    int size = pow(2, atoi(argv[2]));
+    int ch = atoi(argv[3]);
+    int pr = 0;
+    if(argc == 5) {
+        pr = atoi(argv[4]);
+    }
+
+
     struct array *poly_arr = calloc(n, sizeof(struct array));
     for(int i = 0; i < n; i++) {
-        poly_arr[i] = get_random_poly(10000, -10, 10);
+        poly_arr[i] = get_random_poly(size, -10, 10);
     }
 
-    struct array poly = smult(n, poly_arr);
-    //struct array poly = simple_mult(&poly1, &poly2);
     struct array fpoly = fmult(n, poly_arr);
 
-    
-    //print_poly(&poly);
-    if(!check(&poly, &fpoly)) {
-        printf("not equal\n");
+    if(pr) {
+            print_poly(&fpoly);
+            printf("\n");
     }
-    printf("\n");
-    //print_poly(&fpoly);
+    if(ch) {
+        struct array poly = smult(n, poly_arr);
+        if(pr) {
+            printf("==================\n");
+            print_poly(&poly);
+            printf("\n");
+        }
+        if(!check(&poly, &fpoly)) {
+            printf("Not equal\n");
+            printf("\n");
+
+        }
+        
+
+        free_array(&poly);
+        
+
+    }
 
     for(int i = 0; i < n; i++) {
         free_array(&poly_arr[i]);
     }
     free(poly_arr);
-    free_array(&poly);
     free_array(&fpoly);
     return 0;
 }
