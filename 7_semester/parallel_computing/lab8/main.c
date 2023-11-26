@@ -271,15 +271,18 @@ struct array fmult(int n, struct array *poly_arr) {
 // 3 аргумент - флаг тестирования, 1 - тестирование, 0 - без тестирования
 int main(int argc, char *argv[]) {
     srand(time(NULL));
-    if(argc < 4) {
-        printf("Requires 3 arguments: number of polynomials, polynomial size(2^size) and check flag\n");
+    if(argc < 3) {
+        printf("Requires 3 arguments: number of polynomials and polynomial size(2^size)\n");
         return 1;
     }
 
     int n = atoi(argv[1]);
     int size = pow(2, atoi(argv[2]));
-    int ch = atoi(argv[3]);
+    int ch = 0;
     int pr = 0;
+    if(argc == 4) {
+        ch = atoi(argv[3]);
+    }
     if(argc == 5) {
         pr = atoi(argv[4]);
     }
