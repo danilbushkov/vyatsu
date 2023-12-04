@@ -1,13 +1,12 @@
 all: run
 
 
-run: main
-	./main 4 10 0
+run: sort
+	mpiexec -n 1 ./sort 30
 
 
+sort: sort.o
+	mpicc sort.o -o sort 
 
-main: main.o
-	gcc main.o -o main -lm
-
-main.o: main.c
-	gcc -c main.c -o main.o 
+sort.o: sort.c
+	mpicc -c sort.c -o sort.o 

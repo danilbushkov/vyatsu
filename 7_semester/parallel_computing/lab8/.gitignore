@@ -1,2 +1,6 @@
 main
 main.o
+sort
+sort.o
+
+*.btr

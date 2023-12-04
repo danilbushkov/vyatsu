@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <complex.h>
 #include <math.h>
+#include <mpi.h>
 
 
 struct array {
@@ -228,6 +229,22 @@ struct array smult(int n, struct array *poly_arr) {
     return poly;
 }
 
+void send_array(struct array *arr, int rank) {
+    MPI_Send(&arr->size, 1, MPI_INT, rank, rank, MPI_COMM_WORLD);
+    MPI_Send(arr->arr, arr->size, MPI_DOUBLE, rank, rank, MPI_COMM_WORLD);
+}
+
+struct array recv_array(int rank) {
+    int size;
+    MPI_Recv(&size, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+    double *arr1 = calloc(size, sizeof(double));
+    MPI_Recv(arr1, size, MPI_DOUBLE, MPI_ANY_TAG, , MPI_COMM_WORLD, &status);
+    struct array poly = {size, arr1};
+    return poly;
+}
+
+
+
 struct array fmult(int n, struct array *poly_arr) {
     struct array poly;
     if(n == 0) {
@@ -236,7 +253,7 @@ struct array fmult(int n, struct array *poly_arr) {
         return poly_arr[0];
     }
 
-
+    
     int m = n/2;
     struct array *tpoly = calloc(m, sizeof(struct array));
     for(int i = 0, j = 0; i < m; i++, j += 2) {
@@ -266,26 +283,24 @@ struct array fmult(int n, struct array *poly_arr) {
     return p;
 }
 
-// 1 аргумент - количество полиномов
-// 2 аргумент - размер полинома
-// 3 аргумент - флаг тестирования, 1 - тестирование, 0 - без тестирования
-int main(int argc, char *argv[]) {
+void master(int argc, char *argv[]) {
     srand(time(NULL));
     if(argc < 3) {
-        printf("Requires 3 arguments: number of polynomials and polynomial size(2^size)\n");
-        return 1;
+        printf("Requires 2 arguments: number of polynomials and polynomial size(2^size)\n");
+        return;
     }
-
+    
     int n = atoi(argv[1]);
     int size = pow(2, atoi(argv[2]));
     int ch = 0;
     int pr = 0;
-    if(argc == 4) {
+    if(argc >= 4) {
         ch = atoi(argv[3]);
     }
     if(argc == 5) {
         pr = atoi(argv[4]);
     }
+    
 
 
     struct array *poly_arr = calloc(n, sizeof(struct array));
@@ -293,7 +308,16 @@ int main(int argc, char *argv[]) {
         poly_arr[i] = get_random_poly(size, -10, 10);
     }
 
+    double starttime, endtime;
+    starttime = MPI_Wtime();
+
     struct array fpoly = fmult(n, poly_arr);
+    
+    endtime = MPI_Wtime();
+    printf("Work time %f sec\n", endtime-starttime);
+    
+
+    
 
     if(pr) {
             print_poly(&fpoly);
@@ -317,11 +341,69 @@ int main(int argc, char *argv[]) {
         
 
     }
-
     for(int i = 0; i < n; i++) {
         free_array(&poly_arr[i]);
     }
     free(poly_arr);
     free_array(&fpoly);
+
+}
+
+void slave() {
+    while(1) {
+
+    
+        int size;
+        MPI_Status status;
+        double s;
+        int rank;
+
+        MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+        MPI_Recv(&size, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+
+        double *arr1 = calloc(size, sizeof(double));
+
+        MPI_Recv(arr1, size, MPI_DOUBLE, 0, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+        struct array poly1 = {size, arr1};
+
+        MPI_Recv(&size, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+
+        double *arr2 = calloc(size, sizeof(double));
+
+        MPI_Recv(arr2, size, MPI_DOUBLE, 0, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+        struct array poly2 = {size, arr2};
+
+        struct array result = mult(&poly1, &poly2);
+
+        MPI_Send(&result.size, 1, MPI_INT, 0, rank, MPI_COMM_WORLD);
+        MPI_Send(result.arr, size, MPI_DOUBLE, 0, rank, MPI_COMM_WORLD);
+
+        free_array(&poly1);
+        free_array(&poly2);
+    }
+}
+
+
+// 1 аргумент - количество полиномов
+// 2 аргумент - размер полинома
+// 3 аргумент - флаг тестирования, 1 - тестирование, 0 - без тестирования
+int main(int argc, char *argv[]) {
+    int rank;
+    MPI_Init(&argc, &argv);
+
+
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    if(rank == 0) {
+        master(argc, argv);
+    } else {
+        slave();
+    }
+    
+    
+
+    MPI_Finalize();
+    
+    
     return 0;
 }
