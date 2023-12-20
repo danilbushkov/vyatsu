@@ -46,11 +46,10 @@ void send_array(int rank, int tag, int *arr, int n) {
     MPI_Send(arr, n, MPI_INT, rank, tag, MPI_COMM_WORLD);
 }
 
-void recv_array(int *source, int **arr, int n) {
+void recv_array(int source, int **arr, int n) {
     
     MPI_Status status;
-    MPI_Recv(*arr, n, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-    *source = status.MPI_SOURCE;
+    MPI_Recv(*arr, n, MPI_INT, source, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
 }
 
 int* merge_sort(int n, int *arr, int *buf, int l, int r, int rank, int max_rank) {
@@ -66,7 +65,6 @@ int* merge_sort(int n, int *arr, int *buf, int l, int r, int rank, int max_rank)
     int *r_b;
 
     if(rank != max_rank) {
-        int source;
         int m_r = (max_rank+rank)/2;
         int size = r-m;
         send_sort(m_r+1, m_r+1, arr+m+1, size, max_rank);
@@ -74,7 +72,7 @@ int* merge_sort(int n, int *arr, int *buf, int l, int r, int rank, int max_rank)
         l_b = merge_sort(n, arr, buf, l, m, rank, m_r);
 
         int *of = l_b+m+1;
-        recv_array(&source, &of, size);
+        recv_array(m_r+1, &of, size);
         r_b = l_b;
 
     } else {
