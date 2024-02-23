@@ -1,3 +1,4 @@
+mod gost;
 mod polybius_square;
 mod tasks;
 
@@ -6,6 +7,7 @@ use gtk::{
     glib, Application, ApplicationWindow, Box, Button, Label, Orientation, Paned, Stack,
     StackSidebar,
 };
+use num_bigint::BigUint;
 
 const APP_ID: &str = "org.gtk_rs.HelloWorld1";
 
@@ -56,18 +58,52 @@ fn build_ui(app: &Application) {
     task1_box.append(&task1_button);
     task1_box.append(&task1_answer);
 
-    let button = Button::builder()
-        .label(
-            "asdfasdf
-               asdf",
-        )
+    let task2_box = Box::new(Orientation::Vertical, 0);
+    let task2_encrypt_button = Button::builder()
+        .label("Зашифровать")
         .margin_end(MARGIN)
         .margin_top(MARGIN)
         .margin_start(MARGIN)
         .margin_bottom(MARGIN)
         .build();
-    stack.add_titled(&task1_box, Some("task1_button"), "Задание 1");
-    stack.add_titled(&button, Some("task2_button"), "Задание 2");
+    task2_box.append(
+        &Label::builder()
+            .label(tasks::TASK2_TEXT)
+            .margin_end(MARGIN)
+            .margin_top(MARGIN)
+            .margin_start(MARGIN)
+            .margin_bottom(MARGIN)
+            .build(),
+    );
+
+    task2_encrypt_button.connect_clicked(move |_| {
+        let mut key_blocks = BigUint::parse_bytes(tasks::TASK2_KEY, 10)
+            .unwrap()
+            .to_u32_digits();
+        key_blocks.resize(8, 0);
+        let cipherbytes = gost::encrypt(
+            tasks::TASK2_STR.as_bytes(),
+            &key_blocks[0..8].try_into().unwrap(),
+            &gost::SBOX,
+        );
+        let s = tasks::TASK2_STR;
+        println!("{}", s);
+
+        println!("{:?}; {}", s.as_bytes(), s.len());
+        println!("\ncipher: {:?}; {}", cipherbytes, cipherbytes.len());
+        let bytes = gost::decrypt(
+            &cipherbytes,
+            &key_blocks[0..8].try_into().unwrap(),
+            &gost::SBOX,
+        );
+        let d = String::from_utf8_lossy(&bytes);
+
+        println!("\nText: {:?}; {}", bytes, bytes.len());
+    });
+    task2_box.append(&task2_encrypt_button);
+
+    stack.add_titled(&task1_box, Some("task1_box"), "Задание 1");
+    stack.add_titled(&task2_box, Some("task2_box"), "Задание 2");
     let sidebar = StackSidebar::builder().build();
     sidebar.set_stack(&stack);
 
