@@ -45,12 +45,13 @@ fn blocks_from_bytes(bytes: &[u8]) -> Vec<u64> {
         count -= 1;
         if count == 0 {
             result.push(block);
-            //println!("{:064b}", block);
             block = 0;
             count = 8;
         }
     }
-
+    if count != 8 {
+        result.push(block);
+    }
     return result;
 }
 
@@ -91,12 +92,12 @@ fn encrypt_block(
     sbox: &[[u8; 16]; 8],
     get_key: fn(idx: usize, key_blocks: &[u32; 8]) -> u32,
 ) -> u64 {
-    let (mut l, mut r) = break_into_halves(block);
+    let (mut n2, mut n1) = break_into_halves(block);
     for i in 0..32 {
-        (l, r) = round(l, r, get_key(i, key_blocks), sbox);
+        (n1, n2) = round(n1, n2, get_key(i, key_blocks), sbox);
     }
 
-    ((l as u64) << 32) | (r as u64)
+    ((n1 as u64) << 32) | (n2 as u64)
 }
 
 fn encription_key_order(idx: usize, key_blocks: &[u32; 8]) -> u32 {
@@ -118,8 +119,8 @@ fn decription_key_order(idx: usize, key_blocks: &[u32; 8]) -> u32 {
     key_blocks[_i]
 }
 
-fn round(a: u32, b: u32, k: u32, sbox: &[[u8; 16]; 8]) -> (u32, u32) {
-    let sum = a.wrapping_add(k);
+fn round(n1: u32, n2: u32, k: u32, sbox: &[[u8; 16]; 8]) -> (u32, u32) {
+    let sum = n1.wrapping_add(k);
     let mask = 15;
     let mut replaced = 0;
     for i in 0..8 {
@@ -128,7 +129,7 @@ fn round(a: u32, b: u32, k: u32, sbox: &[[u8; 16]; 8]) -> (u32, u32) {
     }
     let shifted = replaced.rotate_left(11);
 
-    (shifted ^ b, a)
+    (shifted ^ n2, n1)
 }
 
 fn break_into_halves(block: u64) -> (u32, u32) {

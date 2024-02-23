@@ -99,6 +99,7 @@ fn build_ui(app: &Application) {
         let d = String::from_utf8_lossy(&bytes);
 
         println!("\nText: {:?}; {}", bytes, bytes.len());
+        println!("{}", d);
     });
     task2_box.append(&task2_encrypt_button);
 
