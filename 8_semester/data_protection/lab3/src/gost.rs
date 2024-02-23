@@ -93,11 +93,15 @@ fn encrypt_block(
     get_key: fn(idx: usize, key_blocks: &[u32; 8]) -> u32,
 ) -> u64 {
     let (mut n2, mut n1) = break_into_halves(block);
+    let mut cm2 = 0;
+    let mut pn1 = 0;
     for i in 0..32 {
-        (n1, n2) = round(n1, n2, get_key(i, key_blocks), sbox);
+        (cm2, pn1) = round(n1, n2, get_key(i, key_blocks), sbox);
+        n2 = pn1;
+        n1 = cm2;
     }
 
-    ((n1 as u64) << 32) | (n2 as u64)
+    ((cm2 as u64) << 32) | (pn1 as u64)
 }
 
 fn encription_key_order(idx: usize, key_blocks: &[u32; 8]) -> u32 {
