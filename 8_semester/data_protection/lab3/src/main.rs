@@ -1,6 +1,7 @@
 mod gost;
 mod polybius_square;
 mod tasks;
+mod tiger;
 
 use gtk::prelude::*;
 use gtk::{
@@ -118,4 +119,8 @@ fn build_ui(app: &Application) {
         .build();
 
     window.present();
+
+    //debug
+    let hash = tiger::hash("".as_bytes());
+    println!("{}", tiger::hash_to_hex_string(hash));
 }
