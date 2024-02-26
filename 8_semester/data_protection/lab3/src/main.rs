@@ -121,6 +121,6 @@ fn build_ui(app: &Application) {
     window.present();
 
     //debug
-    let hash = tiger::hash("".as_bytes());
+    let hash = tiger::hash("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-".as_bytes());
     println!("{}", tiger::hash_to_hex_string(hash));
 }

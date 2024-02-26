@@ -13,7 +13,7 @@ pub fn hash(bytes: &[u8]) -> (u64, u64, u64) {
 
     let blocks = get_blocks_from_bytes(bytes);
     for block in blocks {
-        (a, b, c) = get_new_abc(a, b, c, block);
+        (a, b, c) = compress(a, b, c, block);
     }
     (a, b, c)
 }
@@ -22,27 +22,27 @@ pub fn hash_to_hex_string(hash: (u64, u64, u64)) -> String {
     format!("{:X} {:X} {:X}", hash.0, hash.1, hash.2)
 }
 
-fn get_new_abc(mut a: u64, mut b: u64, mut c: u64, mut x: [u64; 8]) -> (u64, u64, u64) {
+fn compress(mut a: u64, mut b: u64, mut c: u64, mut x: [u64; 8]) -> (u64, u64, u64) {
     let aa = a;
     let bb = b;
     let cc = c;
     (a, b, c) = pass(a, b, c, x, 5);
     x = key_schedule(x);
-    (a, b, c) = pass(c, a, b, x, 7);
+    (c, a, b) = pass(c, a, b, x, 7);
     x = key_schedule(x);
-    (a, b, c) = pass(b, c, a, x, 9);
+    (b, c, a) = pass(b, c, a, x, 9);
     (a ^ aa, b.wrapping_sub(bb), c.wrapping_add(cc))
 }
 
 fn pass(mut a: u64, mut b: u64, mut c: u64, x: [u64; 8], mul: u64) -> (u64, u64, u64) {
     (a, b, c) = round(a, b, c, x[0], mul);
-    (a, b, c) = round(b, c, a, x[1], mul);
-    (a, b, c) = round(c, a, b, x[2], mul);
+    (b, c, a) = round(b, c, a, x[1], mul);
+    (c, a, b) = round(c, a, b, x[2], mul);
     (a, b, c) = round(a, b, c, x[3], mul);
-    (a, b, c) = round(b, c, a, x[4], mul);
-    (a, b, c) = round(c, a, b, x[5], mul);
+    (b, c, a) = round(b, c, a, x[4], mul);
+    (c, a, b) = round(c, a, b, x[5], mul);
     (a, b, c) = round(a, b, c, x[6], mul);
-    (a, b, c) = round(b, c, a, x[7], mul);
+    (b, c, a) = round(b, c, a, x[7], mul);
     (a, b, c)
 }
 fn round(mut a: u64, mut b: u64, mut c: u64, x: u64, mul: u64) -> (u64, u64, u64) {
@@ -65,7 +65,6 @@ fn round(mut a: u64, mut b: u64, mut c: u64, x: u64, mul: u64) -> (u64, u64, u64
 }
 
 fn key_schedule(mut x: [u64; 8]) -> [u64; 8] {
-    x[0] = 1;
     x[0] = x[0].wrapping_sub(x[7] ^ 0xA5A5A5A5A5A5A5A5);
     x[1] ^= x[0];
     x[2] = x[2].wrapping_add(x[1]);
@@ -90,15 +89,30 @@ fn get_byte(word: u64, pos: u64) -> u8 {
 }
 
 fn get_blocks_from_bytes(bytes: &[u8]) -> Vec<[u64; 8]> {
+    let len = bytes.len();
+    let mut bytes = Vec::from(bytes);
+    bytes.push(0x01);
+
     let mut blocks: Vec<[u64; 8]> = vec![];
     let mut word = 0;
     let mut block: [u64; 8] = [0; 8];
     let mut byte_count = 8;
     let mut current_word = 0;
 
+    let m = bytes.len() % 64;
+    let mut _to = 0;
+    if m > 56 {
+        _to = 128;
+    } else {
+        _to = 64;
+    }
+    for _ in m..=_to {
+        bytes.push(0);
+    }
+
     for byte in bytes {
         byte_count -= 1;
-        word = word | ((*byte as u64) << (8 * byte_count));
+        word = word | ((byte as u64) << (8 * byte_count));
         if byte_count == 0 {
             byte_count = 8;
             block[current_word] = word;
@@ -112,15 +126,7 @@ fn get_blocks_from_bytes(bytes: &[u8]) -> Vec<[u64; 8]> {
             }
         }
     }
-    if byte_count != 8 {
-        block[current_word] = word;
-        blocks.push(block);
-    } else if current_word != 0 {
-        blocks.push(block);
-    }
-    if blocks.len() == 0 {
-        blocks.push([0; 8]);
-    }
-
+    let i = blocks.len() - 1;
+    blocks[i][7] = (len as u64) << 3;
     blocks
 }
