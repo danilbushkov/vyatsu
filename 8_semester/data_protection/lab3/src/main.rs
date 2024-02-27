@@ -21,7 +21,9 @@ fn main() {
     let (x, _, _) = rsa::gcd(BigInt::from(23), BigInt::from(2341));
     println!("{}", x);
     let v = rsa::sieve_of_eratosthenes(300);
-    println!("{:?}", v)
+    println!("{:?}", v);
+    let keys = rsa::new_keys(BigUint::from(659 as u32), BigUint::from(599 as u32));
+    println!("{:?}", keys)
 }
 
 fn build_ui(app: &Application) {

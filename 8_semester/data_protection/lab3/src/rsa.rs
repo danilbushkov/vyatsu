@@ -1,13 +1,27 @@
-use num_bigint::BigInt;
+use num_bigint::{BigInt, BigUint};
+use rand::seq::SliceRandom;
 
-//pub fn new_keys(p: BigInt, q: BigInt) -> ((BigInt, BigInt), (BigInt, BigInt)) {
-//    let mut e: BigInt = BigInt::new(vec![0]);
-//    let mut n: BigInt = BigInt::new(vec![0]);
-//    let mut d: BigInt = BigInt::new(vec![0]);
-//    let mut n: BigInt = BigInt::new(vec![0]);
-//
-//    ((e, n.clone()), (d, n))
-//}
+pub fn new_keys(p: BigUint, q: BigUint) -> ((BigUint, BigUint), (BigUint, BigUint)) {
+    let mut _e: BigUint = BigUint::from(0 as u32);
+    let mut _d: BigUint = BigUint::from(0 as u32);
+    let n = &p * &q;
+    let f = (p - 1 as u32) * (q - 1 as u32);
+    loop {
+        _e = BigUint::from(
+            *sieve_of_eratosthenes(*(&f - 1 as u32).to_u64_digits().first().unwrap_or(&2) as usize)
+                .choose(&mut rand::thread_rng())
+                .unwrap(),
+        );
+        let (x, _, g) = gcd(BigInt::from(_e.clone()), BigInt::from(f.clone()));
+        if x <= BigInt::from(0) || x >= BigInt::from(n.clone()) || g != BigInt::from(1) {
+            continue;
+        }
+        _d = x.to_biguint().unwrap();
+        break;
+    }
+
+    ((_e, n.clone()), (_d, n))
+}
 
 pub fn gcd(a: BigInt, b: BigInt) -> (BigInt, BigInt, BigInt) {
     let zero: BigInt = BigInt::from(0);
