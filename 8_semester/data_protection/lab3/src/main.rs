@@ -20,6 +20,8 @@ fn main() {
     //app.run()
     let (x, _, _) = rsa::gcd(BigInt::from(23), BigInt::from(2341));
     println!("{}", x);
+    let v = rsa::sieve_of_eratosthenes(300);
+    println!("{:?}", v)
 }
 
 fn build_ui(app: &Application) {

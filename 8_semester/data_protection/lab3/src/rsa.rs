@@ -22,3 +22,30 @@ pub fn gcd(a: BigInt, b: BigInt) -> (BigInt, BigInt, BigInt) {
     x = y1 - (b / a) * x1;
     (x, y, d)
 }
+
+pub fn sieve_of_eratosthenes(n: usize) -> Vec<usize> {
+    if n < 2 {
+        return vec![];
+    }
+
+    let mut is_prime = vec![true; n + 1];
+    is_prime[0] = false;
+    is_prime[1] = false;
+    for i in 2..=n {
+        if is_prime[i] {
+            if i * i <= n {
+                let mut j = i * i;
+                while j <= n {
+                    is_prime[j] = false;
+                    j += i;
+                }
+            }
+        }
+    }
+    is_prime
+        .iter()
+        .enumerate()
+        .filter(|(_, &v)| v)
+        .map(|(i, _)| i)
+        .collect()
+}
