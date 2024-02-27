@@ -1,5 +1,6 @@
 mod gost;
 mod polybius_square;
+mod rsa;
 mod tasks;
 mod tiger;
 
@@ -8,14 +9,17 @@ use gtk::{
     glib, Application, ApplicationWindow, Box, Button, Label, Orientation, Paned, Stack,
     StackSidebar,
 };
-use num_bigint::BigUint;
+use num_bigint::{BigInt, BigUint};
 
 const APP_ID: &str = "org.gtk_rs.HelloWorld1";
 
-fn main() -> glib::ExitCode {
-    let app = Application::builder().application_id(APP_ID).build();
-    app.connect_activate(build_ui);
-    app.run()
+fn main() {
+    //-> glib::ExitCode {
+    //let app = Application::builder().application_id(APP_ID).build();
+    //app.connect_activate(build_ui);
+    //app.run()
+    let (x, _, _) = rsa::gcd(BigInt::from(23), BigInt::from(2341));
+    println!("{}", x);
 }
 
 fn build_ui(app: &Application) {
@@ -121,6 +125,6 @@ fn build_ui(app: &Application) {
     window.present();
 
     //debug
-    let hash = tiger::hash("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-".as_bytes());
+    let hash = tiger::hash("Tiger".as_bytes());
     println!("{}", tiger::hash_to_hex_string(hash));
 }

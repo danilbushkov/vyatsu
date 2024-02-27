@@ -112,7 +112,7 @@ fn get_blocks_from_bytes(bytes: &[u8]) -> Vec<[u64; 8]> {
 
     for byte in bytes {
         byte_count -= 1;
-        word = word | ((byte as u64) << (8 * byte_count));
+        word = word | ((byte as u64) << (8 * (byte_count^7)));
         if byte_count == 0 {
             byte_count = 8;
             block[current_word] = word;
