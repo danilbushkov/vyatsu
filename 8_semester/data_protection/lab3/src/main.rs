@@ -9,7 +9,7 @@ use gtk::{
     glib, Application, ApplicationWindow, Box, Button, Label, Orientation, Paned, Stack,
     StackSidebar,
 };
-use num_bigint::{BigInt, BigUint};
+use num::{BigInt, BigUint};
 
 const APP_ID: &str = "org.gtk_rs.HelloWorld1";
 
@@ -23,7 +23,13 @@ fn main() {
     let v = rsa::sieve_of_eratosthenes(300);
     println!("{:?}", v);
     let keys = rsa::new_keys(BigUint::from(659 as u32), BigUint::from(599 as u32));
-    println!("{:?}", keys)
+    println!("{:?}", keys);
+
+    let m = "Привет!".as_bytes();
+    let c = rsa::encrypt(m, &keys.0);
+    println!("{:?} -> {:?}", m, c);
+    let m = rsa::decrypt(&c, &keys.1);
+    println!("{:?}", m);
 }
 
 fn build_ui(app: &Application) {
