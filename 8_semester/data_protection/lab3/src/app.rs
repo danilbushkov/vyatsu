@@ -1,4 +1,6 @@
+mod pages;
 mod widgets;
+
 use crate::gost;
 use crate::polybius_square;
 use crate::tasks;
@@ -113,9 +115,8 @@ pub fn build_ui(app: &Application) {
     task2_box.append(&task2_encrypt_button);
     task2_box.append(&text_view);
 
-    let text_area = widgets::TextArea::new("Введите текст:");
     stack.add_titled(
-        widgets::TaskPage::new(tasks::TASK1_TEXT, text_area.get()).get(),
+        pages::get_task1_page().get(),
         Some("task1_page"),
         "Задание 1",
     );

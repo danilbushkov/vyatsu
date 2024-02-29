@@ -14,8 +14,12 @@ impl TextArea {
         let title = Label::builder().label(title).halign(Align::Start).build();
         let text_view = TextView::builder()
             .wrap_mode(gtk::WrapMode::WordChar)
+            .width_request(300)
             .build();
-        let bx = Box::builder().orientation(Orientation::Vertical).build();
+        let bx = Box::builder()
+            .orientation(Orientation::Vertical)
+            .halign(Align::Fill)
+            .build();
         bx.append(&title);
         frame.set_child(Some(&text_view));
         bx.append(&frame);
