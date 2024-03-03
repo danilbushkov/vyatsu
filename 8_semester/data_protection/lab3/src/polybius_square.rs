@@ -1,10 +1,12 @@
+use std::collections::HashMap;
+
 const TABLE: [[char; 6]; 6] = [
     ['А', 'Б', 'В', 'Г', 'Д', 'E'],
     ['Ё', 'Ж', 'З', 'И', 'Й', 'К'],
     ['Л', 'М', 'Н', 'О', 'П', 'Р'],
     ['С', 'Т', 'У', 'Ф', 'Х', 'Ц'],
     ['Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь'],
-    ['Э', 'Ю', 'Я', ' ', ' ', ' '],
+    ['Э', 'Ю', 'Я', '.', ' ', ','],
 ];
 
 #[derive(Copy, Clone)]
@@ -32,6 +34,25 @@ pub fn decrypt_from_str(st: &str) -> String {
         }
     }
     return decrypt(&crds);
+}
+
+pub fn encrypt(text: &str) -> String {
+    let mut map = HashMap::new();
+    for i in 0..TABLE.len() {
+        for j in 0..TABLE[0].len() {
+            map.insert(TABLE[i][j], format!("{} {}", i + 1, j + 1));
+        }
+    }
+
+    let mut result = "".to_owned();
+
+    for ch in text.chars() {
+        if let Some(v) = map.get(&ch) {
+            result += v;
+        }
+    }
+
+    result
 }
 
 pub fn decrypt(crds: &Vec<Crd>) -> String {

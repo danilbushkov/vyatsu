@@ -30,4 +30,8 @@ impl TextView {
     pub fn get(&self) -> &Box {
         &self.bx
     }
+    pub fn set_text(&self, text: &str) {
+        let b = self.text_view.buffer();
+        b.set_text(text);
+    }
 }
