@@ -1,5 +1,5 @@
 use gtk::prelude::*;
-use gtk::{Align, Box, Frame, Label, Orientation};
+use gtk::{glib, Align, Box, Frame, Label, Orientation};
 
 pub struct TextView {
     title: Label,
@@ -32,6 +32,10 @@ impl TextView {
     }
     pub fn set_text(&self, text: &str) {
         let b = self.text_view.buffer();
-        b.set_text(text);
+        let result = glib::GString::from_string_checked(text.to_owned());
+        match result {
+            Ok(s) => b.set_text(&s),
+            Err(_) => b.set_text("Ошибка конвертации"),
+        }
     }
 }
