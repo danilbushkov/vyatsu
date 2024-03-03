@@ -1,10 +1,11 @@
-use super::MARGIN;
+use super::ErrorLabel;
 use gtk::prelude::*;
 use gtk::{Align, Box, Frame, Label, Orientation, TextView};
 
 pub struct TextArea {
     title: Label,
     text_view: TextView,
+    error_label: ErrorLabel,
     bx: Box,
 }
 
@@ -20,9 +21,11 @@ impl TextArea {
             .orientation(Orientation::Vertical)
             .halign(Align::Fill)
             .build();
+        let error_label = ErrorLabel::new();
         bx.append(&title);
         frame.set_child(Some(&text_view));
         bx.append(&frame);
+        bx.append(error_label.get());
         text_view.buffer().connect_changed(|b| {
             const MAX: i32 = 256;
             if b.char_count() > MAX {
@@ -36,6 +39,7 @@ impl TextArea {
             title,
             text_view,
             bx,
+            error_label,
         }
     }
     pub fn get(&self) -> &Box {
