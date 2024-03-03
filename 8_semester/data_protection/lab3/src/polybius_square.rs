@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 const TABLE: [[char; 6]; 6] = [
-    ['А', 'Б', 'В', 'Г', 'Д', 'E'],
+    ['А', 'Б', 'В', 'Г', 'Д', 'Е'],
     ['Ё', 'Ж', 'З', 'И', 'Й', 'К'],
     ['Л', 'М', 'Н', 'О', 'П', 'Р'],
     ['С', 'Т', 'У', 'Ф', 'Х', 'Ц'],
@@ -20,7 +20,7 @@ pub fn decrypt_from_str(st: &str) -> String {
     let mut c = 0;
     let mut crd = Crd { x: 0, y: 0 };
     for ch in st.chars() {
-        if ch != ' ' {
+        if ch != ' ' && ch != '\n' {
             if c == 0 {
                 crd.y = (ch as u8 - '0' as u8) as usize;
             } else if c == 1 {
