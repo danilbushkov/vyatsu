@@ -1,7 +1,6 @@
 mod pages;
 mod widgets;
 
-use crate::tiger;
 use gtk::prelude::*;
 use gtk::{Application, ApplicationWindow, Orientation, Paned, Stack, StackSidebar};
 
@@ -51,8 +50,4 @@ pub fn build_ui(app: &Application) {
         .build();
 
     window.present();
-
-    //debug
-    let hash = tiger::hash("Tiger".as_bytes());
-    println!("{}", tiger::hash_to_hex_string(hash));
 }
