@@ -130,6 +130,11 @@ pub fn build_ui(app: &Application) {
         Some("task3_page"),
         "Задание 3",
     );
+    stack.add_titled(
+        pages::get_task4_page().get(),
+        Some("task4_page"),
+        "Задание 4",
+    );
     //stack.add_titled(&task1_box, Some("task1_box"), "test");
     //  stack.add_titled(&task2_box, Some("task2_box"), "Задание 2");
     let sidebar = StackSidebar::builder().build();

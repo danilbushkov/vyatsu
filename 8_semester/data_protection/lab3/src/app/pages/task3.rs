@@ -1,7 +1,7 @@
 use super::super::widgets;
 use super::check_str;
+use crate::rsa;
 use crate::tasks;
-use crate::{gost, rsa};
 use gtk::prelude::*;
 use gtk::{glib, Orientation};
 use num::{BigUint, Num, ToPrimitive};
