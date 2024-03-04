@@ -4,7 +4,7 @@ use crate::tasks;
 use crate::{gost, rsa};
 use gtk::prelude::*;
 use gtk::{glib, Orientation};
-use num::BigUint;
+use num::{BigUint, Num, ToPrimitive};
 use std::collections::HashSet;
 use std::rc::Rc;
 
@@ -18,7 +18,10 @@ pub fn get_key_area() -> gtk::Box {
     let button = gtk::Button::builder().label("Сгенерировать").build();
     button.connect_clicked(move |_| {
         let keys = rsa::new_keys(BigUint::from(659 as u32), BigUint::from(599 as u32));
-        let keys = (format!("{} {}", keys.0.0, keys.0.1), format!("{} {}", keys.1.0, keys.1.1));
+        let keys = (
+            format!("{} {}", keys.0 .0, keys.0 .1),
+            format!("{} {}", keys.1 .0, keys.1 .1),
+        );
         pk.set_text(&keys.0);
         pr.set_text(&keys.1);
     });
@@ -29,61 +32,67 @@ pub fn get_key_area() -> gtk::Box {
     bx
 }
 
-fn encrypt(text: &str, key: &str) -> String {
-    let mut key_blocks = BigUint::parse_bytes(key.as_bytes(), 10)
-        .unwrap_or(BigUint::from(0 as u32))
-        .to_u32_digits();
-    key_blocks.resize(8, 0);
-    let cipherbytes = gost::encrypt(
-        text.as_bytes(),
-        &key_blocks[0..8].try_into().unwrap(),
-        &gost::TASK_SBOX,
-    );
-    cipherbytes
-        .iter()
-        .map(|b| format!("{:02x}", b))
-        .collect::<Vec<_>>()
-        .join("")
-}
-fn decrypt(ciphertext: &str, key: &str) -> String {
-    let s = ciphertext;
-    let mut key_blocks = BigUint::parse_bytes(key.as_bytes(), 10)
-        .unwrap_or(BigUint::from(0 as u32))
-        .to_u32_digits();
-    key_blocks.resize(8, 0);
-    let cipherbytes: Vec<u8> = (0..s.len())
-        .step_by(2)
-        .map(|i| {
-            if i + 2 <= s.len() {
-                return u8::from_str_radix(&s[i..i + 2], 16).unwrap_or(0);
-            } else {
-                return u8::from_str_radix(&((&s[i..i + 1]).to_owned() + "0"), 16).unwrap_or(0);
-            }
-        })
-        .collect();
+pub fn get_key(key: &str) -> Result<(BigUint, BigUint), String> {
+    let mut v = ('0'..='9').collect::<Vec<_>>();
+    v.push(' ');
 
-    let mut bytes = gost::decrypt(
-        &cipherbytes,
-        &key_blocks[0..8].try_into().unwrap(),
-        &gost::TASK_SBOX,
-    );
-    while bytes.last() != None && bytes.last() == Some(&0) {
-        bytes.pop();
+    let chars: Rc<HashSet<char>> = Rc::new(v.into_iter().collect());
+    check_str(key, &chars)?;
+    let key: Vec<BigUint> = key
+        .trim()
+        .split_whitespace()
+        .map(|s| BigUint::parse_bytes(s.as_bytes(), 10).unwrap_or(BigUint::from(0 as u32)))
+        .collect();
+    if key.len() > 2 {
+        return Err("Слишком большое количество чисел в ключе".to_owned());
+    } else if key.len() < 2 {
+        return Err("Не хватает чисел в ключе".to_owned());
+    } else if key[0] > BigUint::from(5000 as u32) {
+        return Err("Слишком большое число для возведения в степень".to_owned());
     }
+
+    Ok((key[0].clone(), key[1].clone()))
+}
+
+pub fn get_cipher_blocks(ciphertext: &str) -> Result<Vec<BigUint>, String> {
+    let mut v = ('0'..='9').collect::<Vec<_>>();
+    v.append(&mut ('a'..='f').collect::<Vec<_>>());
+    v.push('.');
+
+    let chars: Rc<HashSet<char>> = Rc::new(v.into_iter().collect());
+    check_str(ciphertext, &chars)?;
+
+    let c = ciphertext
+        .split('.')
+        .map(|s| BigUint::from_str_radix(s, 16).unwrap_or(BigUint::from(0 as u32)))
+        .collect::<Vec<_>>();
+    Ok(c)
+}
+
+fn encrypt(text: &str, key: &(BigUint, BigUint)) -> String {
+    let c = rsa::encrypt(text.as_bytes(), key);
+    let s: String = c
+        .iter()
+        .map(|v| v.to_str_radix(16))
+        .collect::<Vec<_>>()
+        .join(".");
+    s
+}
+
+fn decrypt(cipherblocks: &[BigUint], key: &(BigUint, BigUint)) -> String {
+    let m = rsa::decrypt(cipherblocks, key);
+    let bytes: Vec<u8> = m.iter().map(|b| b.to_u8().unwrap_or(0)).collect();
     String::from_utf8_lossy(&bytes).to_string()
 }
 
 pub fn get_task3_page() -> widgets::TaskPage {
     let decryption = gtk::Box::new(Orientation::Vertical, 10);
     let ciphertext_input = widgets::TextArea::new(
-        "Введите шифртекст(Максимум 256 символа; 
-символ - шестнадцатеричное число: 0..f):",
+        "Введите шифртекст(Максимум 512 символа; 
+символ - шестнадцатеричное число: 0..f и точка):",
     );
-    let key_input = widgets::TextArea::new(
-        "Введите ключ в виде десятичного числа
-(Должен быть представлен не больше 256 битами, 
-иначе число будет обрезаться):",
-    );
+    ciphertext_input.set_max(512);
+    let key_input = widgets::TextArea::new("Введите приватный ключ:");
     let text = Rc::new(widgets::TextView::new("Текст:"));
     let tx = Rc::clone(&text);
     let t2 = Rc::clone(&text);
@@ -92,25 +101,22 @@ pub fn get_task3_page() -> widgets::TaskPage {
     let mut a: Vec<char> = ('a'..='f').collect::<Vec<_>>();
     a.append(&mut v.clone());
 
-    let chars: Rc<HashSet<char>> = Rc::new(v.into_iter().collect());
-    let cipher_chars: Rc<HashSet<char>> = Rc::new(a.into_iter().collect());
-
-    let ch = Rc::clone(&chars);
-    let cch = Rc::clone(&cipher_chars);
     let handler = Box::new(
         glib::clone!(@weak key_input => move |t: &widgets::TextArea| {
             let ciphertext = t.text();
             let key = key_input.text();
 
-            if let Ok(_) = check_str(&key, &chars){
-
-                if let Err(e) = check_str(&ciphertext, &cipher_chars) {
-                    t.set_error(&e);
-                } else {
-                    let text = &decrypt(&ciphertext, &key);
-
-                    tx.set_text(text);
+              match get_cipher_blocks(&ciphertext) {
+                Ok(bs) => {
+                    match get_key(&key) {
+                    Ok(k) => {
+                        let text = decrypt(&bs, &k);
+                        tx.set_text(&text);
+                    }
+                    Err(_) => ()
+                    }
                 }
+                Err(e) => t.set_error(&e)
             }
         }),
     );
@@ -121,15 +127,16 @@ pub fn get_task3_page() -> widgets::TaskPage {
         glib::clone!(@weak ciphertext_input => move |t: &widgets::TextArea| {
             let key = t.text();
             let ciphertext = ciphertext_input.text();
-
-            if let Err(e)= check_str(&key, &ch) {
-                t.set_error(&e);
-            } else {
-                if let Ok(_) = check_str(&ciphertext, &cch) {
-                    let text = &decrypt(&ciphertext, &key);
-                    t2.set_text(text);
+            if let Ok(bs) = get_cipher_blocks(&ciphertext) {
+                match get_key(&key) {
+                Ok(k) => {
+                    let text = decrypt(&bs, &k);
+                    t2.set_text(&text);
+                }
+                Err(e) => t.set_error(&e)
                 }
             }
+
         }),
     );
 
@@ -148,27 +155,22 @@ pub fn get_task3_page() -> widgets::TaskPage {
 fn get_encryption_area() -> gtk::Box {
     let encryption = gtk::Box::new(Orientation::Vertical, 10);
     let text_input = widgets::TextArea::new("Введите текст(Максимум 256 символа):");
-    let key_input = widgets::TextArea::new(
-        "Введите ключ в виде десятичного числа
-(Должен быть представлен не больше 256 битами, 
-иначе число будет обрезаться):",
-    );
+    let key_input = widgets::TextArea::new("Введите публичный ключ:");
     let ciphertext = Rc::new(widgets::TextView::new("Зашифрованный текст:"));
     let ct = Rc::clone(&ciphertext);
     let ct2 = Rc::clone(&ciphertext);
 
-    let v = ('0'..='9').collect::<Vec<_>>();
-
-    let chars: Rc<HashSet<char>> = Rc::new(v.into_iter().collect());
-    let ch = Rc::clone(&chars);
     let handler = Box::new(
         glib::clone!(@weak key_input => move |t: &widgets::TextArea| {
             let text = t.text();
             let key = key_input.text();
-
-            if let Ok(_) = check_str(&key, &chars){
-                let ciphertext = &encrypt(&text, &key);
-                ct.set_text(ciphertext);
+            let r = get_key(&key);
+            match r {
+                Ok(k) => {
+                    let ciphertext = &encrypt(&text, &k);
+                    ct.set_text(ciphertext);
+                },
+                Err(_) => ()
             }
         }),
     );
@@ -180,11 +182,14 @@ fn get_encryption_area() -> gtk::Box {
             let key = t.text();
             let text = text_input.text();
 
-            if let Err(e)= check_str(&key, &ch) {
-                t.set_error(&e);
-            } else {
-                let ciphertext = &encrypt(&text, &key);
-                ct2.set_text(ciphertext);
+
+            let r = get_key(&key);
+            match r {
+                Ok(k) => {
+                    let ciphertext = &encrypt(&text, &k);
+                    ct2.set_text(ciphertext);
+                },
+                Err(e) =>t.set_error(&e),
             }
         }),
     );

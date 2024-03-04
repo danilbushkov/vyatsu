@@ -25,7 +25,7 @@ pub fn new_keys(p: BigUint, q: BigUint) -> ((BigUint, BigUint), (BigUint, BigUin
     let mut _d: BigUint = BigUint::from(0 as u32);
     let n = &p * &q;
     let f = (p - 1 as u32) * (q - 1 as u32);
-    let to = (&f - 1 as u32).to_usize().unwrap_or(2).min(36500);
+    let to = (&f - 1 as u32).to_usize().unwrap_or(2).min(5000);
     let primes = sieve_of_eratosthenes(to);
     loop {
         _e = BigUint::from(*primes.choose(&mut rand::thread_rng()).unwrap());

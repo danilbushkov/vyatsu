@@ -10,6 +10,7 @@ pub struct TextArea {
     error_label: Rc<ErrorLabel>,
     bx: gtk::Box,
     input_handler: Rc<RefCell<Box<dyn Fn(&Self)>>>,
+    max: Rc<RefCell<i32>>,
 }
 
 impl TextArea {
@@ -40,23 +41,26 @@ impl TextArea {
             bx,
             error_label,
             input_handler,
+            max: Rc::new(RefCell::new(256)),
         });
 
         let c_s = Rc::clone(&s);
+        let m = Rc::clone(&s.max);
 
         s.text_view.buffer().connect_changed(move |b| {
             c_s.set_error("");
-            const MAX: i32 = 256;
+            let max = *m.borrow();
             i_h.borrow()(&c_s);
-            if b.char_count() > MAX {
+            if b.char_count() > max {
                 let mut start = b.start_iter();
-                start.forward_chars(MAX);
+                start.forward_chars(max);
                 let mut end = b.end_iter();
                 b.delete(&mut start, &mut end);
             }
         });
         s
     }
+
     pub fn get(&self) -> &gtk::Box {
         &self.bx
     }
@@ -73,5 +77,8 @@ impl TextArea {
     }
     pub fn set_error(&self, text: &str) {
         self.error_label.set_text(text);
+    }
+    pub fn set_max(&self, max: i32) {
+        *self.max.borrow_mut() = max
     }
 }
