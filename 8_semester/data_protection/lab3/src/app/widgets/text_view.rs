@@ -38,4 +38,8 @@ impl TextView {
             Err(_) => b.set_text("Ошибка конвертации"),
         }
     }
+    pub fn text(&self) -> String {
+        let b = self.text_view.buffer();
+        b.text(&b.start_iter(), &b.end_iter(), false).to_string()
+    }
 }

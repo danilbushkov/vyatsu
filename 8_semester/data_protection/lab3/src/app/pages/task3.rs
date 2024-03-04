@@ -69,7 +69,7 @@ pub fn get_cipher_blocks(ciphertext: &str) -> Result<Vec<BigUint>, String> {
     Ok(c)
 }
 
-fn encrypt(text: &str, key: &(BigUint, BigUint)) -> String {
+pub fn encrypt(text: &str, key: &(BigUint, BigUint)) -> String {
     let c = rsa::encrypt(text.as_bytes(), key);
     let s: String = c
         .iter()
@@ -79,7 +79,7 @@ fn encrypt(text: &str, key: &(BigUint, BigUint)) -> String {
     s
 }
 
-fn decrypt(cipherblocks: &[BigUint], key: &(BigUint, BigUint)) -> String {
+pub fn decrypt(cipherblocks: &[BigUint], key: &(BigUint, BigUint)) -> String {
     let m = rsa::decrypt(cipherblocks, key);
     let bytes: Vec<u8> = m.iter().map(|b| b.to_u8().unwrap_or(0)).collect();
     String::from_utf8_lossy(&bytes).to_string()

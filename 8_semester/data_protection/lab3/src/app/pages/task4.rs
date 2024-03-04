@@ -16,7 +16,7 @@ fn get_hash_area() -> gtk::Box {
 
     let h = Rc::clone(&hash);
     let handler = Box::new(
-        glib::clone!(@weak text_input => move |t: &widgets::TextArea| {
+        glib::clone!(@weak text_input => move |_: &widgets::TextArea| {
             let text = text_input.text();
             let hash = tiger::hash(text.as_bytes());
             h.set_text(&tiger::hash_to_hex_string(hash));
