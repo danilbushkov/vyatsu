@@ -6,6 +6,7 @@
 \usepackage[russian, english]{babel}
 \usepackage{fontspec}
 \usepackage{setspace}
+\usepackage{ulem}
 \setmainfont{Times New Roman}
 \input{./frames.tex}
 \input{./toc.tex}
@@ -43,28 +44,27 @@
 \onehalfspacing
 \setlength{\parindent}{12.5mm}
 
-\newcommand{\usection}[1]{
-\section*{#1}
+\newcommand{\csection}[1]{
+\section*{\centering #1}
 \addcontentsline{toc}{section}{#1}
 }
 
 \begin{document}
 \renewcommand{\contentsname}{\hfill Содержание \hfill}
 \Large
-\thispagestyle{empty}
-
-\lipsum[1-4]
-
 
 \addtolength{\textheight}{-40mm}
-\newpage
+\include{pages/title.tex}
+
 \tocloftpagestyle{mainframe}
+
 \pagestyle{pageframe}
 \addtolength{\textheight}{+25mm}
-
 \tableofcontents\newpage
 
-\usection{Введение}
+\csection{Введение}
+
+\lipsum[6-20]
 \subsection{Привет}
 \section{Часть 1}
 
@@ -84,13 +84,27 @@
 
 \section{Часть 2}
 \subsection{Привет}
+asl;dkfskadf;
 \section{Часть 1}
 
 \section{Часть 2}
+las;dfkl;sdakf;
 \subsection{Привет}
+a;slkdf;lskd;flk
+\section{Часть 1}
+as;ldjf;lsadkf;
+\section{Часть 2}
+asljkdflk;dsajfl
+\subsection{Привет}
+sdlfkjaslkdjflkasdjf
 \section{Часть 1}
 
 \section{Часть 2}
+asdfsdf
+\subsection{Привет}
+sdsadfas
+\section{Часть 1}
+
 \lipsum[6-20]
 \lipsum[12-30]
 
