@@ -1,0 +1,100 @@
+%! TEX TS-program = xelatex
+\documentclass[a4paper,10pt]{article}
+\usepackage{geometry}
+\usepackage{lipsum}
+\usepackage{fancyhdr}
+\usepackage[russian, english]{babel}
+\usepackage{fontspec}
+\usepackage{setspace}
+\setmainfont{Times New Roman}
+\input{./frames.tex}
+\input{./toc.tex}
+
+%\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+\geometry{top = 15mm, left = 25mm, right = 10mm, bottom = 15mm}
+
+\renewcommand{\headrulewidth}{0pt}
+\fancypagestyle{mainframe} {
+    \fancyhf{}
+    \fancyhead[L]{
+        \mainframe
+        {TПЖА.09.03.01.514 ПЗ}
+        {Кафедра ЭВМ Группа ИВТ-41}{
+            Разработка конструктора Telegram-ботов. Часть 1
+        }
+        {Бушков}
+        {Долженкова}
+        {Скворцов}
+        {Долженкова}
+        {\thepage}
+        {\pageref{lastpage}}
+    }
+
+}
+\fancypagestyle{pageframe} {
+    \fancyhf{}
+    \fancyhead[L]{
+        \pageframe
+        {TПЖА.09.03.01.514 ПЗ}
+        {\thepage}
+    }
+}
+
+\onehalfspacing
+\setlength{\parindent}{12.5mm}
+
+\newcommand{\usection}[1]{
+\section*{#1}
+\addcontentsline{toc}{section}{#1}
+}
+
+\begin{document}
+\renewcommand{\contentsname}{\hfill Содержание \hfill}
+\Large
+\thispagestyle{empty}
+
+\lipsum[1-4]
+
+
+\addtolength{\textheight}{-40mm}
+\newpage
+\tocloftpagestyle{mainframe}
+\pagestyle{pageframe}
+\addtolength{\textheight}{+25mm}
+
+\tableofcontents\newpage
+
+\usection{Введение}
+\subsection{Привет}
+\section{Часть 1}
+
+\section{Часть 2}
+\subsection{Привет}
+\section{Часть 1}
+
+\section{Часть 2}
+\section{Введение}
+\subsection{Привет}
+\section{Часть 1}
+
+\section{Часть 2}
+\section{Введение}
+\subsection{Привет}
+\section{Часть 1}
+
+\section{Часть 2}
+\subsection{Привет}
+\section{Часть 1}
+
+\section{Часть 2}
+\subsection{Привет}
+\section{Часть 1}
+
+\section{Часть 2}
+\lipsum[6-20]
+\lipsum[12-30]
+
+\section{Часть 2}
+
+\label{lastpage}
+\end{document}
