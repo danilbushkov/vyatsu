@@ -6,12 +6,13 @@
 \renewcommand{\cfttoctitlefont}{}
 
 \renewcommand{\cftsecfont}{}
-\renewcommand{\cftsubsecfont}{}
-\renewcommand{\cftsubsubsecfont}{}
+\renewcommand{\cftsubsecfont}{\hspace{1.5em}}
+\renewcommand{\cftsubsubsecfont}{\hspace{3em}}
 
 \renewcommand{\cftsecpagefont}{}
 \renewcommand{\cftsubsecpagefont}{}
 \renewcommand{\cftsubsubsecpagefont}{}
+
 
 
 
@@ -20,6 +21,18 @@
 \setlength{\cftbeforesubsubsecskip}{0.5em}
 
 
-\setlength{\cftsecnumwidth}{7mm}
-\setlength{\cftsubsecnumwidth}{10mm}
-\setlength{\cftsubsubsecnumwidth}{10mm}
+\setlength{\cftsecindent}{0pt}
+\setlength{\cftsubsecindent}{0pt}
+\setlength{\cftsubsubsecindent}{0pt}
+
+\setlength{\cftsecnumwidth}{0mm}
+\setlength{\cftsubsecnumwidth}{0mm}
+\setlength{\cftsubsubsecnumwidth}{0mm}
+
+\newcommand{\titleindent}{2em}
+
+\renewcommand{\cftsecaftersnumb}{\hspace{1.5em}}
+\renewcommand{\cftsubsecaftersnumb}{\hspace{2.2em}}
+\renewcommand{\cftsubsubsecaftersnumb}{\hspace{3em}}
+
+\cftsetrmarg{0pt}
