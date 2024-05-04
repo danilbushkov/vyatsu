@@ -7,10 +7,11 @@
 \usepackage{fontspec}
 \usepackage{setspace}
 \usepackage{ulem}
+\usepackage{indentfirst}
 \setmainfont{Times New Roman}
 \input{./frames.tex}
 \input{./toc.tex}
-
+\input{./titlestyle.tex}
 %\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
 \geometry{top = 15mm, left = 25mm, right = 10mm, bottom = 15mm}
 
@@ -45,7 +46,7 @@
 \setlength{\parindent}{12.5mm}
 
 \newcommand{\csection}[1]{
-\section*{\centering #1}
+\section*{\hfill #1 \hfill}
 \addcontentsline{toc}{section}{#1}
 }
 
@@ -63,7 +64,7 @@
 \tableofcontents\newpage
 
 \csection{Введение}
-
+asdfjasdlfkjaslkdfjlaksdj
 \lipsum[6-20]
 \subsection{Привет}
 \section{Часть 1}
@@ -96,17 +97,28 @@ as;ldjf;lsadkf;
 \section{Часть 2}
 asljkdflk;dsajfl
 \subsection{Привет}
+\hspace{0pt}
 sdlfkjaslkdjflkasdjf
+
+asdfasdfasfd
+
 \section{Часть 1}
 
-\section{Часть 2}
+\section{Часть 2 часть 2 часть 2 часть 2 часть 2 часть 2 часть 2 часть 2 часть 22 часть 2 часть 2 часть 2}
 asdfsdf
-\subsection{Привет}
+
+sdfgsdg
+
+\subsection{\lipsum[1]}
+%\hspace{0pt}
+
 sdsadfas
+
+asdfjaslk
+
 \section{Часть 1}
 
 \lipsum[6-20]
-\lipsum[12-30]
 
 \section{Часть 2}
 
