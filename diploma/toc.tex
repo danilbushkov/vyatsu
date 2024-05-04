@@ -2,17 +2,35 @@
 
 \renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
 \renewcommand{\cftdotsep}{1}
-
+\cftsetrmarg{0pt}
 \renewcommand{\cfttoctitlefont}{}
 
-\renewcommand{\cftsecfont}{}
-\renewcommand{\cftsubsecfont}{\hspace{1.5em}}
-\renewcommand{\cftsubsubsecfont}{\hspace{3em}}
 
 \renewcommand{\cftsecpagefont}{}
 \renewcommand{\cftsubsecpagefont}{}
 \renewcommand{\cftsubsubsecpagefont}{}
 
+\newcommand{\secnumwidth}{1cm}
+\newcommand{\subsecnumwidth}{1.5cm}
+\newcommand{\subsubsecnumwidth}{2cm}
+
+
+\setlength{\cftsecnumwidth}{2em}
+\setlength{\cftsubsecnumwidth}{3em}
+\setlength{\cftsubsubsecnumwidth}{4em}
+
+\newcommand{\secindent}{0em}
+\newcommand{\subsecindent}{1em}
+\newcommand{\subsubsecindent}{2em}
+
+
+\setlength{\cftsecindent}{-\cftsecnumwidth}
+\setlength{\cftsubsecindent}{-\cftsubsecnumwidth}
+\setlength{\cftsubsubsecindent}{-\cftsubsubsecnumwidth}
+
+\renewcommand{\cftsecfont}{\hspace{\cftsecnumwidth}\hspace{\secindent}}
+\renewcommand{\cftsubsecfont}{\hspace{\cftsubsecnumwidth}\hspace{\subsecindent}}
+\renewcommand{\cftsubsubsecfont}{\hspace{\cftsubsubsecnumwidth}\hspace{\subsubsecindent}}
 
 
 
@@ -21,18 +39,4 @@
 \setlength{\cftbeforesubsubsecskip}{0.5em}
 
 
-\setlength{\cftsecindent}{0pt}
-\setlength{\cftsubsecindent}{0pt}
-\setlength{\cftsubsubsecindent}{0pt}
 
-\setlength{\cftsecnumwidth}{0mm}
-\setlength{\cftsubsecnumwidth}{0mm}
-\setlength{\cftsubsubsecnumwidth}{0mm}
-
-\newcommand{\titleindent}{2em}
-
-\renewcommand{\cftsecaftersnumb}{\hspace{1.5em}}
-\renewcommand{\cftsubsecaftersnumb}{\hspace{2.2em}}
-\renewcommand{\cftsubsubsecaftersnumb}{\hspace{3em}}
-
-\cftsetrmarg{0pt}
