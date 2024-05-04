@@ -8,10 +8,12 @@
 \usepackage{setspace}
 \usepackage{ulem}
 \usepackage{indentfirst}
+
 \setmainfont{Times New Roman}
 \input{./frames.tex}
 \input{./toc.tex}
 \input{./titlestyle.tex}
+\input{./constants.tex}
 %\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
 \geometry{top = 15mm, left = 25mm, right = 10mm, bottom = 15mm}
 
@@ -20,11 +22,11 @@
     \fancyhf{}
     \fancyhead[L]{
         \mainframe
-        {TПЖА.09.03.01.514 ПЗ}
+        {\tpga}
         {Кафедра ЭВМ Группа ИВТ-41}{
-            Разработка конструктора Telegram-ботов. Часть 1
+        \topic
         }
-        {Бушков}
+        {\authori}
         {Долженкова}
         {Скворцов}
         {Долженкова}
@@ -37,7 +39,7 @@
     \fancyhf{}
     \fancyhead[L]{
         \pageframe
-        {TПЖА.09.03.01.514 ПЗ}
+        {\tpga}
         {\thepage}
     }
 }
@@ -53,12 +55,13 @@
 \begin{document}
 \renewcommand{\contentsname}{\hfill Содержание \hfill}
 \Large
-
-\addtolength{\textheight}{-40mm}
+\pagestyle{empty}
 \include{pages/title.tex}
 
-\tocloftpagestyle{mainframe}
+\include{pages/abstract.tex}
 
+\addtolength{\textheight}{-40mm}
+\tocloftpagestyle{mainframe}
 \pagestyle{pageframe}
 \addtolength{\textheight}{+25mm}
 \tableofcontents\newpage
@@ -118,7 +121,7 @@ asdfjaslk
 
 \section{Часть 1}
 \subsection{\lipsum[1]}
-\lipsum[6-20]
+%\lipsum[6-20]
 
 \section{Часть 2}
 
