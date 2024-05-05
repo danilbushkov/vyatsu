@@ -3,11 +3,11 @@
 \usepackage{geometry}
 \usepackage{lipsum}
 \usepackage{fancyhdr}
-\usepackage[russian, english]{babel}
 \usepackage{fontspec}
 \usepackage{setspace}
 \usepackage{ulem}
 \usepackage{indentfirst}
+\usepackage[english, russian]{babel}
 
 \setmainfont{Times New Roman}
 \input{./frames.tex}
@@ -52,6 +52,9 @@
 \addcontentsline{toc}{section}{#1}
 }
 
+\sloppy
+
+
 \begin{document}
 \renewcommand{\contentsname}{\hfill Содержание \hfill}
 \Large
@@ -68,6 +71,7 @@
 
 \csection{Введение}
 asdfjasdlfkjaslkdfjlaksdj
+
 \lipsum[6-20]
 %\subsection{Привет}
 %\section{Часть 1}
