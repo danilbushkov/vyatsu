@@ -8,12 +8,14 @@
 \usepackage{ulem}
 \usepackage{indentfirst}
 \usepackage[english, russian]{babel}
+\usepackage[hidelinks]{hyperref}
 
 \setmainfont{Times New Roman}
 \input{./frames.tex}
 \input{./toc.tex}
 \input{./titlestyle.tex}
 \input{./constants.tex}
+\input{./commands.tex}
 %\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
 \geometry{top = 15mm, left = 25mm, right = 10mm, bottom = 15mm}
 
@@ -47,10 +49,6 @@
 \onehalfspacing
 \setlength{\parindent}{12.5mm}
 
-\newcommand{\csection}[1]{
-\section*{\hfill #1 \hfill}
-\addcontentsline{toc}{section}{#1}
-}
 
 \sloppy
 
@@ -69,65 +67,7 @@
 \addtolength{\textheight}{+25mm}
 \tableofcontents\newpage
 
-\csection{Введение}
-asdfjasdlfkjaslkdfjlaksdj
-
-\lipsum[6-20]
-%\subsection{Привет}
-%\section{Часть 1}
-%
-%\section{Часть 2}
-%\subsection{Привет}
-%\section{Часть 1}
-%
-%\section{Часть 2}
-%\section{Введение}
-%\subsection{Привет}
-%\section{Часть 1}
-%
-%\section{Часть 2}
-%\section{Введение}
-%\subsection{Привет}
-%\section{Часть 1}
-%
-%\section{Часть 2}
-%\subsection{Привет}
-%asl;dkfskadf;
-%\section{Часть 1}
-%
-%\section{Часть 2}
-%las;dfkl;sdakf;
-%\subsection{Привет}
-%a;slkdf;lskd;flk
-%\section{Часть 1}
-%as;ldjf;lsadkf;
-%\section{Часть 2}
-%asljkdflk;dsajfl
-%\subsection{Привет}
-%\hspace{0pt}
-%sdlfkjaslkdjflkasdjf
-%
-%asdfasdfasfd
-%
-%\section{Часть 1}
-%
-\section{Часть 2 часть 2 часть 2 часть 2 часть 2 часть 2 часть 2 часть 2 часть 22 часть 2 часть 2 часть 2}
-asdfsdf
-
-sdfgsdg
-
-\subsection{123123}
-%\hspace{0pt}
-
-sdsadfas
-
-asdfjaslk
-
-\section{Часть 1}
-\subsection{\lipsum[1]}
-%\lipsum[6-20]
-
-\section{Часть 2}
-
+\input{pages/content.tex}
 \label{lastpage}
+
 \end{document}
