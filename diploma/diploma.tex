@@ -9,6 +9,12 @@
 \usepackage{indentfirst}
 \usepackage[english, russian]{babel}
 \usepackage[hidelinks]{hyperref}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{totcount}
+
+
+ \graphicspath{ {./images/} }
 
 \setmainfont{Times New Roman}
 \input{./frames.tex}
@@ -16,6 +22,8 @@
 \input{./titlestyle.tex}
 \input{./constants.tex}
 \input{./commands.tex}
+\input{./caption.tex}
+
 %\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
 \geometry{top = 15mm, left = 25mm, right = 10mm, bottom = 15mm}
 
@@ -33,7 +41,7 @@
         {Скворцов}
         {Долженкова}
         {\thepage}
-        {\pageref{lastpage}}
+        {\total{page}}
     }
 
 }
@@ -51,6 +59,8 @@
 
 
 \sloppy
+\regtotcounter{page}
+\regtotcounter{equation}
 
 
 \begin{document}
@@ -68,6 +78,6 @@
 \tableofcontents\newpage
 
 \input{pages/content.tex}
-\label{lastpage}
+
 
 \end{document}
