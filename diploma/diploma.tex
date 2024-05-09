@@ -13,14 +13,17 @@
 \usepackage{amsmath}
 \usepackage{totcount}
 \usepackage{calc}
+\usepackage{tabularx}
 
  \graphicspath{ {./images/} }
 
+
 \setmainfont{Times New Roman}
+
+\input{./constants.tex}
 \input{./frames.tex}
 \input{./toc.tex}
 \input{./titlestyle.tex}
-\input{./constants.tex}
 \input{./commands.tex}
 \input{./caption.tex}
 \input{./lists.tex}
@@ -56,8 +59,7 @@
 }
 
 \onehalfspacing
-\setlength{\parindent}{12.5mm}
-
+\setlength{\parindent}{\docparindent}
 
 \sloppy
 \regtotcounter{page}

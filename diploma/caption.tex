@@ -1,11 +1,22 @@
 \usepackage{caption}
 
 \DeclareCaptionLabelSeparator{custom}{ -- }
-\DeclareCaptionLabelFormat{custom}{Рисунок #2}
+\DeclareCaptionLabelFormat{flformat}{Рисунок #2}
+\DeclareCaptionLabelFormat{tlformat}{Таблица #2}
 
 
-\captionsetup{
+\captionsetup[figure]{
 	font=Large,
 	labelsep=custom,
-	labelformat=custom
+	labelformat=flformat
+}
+
+
+\captionsetup[table]{
+	format=plain,
+	font=Large,
+	labelsep=custom,
+	labelformat=tlformat,
+	singlelinecheck=false,
+	margin={\docparindent, 0pt},
 }
