@@ -1,6 +1,9 @@
 
 \newcommand{\csection}[1]{
-	\phantomsection
-	\section*{\hfill #1 \hfill}
-	\addcontentsline{toc}{section}{#1}
+	{
+			\titleformat{\section}[block]{\centering}{\thesection}{1em}{}
+			\phantomsection
+			\section*{#1}
+			\addcontentsline{toc}{section}{#1}
+		}
 }
