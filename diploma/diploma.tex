@@ -67,7 +67,7 @@
 \sloppy
 \regtotcounter{page}
 \regtotcounter{equation}
-
+\regtotcounter{figure}
 
 \begin{document}
 \renewcommand{\contentsname}{\hfill Содержание \hfill}
@@ -75,9 +75,9 @@
 \pagestyle{empty}
 \include{pages/title.tex}
 
-\include{pages/abstract.tex}
 
 \addtolength{\textheight}{-40mm}
+\include{pages/abstract.tex}
 \tocloftpagestyle{mainframe}
 \pagestyle{pageframe}
 \addtolength{\textheight}{+25mm}
