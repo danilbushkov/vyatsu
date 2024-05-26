@@ -5,7 +5,7 @@
 
 
 \newcommand{\labelv}{--}
-\newcommand{\labels}{1.5em}
+\newcommand{\labels}{0.5em}
 
 
 \setlist[itemize]{
@@ -14,6 +14,31 @@
 	topsep=0pt,
 	labelsep=\labels,
 	label=\labelv,
-	itemindent=\parindent+\labels+\widthof{\labelv},
+	itemindent=\parindent+\labels+\labelwidth,
 	leftmargin=0pt,
+	align=left,
 }
+
+
+\setlist[enumerate,1]{
+	itemsep=0pt,
+	parsep=0pt,
+	topsep=0pt,
+	labelsep=\labels,
+	label=\arabic*),
+	ref=\arabic*,
+	leftmargin=\parindent+\labelwidth+\labelsep,
+	align=left,
+}
+
+\setlist[enumerate,2]{
+	itemsep=0pt,
+	parsep=0pt,
+	topsep=0pt,
+	labelsep=\labels*2,
+	label=\theenumi.\arabic*),
+	leftmargin=\labelwidth+\labelsep,
+	align=left,
+}
+
+
